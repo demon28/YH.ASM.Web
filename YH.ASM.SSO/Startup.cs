@@ -23,6 +23,23 @@ namespace YH.ASM.SSO
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+
+            services.AddIdentityServer(option =>
+            {
+                //可以通过此设置来指定登录路径，默认的登陆路径是/account/login
+                option.UserInteraction.LoginUrl = "/Account/Login";
+
+            })
+      .AddDeveloperSigningCredential()
+      .AddInMemoryApiResources(Config.GetApiResource())
+      .AddInMemoryClients(Config.GetClients())
+      .AddInMemoryIdentityResources(Config.GetIdentityResources())
+      .AddTestUsers(Config.GetTestUsers());
+
+            services.AddMvc();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +54,8 @@ namespace YH.ASM.SSO
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+            
+            app.UseIdentityServer();
 
             app.UseRouting();
 

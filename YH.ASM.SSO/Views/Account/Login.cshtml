@@ -33,14 +33,16 @@
 </head>
 <body class="hold-transition login-page">
     <div class="login-box">
-        <div class="login-logo">
-            <a >售后服务管理系统</a>
-        </div>
-        <!-- /.login-logo -->
-        <div class="login-box-body">
-            <p class="login-box-msg">请输入您的账号密码</p>
 
-        
+        <form asp-route="Login">
+            <div class="login-logo">
+                <a>售后服务管理系统</a>
+            </div>
+            <!-- /.login-logo -->
+            <div class="login-box-body">
+                <p class="login-box-msg">请输入您的账号密码</p>
+
+
                 <div class="form-group has-feedback">
                     <input type="email" class="form-control" placeholder="账号">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -49,19 +51,26 @@
                     <input type="password" class="form-control" placeholder="密码">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
+
+
                 <div class="row">
+
+                    <div class="icheck-primary " style="margin-left:20px">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">
+                            记住我
+                        </label>
+                    </div>
                     <!-- /.col -->
                     <div class="col-xs-4 pull-right">
                         <input type="button" class="btn btn-primary btn-block" value="登 录" />
                     </div>
                     <!-- /.col -->
                 </div>
-   
 
-
-
-        </div>
-        <!-- /.login-box-body -->
+            </div>
+            <!-- /.login-box-body -->
+            </form>
     </div>
     <!-- /.login-box -->
     <!-- jQuery 3 -->
