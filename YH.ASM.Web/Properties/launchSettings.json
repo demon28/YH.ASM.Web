@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/YH.ASM.Web",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://www.asm.cn:50428/",
       "sslPort": 0

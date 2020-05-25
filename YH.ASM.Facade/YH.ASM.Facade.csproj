@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlSugarCore" Version="5.0.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YH.ASM.DataAccess\YH.ASM.DataAccess.csproj" />
+    <ProjectReference Include="..\YH.ASM.Entites\YH.ASM.Entites.csproj" />
+  </ItemGroup>
+
+</Project>

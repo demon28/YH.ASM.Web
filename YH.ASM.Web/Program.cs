@@ -14,8 +14,8 @@ namespace YH.ASM.Web
     {
         public static void Main(string[] args)
         {
-             CreateHostBuilder(args).Build().Run();
-           // BuildWebHost(args).Run();
+           CreateHostBuilder(args).Build().Run();
+          // BuildWebHost(args).Run();
 
         }
 

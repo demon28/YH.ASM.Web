@@ -68,7 +68,7 @@ namespace YH.ASM.SSO.Controllers
             //if里面的是验证账号密码，可以用自定义的验证，
             //我这里使用的是TestUserStore的的验证方法，  
             //TODO:改成数据库验证
-            if (_users.FindByUsername(model.Username) != null && _users.ValidateCredentials(model.Username, model.Password))
+            if (_users.FindByUsername(model.Username) != null && _users.ValidateCredentials(model.Username, model.Password)) 
             {
                 var user = _users.FindByUsername(model.Username);
                 //配置Cookie

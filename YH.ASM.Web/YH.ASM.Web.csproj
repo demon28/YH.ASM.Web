@@ -7552,6 +7552,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\YH.ASM.DataAccess\YH.ASM.DataAccess.csproj" />
+    <ProjectReference Include="..\YH.ASM.Entites\YH.ASM.Entites.csproj" />
+    <ProjectReference Include="..\YH.ASM.Facade\YH.ASM.Facade.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="wwwroot\Reference\adminLTE\bower_components\moment\moment.d.ts" />
   </ItemGroup>
 
