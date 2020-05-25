@@ -66,12 +66,12 @@ namespace YH.ASM.SSO
                     ClientName="Mvc_Name",
                     AllowedGrantTypes=GrantTypes.Implicit, 
                     ////设置是否要授权
-                    //RequireConsent=false,
+                    RequireConsent=false,
                     
                     //指定允许令牌或授权码返回的地址（URL）
-                    RedirectUris={ "http://www.asm.cn:50428/signin-oidc"},
+                    RedirectUris={ "http://www.asm.cn:50428/signin-oidc","http://www.b.net:5001/signin-oidc",},
                     //指定允许注销后返回的地址(URL)，这里写一个客户端
-                    PostLogoutRedirectUris={ "http://www.asm.cn:50428/signout-callback-oidc" },
+                    PostLogoutRedirectUris={ "http://www.asm.cn:50428/signout-callback-oidc", "http://www.b.net:5001/signout-callback-oidc" },
                     ClientSecrets={new Secret("secret".Sha256())},
                     AllowedScopes = new List<string>
                     {
