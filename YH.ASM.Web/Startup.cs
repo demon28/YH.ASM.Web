@@ -35,7 +35,7 @@ namespace YH.ASM.Web
            .AddCookie("Cookies")
            .AddOpenIdConnect("oidc", options =>
            {
-               options.Authority = "http://localhost:51419";
+               options.Authority = "http://sso.asm.cn:51419";
                options.RequireHttpsMetadata = false;
 
                //指定允许服务端返回的地址，默认是new PathString("/signin-oidc")

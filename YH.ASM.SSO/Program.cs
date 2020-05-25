@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +15,9 @@ namespace YH.ASM.SSO
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+
+           // BuildWebHost(args).Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -22,5 +26,13 @@ namespace YH.ASM.SSO
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+
+        public static IWebHost BuildWebHost(string[] args) =>
+           WebHost.CreateDefaultBuilder(args)
+               .UseStartup<Startup>()
+               .UseUrls("http://sso.asm.cn:51419")
+               .Build();
+
     }
 }

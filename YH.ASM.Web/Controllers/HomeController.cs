@@ -15,7 +15,6 @@ namespace YH.ASM.Web.Controllers
     {
 
 
-        [HttpGet]
         [Authorize]
         public IActionResult Index()
         {

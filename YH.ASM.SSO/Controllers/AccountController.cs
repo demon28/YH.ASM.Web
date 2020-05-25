@@ -9,10 +9,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using YH.ASM.SSO.Filer;
 using YH.ASM.SSO.Models;
 
 namespace YH.ASM.SSO.Controllers
 {
+    [SecurityHeaders]
     [AllowAnonymous]
     public class AccountController : Controller
     {
@@ -20,6 +22,13 @@ namespace YH.ASM.SSO.Controllers
         private readonly TestUserStore _users;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
+
+        public AccountController(  IClientStore clientStore, IIdentityServerInteractionService interaction, TestUserStore users = null)
+        {
+            _users = users ?? new TestUserStore(Config.GetTestUsers());
+            _interaction = interaction;
+            _clientStore = clientStore;
+        }
 
         public IActionResult Index()
         {

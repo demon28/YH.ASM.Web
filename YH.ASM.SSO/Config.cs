@@ -69,9 +69,9 @@ namespace YH.ASM.SSO
                     //RequireConsent=false,
                     
                     //指定允许令牌或授权码返回的地址（URL）
-                    RedirectUris={ "http://localhost:50428/signin-oidc"},
-                    //指定允许注销后返回的地址(URL)，这里写两个客户端
-                    PostLogoutRedirectUris={ "http://localhost:50428/signout-callback-oidc" },
+                    RedirectUris={ "http://www.asm.cn:50428/signin-oidc"},
+                    //指定允许注销后返回的地址(URL)，这里写一个客户端
+                    PostLogoutRedirectUris={ "http://www.asm.cn:50428/signout-callback-oidc" },
                     ClientSecrets={new Secret("secret".Sha256())},
                     AllowedScopes = new List<string>
                     {
