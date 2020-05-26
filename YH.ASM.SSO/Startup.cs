@@ -29,8 +29,8 @@ namespace YH.ASM.SSO
       .AddDeveloperSigningCredential()
       .AddInMemoryApiResources(Config.GetApiResource())
       .AddInMemoryClients(Config.GetClients())
-      .AddInMemoryIdentityResources(Config.GetIdentityResources())
-      .AddTestUsers(Config.GetTestUsers());
+      .AddInMemoryIdentityResources(Config.GetIdentityResources());
+
 
             services.AddMvc();
 

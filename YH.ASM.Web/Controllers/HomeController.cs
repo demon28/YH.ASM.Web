@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,10 +26,18 @@ namespace YH.ASM.Web.Controllers
         public JsonResult All()
         {
             TASM_USERManager _USERManager = new TASM_USERManager();
-           var list=  _USERManager.GetList();
+             var list=  _USERManager.GetList();
             return Json(list);
 
         }
+
+        public async Task<IActionResult> LoginOutAsync()
+        {
+            await HttpContext.SignOutAsync();
+            return View();
+
+        }
+
 
 
 

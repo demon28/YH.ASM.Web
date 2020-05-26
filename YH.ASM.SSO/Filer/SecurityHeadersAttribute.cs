@@ -51,6 +51,8 @@ namespace YH.ASM.SSO.Filer
                     context.HttpContext.Response.Headers.Add("Referrer-Policy", referrer_policy);
                 }
             }
+        
+        
         }
     }
 }
