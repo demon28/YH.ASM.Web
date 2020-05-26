@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.WebSockets;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace YH.ASM.Web
 {
@@ -47,8 +51,13 @@ namespace YH.ASM.Web
                options.ClientId = "mvc_imp";
                options.ClientSecret = "secret";
 
-           });
+           }) ;
             services.AddMvc();
+            services.AddControllers()
+       .AddNewtonsoftJson(options =>
+       {
+           options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+       });
 
         }
 

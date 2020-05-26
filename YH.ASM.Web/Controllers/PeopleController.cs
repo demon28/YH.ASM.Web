@@ -27,10 +27,13 @@ namespace YH.ASM.Web.Controllers
 
             DataAccess.TASM_USERManager tASM_USERManager = new DataAccess.TASM_USERManager();
             PageModel p = new PageModel();
+            p.PageIndex = pageIndex;
+            p.PageSize = pageSize;
+
             List<TASM_USER> list = new List<TASM_USER>();
             tASM_USERManager.GetListByWhere(keyword, ref p, ref list);
 
-            return  ListJson<TASM_USER>(list,p);
+            return SuccessResultList(list,p);
            
         }
 

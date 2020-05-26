@@ -19,12 +19,10 @@ namespace YH.ASM.Web.ControllerBase
             return Json(new { Success = true, Code = 1 , Message = msg });
         }
 
-        public JsonResult ListJson<T>(List<T> list,SqlSugar.PageModel page, string msg="成功")
+        public JsonResult  SuccessResultList<T>(List<T> list,SqlSugar.PageModel page, string msg="成功")
         {
 
-            var listjson = Json(Newtonsoft.Json.JsonConvert.SerializeObject(list));
-
-            return Json(new { Success = true, Code = 1, Message = msg ,PageIndex=page.PageIndex, PageSize=page.PageSize,PageCount= page.PageCount, Content = listjson } );
+            return Json(new { Success = true, Code = 1, Message = msg ,PageIndex=page.PageIndex, PageSize=page.PageSize,PageCount= page.PageCount, Content = list } );
         }
 
     }
