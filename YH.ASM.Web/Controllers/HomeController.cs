@@ -23,13 +23,6 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
-        public JsonResult All()
-        {
-            TASM_USERManager _USERManager = new TASM_USERManager();
-             var list=  _USERManager.GetList();
-            return Json(list);
-
-        }
 
         public async Task<IActionResult> LoginOutAsync()
         {

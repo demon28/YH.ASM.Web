@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using YH.ASM.DataAccess;
 using YH.ASM.DataAccess.CodeGenerator;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.SSO.Filer;
@@ -86,7 +87,7 @@ namespace YH.ASM.SSO.Controllers
                };
 
                //使用IdentityServer的SignInAsync来进行注册Cookie
-               await HttpContext.SignInAsync(model.Username, model.Username);
+               await HttpContext.SignInAsync(usermodel.USER_NAME, model.Username);
 
                //使用IIdentityServerInteractionService的IsValidReturnUrl来验证ReturnUrl是否有问题
                if (_interaction.IsValidReturnUrl(model.ReturnUrl))
