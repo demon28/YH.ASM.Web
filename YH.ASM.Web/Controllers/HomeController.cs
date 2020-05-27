@@ -13,23 +13,21 @@ using YH.ASM.Web.Models;
 
 namespace YH.ASM.Web.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
-
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
-
-        public IActionResult LogOut() {
-
-
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
          
+        public async Task<IActionResult> LogOut() {
 
-            return Redirect("/Home/Index");
+           await HttpContext.SignOutAsync();
+
+            return View();
         }
        
 

@@ -104,10 +104,7 @@ namespace YH.ASM.SSO.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout(string logoutId)
         {
-            
             var logout = await _interaction.GetLogoutContextAsync(logoutId);
-
-           
 
             await HttpContext.SignOutAsync();
             if (logout.PostLogoutRedirectUri != null)
@@ -117,10 +114,7 @@ namespace YH.ASM.SSO.Controllers
             var refererUrl = Request.Headers["Referer"].ToString();
             return Redirect(refererUrl);
         }
-        public IActionResult Logout()
-        {
-            return SignOut("Cookies", "oidc");
-        }
+       
 
     }
 }

@@ -72,7 +72,7 @@ namespace YH.ASM.SSO
                     RedirectUris={ "http://www.asm.cn:50428/signin-oidc"},
                     //指定允许注销后返回的地址(URL)，这里写一个客户端
                   
-                    //PostLogoutRedirectUris={ "http://www.asm.cn:50428/signout-callback-oidc" },
+                    PostLogoutRedirectUris={ "http://www.asm.cn:50428/Home/LogOut" },
                    
                     ClientSecrets={new Secret("secret".Sha256())},
                     AllowedScopes = new List<string>

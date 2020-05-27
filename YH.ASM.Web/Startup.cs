@@ -45,7 +45,8 @@ namespace YH.ASM.Web
                options.CallbackPath = new PathString("/signin-oidc");
 
                //指定用户注销后，服务端可以调用客户端注销的地址，默认是new PathString("signout-callback-oidc")
-               options.SignedOutCallbackPath = new PathString("/signout-callback-oidc");
+               // options.SignedOutCallbackPath = new PathString("/signout-callback-oidc");
+               options.SignedOutCallbackPath = new PathString("/Home/LogOut");
 
                options.ClientId = "mvc_imp";
                options.ClientSecret = "secret";
