@@ -7551,6 +7551,7 @@
     <PackageReference Include="IdentityServer4" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="NPOI" Version="2.5.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -7561,6 +7562,10 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\Reference\adminLTE\bower_components\moment\moment.d.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Pagination\" />
   </ItemGroup>
 
 </Project>

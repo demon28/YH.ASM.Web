@@ -26,11 +26,19 @@ namespace YH.ASM.DataAccess
         {
 
             list = TASM_USERDb.GetPageList(it =>it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword), p, it => SqlFunc.GetRandom(), OrderByType.Asc);
-           
 
             return list.Count > 0;
         }
+        public bool GetAll(string keyword, ref List<TASM_USER> list) {
 
+            if (string.IsNullOrEmpty(keyword))
+            {
+                keyword = string.Empty;
+            }
+
+            list= TASM_USERDb.GetList().Where(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)).ToList();
+            return list.Count > 0;
+        }
     }
 
 }

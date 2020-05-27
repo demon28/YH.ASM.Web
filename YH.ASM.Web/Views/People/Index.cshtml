@@ -7,6 +7,8 @@
 @section Pageheader{
 
 
+
+
     <h1>
         <small>  人员信息</small>
 
@@ -23,19 +25,29 @@
     <div class="row">
 
         <!-- /.col -->
-        <div  id="tab_account">
+        <div id="tab_account">
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">List</h3>
 
                     <div class="box-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search"  id="txt_Search" />
+
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1">
+                            <button type="button" class="btn btn-default pull-right" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
+                        </div>
+
+
+                        <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
 
                             <div class="input-group-btn">
-                                <button type="button" class="btn btn-default" @@click="Search()"  id="btn_Search"><i class="fa fa-search"></i></button>
+                                <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search"><i class="fa fa-search"></i></button>
                             </div>
+
                         </div>
+
+
+
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -55,7 +67,7 @@
                                 <td>{{item.WORK_ID}}</td>
                                 <td>{{item.USER_NAME}}</td>
                                 <td>********</td>
-                         
+
 
                                 <td>
                                     <span class="label label-success" v-if="item.USER_STATUS==0">正常</span>
@@ -77,23 +89,24 @@
 
 
                 <div class="box-footer no-padding">
-                    <div class="card-footer clearfix pull-right " style="margin-right:30px">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                            <li class="page-item"><a class="page-link" href="#">«</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">»</a></li>
+                    <div class="card-footer clearfix pull-left"  style="margin-left:20px;margin-top:30px;margin-bottom:30px">
+                        Showing {{pIndex}} to {{pSize}} of {{pageTotal}}
+                    </div>
+
+                    <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                        <ul class="pagination pagination-sm no-margin pull-right" id="ul_page">
                         </ul>
                     </div>
+
+
                     <!-- /.pull-right -->
                 </div>
             </div>
         </div>
-            <!-- /. box -->
-        </div>
-        <!-- /.col -->
-    
+
+    </div>
+    <!-- /.col -->
     <!-- /.row -->
 
 
@@ -102,13 +115,16 @@
 </section>
 
 
-
 <script type="text/javascript">
 
+    //当前页码
     var pageIndex = 1;
+    //每页显示条数
     var pageSize = 10;
-    var totalCount;
-    var totalPages;
+    //总共多少条
+    var pageCount;
+    //总共多少页
+    var pageTotal;
 
     $(document).ready(function () {
         Load();
@@ -122,14 +138,15 @@
             el: "#tab_account",
             data: {
                 list: [],
-                    pageIndex: pageIndex,
-                    pageSize: pageSize,
-                    totalCount: totalCount,
-                    totalPages: totalPages
+                pIndex: pageIndex,
+                pSize: pageSize,
+                pCount: pageCount,
+                pTotal: pageTotal
             },
             created: function () {
 
                 this.Init();
+
             },
             methods: {
                 Init: function () {
@@ -144,11 +161,19 @@
                             pageSize: pageSize,
                         },
                         success: function (result) {
-                        
 
                             if (result.Success) {
-                              
+
                                 self.list = result.Content;
+
+                                pageIndex = result.PageIndex;
+                                pageSize= result.PageSize;
+                                pageCount = result.PageCount;
+                                pageTotal = result.PageTotal;
+
+
+
+                                self.PageBind();
                             }
                         }
                     })
@@ -169,15 +194,42 @@
 
                 },
                 Search: function () {
-                 
+
                     this.Init();
+                },
+                PageBind: function () {
+
+                    $("#ul_page").jqPaginator({
+                        totalPages: pageTotal,
+                        visiblePages: pageSize,
+                        currentPage: pageIndex,
+
+                        first: ' <li><a href="#">First</a></li>',
+                        prev: ' <li><a href="#">&laquo;</a></li>',
+                        next: ' <li><a href="#">&raquo;</a></li>',
+                        last: '<li><a href="#">Last<\/a><\/li>',
+                        page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                        onPageChange: function (num, type) {
+
+                            pageIndex = num;
+
+                            if (type =="change") {
+                                vm.Init();
+                            }
+                        }
+                    });
+                },
+                ExportExcel: function () {
+                    var keyword = $("#txt_Search").val();
+                    window.location = "/People/ExportExcel?keyword=" + keyword;
                 }
-              
             }
         });
     }
 
 
- 
+
+
 
 </script>
