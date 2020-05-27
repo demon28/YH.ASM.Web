@@ -25,10 +25,11 @@ namespace YH.ASM.DataAccess
         public bool GetListByWhere(string keyword,ref PageModel p, ref List<TASM_USER> list) 
         {
 
-            list = TASM_USERDb.GetPageList(it =>it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword), p, it => SqlFunc.GetRandom(), OrderByType.Asc);
+            list = TASM_USERDb.GetPageList(it =>it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword), p, it => it.WORK_ID, OrderByType.Asc);
 
             return list.Count > 0;
         }
+
         public bool GetAll(string keyword, ref List<TASM_USER> list) {
 
             if (string.IsNullOrEmpty(keyword))
@@ -36,7 +37,7 @@ namespace YH.ASM.DataAccess
                 keyword = string.Empty;
             }
 
-            list= TASM_USERDb.GetList().Where(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)).ToList();
+            list= TASM_USERDb.GetList().Where(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)).OrderBy(s=>s.WORK_ID).ToList();
             return list.Count > 0;
         }
     }

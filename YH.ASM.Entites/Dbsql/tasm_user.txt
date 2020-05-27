@@ -1,0 +1,76 @@
+-- Create table
+create table TASM_USER
+(
+  user_id     NUMBER(10) not null,
+  user_name   VARCHAR2(40) not null,
+  user_pwd    VARCHAR2(40) not null,
+  user_status NUMBER(1) default 0 not null,
+  work_id     VARCHAR2(40) not null,
+  data_source VARCHAR2(40) not null,
+  createtime  DATE default sysdate not null,
+  remarks     VARCHAR2(160),
+  isdeleted   NUMBER(1) default 0 not null,
+  department  VARCHAR2(40) not null,
+  comedate    DATE not null,
+  dtname      VARCHAR2(40) not null,
+  mobile      VARCHAR2(40),
+  user_sex    NUMBER(1) not null
+)
+tablespace USERS
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table TASM_USER
+  is '用户信息表';
+-- Add comments to the columns 
+comment on column TASM_USER.user_id
+  is '用户主键id';
+comment on column TASM_USER.user_name
+  is '用户名';
+comment on column TASM_USER.user_pwd
+  is '用户密码';
+comment on column TASM_USER.user_status
+  is '在职状态：{0：在职，1:离职，2：锁定}';
+comment on column TASM_USER.work_id
+  is '工号';
+comment on column TASM_USER.data_source
+  is '数据来源';
+comment on column TASM_USER.createtime
+  is '创建时间';
+comment on column TASM_USER.remarks
+  is '备注';
+comment on column TASM_USER.isdeleted
+  is '是否逻辑删除{0:正常,1:删除}';
+comment on column TASM_USER.department
+  is '部门全称';
+comment on column TASM_USER.comedate
+  is '入职时间';
+comment on column TASM_USER.dtname
+  is '职务名称';
+comment on column TASM_USER.mobile
+  is '手机号码';
+comment on column TASM_USER.user_sex
+  is '性别{0：男，1：女}';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TASM_USER
+  add constraint PK_USER_ID primary key (USER_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );

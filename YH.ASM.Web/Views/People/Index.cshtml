@@ -57,26 +57,36 @@
                             <tr>
                                 <th>工号</th>
                                 <th>姓名</th>
-                                <th>密码</th>
+                                <th>部门</th>
+                                <th>职务</th>
+                                <th>电话</th>
+                                <th>性别</th>
                                 <th>状态</th>
-                                <th>数据来源</th>
-                                <th>创建时间</th>
+                                <th>入职时间</th>
+
                                 <th>操作</th>
                             </tr>
                             <tr v-for="(item,index) in list">
                                 <td>{{item.WORK_ID}}</td>
                                 <td>{{item.USER_NAME}}</td>
-                                <td>********</td>
-
+                                <td>{{item.DEPARTMENT }}</td>
+                                <td>{{item.DTNAME}}</td>
+                                <td>{{item.MOBILE}}</td>
 
                                 <td>
-                                    <span class="label label-success" v-if="item.USER_STATUS==0">正常</span>
-                                    <span class="label label-warning" v-if="item.USER_STATUS==1">冻结</span>
-                                    <span class="label label-danger" v-if="item.USER_STATUS==2">关闭</span>
+                                    <span class="label bg-blue"  v-if="item.USER_SEX ==0">男</span>
+                                    <span class="label bg-red "  v-if="item.USER_SEX ==1">女</span>
+                                   
                                 </td>
 
-                                <td>{{item.DATA_SOURCE}}</td>
-                                <td>{{item.CREATETIME}}</td>
+                                <td>
+                                    <span class="label label-success" v-if="item.USER_STATUS==0">在职</span>
+                                    <span class="label label-warning" v-if="item.USER_STATUS==1">离职</span>
+                                    <span class="label label-danger" v-if="item.USER_STATUS==2">锁定</span>
+                                </td>
+
+                                <td>{{item.COMEDATE}}</td>
+                        
                                 <td>
                                     <button type="button" class="btn bg-purple  btn-xs" v-on:click="Details(item)">详情</button>
                                 </td>
@@ -90,7 +100,7 @@
 
                 <div class="box-footer no-padding">
                     <div class="card-footer clearfix pull-left"  style="margin-left:20px;margin-top:30px;margin-bottom:30px">
-                        Showing {{pIndex}} to {{pSize}} of {{pageTotal}}
+                        @*Showing {{pIndex}} to {{pSize}} of {{pageTotal}}*@
                     </div>
 
                     <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">

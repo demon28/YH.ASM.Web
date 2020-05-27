@@ -5,6 +5,8 @@ using System.Text;
 
 namespace YH.ASM.Entites.CodeGenerator
 {
+
+
     ///<summary>
     ///
     ///</summary>
@@ -17,7 +19,7 @@ namespace YH.ASM.Entites.CodeGenerator
 
         }
         /// <summary>
-        /// Desc:主键id
+        /// Desc:用户主键id
         /// Default:
         /// Nullable:False
         /// </summary>           
@@ -39,7 +41,7 @@ namespace YH.ASM.Entites.CodeGenerator
         public string USER_PWD { get; set; }
 
         /// <summary>
-        /// Desc:用户状态{'正常','锁定','注销'}
+        /// Desc:在职状态：{0：在职，1:离职，2：锁定}
         /// Default:
         /// Nullable:False
         /// </summary>           
@@ -67,18 +69,53 @@ namespace YH.ASM.Entites.CodeGenerator
         public DateTime CREATETIME { get; set; }
 
         /// <summary>
-        /// Desc:逻辑删除
+        /// Desc:备注
+        /// Default:
+        /// Nullable:True
+        /// </summary>           
+        public string REMARKS { get; set; }
+
+        /// <summary>
+        /// Desc:是否逻辑删除{0:正常,1:删除}
         /// Default:
         /// Nullable:False
         /// </summary>           
         public short ISDELETED { get; set; }
 
         /// <summary>
-        /// Desc:备注
+        /// Desc:部门全称
+        /// Default:
+        /// Nullable:False
+        /// </summary>           
+        public string DEPARTMENT { get; set; }
+
+        /// <summary>
+        /// Desc:入职时间
+        /// Default:
+        /// Nullable:False
+        /// </summary>           
+        public DateTime COMEDATE { get; set; }
+
+        /// <summary>
+        /// Desc:职务名称
+        /// Default:
+        /// Nullable:False
+        /// </summary>           
+        public string DTNAME { get; set; }
+
+        /// <summary>
+        /// Desc:手机号码
         /// Default:
         /// Nullable:True
         /// </summary>           
-        public string REMARKS { get; set; }
+        public string MOBILE { get; set; }
+
+        /// <summary>
+        /// Desc:性别{0：男，1：女}
+        /// Default:
+        /// Nullable:False
+        /// </summary>           
+        public short USER_SEX { get; set; }
 
     }
 }

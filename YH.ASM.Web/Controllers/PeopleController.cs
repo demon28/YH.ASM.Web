@@ -56,6 +56,12 @@ namespace YH.ASM.Web.Controllers
             row1.CreateCell(0).SetCellValue("工号");
             row1.CreateCell(1).SetCellValue("姓名");
 
+            row1.CreateCell(2).SetCellValue("部门");
+            row1.CreateCell(3).SetCellValue("职务");
+            row1.CreateCell(4).SetCellValue("电话");
+            row1.CreateCell(5).SetCellValue("性别");
+            row1.CreateCell(6).SetCellValue("状态");
+            row1.CreateCell(7).SetCellValue("入职时间");
 
             for (int i = 0; i < list.Count(); i++)
             {
@@ -64,7 +70,13 @@ namespace YH.ASM.Web.Controllers
 
                 rowTemp.CreateCell(0).SetCellValue(list[i].WORK_ID);
                 rowTemp.CreateCell(1).SetCellValue(list[i].USER_NAME);
-          
+
+                rowTemp.CreateCell(2).SetCellValue(list[i].DEPARTMENT);
+                rowTemp.CreateCell(3).SetCellValue(list[i].DTNAME);
+                rowTemp.CreateCell(4).SetCellValue(list[i].MOBILE);
+                rowTemp.CreateCell(5).SetCellValue(list[i].USER_SEX==0?"男":"女");
+                rowTemp.CreateCell(6).SetCellValue(list[i].USER_STATUS==0?"在职":(list[i].USER_STATUS == 1?"离职":"锁定"));
+                rowTemp.CreateCell(7).SetCellValue(list[i].COMEDATE.ToString("yyyy-MM-dd"));
             }
 
             var fileName = "人员信息" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-ffff") + ".xls";//文件名
