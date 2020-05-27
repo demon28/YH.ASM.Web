@@ -28,7 +28,7 @@ namespace YH.ASM.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddMvc();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Cookies";
@@ -52,7 +52,7 @@ namespace YH.ASM.Web
                options.ClientSecret = "secret";
 
            });
-            services.AddMvc();
+          
             services.AddControllers()
               .AddNewtonsoftJson(options =>
                {

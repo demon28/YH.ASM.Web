@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -19,15 +20,18 @@ namespace YH.ASM.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
+
+            var workid=  HttpContext.User.Claims.First();
+            Console.WriteLine("测试打印一个============" + workid);
             return View();
         }
 
          
-        public async Task<IActionResult> LogOut() {
+        public async Task LogOut() {
 
-           await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync("oidc");
 
-            return View();
         }
        
 

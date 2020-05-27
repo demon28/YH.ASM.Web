@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,7 @@ namespace YH.ASM.SSO
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+          
 
             services.AddIdentityServer(option =>
             {
@@ -31,9 +32,8 @@ namespace YH.ASM.SSO
       .AddInMemoryClients(Config.GetClients())
       .AddInMemoryIdentityResources(Config.GetIdentityResources());
 
-
             services.AddMvc();
-
+           // services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
         }
 
