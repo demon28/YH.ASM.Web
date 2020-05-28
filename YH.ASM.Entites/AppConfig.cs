@@ -16,6 +16,36 @@ namespace YH.ASM.Entites
         }
 
 
+
+        public static string DB {
+
+            get {
+
+                var builder = new ConfigurationBuilder()
+                     .SetBasePath(Directory.GetCurrentDirectory())
+                     .AddJsonFile("appsettings.json");
+
+                var config = builder.Build();
+
+                string DB = config.GetSection("ConnectionStrings:DB").Value; // 分层键
+
+                if (DB== "HomeDatabase")
+                {
+                    return HomeDatabase;
+                }
+
+                if (DB == "DevelopmentDatabase")
+                {
+                    return DevelopmentDatabase;
+                }
+
+                 return ProductDatabase;
+                
+
+            }
+        }
+
+
         public static string HomeDatabase
         {
             get

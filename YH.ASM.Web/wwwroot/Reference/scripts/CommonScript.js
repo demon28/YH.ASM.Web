@@ -55,4 +55,3 @@ function diaplayTime(data) {
     }
     return result;
 }
-

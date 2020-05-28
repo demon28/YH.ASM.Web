@@ -7526,7 +7526,6 @@
     <None Include="wwwroot\Reference\scripts\jquery.form.min.js" />
     <None Include="wwwroot\Reference\scripts\jquery.form.min.js.map" />
     <None Include="wwwroot\Reference\scripts\jquery.timeago.js" />
-    <None Include="wwwroot\Reference\scripts\knockout-3.1.0.js" />
     <None Include="wwwroot\Reference\scripts\vue-pager.js" />
     <None Include="wwwroot\Reference\scripts\xhrUpload.js" />
     <None Include="wwwroot\Reference\vue\vue-paginate.js" />
