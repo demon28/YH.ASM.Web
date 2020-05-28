@@ -88,26 +88,20 @@ namespace YH.ASM.SSO.Controllers
                     ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromMinutes(30))
                 };
 
-                //加入cookie
-                List<Claim> claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.GivenName, usermodel.WORK_ID),
-                    new Claim(ClaimTypes.Name, usermodel.USER_NAME),
-                    new Claim(ClaimTypes.MobilePhone, usermodel.MOBILE),
-                    new Claim(ClaimTypes.Gender, usermodel.USER_SEX == 0 ? "男" : "女"),
-                    new Claim(ClaimTypes.DateOfBirth, usermodel.COMEDATE.ToString("yyyy-MM-dd"))
-                 };
-
              
 
-                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-              //  await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), properties);
-
+                Claim[] claims2 = new Claim []{
+                    new Claim("WORK_ID", usermodel.WORK_ID),
+                    new Claim("USER_NAME", usermodel.USER_NAME),
+                    new Claim("MOBILE", usermodel.MOBILE),
+                    new Claim("USER_SEX", usermodel.USER_SEX == 0 ? "男" : "女"),
+                    new Claim("COMEDATE", usermodel.COMEDATE.ToString("yyyy-MM-dd"))
+                };
+              
 
                 //使用IdentityServer的SignInAsync来进行注册Cookie
-                  await HttpContext.SignInAsync(usermodel.WORK_ID,usermodel.USER_NAME);
-
+                await HttpContext.SignInAsync(usermodel.WORK_ID,usermodel.USER_NAME, claims2);
+                  
 
                 //使用IIdentityServerInteractionService的IsValidReturnUrl来验证ReturnUrl是否有问题
                 if (_interaction.IsValidReturnUrl(model.ReturnUrl))

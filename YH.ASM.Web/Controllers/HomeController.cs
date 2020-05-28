@@ -20,18 +20,19 @@ namespace YH.ASM.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
-
             var workid=  HttpContext.User.Claims.First();
             Console.WriteLine("测试打印一个============" + workid);
             return View();
         }
 
-         
-        public async Task LogOut() {
+         [HttpGet]
+        public async Task<IActionResult> LoginOut() 
+        {
 
-            await HttpContext.SignOutAsync("Cookies");
-            await HttpContext.SignOutAsync("oidc");
+           await HttpContext.SignOutAsync("Cookies");
+           await HttpContext.SignOutAsync("oidc");
 
+            return View();
         }
        
 
