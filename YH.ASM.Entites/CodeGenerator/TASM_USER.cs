@@ -23,7 +23,8 @@ namespace YH.ASM.Entites.CodeGenerator
         /// Default:
         /// Nullable:False
         /// </summary>           
-        [SugarColumn(IsPrimaryKey = true)]
+    
+        [SugarColumn(OracleSequenceName = "seq_tasm_user", IsPrimaryKey = true)]
         public long USER_ID { get; set; }
 
         /// <summary>

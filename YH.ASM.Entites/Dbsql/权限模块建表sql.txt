@@ -1,0 +1,489 @@
+-- Create table
+create table TPMS_FUNCTION
+(
+  func_id    NUMBER(10) not null,
+  func_name  NVARCHAR2(20) not null,
+  app_id     NUMBER(10) not null,
+  createtime DATE default SYSDATE not null,
+  icon       VARCHAR2(100),
+  sort_index NUMBER(10) default 0 not null,
+  guid       VARCHAR2(50)
+);
+-- Add comments to the table 
+comment on table TPMS_FUNCTION
+  is '权限功能表';
+-- Add comments to the columns 
+comment on column TPMS_FUNCTION.func_id
+  is '功能ID';
+comment on column TPMS_FUNCTION.func_name
+  is '功能名称';
+comment on column TPMS_FUNCTION.app_id
+  is '归属应用ID';
+comment on column TPMS_FUNCTION.createtime
+  is '创建时间';
+comment on column TPMS_FUNCTION.icon
+  is '图标文件地址或者css class';
+comment on column TPMS_FUNCTION.sort_index
+  is '排序索引';
+comment on column TPMS_FUNCTION.guid
+  is '功能模块唯一ID';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TPMS_FUNCTION
+  add constraint PK_TPMS_FUNCTION_ID primary key (FUNC_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_FUNCTION
+  add constraint UK_TPMS_FUNCTION_GUID unique (GUID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_FUNCTION
+  add constraint UK_TPMS_FUNCTION_NAME unique (FUNC_NAME, APP_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+
+
+-- Create table
+create table TPMS_PAGE
+(
+  page_id         NUMBER(10) not null,
+  page_name       NVARCHAR2(40) not null,
+  page_url        VARCHAR2(100) not null,
+  app_id          NUMBER(10) not null,
+  create_time     DATE default SYSDATE not null,
+  remarks         NVARCHAR2(200),
+  area_name       VARCHAR2(20),
+  controller_name VARCHAR2(20),
+  action_name     VARCHAR2(20),
+  option_value    VARCHAR2(200),
+  resouce_type    NUMBER(10) default 0 not null,
+  guid            VARCHAR2(50),
+  sort_index      NUMBER(10) default 0 not null
+)
+;
+-- Add comments to the table 
+comment on table TPMS_PAGE
+  is '权限管理网页';
+-- Add comments to the columns 
+comment on column TPMS_PAGE.page_id
+  is '页面ID';
+comment on column TPMS_PAGE.page_name
+  is '页面名称';
+comment on column TPMS_PAGE.page_url
+  is '相对URL';
+comment on column TPMS_PAGE.app_id
+  is '应用ID';
+comment on column TPMS_PAGE.create_time
+  is '创建时间';
+comment on column TPMS_PAGE.remarks
+  is '备注信息';
+comment on column TPMS_PAGE.area_name
+  is 'MVC分区名称';
+comment on column TPMS_PAGE.controller_name
+  is '控制器名称';
+comment on column TPMS_PAGE.action_name
+  is '视图名称';
+comment on column TPMS_PAGE.option_value
+  is '路由可选参数';
+comment on column TPMS_PAGE.resouce_type
+  is '资源类型[0 - View，1 - API]';
+comment on column TPMS_PAGE.guid
+  is '资源唯一ID';
+comment on column TPMS_PAGE.sort_index
+  is '排序';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TPMS_PAGE
+  add constraint PK_TPMS_PAGE_ID primary key (PAGE_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_PAGE
+  add constraint UK_TPMS_PAGE_GUID unique (GUID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_PAGE
+  add constraint UK_TPMS_PAGE_URL unique (PAGE_URL, APP_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+-- Create table
+create table TPMS_FUNC_MEMBER
+(
+  id          NUMBER(10) not null,
+  func_id     NUMBER(10) not null,
+  member_id   NUMBER(10) not null,
+  member_type NUMBER(10) not null,
+  createtime  DATE default SYSDATE not null
+)
+;
+-- Add comments to the table 
+comment on table TPMS_FUNC_MEMBER
+  is 'TPMS_FUNC_MEMBER';
+-- Add comments to the columns 
+comment on column TPMS_FUNC_MEMBER.id
+  is '主键';
+comment on column TPMS_FUNC_MEMBER.func_id
+  is '功能ID';
+comment on column TPMS_FUNC_MEMBER.member_id
+  is '功能关联ID';
+comment on column TPMS_FUNC_MEMBER.member_type
+  is '关联ID类型[1：TPMS_PAGE，2：TPMS_FUNCTION]';
+comment on column TPMS_FUNC_MEMBER.createtime
+  is '创建时间';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TPMS_FUNC_MEMBER
+  add constraint PK_TPMS_FUNC_MEMBER_ID primary key (ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_FUNC_MEMBER
+  add constraint UK_TPMS_FUNC_MEMBER_UNI unique (FUNC_ID, MEMBER_ID, MEMBER_TYPE)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_FUNC_MEMBER
+  add constraint FK_TPMS_FUNC_MEMBER_FUNC_ID foreign key (FUNC_ID)
+  references TPMS_FUNCTION (FUNC_ID);
+
+
+
+-- Create table
+create table TPMS_ROLE
+(
+  role_id     NUMBER(10) not null,
+  role_name   NVARCHAR2(20) not null,
+  app_id      NUMBER(10) not null,
+  create_time DATE default SYSDATE not null,
+  guid        VARCHAR2(50)
+);
+-- Add comments to the table 
+comment on table TPMS_ROLE
+  is '角色';
+-- Add comments to the columns 
+comment on column TPMS_ROLE.role_id
+  is '角色ID';
+comment on column TPMS_ROLE.role_name
+  is '角色名称';
+comment on column TPMS_ROLE.app_id
+  is 'app编号';
+comment on column TPMS_ROLE.create_time
+  is '创建时间';
+comment on column TPMS_ROLE.guid
+  is '角色唯一ID';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TPMS_ROLE
+  add constraint PK_TPMS_ROLE_ID primary key (ROLE_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_ROLE
+  add constraint UK_TPMS_ROLE_GUID unique (GUID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_ROLE
+  add constraint UK_TPMS_ROLE_NAME unique (ROLE_NAME, APP_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+
+-- Create table
+create table TPMS_ROLE_RIGHT
+(
+  right_id    NUMBER(10) not null,
+  role_id     NUMBER(10),
+  member_type NUMBER(10) not null,
+  member_id   NUMBER(10) not null,
+  have_right  NUMBER(10) not null,
+  cretae_time DATE default SYSDATE not null
+);
+-- Add comments to the table 
+comment on table TPMS_ROLE_RIGHT
+  is '角色权限';
+-- Add comments to the columns 
+comment on column TPMS_ROLE_RIGHT.right_id
+  is '权限ID';
+comment on column TPMS_ROLE_RIGHT.role_id
+  is 'ROLE_ID';
+comment on column TPMS_ROLE_RIGHT.member_type
+  is '关联类型[1：TPMS_PAGE，2：TPMS_ROLE，3：TPMS_FUNCTION]';
+comment on column TPMS_ROLE_RIGHT.member_id
+  is '关联ID';
+comment on column TPMS_ROLE_RIGHT.have_right
+  is '是否有权限[0：无，1：有]';
+comment on column TPMS_ROLE_RIGHT.cretae_time
+  is '创建时间';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TPMS_ROLE_RIGHT
+  add constraint PK_TPMS_ROLE_RIGHT_ID primary key (RIGHT_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_ROLE_RIGHT
+  add constraint UK_TPMS_ROLE_RIGHT_UNI unique (ROLE_ID, MEMBER_TYPE, MEMBER_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_ROLE_RIGHT
+  add constraint FK_TPMS_ROLE_RIGHT_ROLEID foreign key (ROLE_ID)
+  references TPMS_ROLE (ROLE_ID);
+
+
+-- Create table
+create table TPMS_USER_RIGHT
+(
+  right_id    NUMBER(10) not null,
+  user_id     NUMBER(10) not null,
+  role_id     NUMBER(10) not null,
+  create_time DATE default SYSDATE not null,
+  expire_time DATE
+);
+-- Add comments to the table 
+comment on table TPMS_USER_RIGHT
+  is '会员权限配置';
+-- Add comments to the columns 
+comment on column TPMS_USER_RIGHT.right_id
+  is '权限ID';
+comment on column TPMS_USER_RIGHT.user_id
+  is '会员ID';
+comment on column TPMS_USER_RIGHT.role_id
+  is '角色ID';
+comment on column TPMS_USER_RIGHT.create_time
+  is '创建时间';
+comment on column TPMS_USER_RIGHT.expire_time
+  is '过期时间';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TPMS_USER_RIGHT
+  add constraint PK_TPMS_USER_RIGHT_ID primary key (RIGHT_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_USER_RIGHT
+  add constraint UK_TPMS_USER_RIGHT_UID_RID unique (USER_ID, ROLE_ID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table TPMS_USER_RIGHT
+  add constraint FK_TPMS_USER_RIGHT_ROLE_ID foreign key (ROLE_ID)
+  references TPMS_ROLE (ROLE_ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create sequence seq_tpms_function
+minvalue 1
+maxvalue 999999999999999999999999
+start with 1
+increment by 1
+nocache;
+
+
+create sequence seq_tpms_func_member
+minvalue 1
+maxvalue 999999999999999999999999
+start with 1
+increment by 1
+nocache;
+
+create sequence seq_tpms_page
+minvalue 1
+maxvalue 999999999999999999999999
+start with 1
+increment by 1
+nocache;
+
+
+
+
+
+create sequence seq_tpms_role
+minvalue 1
+maxvalue 999999999999999999999999
+start with 1
+increment by 1
+nocache;
+
+
+
+create sequence seq_tpms_role_right
+minvalue 1
+maxvalue 999999999999999999999999
+start with 1
+increment by 1
+nocache;
+
+
+
+
+
+
+
+create sequence seq_tpms_user_right
+minvalue 1
+maxvalue 999999999999999999999999
+start with 1
+increment by 1
+nocache;
+
+
+
+
+
+
+
+
