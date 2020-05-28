@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SqlSugar;
 using YH.ASM.DataAccess;
 using YH.ASM.DataAccess.CodeGenerator;
 using YH.ASM.Entites.CodeGenerator;
@@ -88,20 +90,26 @@ namespace YH.ASM.SSO.Controllers
                     ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromMinutes(30))
                 };
 
-             
 
-                Claim[] claims2 = new Claim []{
-                    new Claim("WORK_ID", usermodel.WORK_ID),
-                    new Claim("USER_NAME", usermodel.USER_NAME),
-                    new Claim("MOBILE", usermodel.MOBILE),
-                    new Claim("USER_SEX", usermodel.USER_SEX == 0 ? "男" : "女"),
-                    new Claim("COMEDATE", usermodel.COMEDATE.ToString("yyyy-MM-dd"))
-                };
-              
+               // 方案1
+               Claim[] claims = new Claim[]{
+                   new Claim("WORK_ID", usermodel.WORK_ID),
+                   new Claim("USER_NAME", usermodel.USER_NAME),
+                   new Claim("MOBILE", usermodel.MOBILE),
+                   new Claim("USER_SEX", usermodel.USER_SEX == 0 ? "男" : "女"),
+                   new Claim("COMEDATE", usermodel.COMEDATE.ToString("yyyy-MM-dd"))
+               };
 
-                //使用IdentityServer的SignInAsync来进行注册Cookie
-                await HttpContext.SignInAsync(usermodel.WORK_ID,usermodel.USER_NAME, claims2);
-                  
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                ClaimsPrincipal user = new ClaimsPrincipal(claimsIdentity);
+
+
+                var jsons_user ="{ \"WORK_ID\":"+ usermodel.WORK_ID + ",\"USER_NAME\":'" + usermodel.USER_NAME + "',\"MOBILE\":'"+ usermodel.MOBILE + "',\"USER_SEX\":'"+ usermodel.USER_SEX + "'}";
+
+
+
+                //可行原始方案
+                 await HttpContext.SignInAsync("Cookies", jsons_user);
 
                 //使用IIdentityServerInteractionService的IsValidReturnUrl来验证ReturnUrl是否有问题
                 if (_interaction.IsValidReturnUrl(model.ReturnUrl))

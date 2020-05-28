@@ -52,7 +52,7 @@ namespace YH.ASM.SSO
 
             app.UseIdentityServer();
             app.UseStaticFiles();
-        
+
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

@@ -15,13 +15,11 @@ using YH.ASM.Web.Models;
 namespace YH.ASM.Web.Controllers
 {
     
-    public class HomeController : Controller
+    public class HomeController : ControllerBase.ControllerBase
     {
         [Authorize]
         public IActionResult Index()
         {
-            var workid=  HttpContext.User.Claims.First();
-            Console.WriteLine("测试打印一个============" + workid);
             return View();
         }
 
@@ -34,8 +32,13 @@ namespace YH.ASM.Web.Controllers
 
             return View();
         }
-       
 
+        [HttpPost]
+        public IActionResult GetLoginUser()
+        {
+
+            return Json(new { workid = Work_Id, sex = User_Sex, phone=User_Sex,name=User_Name});
+        }
 
     }
 }

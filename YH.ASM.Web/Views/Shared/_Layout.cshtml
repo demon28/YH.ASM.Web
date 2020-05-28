@@ -63,17 +63,17 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="~/Reference/adminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <img src="~/Reference/adminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image" id="img_toplogo">
+                                <span class="hidden-xs" id="span_user"></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="~/Reference/adminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <img src="~/Reference/adminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" id="img_rightlogo" >
 
                                     <p>
-                                        Alexander Pierce - Web Developer
-                                        <small>Member since Nov. 2012</small>
+                                        <span id="span_rights"></span>
+                                       
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -121,10 +121,10 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="~/Reference/adminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="~/Reference/adminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" id="img_bottomlogo">
                     </div>
                     <div class="pull-left info">
-                        <p>Alexander Pierce</p>
+                        <p id="p2_username"></p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
@@ -155,10 +155,10 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel">
                     <div class="pull-left image">
-                        <img src="~/Reference/adminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="~/Reference/adminLTE/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" id="img_leftlogo">
                     </div>
                     <div class="pull-left info">
-                        <p>Alexander Pierce</p>
+                        <p id="p_username"></p>
                         <!-- Status -->
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
@@ -533,6 +533,40 @@
     <script src="~/js/jq-paginator.min.js"></script>
     <script src="~/Reference/bootbox/bootbox.min.js"></script>
 
+
+
+    <script type="text/javascript">
+        console.log("0===调用");
+        $(document).ready(function () {
+
+
+            $.ajax({
+                url: "/Home/GetLoginUser",
+                type: "POST",
+                success: function (result) {
+                
+
+                    $("#p_username").html(result.workid + " : " + result.name);
+                    $("#span_user").html(result.workid + " : " + result.name);
+                    $("#span_rights").html(result.workid + " : " + result.name);
+                    $("#p2_user").html(result.workid + " : " + result.name);
+
+                
+
+                    if (result.sex == "1") {
+
+                        $("#img_leftlogo").attr("src", "/Reference/adminLTE/dist/img/user4-128x128.jpg");
+                        $("#img_rightlogo").attr("src", "/Reference/adminLTE/dist/img/user4-128x128.jpg");
+                        $("#img_toplogo").attr("src", "/Reference/adminLTE/dist/img/user4-128x128.jpg");
+                        $("#img_bottomlogo").attr("src", "/Reference/adminLTE/dist/img/user4-128x128.jpg");
+                        
+                    }
+
+                }
+
+            });
+        })
+    </script>
 
 
     @RenderSection("scripts", false)
