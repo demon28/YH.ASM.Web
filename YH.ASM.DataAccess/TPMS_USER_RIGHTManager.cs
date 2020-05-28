@@ -8,7 +8,7 @@ using YH.ASM.Entites.CodeGenerator;
 public class TPMS_USER_RIGHTManager : DbContext<TPMS_USER_RIGHT>
 {
  
-
+    
  
  
 }

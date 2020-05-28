@@ -39,7 +39,7 @@ namespace YH.ASM.DataAccess.CodeGenerator.DBCore
 
 
         public SimpleClient<TASM_USER> TASM_USERDb { get { return new SimpleClient<TASM_USER>(Db); } }//用来处理TASM_USER表的常用操作
-        public SimpleClient<TASM_USER> TASM_USERDb { get { return new SimpleClient<TASM_USER>(Db); } }//用来处理TASM_USER表的常用操作
+  
         public SimpleClient<TPMS_FUNCTION> TPMS_FUNCTIONDb { get { return new SimpleClient<TPMS_FUNCTION>(Db); } }//用来处理TPMS_FUNCTION表的常用操作
         public SimpleClient<TPMS_PAGE> TPMS_PAGEDb { get { return new SimpleClient<TPMS_PAGE>(Db); } }//用来处理TPMS_PAGE表的常用操作
         public SimpleClient<TPMS_FUNC_MEMBER> TPMS_FUNC_MEMBERDb { get { return new SimpleClient<TPMS_FUNC_MEMBER>(Db); } }//用来处理TPMS_FUNC_MEMBER表的常用操作

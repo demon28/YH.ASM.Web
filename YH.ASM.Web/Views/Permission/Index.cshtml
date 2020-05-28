@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Pageheader{
+
+
+
+
+    <h1>
+        <small> 权限管理</small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Permission</li>
+    </ol>
+
+}
+
+
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-3">
+
+
+            <div class="box box-solid">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">WorkId Search</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">工号</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="txt_workid" placeholder="请输入工号">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-info pull-right" @@onclick="select_Account()">查询</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /. box -->
+
+        </div>
+
+
+
+        <div class="col-md-3">
+
+            <div class="box box-warning " >
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Role List</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    <form class="form-horizontal">
+                        <ul class="list-group">
+                            <li class="list-group-item" v-for="item in rolelist">
+
+                                <b>{{item.role}}</b>&nbsp;&nbsp;
+
+                                <button type="button" class="btn bg-primary  btn-xs pull-right " v-on:click="role_view(item)">View</button>
+                            </li>
+
+                        </ul>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="button" class="btn btn-info pull-right" onclick="role_add()">新增角色</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /. box -->
+
+        </div>
+
+
+        <!-- /.col -->
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h3 class="box-title">Permission List</h3>
+
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover" id="tab_account">
+                        <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email Account</th>
+                                <th>PassWord</th>
+                                <th>type</th>
+                                <th>Date</th>
+                                <th>Status</th>
+
+                                <th>operation</th>
+                            </tr>
+                            <tr v-for="(item,index) in list">
+                                <td>{{item.Aid}}</td>
+                                <td>{{item.Account}}</td>
+                                <td>********</td>
+                                <td>{{item.Mailname}}</td>
+                                <td>{{item.Createtime}}</td>
+                                <td>
+                                    <span class="label label-success" v-if="item.Isdefault==1">默认账户</span>
+                                    <span v-if="item.Isdefault==0"></span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="setdefault(item)">默认</button>  &nbsp; &nbsp;
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="updateitem(item)" data-toggle="modal" data-target="#modal-default">修改</button>  &nbsp; &nbsp;
+                                    <button type="button" class="btn bg-maroon  btn-xs" v-on:click="deleteitem(item)">删除</button> &nbsp;
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /. box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
