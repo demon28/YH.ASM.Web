@@ -47,286 +47,289 @@
 <section class="content">
 
 
-
-
-    <div class="col-md-9">
+    <div>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#activity" data-toggle="tab">Activity</a></li>
-                <li><a href="#timeline" data-toggle="tab">Timeline</a></li>
-                <li><a href="#settings" data-toggle="tab">Settings</a></li>
+                <li class="active"><a href="#activity" data-toggle="tab">管理员</a></li>
+                <li><a href="#activity2" data-toggle="tab">角色管理</a></li>
+                <li><a href="#activity3" data-toggle="tab">模块管理</a></li>
+                <li><a href="#activity4" data-toggle="tab">资源管理</a></li>
             </ul>
             <div class="tab-content">
                 <div class="active tab-pane" id="activity">
-                    <!-- Post -->
-                    <div class="post">
-                        <div class="user-block">
-                            <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
-                            <span class="username">
-                                <a href="#">Jonathan Burke Jr.</a>
-                                <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-                            </span>
-                            <span class="description">Shared publicly - 7:30 PM today</span>
-                        </div>
-                        <!-- /.user-block -->
-                        <p>
-                            Lorem ipsum represents a long-held tradition for designers,
-                            typographers and the like. Some people hate it and argue for
-                            its demise, but others ignore the hate as they create awesome
-                            tools to help create filler text for everyone from bacon lovers
-                            to Charlie Sheen fans.
-                        </p>
-                        <ul class="list-inline">
-                            <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
-                            <li>
-                                <a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                            </li>
-                            <li class="pull-right">
-                                <a href="#" class="link-black text-sm">
-                                    <i class="fa fa-comments-o margin-r-5"></i> Comments
-                                    (5)
-                                </a>
-                            </li>
-                        </ul>
 
-                        <input class="form-control input-sm" type="text" placeholder="Type a comment">
-                    </div>
-                    <!-- /.post -->
-                    <!-- Post -->
-                    <div class="post clearfix">
-                        <div class="user-block">
-                            <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
-                            <span class="username">
-                                <a href="#">Sarah Ross</a>
-                                <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-                            </span>
-                            <span class="description">Sent you a message - 3 days ago</span>
-                        </div>
-                        <!-- /.user-block -->
-                        <p>
-                            Lorem ipsum represents a long-held tradition for designers,
-                            typographers and the like. Some people hate it and argue for
-                            its demise, but others ignore the hate as they create awesome
-                            tools to help create filler text for everyone from bacon lovers
-                            to Charlie Sheen fans.
-                        </p>
+                    <div class="box box-success" id="tab_account">
+                        <div class="box-header">
 
-                        <form class="form-horizontal">
-                            <div class="form-group margin-bottom-none">
-                                <div class="col-sm-9">
-                                    <input class="form-control input-sm" placeholder="Response">
-                                </div>
-                                <div class="col-sm-3">
-                                    <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.post -->
-                    <!-- Post -->
-                    <div class="post">
-                        <div class="user-block">
-                            <img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image">
-                            <span class="username">
-                                <a href="#">Adam Jones</a>
-                                <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-                            </span>
-                            <span class="description">Posted 5 photos - 5 days ago</span>
-                        </div>
-                        <!-- /.user-block -->
-                        <div class="row margin-bottom">
-                            <div class="col-sm-6">
-                                <img class="img-responsive" src="../../dist/img/photo1.png" alt="Photo">
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-6">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <img class="img-responsive" src="../../dist/img/photo2.png" alt="Photo">
-                                        <br>
-                                        <img class="img-responsive" src="../../dist/img/photo3.jpg" alt="Photo">
+                            <h3 class="box-title">List</h3>
+
+                            <div class="box-tools mt-2">
+                             
+                                    <input type="button" class="btn btn-default pull-left  ml-1 mt-2" id="btn_role_add" value="新建管理员"  @@click="add_account()" />
+                                   
+
+                                    <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
+                                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search_account" />
+
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search_account"><i class="fa fa-search"></i></button>
+                                        </div>
+
                                     </div>
-                                    <!-- /.col -->
-                                    <div class="col-sm-6">
-                                        <img class="img-responsive" src="../../dist/img/photo4.jpg" alt="Photo">
-                                        <br>
-                                        <img class="img-responsive" src="../../dist/img/photo1.png" alt="Photo">
-                                    </div>
-                                    <!-- /.col -->
                                 </div>
-                                <!-- /.row -->
                             </div>
-                            <!-- /.col -->
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>管理员名称</th>
+                                        <th>管理员工号</th>
+                              
+                                        <th>操作</th>
+
+                                    </tr>
+                                    <tr v-for="(item,index) in list">
+                                        <td>{{item.USER_NAME}}</td>
+                                        <td>{{item.WORK_ID}}</td>
+
+                                        <td>
+                                            <button type="button" class="btn bg-purple  btn-xs" v-on:click="Operation(item)">配置功能</button>
+                                            <button type="button" class="btn bg-danger  btn-xs" v-on:click="del_account(item)">删除</button>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- /.row -->
+                        <!-- /.box-body -->
 
-                        <ul class="list-inline">
-                            <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
-                            <li>
-                                <a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                            </li>
-                            <li class="pull-right">
-                                <a href="#" class="link-black text-sm">
-                                    <i class="fa fa-comments-o margin-r-5"></i> Comments
-                                    (5)
-                                </a>
-                            </li>
-                        </ul>
 
-                        <input class="form-control input-sm" type="text" placeholder="Type a comment">
+                        <div class="box-footer no-padding">
+
+                            <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                                <ul class="pagination pagination-sm no-margin pull-right" id="ul_page_account">
+                                </ul>
+
+
+
+
+                            </div>
+
+
+                            <!-- /.pull-right -->
+                        </div>
                     </div>
-                    <!-- /.post -->
+
                 </div>
-                <!-- /.tab-pane -->
-                <div class="tab-pane" id="timeline">
-                    <!-- The timeline -->
-                    <ul class="timeline timeline-inverse">
-                        <!-- timeline time label -->
-                        <li class="time-label">
-                            <span class="bg-red">
-                                10 Feb. 2014
-                            </span>
-                        </li>
-                        <!-- /.timeline-label -->
-                        <!-- timeline item -->
-                        <li>
-                            <i class="fa fa-envelope bg-blue"></i>
 
-                            <div class="timeline-item">
-                                <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+                <div class="tab-pane" id="activity2">
 
-                                <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+                    <div class="box bg-danger" id="tab_role">
+                        <div class="box-header">
+                            <h3 class="box-title">List</h3>
 
-                                <div class="timeline-body">
-                                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                                    weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                                    jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                                    quora plaxo ideeli hulu weebly balihoo...
-                                </div>
-                                <div class="timeline-footer">
-                                    <a class="btn btn-primary btn-xs">Read more</a>
-                                    <a class="btn btn-danger btn-xs">Delete</a>
+                            <div class="box-tools">
+
+
+                                <button type="button" class="btn btn-default " @@click="role_add()" id="btn_role_add">新建角色</button>
+
+
+
+
+                                <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
+                                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search_role" />
+
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search_role"><i class="fa fa-search"></i></button>
+                                    </div>
+
                                 </div>
                             </div>
-                        </li>
-                        <!-- END timeline item -->
-                        <!-- timeline item -->
-                        <li>
-                            <i class="fa fa-user bg-aqua"></i>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>角色名称</th>
+                                        <th>添加时间</th>
+                                        <th>操作</th>
 
-                            <div class="timeline-item">
-                                <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+                                    </tr>
+                                    <tr v-for="(item,index) in list">
+                                        <td>{{item.ROLE_NAME}}</td>
+                                        <td>{{item.CREATE_TIME}}</td>
 
-                                <h3 class="timeline-header no-border">
-                                    <a href="#">Sarah Young</a> accepted your friend request
-                                </h3>
+                                        <td>
+                                            <button type="button" class="btn bg-purple  btn-xs" v-on:click="Operation(item)">配置功能</button>
+                                            <button type="button" class="btn bg-danger  btn-xs" v-on:click="del_role(item)">删除</button>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+
+
+                        <div class="box-footer no-padding">
+
+                            <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                                <ul class="pagination pagination-sm no-margin pull-right" id="ul_page_role">
+                                </ul>
+
+
+
+
                             </div>
-                        </li>
-                        <!-- END timeline item -->
-                        <!-- timeline item -->
-                        <li>
-                            <i class="fa fa-comments bg-yellow"></i>
 
-                            <div class="timeline-item">
-                                <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
 
-                                <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+                            <!-- /.pull-right -->
+                        </div>
+                    </div>
 
-                                <div class="timeline-body">
-                                    Take me to your leader!
-                                    Switzerland is small and neutral!
-                                    We are more like Germany, ambitious and misunderstood!
-                                </div>
-                                <div class="timeline-footer">
-                                    <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                                </div>
-                            </div>
-                        </li>
-                        <!-- END timeline item -->
-                        <!-- timeline time label -->
-                        <li class="time-label">
-                            <span class="bg-green">
-                                3 Jan. 2014
-                            </span>
-                        </li>
-                        <!-- /.timeline-label -->
-                        <!-- timeline item -->
-                        <li>
-                            <i class="fa fa-camera bg-purple"></i>
-
-                            <div class="timeline-item">
-                                <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-
-                                <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                                <div class="timeline-body">
-                                    <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                    <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                    <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                    <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                </div>
-                            </div>
-                        </li>
-                        <!-- END timeline item -->
-                        <li>
-                            <i class="fa fa-clock-o bg-gray"></i>
-                        </li>
-                    </ul>
                 </div>
-                <!-- /.tab-pane -->
 
-                <div class="tab-pane" id="settings">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label for="inputName" class="col-sm-2 control-label">Name</label>
 
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="inputName" placeholder="Name">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                <div class="tab-pane" id="activity3">
 
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputName" class="col-sm-2 control-label">Name</label>
 
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputName" placeholder="Name">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
+                    <div class="box box-primary" id="tab_func">
+                        <div class="box-header">
 
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
+                            <h3 class="box-title">List</h3>
 
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                                    </label>
+                            <div class="box-tools">
+
+                                <button type="button" class="btn btn-default " @@click="func_add()" id="btn_role_add">新建模块</button>
+
+                                <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
+                                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search_func" />
+
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search_func"><i class="fa fa-search"></i></button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-danger">Submit</button>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>模块名称</th>
+                                        <th>添加时间</th>
+                                        <th>操作</th>
+
+                                    </tr>
+                                    <tr v-for="(item,index) in list">
+                                        <td>{{item.FUNC_NAME}}</td>
+                                        <td>{{item.CREATETIME}}</td>
+
+                                        <td>
+                                            <button type="button" class="btn bg-purple  btn-xs" v-on:click="Operation(item)">配置功能</button>
+                                            <button type="button" class="btn bg-danger  btn-xs" v-on:click="del_func(item)">删除</button>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+
+
+                        <div class="box-footer no-padding">
+
+                            <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                                <ul class="pagination pagination-sm no-margin pull-right" id="ul_page_func">
+                                </ul>
+
+
+
+
+                            </div>
+
+
+                            <!-- /.pull-right -->
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="tab-pane" id="activity4">
+
+                    <div class="box box-success" id="tab_page">
+                        <div class="box-header">
+                            <h3 class="box-title">List</h3>
+
+                            <div class="box-tools">
+
+                                <button type="button" class="btn btn-default " @@click="page_add()" id="btn_role_add">新建资源</button>
+
+                                <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
+                                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search_page" />
+
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search_page"><i class="fa fa-search"></i></button>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                    </form>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>资源名称</th>
+                                        <th>添加时间</th>
+                                        <th>操作</th>
+
+                                    </tr>
+                                    <tr v-for="(item,index) in list">
+                                        <td>{{item.PAGE_NAME}}</td>
+                                        <td>{{item.CREATE_TIME}}</td>
+
+                                        <td>
+                                            <button type="button" class="btn bg-purple  btn-xs" v-on:click="Operation(item)">配置功能</button>
+                                            <button type="button" class="btn bg-danger  btn-xs" v-on:click="del_page(item)">删除</button>
+
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+
+
+                        <div class="box-footer no-padding">
+
+                            <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                                <ul class="pagination pagination-sm no-margin pull-right" id="ul_page_page">
+                                </ul>
+
+
+
+
+                            </div>
+
+
+                            <!-- /.pull-right -->
+                        </div>
+                    </div>
+
                 </div>
                 <!-- /.tab-pane -->
             </div>
@@ -366,8 +369,616 @@
 
 
 
+    <script>
+
+        var account_pageIndex = 1;
+        var account_pageSize = 10;
+        var account_pageCount;
+        var account_pageTotal;
+
+        var role_pageIndex = 1;
+        var role_pageSize = 10;
+        var role_pageCount;
+        var role_pageTotal;
+
+        var page_pageIndex = 1;
+        var page_pageSize = 10;
+        var page_pageCount;
+        var page_pageTotal;
+
+        var func_pageIndex = 1;
+        var func_pageSize = 10;
+        var func_pageCount;
+        var func_pageTotal;
+
+        $(document).ready(function () {
+            load_role();
+            load_user();
+            load_func();
+            load_page();
+
+        });
 
 
+        var roleVm;
+        var userVm;
+        var funcVm;
+        var pageVm;
+
+        function load_role() {
+
+            roleVm = new Vue({
+
+                    el: "#tab_role",
+                    data: {
+                        list: [],
+                    },
+                    created: function () {
+
+                        this.Init();
+
+                    },
+                    methods: {
+                        Init: function () {
+                            console.log("获取角色列表信息");
+                            var self = this;
+                            var keywork = $("#txt_Search_role").val();
+
+
+                            var dialog = bootbox.dialog({
+                                title: '正在导入中,请稍等...',
+                                message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+                            });
+
+
+                            $.ajax({
+                                url: "/Permission/GetRoleList",
+                                type: "POST",
+                                data: {
+                                    keyword: keywork,
+                                    pageIndex: role_pageIndex,
+                                    pageSize: role_pageSize,
+                                },
+                                success: function (result) {
+
+                                 
+
+                                    if (result.Success) {
+
+
+                                        self.list = result.Content;
+
+                                        role_pageIndex = result.PageIndex;
+                                        role_pageSize = result.PageSize;
+                                        role_pageCount = result.PageCount;
+                                        role_pageTotal = result.PageTotal;
+
+                                        self.PageBind();
+                                    }
+                                    dialog.modal('hide');
+
+                                }
+                            })
+                        },
+                        Operation: function (item) {
+
+
+                        },
+                        Search: function () {
+
+                            this.Init();
+                        },
+                        PageBind: function () {
+
+                            $("#ul_page_role").jqPaginator({
+                                totalPages: role_pageTotal,
+                                visiblePages: role_pageSize,
+                                currentPage: role_pageIndex,
+
+                                first: ' <li><a href="#">First</a></li>',
+                                prev: ' <li><a href="#">&laquo;</a></li>',
+                                next: ' <li><a href="#">&raquo;</a></li>',
+                                last: '<li><a href="#">Last<\/a><\/li>',
+                                page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                                onPageChange: function (num, type) {
+
+                                    role_pageIndex = num;
+
+                                    if (type == "change") {
+                                        vm.Init();
+                                    }
+                                }
+                            });
+                        },
+                        role_add: function () {
+                            bootbox.prompt("请输入新建角色名称?", function (result) {
+
+                             
+                                if (result === null || result=="") {
+
+                                    alert_danger("请输入角色名！");
+                               
+                                } else {
+
+                                    $.ajax({
+                                        url: "/Permission/AddRole",
+                                        type: "POST",
+                                        data: {
+                                            rolename:result
+                                        },
+                                        success: function (result) {
+
+                                            if (!result.Success) {
+                                                alert_danger("新建失败！")
+                                               
+                                            }
+
+                                            alert_success("新建成功！");
+                                            roleVm.Init();
+
+                                        }
+                                    })
+
+
+
+                                }
+                            });
+
+                        },
+                        del_role: function (item) {
+                            bootbox.confirm("您确定删除该角色吗？", function (res) {
+
+                                if (!res) {
+                                    return;
+                                }
+
+                                $.ajax({
+                                    url: "/Permission/DelRole",
+                                    type: "POST",
+                                    data: {
+                                        roleid: item.ROLE_ID,
+
+                                    },
+                                    success: function (result) {
+                                        if (result.Success) {
+
+                                            alert_success("删除成功！");
+                                            roleVm.Init();
+
+                                        } else {
+                                            alert_danger("删除失败");
+                                        }
+                                    }
+                                })
+
+
+                            });
+
+                        }
+                    }
+
+
+
+            });
+
+
+        }
+
+        function load_user() {
+
+
+            userVm = new Vue({
+
+                el: "#tab_account",
+                data: {
+                    list: [],
+                },
+                created: function () {
+
+                    this.Init();
+
+                },
+                methods: {
+                    Init: function () {
+                     
+                        var self = this;
+                        var keywork = $("#txt_Search_account").val();
+                        $.ajax({
+                            url: "/Permission/GetAccountList",
+                            type: "POST",
+                            data: {
+                                keyword: keywork,
+                                pageIndex: account_pageIndex,
+                                pageSize: account_pageSize,
+                            },
+                            success: function (result) {
+                                console.log("查询角色表："+JSON.stringify(result));
+                                if (result.Success) {
+
+                                    self.list = result.Content;
+
+                                    account_pageIndex = result.PageIndex;
+                                    account_pageSize = result.PageSize;
+                                    account_pageCount = result.PageCount;
+                                    account_pageTotal = result.PageTotal;
+
+                                    self.PageBind();
+                                }
+                            }
+                        })
+                    },
+                    Operation: function (item) {
+
+
+                    },
+                    Search: function () {
+
+                        this.Init();
+                    },
+                    PageBind: function () {
+
+                        $("#ul_page_account").jqPaginator({
+                            totalPages: account_pageTotal,
+                            visiblePages: account_pageSize,
+                            currentPage: account_pageIndex,
+
+                            first: ' <li><a href="#">First</a></li>',
+                            prev: ' <li><a href="#">&laquo;</a></li>',
+                            next: ' <li><a href="#">&raquo;</a></li>',
+                            last: '<li><a href="#">Last<\/a><\/li>',
+                            page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                            onPageChange: function (num, type) {
+
+                                account_pageIndex = num;
+
+                                if (type == "change") {
+                                    userVm.Init();
+                                }
+                            }
+                        });
+                    },
+                    add_account: function () {
+                     
+                        showWui("/Permission/AddAccount");
+
+                    },
+                    del_account: function (item) {
+                        bootbox.confirm("您确定删除该管理员吗？", function (res) {
+
+                            if (!res) {
+                                return;
+                            }
+
+                            $.ajax({
+                                url: "/Permission/DelAccount",
+                                type: "POST",
+                                data: {
+                                    roleid: item.RIGHT_ID
+
+                                },
+                                success: function (result) {
+                                    if (result.Success) {
+
+                                        alert_success("删除成功！");
+                                        funcVm.Init();
+
+                                    } else {
+                                        alert_danger("删除失败");
+                                    }
+                                }
+                            })
+
+
+                        });
+
+                    }
+                }
+
+
+
+            });
+
+
+
+        }
+
+        function load_func() {
+
+
+            funcVm = new Vue({
+
+                el: "#tab_func",
+                data: {
+                    list: [],
+                },
+                created: function () {
+
+                    this.Init();
+
+                },
+                methods: {
+                    Init: function () {
+                        console.log("获取角色列表信息");
+                        var self = this;
+                        var keywork = $("#txt_Search_role").val();
+                        $.ajax({
+                            url: "/Permission/GetFuncList",
+                            type: "POST",
+                            data: {
+                                keyword: keywork,
+                                pageIndex: func_pageIndex,
+                                pageSize: func_pageSize,
+                            },
+                            success: function (result) {
+                                console.log(JSON.stringify(result));
+                                if (result.Success) {
+
+                                    self.list = result.Content;
+
+                                    func_pageIndex = result.PageIndex;
+                                    func_pageSize = result.PageSize;
+                                    func_pageCount = result.PageCount;
+                                    func_pageTotal = result.PageTotal;
+
+                                    self.PageBind();
+                                }
+                            }
+                        })
+                    },
+                    Operation: function (item) {
+
+
+                    },
+                    Search: function () {
+
+                        this.Init();
+                    },
+                    PageBind: function () {
+
+                        $("#ul_page_func").jqPaginator({
+                            totalPages: func_pageTotal,
+                            visiblePages: func_pageSize,
+                            currentPage: func_pageIndex,
+
+                            first: ' <li><a href="#">First</a></li>',
+                            prev: ' <li><a href="#">&laquo;</a></li>',
+                            next: ' <li><a href="#">&raquo;</a></li>',
+                            last: '<li><a href="#">Last<\/a><\/li>',
+                            page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                            onPageChange: function (num, type) {
+
+                                func_pageIndex = num;
+
+                                if (type == "change") {
+                                    funcVm.Init();
+                                }
+                            }
+                        });
+                    },
+                    func_add: function () {
+                        bootbox.prompt("请输入新建模块名称?", function (result) {
+                            if (result === null) {
+
+                                alert_danger("请输入模块名！");
+                                return false;
+                            } else {
+
+                                $.ajax({
+                                    url: "/Permission/AddFunc",
+                                    type: "POST",
+                                    data: {
+                                        rolename: result
+                                    },
+                                    success: function (result) {
+
+                                        if (!result.Success) {
+                                            alert_danger("新建失败！")
+                                            return;
+                                        }
+
+                                        alert_success("新建成功！");
+                                        funcVm.Init();
+
+                                    }
+                                })
+
+
+
+                            }
+                        });
+
+                    },
+                    del_func: function (item) {
+                        bootbox.confirm("您确定删除该模块吗？", function (res) {
+
+                            if (!res) {
+                                return;
+                            }
+
+                            $.ajax({
+                                url: "/Permission/DelFunc",
+                                type: "POST",
+                                data: {
+                                    roleid: item.FUNC_ID,
+
+                                },
+                                success: function (result) {
+                                    if (result.Success) {
+
+                                        alert_success("删除成功！");
+                                        funcVm.Init();
+
+                                    } else {
+                                        alert_danger("删除失败");
+                                    }
+                                }
+                            })
+
+
+                        });
+
+                    }
+                }
+
+
+
+            });
+
+
+
+
+
+        }
+
+        function load_page() {
+            pageVm = new Vue({
+
+                el: "#tab_page",
+                data: {
+                    list: [],
+                },
+                created: function () {
+
+                    this.Init();
+
+                },
+                methods: {
+                    Init: function () {
+                        console.log("获取角色列表信息");
+                        var self = this;
+                        var keywork = $("#txt_Search_page").val();
+                        $.ajax({
+                            url: "/Permission/GetPageList",
+                            type: "POST",
+                            data: {
+                                keyword: keywork,
+                                pageIndex: page_pageIndex,
+                                pageSize: page_pageSize,
+                            },
+                            success: function (result) {
+
+                                if (result.Success) {
+
+                                    self.list = result.Content;
+
+                                    page_pageIndex = result.PageIndex;
+                                    page_pageSize = result.PageSize;
+                                    page_pageCount = result.PageCount;
+                                    page_pageTotal = result.PageTotal;
+
+                                    self.PageBind();
+                                }
+                            }
+                        })
+                    },
+                    Operation: function (item) {
+
+
+                    },
+                    Search: function () {
+
+                        this.Init();
+                    },
+                    PageBind: function () {
+
+                        $("#ul_page_page").jqPaginator({
+                            totalPages: page_pageTotal,
+                            visiblePages: page_pageSize,
+                            currentPage: page_pageIndex,
+
+                            first: ' <li><a href="#">First</a></li>',
+                            prev: ' <li><a href="#">&laquo;</a></li>',
+                            next: ' <li><a href="#">&raquo;</a></li>',
+                            last: '<li><a href="#">Last<\/a><\/li>',
+                            page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                            onPageChange: function (num, type) {
+
+                                page_pageIndex = num;
+
+                                if (type == "change") {
+                                    pageVm.Init();
+                                }
+                            }
+                        });
+                    },
+                    page_add: function () {
+                        bootbox.prompt("请输入资源名称?", function (result) {
+                            if (result === null) {
+
+                                alert_danger("请输入资源名称！");
+                                return false;
+                            } else {
+
+                                $.ajax({
+                                    url: "/Permission/AddPage",
+                                    type: "POST",
+                                    data: {
+                                        rolename: result
+                                    },
+                                    success: function (result) {
+
+                                        if (!result.Success) {
+                                            alert_danger("新建失败！")
+                                            return;
+                                        }
+
+                                        alert_success("新建成功！");
+                                        pageVm.Init();
+
+                                    }
+                                })
+
+
+
+                            }
+                        });
+
+                    },
+                    del_func: function (item) {
+                        bootbox.confirm("您确定删除该资源吗？", function (res) {
+
+                            if (!res) {
+                                return;
+                            }
+
+                            $.ajax({
+                                url: "/Permission/DelPage",
+                                type: "POST",
+                                data: {
+                                    roleid: item.PAGE_ID,
+
+                                },
+                                success: function (result) {
+                                    if (result.Success) {
+
+                                        alert_success("删除成功！");
+                                        pageVm.Init();
+
+                                    } else {
+                                        alert_danger("删除失败");
+                                    }
+                                }
+                            })
+
+
+                        });
+
+                    }
+                }
+
+
+
+            });
+
+
+        }
+
+
+    </script>
 }
 
 

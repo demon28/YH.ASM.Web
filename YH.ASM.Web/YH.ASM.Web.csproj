@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Pagination\**" />
+    <Content Remove="wwwroot\Pagination\**" />
+    <EmbeddedResource Remove="wwwroot\Pagination\**" />
+    <None Remove="wwwroot\Pagination\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\Reference\adminLTE\bower_components\bootstrap-colorpicker\.bower.json" />
     <Content Include="wwwroot\Reference\adminLTE\bower_components\bootstrap-colorpicker\composer.json" />
     <Content Include="wwwroot\Reference\adminLTE\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
@@ -7561,10 +7568,6 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\Reference\adminLTE\bower_components\moment\moment.d.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Pagination\" />
   </ItemGroup>
 
 </Project>

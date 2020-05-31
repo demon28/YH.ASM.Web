@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using SqlSugar;
 
 namespace YH.ASM.Entites.CodeGenerator
@@ -36,6 +37,9 @@ namespace YH.ASM.Entites.CodeGenerator
            /// Nullable:False
            /// </summary>           
            public long APP_ID {get;set;}
+
+
+
 
            /// <summary>
            /// Desc:创建时间

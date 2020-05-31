@@ -1,0 +1,241 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "";
+}
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/AdminLTE.css">
+
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/skins/_all-skins.min.css">
+
+
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+    <script src="~/Reference/scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Reference/vue/vue.min.js"></script>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+
+
+    <section class="content">
+        <div class="row">
+
+            <!-- /.col -->
+            <div id="tab_account">
+                <div class="box">
+                    <div class="box-header">
+
+                    </div>
+                    <!-- /.box-header -->
+
+
+                    <div class="box-body">
+
+                        <div class="input-group input-group-sm  ">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="请输入工号或姓名进行账号查询" id="txt_Search" />
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default " id="btn_Search"><i class="fa fa-search"></i></button>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group" style="margin-top:10px">
+                            <input type="text" class="form-control" id="txt_userid_hide"  style="display:none" />
+
+                            <input type="text" class="form-control" id="txt_value" placeholder="" readonly="readonly" />
+                        </div>
+
+                        <div class="form-group">
+                            <select class="form-control" id="sl_role">
+                              
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+
+                  
+                        <button type="button" class="btn btn-block btn-primary" id="add">添 加</button>
+          
+                </div>
+            </div>
+
+        </div>
+        <!-- /.col -->
+        <!-- /.row -->
+
+
+
+
+
+
+    </section>
+    <!-- ./wrapper -->
+    <!-- jQuery 3 -->
+    <script src="~/Reference/adminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/Reference/adminLTE/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button);
+    </script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/Reference/adminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Sparkline -->
+    <script src="~/Reference/adminLTE/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+
+    <!-- jQuery Knob Chart -->
+    <script src="~/Reference/adminLTE/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+
+    <!-- Slimscroll -->
+    <script src="~/Reference/adminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/Reference/adminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Reference/adminLTE/dist/js/adminlte.min.js"></script>
+
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Reference/adminLTE/dist/js/demo.js"></script>
+
+    <script src="~/Reference/scripts/jquery.bootstrap-growl.js"></script>
+    <script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
+    <script src="~/js/jq-paginator.min.js"></script>
+    <script src="~/Reference/bootbox/bootbox.min.js"></script>
+
+
+    <script>
+
+    
+        $(document).ready(function () {
+            loadrole();
+            addaccount();
+            selectAccount();
+        });
+
+
+        function selectAccount() {
+
+            $("#btn_Search").click(function () {
+
+
+                var str = $("#txt_Search").val();
+
+                $.ajax({
+                    url: "/Permission/GetSingAccount",
+                    type: "POST",
+                    data: {
+                        where: str
+                    },
+                    success: function (result) {
+
+                        if (!result.Success) {
+
+                            alert_danger("未查询到该用户信息");
+                        }
+                        $("#txt_value").val(result.Content.WORK_ID + " (" + result.Content.USER_NAME + ")");  
+                        $("#txt_userid_hide").val(result.Content.WORK_ID );  
+                        
+                    }
+                })
+
+            });
+
+        }
+        function addaccount() {
+
+            $("#add").click(function () {
+
+                var newuserid = $("#txt_userid_hide").val();  
+                var newroleid = $("#sl_role").val();
+
+                $.ajax({
+                    url: "/Permission/InsertAccount",
+                    type: "POST",
+                    data: {
+                        userid: newuserid,
+                       roleid: newroleid
+                    },
+                    success: function (result) {
+
+                        if (!result.Success) {
+
+                            return;
+                        }
+                        alert_success("添加成功");
+
+                    }
+                })
+
+
+            });
+
+        }
+        function loadrole() {
+
+            $.ajax({
+                url: "/Permission/GetRoleAll",
+                type: "POST",
+                data: {
+
+                },
+                success: function (result) {
+
+
+                    if (!result.Success) {
+                       
+                        return;
+                    }
+ 
+                    if (result.Content.length > 0) {
+                   
+
+                        for (var i = 0; i < result.Content.length; i++) {
+                            console.log(result.Content[i].ROLE_NAME );
+                            $("#sl_role").append("<option value='" + result.Content[i].ROLE_ID + "'>" + result.Content[i].ROLE_NAME + "</option>");
+
+                        }
+
+                    }
+
+
+                }
+            })
+
+        }
+
+
+    </script>
+
+
+
+
+
+</body>

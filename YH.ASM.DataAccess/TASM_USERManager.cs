@@ -21,6 +21,12 @@ namespace YH.ASM.DataAccess
              return model != null;
         }
 
+        public bool SingeByUser(string str,ref TASM_USER model)
+        {
+            model = Db.Queryable<TASM_USER>().First(it => it.WORK_ID.Contains(str) ||  it.USER_NAME.Contains(str));
+            return model != null;
+        }
+
 
         public bool GetListByWhere(string keyword,ref PageModel p, ref List<TASM_USER> list) 
         {
