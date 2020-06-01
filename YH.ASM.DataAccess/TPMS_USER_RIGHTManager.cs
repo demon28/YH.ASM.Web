@@ -67,6 +67,20 @@ WHERE te.app_id=1
     }
 
 
+    public bool SelectByUseridRoleid(int uesrid, int roleid) {
 
+        TPMS_USER_RIGHT model = new TPMS_USER_RIGHT();
 
+        model = Db.Queryable<TPMS_USER_RIGHT>().First(it => it.USER_ID == uesrid && it.ROLE_ID == roleid);
+
+        return model != null;
+    }
+
+    public bool ListByUserid(int uesrid,ref List<TPMS_USER_RIGHT> list)
+    {
+
+        list = TPMS_USER_RIGHTDb.GetList(it => it.USER_ID == uesrid);
+
+        return list.Count > 0;
+    }
 }

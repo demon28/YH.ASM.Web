@@ -57,7 +57,8 @@ namespace YH.ASM.Web
               .AddNewtonsoftJson(options =>
                {
                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                });
+                   options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+               });
 
         }
 

@@ -41,71 +41,68 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 
+        <section class="content">
+            <div class="row">
 
-    <section class="content">
-        <div class="row">
+                <!-- /.col -->
+                <div id="tab_account">
+                    <div class="box">
+                        <div class="box-header">
 
-            <!-- /.col -->
-            <div id="tab_account">
-                <div class="box">
-                    <div class="box-header">
-
-                    </div>
-                    <!-- /.box-header -->
+                        </div>
+                        <!-- /.box-header -->
 
 
-                    <div class="box-body">
+                        <div class="box-body">
 
-                        <div class="input-group input-group-sm  ">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="请输入工号或姓名进行账号查询" id="txt_Search" />
+                            <div class="input-group input-group-sm  ">
+                                <input type="text" name="table_search" class="form-control pull-right" placeholder="请输入工号或姓名进行账号查询" id="txt_Search" />
 
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default " id="btn_Search"><i class="fa fa-search"></i></button>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default " id="btn_Search"><i class="fa fa-search"></i></button>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group" style="margin-top:10px">
+                                <input type="text" class="form-control" id="txt_userid_hide" style="display:none" />
+
+                                <input type="text" class="form-control" id="txt_value" placeholder="" readonly="readonly" />
+                            </div>
+
+                            <div class="form-group">
+                                <select class="form-control" id="sl_role">
+                                </select>
+
                             </div>
 
                         </div>
+                        <!-- /.box-body -->
 
-                        <div class="form-group" style="margin-top:10px">
-                            <input type="text" class="form-control" id="txt_userid_hide"  style="display:none" />
 
-                            <input type="text" class="form-control" id="txt_value" placeholder="" readonly="readonly" />
-                        </div>
-
-                        <div class="form-group">
-                            <select class="form-control" id="sl_role">
-                              
-                            </select>
-
-                        </div>
+                        <button type="button" class="btn btn-block btn-primary" id="add">添 加</button>
 
                     </div>
-                    <!-- /.box-body -->
-
-                  
-                        <button type="button" class="btn btn-block btn-primary" id="add">添 加</button>
-          
                 </div>
+
             </div>
-
-        </div>
-        <!-- /.col -->
-        <!-- /.row -->
+            <!-- /.col -->
+            <!-- /.row -->
 
 
 
 
 
 
-    </section>
+        </section>
+
+
     <!-- ./wrapper -->
     <!-- jQuery 3 -->
     <script src="~/Reference/adminLTE/bower_components/jquery/dist/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="~/Reference/adminLTE/bower_components/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button);
-    </script>
+ 
     <!-- Bootstrap 3.3.7 -->
     <script src="~/Reference/adminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
@@ -133,47 +130,48 @@
 
     <script>
 
-    
+
         $(document).ready(function () {
             loadrole();
             addaccount();
-            selectAccount();
+            $("#btn_Search").click(function () { selectAccount(); });
+            $("#txt_Search").change(function () { selectAccount(); });
         });
 
 
         function selectAccount() {
 
-            $("#btn_Search").click(function () {
 
 
-                var str = $("#txt_Search").val();
 
-                $.ajax({
-                    url: "/Permission/GetSingAccount",
-                    type: "POST",
-                    data: {
-                        where: str
-                    },
-                    success: function (result) {
+            var str = $("#txt_Search").val();
 
-                        if (!result.Success) {
+            $.ajax({
+                url: "/Permission/GetSingAccount",
+                type: "POST",
+                data: {
+                    where: str
+                },
+                success: function (result) {
 
-                            alert_danger("未查询到该用户信息");
-                        }
-                        $("#txt_value").val(result.Content.WORK_ID + " (" + result.Content.USER_NAME + ")");  
-                        $("#txt_userid_hide").val(result.Content.WORK_ID );  
-                        
+                    if (!result.Success) {
+
+                        alert_danger("未查询到该用户信息");
                     }
-                })
+                    $("#txt_value").val(result.Content.WORK_ID + " (" + result.Content.USER_NAME + ")");
+                    $("#txt_userid_hide").val(result.Content.USER_ID);
 
-            });
+                }
+            })
+
+
 
         }
         function addaccount() {
 
             $("#add").click(function () {
 
-                var newuserid = $("#txt_userid_hide").val();  
+                var newuserid = $("#txt_userid_hide").val();
                 var newroleid = $("#sl_role").val();
 
                 $.ajax({
@@ -181,15 +179,19 @@
                     type: "POST",
                     data: {
                         userid: newuserid,
-                       roleid: newroleid
+                        roleid: newroleid
                     },
                     success: function (result) {
 
+                        console.log(JSON.stringify(result));
+
                         if (!result.Success) {
 
+                            alert_danger(result.Message);
                             return;
                         }
                         alert_success("添加成功");
+                        parent.location.reload();
 
                     }
                 })
@@ -210,15 +212,15 @@
 
 
                     if (!result.Success) {
-                       
+
                         return;
                     }
- 
+
                     if (result.Content.length > 0) {
-                   
+
 
                         for (var i = 0; i < result.Content.length; i++) {
-                            console.log(result.Content[i].ROLE_NAME );
+                            console.log(result.Content[i].ROLE_NAME);
                             $("#sl_role").append("<option value='" + result.Content[i].ROLE_ID + "'>" + result.Content[i].ROLE_NAME + "</option>");
 
                         }

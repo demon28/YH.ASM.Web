@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using SqlSugar;
 
 namespace YH.ASM.Entites.CodeGenerator
@@ -45,7 +46,7 @@ namespace YH.ASM.Entites.CodeGenerator
            /// Desc:创建时间
            /// Default:
            /// Nullable:False
-           /// </summary>           
+           /// </summary>        
            public DateTime CREATE_TIME {get;set;}
 
            /// <summary>

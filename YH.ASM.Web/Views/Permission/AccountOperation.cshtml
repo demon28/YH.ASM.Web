@@ -1,0 +1,263 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "";
+}
+
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <!-- Bootstrap 3.3.7 -->
+        <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/Ionicons/css/ionicons.min.css">
+        <!-- Theme style -->
+
+        <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/AdminLTE.css">
+
+        <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/skins/_all-skins.min.css">
+
+
+        <script src="~/Reference/scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Reference/vue/vue.min.js"></script>
+
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+
+        <section class="content">
+            <div class="row">
+
+                <!-- /.col -->
+                <div id="tab_role">
+                    <div class="box">
+                        <div class="box-header">
+
+                        </div>
+                        <!-- /.box-header -->
+
+
+                        <div class="box-body">
+
+
+                            <table class="table ">
+                                <tbody>
+                                    <tr>
+                                        <th>请选择</th>
+
+                                    </tr>
+                                    <tr v-for="(item,index) in list">
+
+
+                                        <td>
+                                            <label>
+                                                <input name="rolecheck" type="checkbox" class="minimal" :value=item.ROLE_ID  :id="'ck_'+item.ROLE_ID"  >
+                                                {{item.ROLE_NAME}}
+                                            </label>
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- /.box-body -->
+
+
+                        <button type="button" class="btn btn-block btn-primary" id="btn_save" @@click="SaveRole()">保 存</button>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.col -->
+            <!-- /.row -->
+
+
+
+
+
+
+        </section>
+
+
+        <!-- ./wrapper -->
+        <!-- jQuery 3 -->
+        <script src="~/Reference/adminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/Reference/adminLTE/bower_components/jquery-ui/jquery-ui.min.js"></script>
+
+        <!-- Bootstrap 3.3.7 -->
+        <script src="~/Reference/adminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+        <!-- Slimscroll -->
+        <script src="~/Reference/adminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+        <!-- FastClick -->
+        <script src="~/Reference/adminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/Reference/adminLTE/dist/js/adminlte.min.js"></script>
+
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/Reference/adminLTE/dist/js/demo.js"></script>
+        <script src="~/Reference/adminLTE/plugins/iCheck/icheck.min.js"></script>
+        <script src="~/Reference/scripts/jquery.bootstrap-growl.js"></script>
+        <script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
+        <script src="~/js/jq-paginator.min.js"></script>
+        <script src="~/Reference/bootbox/bootbox.min.js"></script>
+        <script src="~/Reference/scripts/CommonScript.js"></script>
+
+        <script>
+
+
+            $(document).ready(function () {
+
+                Load();
+
+            });
+            var rolevm;
+            function Load() {
+
+                rolevm = new Vue({
+
+                    el: "#tab_role",
+                    data: {
+                        list: [],
+                    },
+                    created: function () {
+
+                        this.Init();
+
+                    },
+                    methods: {
+                        Init: function () {
+
+                            var self = this;
+
+                            $.ajax({
+                                url: "/Permission/AccountGetRoleAll",
+                                type: "POST",
+                                data: {
+
+                                },
+                                success: function (result) {
+
+                                    if (result.Success) {
+
+                                        self.list = result.Content;
+                                        IsCheck();
+                                    }
+                                }
+                            })
+                        },
+
+                        SaveRole: function () {
+
+                            console.log("配置角色");
+
+                            var list = new Array();
+                            var uid = getQueryString("userid");
+                            var checkedbox = $("input[id^='ck_']:checked");
+
+                            checkedbox.each(function () {
+                                list.push(this.value);
+                            });
+
+                            $.ajax({
+                                url: "/Permission/AccountUpdateRole",
+                                type: "POST",
+                                data: {
+                                    rolelist: list,
+                                    userid: uid
+                                },
+                                success: function (result) {
+
+
+                                    console.log(JSON.stringify(result));
+
+                                    if (result.Success) {
+
+                                        alert_success("更新成功！");
+
+                                    } else {
+                                        alert_danger(result.Message);
+                                    }
+                                }
+                            })
+
+
+
+                        }
+                    }
+
+                });
+
+            }
+
+
+            function IsCheck() {
+                var uid = getQueryString("userid");
+
+                $.ajax({
+                    url: "/Permission/AccountGetRoleByUserid",
+                    type: "POST",
+                    data: {
+                        userid: uid
+                    },
+                    success: function (result) {
+
+                        if (!result.Success) {
+                            return;
+                        }
+
+                        console.log("当前数：" + result.Content.length);
+
+                        for (var i = 0; i < result.Content.length; i++) {
+
+                            console.log("列表数：" + rolevm.list.length);
+
+                            for (var j = 0; j < rolevm.list.length; j++) {
+
+                                var lis_rid = rolevm.list[j].ROLE_ID;
+                                var right_rid = result.Content[i].ROLE_ID;
+
+                               
+
+                                if (lis_rid == right_rid) {
+
+                                    console.log("角色id：" + result.Content[i].ROLE_ID);
+
+                                    $("#ck_" + lis_rid).attr("checked", true);
+
+
+                                }
+
+
+                            }
+
+
+                        }
+
+
+                    }
+                })
+            }
+
+        </script>
+
+
+
+
+
+    </body>
+
+
