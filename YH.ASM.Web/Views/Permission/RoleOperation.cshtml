@@ -202,20 +202,20 @@
 
 
             function IsCheck() {
-                var uid = getQueryString("roleid");
-
+                var rid = getQueryString("roleid");
+                console.log("w======" + rid);
                 $.ajax({
                     url: "/Permission/ListByRoleid",
                     type: "POST",
                     data: {
-                        userid: uid
+                        roleid: rid
                     },
                     success: function (result) {
 
                         if (!result.Success) {
                             return;
                         }
-
+                        console.log("s======"+JSON.stringify(result));
 
                         for (var i = 0; i < result.Content.length; i++) {
 
@@ -224,6 +224,10 @@
 
                                 var lis_rid = rolevm.list[j].FUNC_ID;
                                 var right_rid = result.Content[i].MEMBER_ID;
+
+                                console.log("lis_rid======" + lis_rid);
+                                console.log("right_rid======" + right_rid);
+                           
 
                                 if (lis_rid == right_rid) {
 

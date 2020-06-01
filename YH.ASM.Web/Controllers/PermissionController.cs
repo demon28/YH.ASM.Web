@@ -139,11 +139,17 @@ namespace YH.ASM.Web.Controllers
 
                 manager.Db.Ado.BeginTran();
 
-                //删除该用户所有角色
-                if (!manager.CurrentDb.Delete(s => s.ROLE_ID == roleid))
+
+                if (manager.CurrentDb.GetList(s => s.ROLE_ID == roleid).Count()>0)
                 {
-                    return FailMessage("更新失败！");
+                    //删除该用户所有角色
+                    if (!manager.CurrentDb.Delete(s => s.ROLE_ID == roleid))
+                    {
+                        return FailMessage("更新失败！");
+                    }
                 }
+
+             
 
 
                 for (int i = 0; i < funclist.Length; i++)
@@ -441,12 +447,13 @@ namespace YH.ASM.Web.Controllers
 
                 manager.Db.Ado.BeginTran();
 
-                //删除该用户所有角色
-                if (!manager.CurrentDb.Delete(s=>s.USER_ID==userid))
-                {
-                    return FailMessage("更新失败！");
+                if (manager.CurrentDb.GetList(s => s.USER_ID == userid).Count() > 0)
+                {    //删除该用户所有角色
+                    if (!manager.CurrentDb.Delete(s => s.USER_ID == userid))
+                    {
+                        return FailMessage("更新失败！");
+                    }
                 }
-
 
                 for (int i = 0; i < rolelist.Length; i++)
                 {

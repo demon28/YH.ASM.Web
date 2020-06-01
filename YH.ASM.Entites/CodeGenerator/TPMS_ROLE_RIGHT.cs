@@ -20,7 +20,7 @@ namespace YH.ASM.Entites.CodeGenerator
         /// Default:
         /// Nullable:False
         /// </summary>           
-        [SugarColumn(OracleSequenceName = "SEQ_TPMS_ROLE_RIGHTE", IsPrimaryKey = true)]
+        [SugarColumn(OracleSequenceName = "SEQ_TPMS_ROLE_RIGHT", IsPrimaryKey = true)]
         public long RIGHT_ID {get;set;}
 
            /// <summary>
