@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using NPOI.SS.Formula.Functions;
 using SqlSugar;
 using YH.ASM.DataAccess;
@@ -37,7 +38,7 @@ namespace YH.ASM.Web.Controllers
         {
 
             TPMS_ROLEManager manager = new TPMS_ROLEManager();
-            PageModel p = new PageModel();
+            SqlSugar.PageModel p = new SqlSugar.PageModel();
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 
@@ -199,7 +200,7 @@ namespace YH.ASM.Web.Controllers
         {
 
             TPMS_USER_RIGHTManager tASM_USERManager = new TPMS_USER_RIGHTManager();
-            PageModel p = new PageModel();
+            SqlSugar.PageModel p = new SqlSugar.PageModel();
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 
@@ -260,8 +261,8 @@ namespace YH.ASM.Web.Controllers
         public IActionResult GetPageList(string keyword, int pageIndex, int pageSize)
         {
 
-            TPMS_USER_RIGHTManager tASM_USERManager = new TPMS_USER_RIGHTManager();
-            PageModel p = new PageModel();
+            TPMS_PAGEManager tASM_USERManager = new TPMS_PAGEManager();
+            SqlSugar.PageModel p = new SqlSugar.PageModel();
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 
@@ -298,13 +299,55 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+
+        [HttpPost]
+        public IActionResult AddPageList(string value)
+        {
+
+            string[] Array = value.Split(',');
+
+            DbContext<TPMS_PAGE> dbContext = new DbContext<TPMS_PAGE>();
+
+            try
+            {
+                dbContext.Db.Ado.BeginTran();
+
+                foreach (var item in Array)
+                {
+                    TPMS_PAGE pagemodel = new TPMS_PAGE();
+                    pagemodel.APP_ID = 1;
+                    pagemodel.GUID = Guid.NewGuid().ToString("N");
+                    pagemodel.PAGE_NAME = item.Split(':')[0];
+                    pagemodel.PAGE_URL = item.Split(':')[1];
+                    pagemodel.RESOUCE_TYPE = 3;
+                    pagemodel.SORT_INDEX = 0;
+                    pagemodel.CREATE_TIME = DateTime.Now;
+
+                    dbContext.Insert(pagemodel); 
+              
+                 }
+                dbContext.Db.Ado.CommitTran();
+                return SuccessMessage();
+
+            } catch (Exception e) {
+
+                dbContext.Db.Ado.RollbackTran();
+
+                return FailMessage();
+            }
+
+        }
+
+
+
+
         [HttpPost]
         public IActionResult DelPage(int pageid)
         {
             DbContext<TPMS_PAGE> dbContext = new DbContext<TPMS_PAGE>();
 
 
-            if (!dbContext.CurrentDb.DeleteById(pageid))
+            if (!dbContext.CurrentDb.Delete(S => S.PAGE_ID == pageid))
             {
                 return FailMessage();
             }
@@ -327,7 +370,7 @@ namespace YH.ASM.Web.Controllers
         {
 
             TPMS_USER_RIGHTManager tASM_USERManager = new TPMS_USER_RIGHTManager();
-            PageModel p = new PageModel();
+            SqlSugar.PageModel p = new SqlSugar.PageModel();
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 

@@ -291,16 +291,18 @@
                                 <tbody>
                                     <tr>
                                         <th>资源名称</th>
+                                        <th>资源地址</th>
                                         <th>添加时间</th>
                                         <th>操作</th>
 
                                     </tr>
                                     <tr v-for="(item,index) in list">
                                         <td>{{item.PAGE_NAME}}</td>
+                                        <td>{{item.PAGE_URL}}</td>
                                         <td>{{item.CREATE_TIME}}</td>
 
                                         <td>
-                                            <button type="button" class="btn bg-purple  btn-xs" v-on:click="Operation(item)">配置资源</button>
+                                          
                                             <button type="button" class="btn bg-danger  btn-xs" v-on:click="del_page(item)">删除</button>
 
                                         </td>
@@ -921,10 +923,10 @@
                                 } else {
 
                                     $.ajax({
-                                        url: "/Permission/AddPage",
+                                        url: "/Permission/AddPageList",
                                         type: "POST",
                                         data: {
-                                            rolename: result
+                                            value: result
                                         },
                                         success: function (result) {
 
@@ -957,7 +959,7 @@
                                 url: "/Permission/DelPage",
                                 type: "POST",
                                 data: {
-                                    roleid: item.PAGE_ID,
+                                    pageid: item.PAGE_ID,
 
                                 },
                                 success: function (result) {

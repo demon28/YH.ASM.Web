@@ -35,13 +35,7 @@ public class TPMS_USER_RIGHTManager : DbContext<TPMS_USER_RIGHT>
     /// <param name="p"></param>
     /// <param name="list"></param>
     /// <returns></returns>
-    public bool PageListByWhere(string keyword, ref PageModel p, ref List<TPMS_PAGE> list)
-    {
-
-        list = TPMS_PAGEDb.GetPageList(it => it.ACTION_NAME.Contains(keyword) && it.APP_ID == 1, p, it => it.PAGE_ID, OrderByType.Asc);
-
-        return list.Count > 0;
-    }
+   
 
     public bool AccountListByWhere(string keyword, ref PageModel p, ref List<UserPmsModel> list)
     {
