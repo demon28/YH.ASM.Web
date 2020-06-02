@@ -76,14 +76,14 @@ function MyAjax(ajaxjson) {
                 alert_danger("登录过期，请重新登录！");
             } else {
 
-                ajaxjson.callback(result);
+                ajaxjson.success(result);
 
             }
         },
 
         error: (err) => {
 
-            ajaxjson.callback({ "Code":500, "Message":"异常"});
+            ajaxjson.success({ "Code":500, "Message":"异常"});
         }
     })
 

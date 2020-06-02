@@ -53,7 +53,7 @@ WHERE te.app_id=1
 ) ";
         int pagecount = 0;
 
-        list= Db.SqlQueryable<UserPmsModel>(sql).ToPageList(p.PageIndex, p.PageSize, ref pagecount);
+        list= Db.SqlQueryable<UserPmsModel>(sql).Where(it => it.USER_NAME.Contains(keyword)).ToPageList(p.PageIndex, p.PageSize, ref pagecount);
         p.PageCount = pagecount;
 
         return list.Count>0;
