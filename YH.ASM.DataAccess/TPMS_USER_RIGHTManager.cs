@@ -77,4 +77,12 @@ WHERE te.app_id=1
 
         return list.Count > 0;
     }
+
+    public bool ListByPmsView(int userid, ref List<PMSViewModel> list) {
+
+        string sql = "select t.* from vpms_asm t ";
+        list = Db.SqlQueryable<PMSViewModel>(sql).Where(s=>s.USER_ID==userid).ToList();
+
+       return list.Count > 0;
+    }
 }

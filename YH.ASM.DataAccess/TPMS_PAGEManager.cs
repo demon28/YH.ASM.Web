@@ -18,5 +18,13 @@ namespace YH.ASM.DataAccess
             return list.Count > 0;
         }
 
+
+        public bool GetPageAll(ref List<TPMS_PAGE> list)
+        {
+             list = TPMS_PAGEDb.GetList(s => s.APP_ID == 1);
+               return list.Count > 0;
+
+        }
+
     }
 }

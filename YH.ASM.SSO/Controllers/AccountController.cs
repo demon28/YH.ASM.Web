@@ -104,7 +104,7 @@ namespace YH.ASM.SSO.Controllers
                 ClaimsPrincipal user = new ClaimsPrincipal(claimsIdentity);
 
 
-                var jsons_user ="{ \"WORK_ID\":"+ usermodel.WORK_ID + ",\"USER_NAME\":'" + usermodel.USER_NAME + "',\"MOBILE\":'"+ usermodel.MOBILE + "',\"USER_SEX\":'"+ usermodel.USER_SEX + "'}";
+                var jsons_user ="{ \"USER_ID\":'"+ usermodel.USER_ID + "',\"WORK_ID\":"+ usermodel.WORK_ID + ",\"USER_NAME\":'" + usermodel.USER_NAME + "',\"MOBILE\":'"+ usermodel.MOBILE + "',\"USER_SEX\":'"+ usermodel.USER_SEX + "'}";
 
 
 

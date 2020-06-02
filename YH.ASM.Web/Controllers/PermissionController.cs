@@ -12,6 +12,7 @@ using YH.ASM.DataAccess;
 using YH.ASM.DataAccess.CodeGenerator.DBCore;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
+using YH.ASM.Web.ControllerBase;
 
 namespace YH.ASM.Web.Controllers
 {
@@ -187,7 +188,7 @@ namespace YH.ASM.Web.Controllers
 
 
 
-
+     
         #endregion
 
 
@@ -251,6 +252,98 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
+
+
+        public IActionResult GetPageAll()
+        {
+
+
+            TPMS_PAGEManager manager = new TPMS_PAGEManager();
+
+            List<TPMS_PAGE> list = new List<TPMS_PAGE>();
+
+            manager.GetPageAll(ref list);
+
+            return SuccessResultList(list);
+
+        }
+        public IActionResult PageListByFunc(int funcid)
+        {
+
+
+            TPMS_FUNC_MEMBERManager manager = new TPMS_FUNC_MEMBERManager();
+
+            List<TPMS_FUNC_MEMBER> list = new List<TPMS_FUNC_MEMBER>();
+
+            manager.ListByFuncid(funcid,ref  list);
+
+            return SuccessResultList(list);
+
+        }
+
+
+
+        public IActionResult SaveFuncPage(int[] pagelist, int funcid)
+        {
+            TPMS_FUNC_MEMBERManager manager = new TPMS_FUNC_MEMBERManager();
+
+            List<TPMS_FUNC_MEMBER> list = new List<TPMS_FUNC_MEMBER>();
+
+            if (pagelist.Length <= 0)
+            {
+                return FailMessage("若要去除该角色所以权限，请删除该角色即可！");
+            }
+
+            try
+            {
+
+                manager.Db.Ado.BeginTran();
+
+
+                if (manager.CurrentDb.GetList(s => s.FUNC_ID == funcid).Count() > 0)
+                {
+                    //删除该用户所有角色
+                    if (!manager.CurrentDb.Delete(s => s.FUNC_ID == funcid))
+                    {
+                        return FailMessage("更新失败！");
+                    }
+                }
+
+
+                for (int i = 0; i < pagelist.Length; i++)
+                {
+                    TPMS_FUNC_MEMBER umodel = new TPMS_FUNC_MEMBER();
+                    umodel.FUNC_ID = funcid;
+                    umodel.MEMBER_TYPE = 1;
+                    umodel.MEMBER_ID = pagelist[i];
+                    umodel.CREATETIME = DateTime.Now;
+                  
+                    list.Add(umodel);
+                }
+
+                if (!manager.Insert(list))
+                {
+                    return FailMessage("更新失败！");
+                }
+
+
+                manager.Db.Ado.CommitTran();
+
+
+                return SuccessMessage();
+            }
+            catch (Exception ex)
+            {
+                manager.Db.Ado.RollbackTran();
+                return FailMessage("更新失败！");
+                throw ex;
+            }
+
+
+        }
+
+
+
         #endregion
 
 
@@ -361,7 +454,10 @@ namespace YH.ASM.Web.Controllers
         }
         #endregion
 
+        public IActionResult NoPermission() {
+            return View();
 
+        }
 
         #region 管理员模块
 
@@ -393,6 +489,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [AuthRight]
         public IActionResult  InsertAccount(int userid,int roleid)
         {
 

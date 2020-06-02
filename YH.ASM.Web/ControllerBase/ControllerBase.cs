@@ -43,7 +43,15 @@ namespace YH.ASM.Web.ControllerBase
             }
         }
 
-        private SysUserInfo GetUser() {
+        public int User_Id
+        {
+            get
+            {
+                return GetUser().USER_ID;
+            }
+        }
+
+        public SysUserInfo GetUser() {
             var userinfo = (HttpContext.User.Identity as System.Security.Claims.ClaimsIdentity);
             var json = userinfo.FindFirst("name");
 
@@ -90,6 +98,8 @@ namespace YH.ASM.Web.ControllerBase
 
     public class SysUserInfo{
 
+
+        public int USER_ID { get; set; }
         public string WORK_ID { get; set; }
 
         public string USER_NAME { get; set; }
