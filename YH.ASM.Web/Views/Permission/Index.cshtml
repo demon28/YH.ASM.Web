@@ -366,7 +366,7 @@
     <script src="~/Reference/adminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.js"></script>
     <script src="~/Reference/adminLTE/bower_components/fastclick/lib/fastclick.js"></script>
     <script src="~/Reference/adminLTE/plugins/iCheck/icheck.js"></script>
-    <script src="~/Reference/scripts/CommonScript.js"></script>
+  
 
 
 
@@ -432,7 +432,7 @@
                             });
 
 
-                            $.ajax({
+                            MyAjax({
                                 url: "/Permission/GetRoleList",
                                 type: "POST",
                                 data: {
@@ -503,7 +503,7 @@
                                
                                 } else {
 
-                                    $.ajax({
+                                    MyAjax({
                                         url: "/Permission/AddRole",
                                         type: "POST",
                                         data: {
@@ -535,7 +535,7 @@
                                     return;
                                 }
 
-                                $.ajax({
+                                MyAjax({
                                     url: "/Permission/DelRole",
                                     type: "POST",
                                     data: {
@@ -586,7 +586,7 @@
                      
                         var self = this;
                         var keywork = $("#txt_Search_account").val();
-                        $.ajax({
+                        MyAjax({
                             url: "/Permission/GetAccountList",
                             type: "POST",
                             data: {
@@ -657,7 +657,7 @@
                                 return;
                             }
 
-                            $.ajax({
+                            MyAjax({
                                 url: "/Permission/DelAccount",
                                 type: "POST",
                                 data: {
@@ -709,7 +709,7 @@
                         console.log("获取角色列表信息");
                         var self = this;
                         var keywork = $("#txt_Search_role").val();
-                        $.ajax({
+                        MyAjax({
                             url: "/Permission/GetFuncList",
                             type: "POST",
                             data: {
@@ -773,7 +773,7 @@
 
                                 console.log("模块名称：====="+result)
 
-                                $.ajax({
+                                MyAjax({
                                     url: "/Permission/AddFunc",
                                     type: "POST",
                                     data: {
@@ -805,7 +805,7 @@
                                 return;
                             }
 
-                            $.ajax({
+                            MyAjax({
                                 url: "/Permission/DelFunc",
                                 type: "POST",
                                 data: {
@@ -857,7 +857,7 @@
                         console.log("获取角色列表信息");
                         var self = this;
                         var keywork = $("#txt_Search_page").val();
-                        $.ajax({
+                        MyAjax({
                             url: "/Permission/GetPageList",
                             type: "POST",
                             data: {
@@ -921,7 +921,7 @@
 
                                 } else {
 
-                                    $.ajax({
+                                    MyAjax({
                                         url: "/Permission/AddPageList",
                                         type: "POST",
                                         data: {
@@ -954,7 +954,7 @@
                                 return;
                             }
 
-                            $.ajax({
+                            MyAjax({
                                 url: "/Permission/DelPage",
                                 type: "POST",
                                 data: {

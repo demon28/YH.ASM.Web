@@ -162,7 +162,7 @@
                 Init: function () {
                     var self = this;
                     var keywork = $("#txt_Search").val();
-                    $.ajax({
+                    MyAjax({
                         url: "/People/GetList",
                         type: "POST",
                         data: {
@@ -189,7 +189,7 @@
                     })
                 },
                 Details: function (item) {
-                    $.ajax({
+                    MyAjax({
                         url: "/People/Details",
                         type: "POST",
                         data: {

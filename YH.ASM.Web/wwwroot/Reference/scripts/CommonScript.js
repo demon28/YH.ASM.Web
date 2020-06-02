@@ -55,3 +55,37 @@ function diaplayTime(data) {
     }
     return result;
 }
+
+
+function MyAjax(ajaxjson) {
+
+    $.ajax({
+        url: ajaxjson.url,
+        type: ajaxjson.type,
+        data: ajaxjson.data,
+        success:(result)=> {
+
+
+            if (result.Code === 302) {
+
+                window.location.href = "/Permission/NoPermission";
+
+            } else if (result.Code === 405) {
+                alert_danger(result.Message);
+            } else if (result.Code === 401) {
+                alert_danger("登录过期，请重新登录！");
+            } else {
+
+                ajaxjson.callback(result);
+
+            }
+        },
+
+        error: (err) => {
+
+            ajaxjson.callback({ "Code":500, "Message":"异常"});
+        }
+    })
+
+
+}

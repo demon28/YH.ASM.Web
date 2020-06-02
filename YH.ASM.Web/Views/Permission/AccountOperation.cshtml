@@ -143,7 +143,7 @@
 
                             var self = this;
 
-                            $.ajax({
+                            MyAjax({
                                 url: "/Permission/AccountGetRoleAll",
                                 type: "POST",
                                 data: {
@@ -172,7 +172,7 @@
                                 list.push(this.value);
                             });
 
-                            $.ajax({
+                            MyAjax({
                                 url: "/Permission/AccountUpdateRole",
                                 type: "POST",
                                 data: {
@@ -207,7 +207,7 @@
             function IsCheck() {
                 var uid = getQueryString("userid");
 
-                $.ajax({
+                MyAjax({
                     url: "/Permission/AccountGetRoleByUserid",
                     type: "POST",
                     data: {

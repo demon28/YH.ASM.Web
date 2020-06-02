@@ -140,7 +140,7 @@
 
                             var self = this;
 
-                            $.ajax({
+                            MyAjax({
                                 url: "/Permission/GetFuncAll",
                                 type: "POST",
                                 data: {
@@ -169,7 +169,7 @@
                                 list.push(this.value);
                             });
 
-                            $.ajax({
+                            MyAjax({
                                 url: "/Permission/SaveFuncRole",
                                 type: "POST",
                                 data: {
@@ -204,7 +204,7 @@
             function IsCheck() {
                 var rid = getQueryString("roleid");
                 console.log("w======" + rid);
-                $.ajax({
+                MyAjax({
                     url: "/Permission/ListByRoleid",
                     type: "POST",
                     data: {

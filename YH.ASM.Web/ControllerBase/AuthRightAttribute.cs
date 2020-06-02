@@ -17,8 +17,10 @@ namespace YH.ASM.Web.ControllerBase
     {
         public  override void OnActionExecuting(ActionExecutingContext Context)
         {
-            //获取当前登录的用户信息
 
+          
+
+            //获取当前登录的用户信息
 
             var json= Context.HttpContext.User.FindFirst("name");
 
@@ -36,22 +38,54 @@ namespace YH.ASM.Web.ControllerBase
             //*1 查用户表对应的角色表
             TPMS_USER_RIGHTManager usermanage = new TPMS_USER_RIGHTManager();
 
-            List<PMSViewModel> list = new List<PMSViewModel>();
+            List<PMSViewModel> pmslist = new List<PMSViewModel>();
 
 
             //TODO:出现没有配置的界面 或 action 要处理掉
 
-            if (!usermanage.ListByPmsView(info.USER_ID, ref list))
+            TPMS_PAGEManager pageManage = new TPMS_PAGEManager();
+            List<TPMS_PAGE> pagelist = new List<TPMS_PAGE>();
+            List<PMSViewModel> pmslist2 = new List<PMSViewModel>();
+
+            pageManage.GetPageAll(ref pagelist);
+
+
+            var isAjax = Context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+
+            //数据库未配置该页面则允许访问
+            if (pagelist.Count(s => s.PAGE_URL.ToLower() == page.ToLower())<=0)
             {
 
-                Context.Result = new RedirectResult("/Permission/NoPermission");
+               return;
+            } 
+
+            //该用户不存在任何角色
+            if (!usermanage.ListByPmsView(info.USER_ID, ref pmslist))
+            {
+                if (!isAjax)
+                {
+                    Context.Result = new RedirectResult("/Permission/NoPermission");
+                    return;
+                }
+                Context.Result = new JsonResult( new { Success = false, Code = 302, Message = "没有任何访问权限" });
+            }
+
+
+            //该用户的所有角色没有改页面权限
+            if (!usermanage.ListByPmsPageView(info.USER_ID,page,ref pmslist2)) {
+
+
+                if (!isAjax)
+                {
+                    Context.Result = new RedirectResult("/Permission/NoPermission");
+                    return;
+                }
+
+                Context.Result = new JsonResult(new { Success = false, Code = 405, Message = "您没有该项操作权限！" });
 
             }
 
-            if (list.Where(s => s.PAGE_URL.ToLower() == page.ToLower()).Count() <= 0) {
-
-                Context.HttpContext.Response.WriteAsync("<script>alert_danger('您没有改功能权限，请找管理员设置')</script>");
-            }
+            base.OnActionExecuting(Context);
 
         }
     } 
