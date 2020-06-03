@@ -48,7 +48,7 @@ LEFT  JOIN   tpms_user_right  tr  ON tu.user_id=tr.user_id
 
 LEFT  JOIN   tpms_role  te  ON tr.role_id=te.role_id
 
-WHERE te.app_id=1
+WHERE te.app_id=1 and  tr.role_id !=4
 
 ) ";
         int pagecount = 0;

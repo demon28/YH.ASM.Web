@@ -26,6 +26,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+       
         public IActionResult AddAccount()
         {
             return View();
@@ -50,6 +51,8 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+
+        [AuthRight]
         [HttpPost]
         public IActionResult AddRole(string rolename)
         {
@@ -73,7 +76,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessMessage();
         }
 
-
+        [AuthRight]
         [HttpPost]
         public IActionResult DelRole(int roleid) {
 
@@ -124,7 +127,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
+        [AuthRight]
         public IActionResult SaveFuncRole(int[] funclist,int roleid)
         {
             TPMS_ROLE_RIGHTManager manager = new TPMS_ROLE_RIGHTManager();
@@ -212,6 +215,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [AuthRight]
         [HttpPost]
         public IActionResult AddFunc(string funcname)
         {
@@ -282,7 +286,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [AuthRight]
         public IActionResult SaveFuncPage(int[] pagelist, int funcid)
         {
             TPMS_FUNC_MEMBERManager manager = new TPMS_FUNC_MEMBERManager();
@@ -366,6 +370,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [AuthRight]
         [HttpPost]
         public IActionResult AddPage(string pagename,string pageurl,int pagetype)
         {
@@ -392,7 +397,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [AuthRight]
         [HttpPost]
         public IActionResult AddPageList(string value)
         {
@@ -433,7 +438,7 @@ namespace YH.ASM.Web.Controllers
 
 
 
-
+        [AuthRight]
         [HttpPost]
         public IActionResult DelPage(int pageid)
         {
@@ -531,7 +536,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
+        [AuthRight]
         public IActionResult DelAccount(int userid) {
 
 
@@ -555,6 +560,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(rolemodel);
 
         }
+       
         public IActionResult AccountGetRoleByUserid(int userid)
         {
             TPMS_USER_RIGHTManager manager = new TPMS_USER_RIGHTManager();
@@ -570,7 +576,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [AuthRight]
         public IActionResult AccountUpdateRole(int[] rolelist, int userid)
         {
             if (rolelist.Length <= 0)

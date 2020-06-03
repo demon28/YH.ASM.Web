@@ -55,21 +55,32 @@ namespace YH.ASM.Web.ControllerBase
             if (pagelist.Count(s => s.PAGE_URL.ToLower() == page.ToLower())<=0)
             {
                return;
-            } 
+            }
 
-            //TODO：如果该用户没有任何角色则添加 普通用户角色
+
+            //如果该用户没有任何角色则添加 普通用户角色
+            List<TPMS_USER_RIGHT> urlist = new List<TPMS_USER_RIGHT>();
+            if (!usermanage.ListByUserid(info.USER_ID, ref urlist)) {
+
+                TPMS_USER_RIGHT urmodel = new TPMS_USER_RIGHT();
+                urmodel.USER_ID = info.USER_ID;
+                urmodel.ROLE_ID = 4;
+                urmodel.CREATE_TIME = DateTime.Now;
+
+                usermanage.Insert(urmodel);
+            }
 
 
             //该用户不存在任何角色
-            if (!usermanage.ListByPmsView(info.USER_ID, ref pmslist))
-            {
-                if (!isAjax)
-                {
-                    Context.Result = new RedirectResult("/Permission/NoPermission");
-                    return;
-                }
-                Context.Result = new JsonResult( new { Success = false, Code = 302, Message = "没有任何访问权限" });
-            }
+            //if (!usermanage.ListByPmsView(info.USER_ID, ref pmslist))
+            //{
+            //    if (!isAjax)
+            //    {
+            //        Context.Result = new RedirectResult("/Permission/NoPermission");
+            //        return;
+            //    }
+            //    Context.Result = new JsonResult( new { Success = false, Code = 302, Message = "没有任何访问权限" });
+            //}
 
 
             //该用户的所有角色没有改页面权限
