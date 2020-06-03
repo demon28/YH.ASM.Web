@@ -239,7 +239,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessMessage();
         }
 
-
+        [AuthRight]
         [HttpPost]
         public IActionResult DelFunc(int funcid)
         {
