@@ -37,7 +37,10 @@ namespace YH.ASM.Web
            .AddCookie("Cookies")
            .AddOpenIdConnect("oidc", options =>
            {
-               options.Authority = "http://sso.asm.cn:51419";
+               //  options.Authority = "http://sso.asm.cn:51419";
+
+               //该为配置文件配置sso登录地址
+               options.Authority = Entites.AppConfig.SSO_URL;
 
                options.RequireHttpsMetadata = false;
 

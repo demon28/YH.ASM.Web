@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace YH.ASM.Entites
@@ -89,6 +90,62 @@ namespace YH.ASM.Entites
 
                 string conn = config.GetSection("ConnectionStrings:ProductDatabase").Value; // 分层键
                 return conn;
+            }
+
+        }
+
+
+        public static List<string> RedirectUris
+        {
+            get{
+                var builder = new ConfigurationBuilder()
+                                 .SetBasePath(Directory.GetCurrentDirectory())
+                                 .AddJsonFile("appsettings.json");
+
+
+
+                var config = builder.Build();
+
+
+                var list = new List<string>();
+
+                config.GetSection("SSOSetting:RedirectUris").Bind(list);
+
+                return list;
+            }
+        
+        }
+
+        public static List<string> LogoutRedirectUris
+        {
+            get
+            {
+                var configurationBuilder = new ConfigurationBuilder();
+                var config = configurationBuilder.Build();
+
+
+                var list = new List<string>();
+                config.GetSection("SSOSetting:LogoutRedirectUris").Bind(list);
+
+
+                return list;
+            }
+
+        }
+
+
+        public static string SSO_URL
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder()
+                  .SetBasePath(Directory.GetCurrentDirectory())
+                  .AddJsonFile("appsettings.json");
+
+                var config = builder.Build();
+
+                string url = config.GetSection("SSOSetting:LoginUrl").Value; // 分层键
+                return url;
             }
 
         }

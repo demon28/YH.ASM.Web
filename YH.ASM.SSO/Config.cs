@@ -69,11 +69,18 @@ namespace YH.ASM.SSO
                     RequireConsent=false,
                     
                     //指定允许令牌或授权码返回的地址（URL）
-                    RedirectUris={ "http://www.asm.cn:50428/signin-oidc"},
+                   // RedirectUris={ "http://www.asm.cn:50428/signin-oidc"},
                     //指定允许注销后返回的地址(URL)，这里写一个客户端
                   
-                    PostLogoutRedirectUris={ "http://www.asm.cn:50428/Home/LogOut" },
-                   
+                  //  PostLogoutRedirectUris={ "http://www.asm.cn:50428/Home/LogOut" },
+
+
+                    //更改为配置文件处理
+
+                    RedirectUris=Entites.AppConfig.RedirectUris,
+
+                    PostLogoutRedirectUris=Entites.AppConfig.LogoutRedirectUris,
+
                     ClientSecrets={new Secret("secret".Sha256())},
                     AllowedScopes = new List<string>
                     {

@@ -41,7 +41,6 @@ namespace YH.ASM.Web.ControllerBase
             List<PMSViewModel> pmslist = new List<PMSViewModel>();
 
 
-            //TODO:出现没有配置的界面 或 action 要处理掉
 
             TPMS_PAGEManager pageManage = new TPMS_PAGEManager();
             List<TPMS_PAGE> pagelist = new List<TPMS_PAGE>();
@@ -55,9 +54,11 @@ namespace YH.ASM.Web.ControllerBase
             //数据库未配置该页面则允许访问
             if (pagelist.Count(s => s.PAGE_URL.ToLower() == page.ToLower())<=0)
             {
-
                return;
             } 
+
+            //TODO：如果该用户没有任何角色则添加 普通用户角色
+
 
             //该用户不存在任何角色
             if (!usermanage.ListByPmsView(info.USER_ID, ref pmslist))
