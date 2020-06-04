@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewData["Title"] = "Direction";
+}
+
+
+
+@section Htmlhead{
+
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+
+
+}
+
+@section Pageheader{
+
+
+
+
+    <h1>
+        <small>  人员信息</small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Direction</li>
+    </ol>
+
+}
+
+
+
+<section class="content">
+    <div class="row">
+
+        <!-- /.col -->
+        <div id="tab_account">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">List</h3>
+
+                    <div class="box-tools">
+
+
+
+                        <div class="form-group input-group input-group-sm hidden-xs" style="width: 500px; ">
+
+                            <label>时间:</label>
+
+                            <div  style="width: 200px;">
+                                <div class="input-group date">
+
+                                    <input type="text" class="form-control pull-right" id="datepicker">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div style="width: 200px;">
+                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
+
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th>工号</th>
+                                <th>姓名</th>
+                                <th>部门</th>
+                                <th>职务</th>
+                                <th>电话</th>
+                                <th>性别</th>
+                                <th>状态</th>
+                                <th>入职时间</th>
+
+                                <th>操作</th>
+                            </tr>
+                            <tr v-for="(item,index) in list">
+                                <td>{{item.WORK_ID}}</td>
+                                <td>{{item.USER_NAME}}</td>
+                                <td>{{item.DEPARTMENT }}</td>
+                                <td>{{item.DTNAME}}</td>
+                                <td>{{item.MOBILE}}</td>
+
+                                <td>
+                                    <span class="label bg-blue" v-if="item.USER_SEX ==0">男</span>
+                                    <span class="label bg-red " v-if="item.USER_SEX ==1">女</span>
+
+                                </td>
+
+                                <td>
+                                    <span class="label label-success" v-if="item.USER_STATUS==0">在职</span>
+                                    <span class="label label-warning" v-if="item.USER_STATUS==1">离职</span>
+                                    <span class="label label-danger" v-if="item.USER_STATUS==2">锁定</span>
+                                </td>
+
+                                <td>{{item.COMEDATE}}</td>
+
+                                <td>
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="Details(item)">详情</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+
+
+                <div class="box-footer no-padding">
+                    <div class="card-footer clearfix pull-left" style="margin-left:20px;margin-top:30px;margin-bottom:30px">
+
+                    </div>
+
+                    <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                        <ul class="pagination pagination-sm no-margin pull-right" id="ul_page">
+                        </ul>
+                    </div>
+
+
+                    <!-- /.pull-right -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.col -->
+    <!-- /.row -->
+
+
+
+
+</section>
+
+@section scripts{
+
+    <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+
+
+    <script>
+        $(function () {
+
+            $('#datepicker').datepicker({
+
+                format: "yyyy-mm",
+                language: "zh-CN",
+                autoclose: true,
+                clearBtn: true,
+                startView: 1,
+                minViewMode: 1,
+                maxViewMode: 2
+
+            });
+        });
+    </script>
+
+
+
+
+
+}
