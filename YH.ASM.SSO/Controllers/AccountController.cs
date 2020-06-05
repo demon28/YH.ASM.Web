@@ -136,5 +136,13 @@ namespace YH.ASM.SSO.Controllers
         }
 
 
+
+
+        [HttpGet]
+        public IActionResult Login2()
+        {
+            return View();
+        }
+
     }
 }

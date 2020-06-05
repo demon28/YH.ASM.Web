@@ -131,13 +131,13 @@
                         <div class="box-header">
                             <h3 class="box-title">List</h3>
 
-                            <div class="box-tools">
+                            <div class="box-tools mt-2">
 
 
-                                <button type="button" class="btn btn-default " @@click="role_add()" id="btn_role_add">新建角色</button>
+                                <button type="button" class="btn btn-default pull-left  ml-1 mt-2" @@click="role_add()" id="btn_role_add">新建角色</button>
 
 
-                                <div class="input-group input-group-sm hidden-xs" style="width: 200px;">
+                                <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
                                     <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search_role" />
 
                                     <div class="input-group-btn">
@@ -202,11 +202,11 @@
 
                             <h3 class="box-title">List</h3>
 
-                            <div class="box-tools">
+                            <div class="box-tools mt-2">
 
-                                <button type="button" class="btn btn-default " @@click="func_add()" id="btn_role_add">新建模块</button>
+                                <button type="button" class="btn btn-default pull-left  ml-1 mt-2" @@click="func_add()" id="btn_role_add">新建模块</button>
 
-                                <div class="input-group input-group-sm hidden-xs" style="width: 200px;">
+                                <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
                                     <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search_func" />
 
                                     <div class="input-group-btn">
@@ -270,11 +270,11 @@
                         <div class="box-header">
                             <h3 class="box-title">List</h3>
 
-                            <div class="box-tools">
+                            <div class="box-tools mt-2">
 
-                                <button type="button" class="btn btn-default " @@click="page_add()" id="btn_role_add">新建资源</button>
+                                <button type="button" class="btn btn-default pull-left  ml-1 mt-2" @@click="page_add()" id="btn_role_add">新建资源</button>
 
-                                <div class="input-group input-group-sm hidden-xs" style="width: 200px;">
+                                <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
                                     <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search_page" />
 
                                     <div class="input-group-btn">
@@ -462,7 +462,7 @@
                         },
                         Operation: function (item) {
 
-                            showWui("/Permission/RoleOperation?roleid=" + item.ROLE_ID);
+                            showWui("/Permission/RoleOperation?roleid=" + item.ROLE_ID, 500);
 
                         },
                         Search: function () {
@@ -610,7 +610,7 @@
                         })
                     },
                     Operation: function (item) {
-                        showWui("/Permission/AccountOperation?userid=" + item.USER_ID);
+                        showWui("/Permission/AccountOperation?userid=" + item.USER_ID,500);
 
                     },
                     Search: function () {
@@ -642,7 +642,7 @@
                     },
                     add_account: function () {
                      
-                        showWui("/Permission/AddAccount");
+                        showWui("/Permission/AddAccount",500);
 
                     },
                     del_account: function (item) {
@@ -733,7 +733,7 @@
                         })
                     },
                     Operation: function (item) {
-                        showWui("/Permission/FuncOperation?funcid=" + item.FUNC_ID);
+                        showWui("/Permission/FuncOperation?funcid=" + item.FUNC_ID,650);
                     },
                     Search: function () {
                         func_pageIndex = 1;
