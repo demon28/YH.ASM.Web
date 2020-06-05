@@ -20,6 +20,7 @@ namespace YH.ASM.Web.Controllers
     [Authorize]
     public class PermissionController : ControllerBase.ControllerBase
     {
+      
         public IActionResult Index()
         {
             return View();

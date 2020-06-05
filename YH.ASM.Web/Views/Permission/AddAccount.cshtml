@@ -181,7 +181,7 @@
                         userid: newuserid,
                         roleid: newroleid
                     },
-                    callback: function (result) {
+                    success: function (result) {
 
                         console.log("返回结果:" + JSON.stringify(result));
 
@@ -193,6 +193,7 @@
                             alert_danger(result.Message);
                             return;
                         }
+
                         alert_success("添加成功");
                         parent.location.reload();
 

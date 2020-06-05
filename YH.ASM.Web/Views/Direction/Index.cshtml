@@ -12,7 +12,9 @@
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 
-
+    <!-- fullCalendar -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/fullcalendar/dist/fullcalendar.min.css">
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
 }
 
 @section Pageheader{
@@ -21,7 +23,7 @@
 
 
     <h1>
-        <small>  人员信息</small>
+        <small>  动向信息</small>
 
     </h1>
     <ol class="breadcrumb">
@@ -37,8 +39,8 @@
     <div class="row">
 
         <!-- /.col -->
-        <div id="tab_account">
-            <div class="box">
+        <div id="tab_account" class="col-md-7">
+            <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title">List</h3>
 
@@ -46,30 +48,14 @@
 
 
 
-                        <div class="form-group input-group input-group-sm hidden-xs" style="width: 500px; ">
+                        <div class="input-group input-group-sm  col-md-2 pull-right ml-1">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search_account" />
 
-                            <label>时间:</label>
-
-                            <div  style="width: 200px;">
-                                <div class="input-group date">
-
-                                    <input type="text" class="form-control pull-right" id="datepicker">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                </div>
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search_account"><i class="fa fa-search"></i></button>
                             </div>
 
-
-                            <div style="width: 200px;">
-                                <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
-
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
                         </div>
-
 
                     </div>
                 </div>
@@ -82,36 +68,25 @@
                                 <th>姓名</th>
                                 <th>部门</th>
                                 <th>职务</th>
-                                <th>电话</th>
-                                <th>性别</th>
-                                <th>状态</th>
-                                <th>入职时间</th>
 
-                                <th>操作</th>
+                                <th>当月出差天数</th>
+                                <th>工作视图</th>
+
                             </tr>
                             <tr v-for="(item,index) in list">
                                 <td>{{item.WORK_ID}}</td>
                                 <td>{{item.USER_NAME}}</td>
                                 <td>{{item.DEPARTMENT }}</td>
                                 <td>{{item.DTNAME}}</td>
-                                <td>{{item.MOBILE}}</td>
 
-                                <td>
-                                    <span class="label bg-blue" v-if="item.USER_SEX ==0">男</span>
-                                    <span class="label bg-red " v-if="item.USER_SEX ==1">女</span>
+                                <td style="text-align:center">
+
+                                    <span class="label bg-green">  {{item.MOUNTHCOUNT}}</span>
 
                                 </td>
 
                                 <td>
-                                    <span class="label label-success" v-if="item.USER_STATUS==0">在职</span>
-                                    <span class="label label-warning" v-if="item.USER_STATUS==1">离职</span>
-                                    <span class="label label-danger" v-if="item.USER_STATUS==2">锁定</span>
-                                </td>
-
-                                <td>{{item.COMEDATE}}</td>
-
-                                <td>
-                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="Details(item)">详情</button>
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="Details(item)">出差视图</button>
                                 </td>
                             </tr>
 
@@ -138,6 +113,32 @@
             </div>
         </div>
 
+        <div id="tab_mounth" class="col-md-5">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">周平 工作日历</h3>
+
+
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+
+                    <div id="calendar"></div>
+
+                </div>
+
+
+                <div class="box-footer no-padding">
+
+
+
+                
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
     <!-- /.col -->
     <!-- /.row -->
@@ -153,21 +154,141 @@
     <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 
 
+    <script src="~/Reference/adminLTE/bower_components/moment/moment.js"></script>
+    <script src="~/Reference/adminLTE/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="~/Reference/adminLTE/bower_components/fullcalendar/dist/locale/zh-cn.js"></script>
+
+
     <script>
-        $(function () {
 
-            $('#datepicker').datepicker({
+        //当前页码
+        var pageIndex = 1;
+        //每页显示条数
+        var pageSize = 10;
+        //总共多少条
+        var pageCount;
+        //总共多少页
+        var pageTotal;
 
-                format: "yyyy-mm",
-                language: "zh-CN",
-                autoclose: true,
-                clearBtn: true,
-                startView: 1,
-                minViewMode: 1,
-                maxViewMode: 2
-
-            });
+        $(document).ready(function () {
+            Load();
         });
+
+        var vm;
+        function Load() {
+
+            vm = new Vue({
+                el: "#tab_account",
+                data: {
+                    list: [],
+                    pIndex: pageIndex,
+                    pSize: pageSize,
+                    pCount: pageCount,
+                    pTotal: pageTotal
+                },
+                created: function () {
+
+                    this.Init();
+                    this.LoadCalendar();
+                },
+                methods: {
+                    Init: function () {
+                        var self = this;
+                        var keywork = $("#txt_Search").val();
+                        MyAjax({
+                            url: "/Direction/List",
+                            type: "POST",
+                            data: {
+                                keyword: keywork,
+                                pageIndex: pageIndex,
+                                pageSize: pageSize
+                            },
+                            success: function (result) {
+
+                                if (result.Success) {
+
+                                    self.list = result.Content;
+
+                                    pageIndex = result.PageIndex;
+                                    pageSize = result.PageSize;
+                                    pageCount = result.PageCount;
+                                    pageTotal = result.PageTotal;
+
+                                    self.PageBind();
+                                }
+                            }
+                        })
+                    },
+                    Details: function (item) {
+                        MyAjax({
+                            url: "/People/Details",
+                            type: "POST",
+                            data: {
+                                workid: item.work_id
+                            },
+                            success: function (result) {
+                                if (result.Success) {
+                                    vm.Init();
+                                }
+                            }
+                        });
+
+                    },
+                    Search: function () {
+                        pageIndex = 1;
+                        this.Init();
+                    },
+                    PageBind: function () {
+
+                        $("#ul_page").jqPaginator({
+                            totalPages: pageTotal,
+                            visiblePages: pageSize,
+                            currentPage: pageIndex,
+
+                            first: ' <li><a href="#">First</a></li>',
+                            prev: ' <li><a href="#">&laquo;</a></li>',
+                            next: ' <li><a href="#">&raquo;</a></li>',
+                            last: '<li><a href="#">Last<\/a><\/li>',
+                            page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                            onPageChange: function (num, type) {
+
+                                pageIndex = num;
+
+                                if (type == "change") {
+                                    vm.Init();
+                                }
+                            }
+                        });
+                    },
+                    LoadCalendar: function () {
+
+                        var date = new Date()
+                        var d = date.getDate(),
+                            m = date.getMonth(),
+                            y = date.getFullYear()
+
+                        $('#calendar').fullCalendar({
+
+                            header: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right:
+                            },
+
+
+
+                        });
+
+
+                    }
+                }
+            });
+        }
+
+
+
+
     </script>
 
 

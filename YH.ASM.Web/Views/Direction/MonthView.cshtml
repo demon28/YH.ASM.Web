@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "MonthView";
+}
+
+<h1>MonthView</h1>
+
+
+
+
+@section Htmlhead{
+
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+
+
+}
+
+@section Pageheader{
+
+
+}
+
+
+
+
+
+
+
+
+@section scripts{
+
+    <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+
+
+    <script>
+        $(function () {
+
+            $('#datepicker').datepicker({
+
+                format: "yyyy-mm",
+                language: "zh-CN",
+                autoclose: true,
+                clearBtn: true,
+                startView: 1,
+                minViewMode: 1,
+                maxViewMode: 2
+
+            });
+        });
+    </script>
+
+
+
+
+
+}
