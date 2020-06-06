@@ -37,5 +37,30 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        public IActionResult ListCander(int userid,string date)
+        {
+            DateTime month = DateTime.Parse(date);
+
+            TASM_TRAVELManager manager = new TASM_TRAVELManager();
+            List<DirectionCanderModel> list = new List<DirectionCanderModel>();
+            manager.ListByMonth(userid, month, ref list);
+            
+            return SuccessResultList(list);
+
+        }
+
+
+        public IActionResult MonthView() {
+
+            return View();
+        }
+
+        public IActionResult Canlder()
+        {
+
+            return View();
+        }
+        
+
     }
 }
