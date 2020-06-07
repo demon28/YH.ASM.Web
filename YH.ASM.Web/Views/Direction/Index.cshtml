@@ -7,10 +7,6 @@
 
 @section Htmlhead{
 
-    <!-- daterange picker -->
-    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
-    <!-- bootstrap datepicker -->
-    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
 
     <!-- fullCalendar -->
     <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/fullcalendar/dist/fullcalendar.min.css">
@@ -18,6 +14,13 @@
 
 
 
+    <style>
+
+        .my-modal {
+            width: 300px;
+            height: 600px;
+        }
+    </style>
 
 
 }
@@ -69,10 +72,11 @@
                     <h3 class="box-title">List</h3>
 
                     <div class="box-tools">
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                            <button type="button" class="btn btn-default pull-right" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
+                        </div>
 
-
-
-                        <div class="input-group input-group-sm  col-md-2 pull-right ml-1" style="width: 150px;">
+                        <div class="input-group input-group-sm  col-md-2 pull-right ml-1" style="margin-left: 10px; width: 150px;">
                             <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
 
                             <div class="input-group-btn">
@@ -80,6 +84,21 @@
                             </div>
 
                         </div>
+
+
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px; width:150px;">
+
+                            <div class="input-group date">
+
+                                <input type="text" class="form-control pull-right" id="datepicker">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                            </div>
+
+
+                        </div>
+
 
                     </div>
                 </div>
@@ -185,22 +204,109 @@
 </div>
 
 <!-- /.control-sidebar -->
+<!-- /.modal-dialog -->
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="txt_username">Default Modal</h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                        <label for="txt_projectname" class="col-sm-3 control-label">项目名称：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_projectname" readonly="readonly">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="txt_kehuname" class="col-sm-3 control-label">客户名称：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_kehuname" readonly="readonly">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_address" class="col-sm-3 control-label">工作地点：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_address" readonly="readonly">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="txt_type" class="col-sm-3 control-label">日报类型：</label>
+
+                        <div class="col-sm-7">
+
+                            <button type="button" class="btn btn-block btn-success btn-flat" id="btn_zaoban">早班</button>
+                            <button type="button" class="btn btn-block btn-primary btn-flat" id="btn_wanban">晚班</button>
+
+                        </div>
+                    </div>
 
 
 
 
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">工单标题：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_support" readonly="readonly">
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">日报内容：</label>
+
+                        <div class="col-sm-7">
+                            <textarea class="form-control" style="height:150px" readonly="readonly" id="txt_content">内容</textarea>
+                        </div>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<!-- /.modal-dialog -->
 
 
 @section scripts{
 
-    <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-    <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 
 
     <script src="~/Reference/adminLTE/bower_components/moment/moment.js"></script>
     <script src="~/Reference/adminLTE/bower_components/fullcalendar/dist/fullcalendar.js"></script>
     <script src="~/Reference/adminLTE/bower_components/fullcalendar/dist/locale/zh-cn.js"></script>
 
+
+
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Reference/adminLTE/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 
     <script>
 
@@ -214,9 +320,25 @@
         var pageTotal;
 
         $(document).ready(function () {
-            Load();
 
+         
+            Load();
+            $('#datepicker').datepicker({
+                language: "zh-CN", //语言
+                todayHighlight: true, //是否今日高亮
+                format: 'yyyy-mm', //点击月份后显示在input中的格式
+                autoclose: true, //是否开启自动关闭
+                startView: 'months', //开始视图层，为月视图层
+                maxViewMode: 'years', //最大视图层，为年视图层
+                minViewMode: 'months' //最小视图层，为月视图层
+             
+             
+
+            })
         });
+
+
+
 
         var vm;
 
@@ -237,15 +359,19 @@
 
                     this.Init();
 
+
                 },
                 methods: {
                     Init: function () {
                         var self = this;
                         var keywork = $("#txt_Search").val();
+                        var date = $("#datepicker").val();
+
                         MyAjax({
                             url: "/Direction/List",
                             type: "POST",
                             data: {
+                                date: date,
                                 keyword: keywork,
                                 pageIndex: pageIndex,
                                 pageSize: pageSize
@@ -312,17 +438,27 @@
                     RefushCalendar: function (item) {
 
 
-                        console.log("RefushCalendar我被调用了");
+                        console.log("RefushCalendar被调用了");
                         $("#calendardiv").html("");
 
                         $("#calendardiv").append(" <div id=\"calendar\"></div>");
+
+                        var datevalue = $("#datepicker").val();
+
+                        if (datevalue == null || datevalue == "") {
+
+                            var myDate = new Date();
+                            datevalue = myDate.toLocaleDateString();
+                        }
 
 
                         $('#calendar').fullCalendar({
                             header: {
                                 left: 'prev,next today',
                                 center: 'title',
+
                             },
+                            defaultDate: datevalue,
                             lang: 'zh-cn',
                             eventOrder: 'order',
 
@@ -396,6 +532,48 @@
 
 
 
+                    },
+
+
+                    ExportExcel: function () {
+                        var keyword = $("#txt_Search").val();
+
+                        var datevalue = $("#datepicker").val();
+
+
+                        bootbox.dialog({
+                            title: '导出Excel',
+                            message: '<p>请问您需要导出合并数据 还是 全部数据？</p>',
+                        
+                            onEscape: true,
+                            backdrop: true,
+
+
+                            buttons: {
+                                fee: {
+                                    label: '合并数据',
+                                    className: 'btn-primary',
+                                    callback: function () {
+                                        window.location = "/Direction/ExportExcelUnion?keyword=" + keyword + "&date=" + datevalue;
+                                    }
+                                },
+                                fi: {
+                                    label: '全部数据',
+                                    className: 'btn-primary',
+                                    callback: function () {
+                                        window.location = "/Direction/ExportExcelAll?keyword=" + keyword + "&date=" + datevalue;
+                                    }
+                                },
+                            
+                            }
+                        })
+
+
+
+
+
+
+                  
                     }
 
                 }
@@ -404,17 +582,50 @@
 
 
         function ModelDiaog(traid) {
-            bootbox.dialog({
-                message: "< div class= 'text-center' > <i class='fa fa-spin fa-spinner'></i> Loading...</div >",
-                onEscape: function () {
 
+
+            MyAjax({
+                url: "/Direction/WrokReport",
+                type: "POST",
+                data: {
+                    traid: traid
+
+                },
+                success: function (result) {
+
+                    if (!result.Success) {
+
+                        return;
+                    }
+
+
+                    $("#txt_username").html(result.Content.user_name+"  工作日报");
+                    $("#txt_projectname").val(result.Content.project_name);
+
+                    $("#txt_kehuname").val(result.Content.customer_name);
+                    $("#txt_address").val(result.Content.provincen_name + "-" + result.Content.city_name);
+
+                    if (result.Content.type == 0) {
+
+                        $("#btn_zaoban").show();
+                        $("#btn_wanban").hide();
+                    } else {
+                        $("#btn_zaoban").hide();
+                        $("#btn_wanban").show();
+                    }
+
+
+                    $("#txt_support").val(result.Content.support_title);
+                    $("#txt_content").val(result.Content.content);
+
+                    $('#modal-default').modal('show');
 
                 }
 
-
-
             });
-           
+
+
+
 
         }
 

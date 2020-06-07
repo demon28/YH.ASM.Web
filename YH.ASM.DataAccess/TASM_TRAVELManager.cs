@@ -59,16 +59,125 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
             return list.Count > 0;
 
 
+        }
 
-            //string sql = @"select t.user_id,t.user_name,tra.* from tasm_travel tra
-            //left join   tasm_user t  on t.user_id=tra.userid
-            //where tra.userid=:userid order by tra.createtime,tra.type desc ";
 
-            //list = Db.SqlQueryable<DirectionCanderModel>(sql)
-            //    .AddParameters(new { userid = userid})
-            //    .ToList();
+        /// <summary>
+        /// 用于导出Excel
+        /// </summary>
+        /// <param name="month"></param>
+        /// <param name="keyword"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public bool ListBaseUser(DateTime month, string keyword,  ref List<DirectionModel> list)
+        {
+            string mounthstr = month.ToString("yyyy-MM");
 
-            //return list.Count > 0;
+            string sql = @"select tu.user_id,tu.user_name,tu.work_id,tu.department,tu.dtname ,tu.mobile, b.mounthcount from  
+(
+select userid ,count( to_char(t.createtime,'yyyy-mm-dd')) mounthcount from tasm_travel t  
+where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid ) b  left join tasm_user tu on tu.user_id=b.userid";
+
+
+            int pagecount = 0;
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                keyword = string.Empty;
+            }
+
+            list = Db.SqlQueryable<DirectionModel>(sql)
+                .AddParameters(new
+                {
+                    mounth = mounthstr
+                })
+                .Where(s => s.USER_NAME.Contains(keyword) || s.DEPARTMENT.Contains(keyword) || s.WORK_ID.Contains(keyword))
+                .ToList();
+                 
+
+
+         
+
+            return list.Count > 0;
+
+        }
+
+
+        /// <summary>
+        /// 用于Excel导出
+        /// </summary>
+        /// <returns></returns>
+        public bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionDetailModel> list) {
+            string sql = @"SELECT t.traid, t.userid,t.type,t.supportid,t.longitude,t.latitude,t.content,t.status,t.createtime,
+ 
+                            tu.user_name  user_name,
+                            tu.department department,
+                            tu.work_id   workid,
+                            tp.name project_name , 
+                            tc.name customer_name,
+                            ta.area_name provincen_name,
+                            tar.area_name city_name,
+                            ts.title  support_title
+                            from tasm_travel t
+                            LEFT JOIN tasm_user tu ON t.userid =tu.user_id
+                            LEFT JOIN tasm_project tp ON t.projectid=tp.pid
+                            LEFT JOIN tasm_customer tc ON t.customerid=tc.cid
+                            LEFT JOIN tnet_area ta ON t.provinceid=ta.area_id
+                            LEFT JOIN tnet_area tar ON t.cityid=tar.area_id
+                            LEFT JOIN tasm_support ts ON t.supportid=ts.sid
+
+
+                        WHERE  1=1";
+
+            if (month!=null)
+            {
+                string mounthstr = month.Value.ToString("yyyy-MM");
+
+                sql += "  and  to_char( t.createtime,'yyyy-mm') ='"+ mounthstr + "' ";
+            }
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                sql += "  and  ( tu.user_name like '%"+keyword+ "%'  or  tu.department like '%" + keyword + "%' or    tu.work_id  like '%" + keyword + "%' ）";
+            }
+
+            list = Db.SqlQueryable<DirectionDetailModel>(sql).ToList();
+            return list.Count > 0;
+
+        }
+
+
+
+        public DirectionDetailModel SelectByTraid(int traid) {
+
+
+            string sql = @"SELECT t.traid, t.userid,t.type,t.supportid,t.longitude,t.latitude,t.content,t.status,t.createtime,
+ 
+                            tu.user_name  user_name,
+                            tp.name project_name , 
+                            tc.name customer_name,
+                            ta.area_name provincen_name,
+                            tar.area_name city_name,
+                            ts.title  support_title
+                            from tasm_travel t
+                            LEFT JOIN tasm_user tu ON t.userid =tu.user_id
+                            LEFT JOIN tasm_project tp ON t.projectid=tp.pid
+                            LEFT JOIN tasm_customer tc ON t.customerid=tc.cid
+                            LEFT JOIN tnet_area ta ON t.provinceid=ta.area_id
+                            LEFT JOIN tnet_area tar ON t.cityid=tar.area_id
+                            LEFT JOIN tasm_support ts ON t.supportid=ts.sid
+
+
+                        WHERE t.traid=:traid";
+
+
+            DirectionDetailModel model = Db.SqlQueryable<DirectionDetailModel>(sql)
+                .AddParameters(new{
+                                     traid = traid
+                                 })
+                .First();
+
+            return model;
 
         }
 

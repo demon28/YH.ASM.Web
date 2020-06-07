@@ -25,5 +25,8 @@ namespace YH.ASM.Entites.Model
         /// 当月出差天数
         /// </summary>
         public int MOUNTHCOUNT { get; set; }
+
+
+
     }
 }

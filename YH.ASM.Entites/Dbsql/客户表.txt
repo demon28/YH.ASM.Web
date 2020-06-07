@@ -1,0 +1,57 @@
+﻿-- Create table
+create table TASM_CUSTOMER
+(
+  cid        NUMBER(9) not null,
+  name       VARCHAR2(100) not null,
+  phone      VARCHAR2(100),
+  emial      VARCHAR2(100),
+  adress     VARCHAR2(200),
+  status     NUMBER(1) default 0 not null,
+  isdel      NUMBER(1) default 0,
+  createtime DATE default sysdate,
+  remarks    VARCHAR2(200)
+)
+;
+-- Add comments to the table 
+comment on table TASM_CUSTOMER
+  is '客户表';
+-- Add comments to the columns 
+comment on column TASM_CUSTOMER.cid
+  is '主键';
+comment on column TASM_CUSTOMER.name
+  is '名字';
+comment on column TASM_CUSTOMER.phone
+  is '电话';
+comment on column TASM_CUSTOMER.emial
+  is '邮箱';
+comment on column TASM_CUSTOMER.adress
+  is '地址';
+comment on column TASM_CUSTOMER.status
+  is '状态';
+comment on column TASM_CUSTOMER.isdel
+  is '是否逻辑删除';
+comment on column TASM_CUSTOMER.createtime
+  is '创建时间';
+comment on column TASM_CUSTOMER.remarks
+  is '备注';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TASM_CUSTOMER
+  add constraint PK_TASM_CUSTOMER_CID primary key (CID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+
+
+
+
+  -- Create sequence 
+create sequence SEQ_TASM_CUSTOMER
+minvalue 1
+maxvalue 999999999
+start with 1
+increment by 1
+nocache;
+

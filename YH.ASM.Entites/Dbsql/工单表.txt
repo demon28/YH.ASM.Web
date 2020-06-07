@@ -1,0 +1,36 @@
+﻿-- Create table
+create table TASM_SUPPORT
+(
+  sid     NUMBER(9) not null,
+  title   VARCHAR2(100),
+  content CLOB
+)
+;
+-- Add comments to the table 
+comment on table TASM_SUPPORT
+  is '工单信息表';
+-- Add comments to the columns 
+comment on column TASM_SUPPORT.sid
+  is '主键id';
+comment on column TASM_SUPPORT.title
+  is '标题';
+comment on column TASM_SUPPORT.content
+  is '描述';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table TASM_SUPPORT
+  add constraint TASM_SUPPORT_SID primary key (SID)
+  using index 
+  tablespace USERS
+  pctfree 10
+  initrans 2
+  maxtrans 255;
+
+
+
+  -- Create sequence 
+create sequence SEQ_TASM_SUPPORT
+minvalue 1
+maxvalue 99999999999999
+start with 1
+increment by 1
+nocache;
