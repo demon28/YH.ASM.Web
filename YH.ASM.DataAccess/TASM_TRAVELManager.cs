@@ -93,10 +93,12 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
                 })
                 .Where(s => s.USER_NAME.Contains(keyword) || s.DEPARTMENT.Contains(keyword) || s.WORK_ID.Contains(keyword))
                 .ToList();
-                 
+
+            
 
 
-         
+
+
 
             return list.Count > 0;
 
