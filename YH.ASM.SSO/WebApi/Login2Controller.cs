@@ -15,45 +15,19 @@ namespace YH.ASM.SSO.WebApi
     public class Login2Controller : ControllerBase.ControllerBase
     {
 
-        #region
-        // GET: api/<Login2Controller>
-        [HttpGet]
-        public IEnumerable<string> Get()
+
+
+        [HttpPost("{value}")]
+        public JsonResult POST(string value)
         {
-            return new string[] { "value1", "value2" };
+
+            return SuccessResult(value, "成功");
+
         }
 
-        // GET api/<Login2Controller>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+      
 
-        // POST api/<Login2Controller>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<Login2Controller>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<Login2Controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        #endregion
-
-
-
-
-        [HttpPost]
+        [HttpPost("Login")]
         public JsonResult Login([FromBody] Models.LoginInputModel model)
         {
 
@@ -67,9 +41,10 @@ namespace YH.ASM.SSO.WebApi
                 return FailMessage();
             
             }
-            return SuccessResult(model, "成功");
+            return SuccessResult(usermodel, "成功");
         
         }
+       
 
 
     }

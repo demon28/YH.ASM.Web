@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 namespace YH.ASM.SSO
 {
     public class Startup
@@ -33,13 +35,20 @@ namespace YH.ASM.SSO
       .AddInMemoryIdentityResources(Config.GetIdentityResources());
 
             services.AddMvc();
-           // services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+
+            services.AddControllers()
+        .AddNewtonsoftJson();
+
+            services.AddCors(options => options.AddPolicy("Domain",
+               builder => builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()));
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+          
+
             if (env.IsDevelopment())
             {
             
@@ -60,6 +69,9 @@ namespace YH.ASM.SSO
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
+            app.UseCors("Domain");
         }
     }
 }
