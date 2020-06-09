@@ -10,6 +10,8 @@ namespace YH.ASM.SSO.ControllerBase
     public class ControllerBase: Controller
     {
 
+
+
         public JsonResult FailMessage(string msg = "失败")
         {
             return Json(new { Success = false, Code = 0, Message = msg });
@@ -44,5 +46,8 @@ namespace YH.ASM.SSO.ControllerBase
 
             return Json(new { Success = true, Code = 1, Message = msg, Content = list });
         }
+
+
+
     }
 }
