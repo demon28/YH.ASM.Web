@@ -36,8 +36,13 @@ namespace YH.ASM.SSO
 
             services.AddMvc();
 
+
             services.AddControllers()
-        .AddNewtonsoftJson();
+              .AddNewtonsoftJson(options =>
+              {
+                  options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                  options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+              });
 
             services.AddCors(options => options.AddPolicy("Domain",
                builder => builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()));
