@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using NPOI.OpenXmlFormats.Dml;
+using YH.ASM.Web.Models;
 
 namespace YH.ASM.Web.ControllerBase
 {
@@ -112,20 +113,4 @@ namespace YH.ASM.Web.ControllerBase
     }
 
 
-    public class SysUserInfo{
-
-
-        public int USER_ID { get; set; }
-        public string WORK_ID { get; set; }
-
-        public string USER_NAME { get; set; }
-
-        public string MOBILE { get; set; }
-
-        public int USER_SEX { get; set; }
-
-
-
-
-    }
 }

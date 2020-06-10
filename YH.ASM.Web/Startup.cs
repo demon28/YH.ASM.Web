@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,8 +14,10 @@ using Microsoft.AspNetCore.WebSockets;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using YH.ASM.Entites;
 
 namespace YH.ASM.Web
 {
@@ -29,11 +33,8 @@ namespace YH.ASM.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-
-
+            //验证登录
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
             {
                 //登录路径：这是当用户试图访问资源但未经过身份验证时，程序将会将请求重定向到这个相对路径
@@ -44,37 +45,27 @@ namespace YH.ASM.Web
 
             });
 
+            ////添加jwt验证：
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options => {
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,//是否验证Issuer
+            //            ValidateAudience = true,//是否验证Audience
+            //            ValidateLifetime = true,//是否验证失效时间
+            //            ClockSkew = TimeSpan.FromSeconds(30),
+            //            ValidateIssuerSigningKey = true,//是否验证SecurityKey
+            //            ValidAudience = Entites.AppConfig.Audience,//Audience
+            //            ValidIssuer = Entites.AppConfig.Issuer,//Issuer，这两项和前面签发jwt的设置一致
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppConfig.ApiKey))//拿到SecurityKey
+            //        };
+            //    });
+
+
+
+
 
             services.AddMvc().AddRazorRuntimeCompilation();
-
-            /* SSO配置
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = "Cookies";
-                options.DefaultChallengeScheme = "oidc";
-            })
-           .AddCookie("Cookies")
-           .AddOpenIdConnect("oidc", options =>
-           {
-               //  options.Authority = "http://sso.asm.cn:51419";
-
-               //该为配置文件配置sso登录地址
-               options.Authority = Entites.AppConfig.SSO_URL;
-
-               options.RequireHttpsMetadata = false;
-
-               //指定允许服务端返回的地址，默认是new PathString("/signin-oidc")
-               options.CallbackPath = new PathString("/signin-oidc");
-
-               //指定用户注销后，服务端可以调用客户端注销的地址，默认是new PathString("signout-callback-oidc")
-               // options.SignedOutCallbackPath = new PathString("/signout-callback-oidc");
-               options.SignedOutCallbackPath = new PathString("/Home/LogOut");
-
-               options.ClientId = "mvc_imp";
-               options.ClientSecret = "secret";
-
-           });
-          */
 
             services.AddControllers()
               .AddNewtonsoftJson(options =>
@@ -82,7 +73,6 @@ namespace YH.ASM.Web
                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
                });
-
 
         }
 

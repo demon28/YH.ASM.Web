@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
+using YH.ASM.Web.Models;
 
 namespace YH.ASM.Web.ControllerBase
 {

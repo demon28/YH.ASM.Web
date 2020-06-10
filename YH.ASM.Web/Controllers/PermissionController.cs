@@ -432,7 +432,7 @@ namespace YH.ASM.Web.Controllers
 
                 dbContext.Db.Ado.RollbackTran();
 
-                return FailMessage();
+                return FailMessage(e.ToString());
             }
 
         }

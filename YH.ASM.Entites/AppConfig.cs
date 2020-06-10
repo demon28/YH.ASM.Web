@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 
 namespace YH.ASM.Entites
@@ -47,7 +48,7 @@ namespace YH.ASM.Entites
         }
 
 
-        public static string HomeDatabase
+        private static string HomeDatabase
         {
             get
             {
@@ -57,12 +58,12 @@ namespace YH.ASM.Entites
 
                 var config = builder.Build();
 
-                string conn = config.GetSection("ConnectionStrings:HomeDatabase").Value; // 分层键
+                string conn = config.GetSection("ConnectionStrings:HomeDatabase").Value; 
                 return conn;
             }
 
         }
-        public static string DevelopmentDatabase
+        private static string DevelopmentDatabase
         {
             get
             {
@@ -72,13 +73,13 @@ namespace YH.ASM.Entites
 
                 var config = builder.Build();
 
-                string conn = config.GetSection("ConnectionStrings:DevelopmentDatabase").Value; // 分层键
+                string conn = config.GetSection("ConnectionStrings:DevelopmentDatabase").Value;
                 return conn;
             }
 
         }
 
-        public static string ProductDatabase
+        private static string ProductDatabase
         {
             get
             {
@@ -88,53 +89,36 @@ namespace YH.ASM.Entites
 
                 var config = builder.Build();
 
-                string conn = config.GetSection("ConnectionStrings:ProductDatabase").Value; // 分层键
+                string conn = config.GetSection("ConnectionStrings:ProductDatabase").Value; 
                 return conn;
             }
 
         }
 
 
-        public static List<string> RedirectUris
-        {
-            get{
-                var builder = new ConfigurationBuilder()
-                                 .SetBasePath(Directory.GetCurrentDirectory())
-                                 .AddJsonFile("appsettings.json");
-
-
-
-                var config = builder.Build();
-
-
-                var list = new List<string>();
-
-                config.GetSection("SSOSetting:RedirectUris").Bind(list);
-
-                return list;
-            }
-        
-        }
-
-        public static List<string> LogoutRedirectUris
+        /// <summary>
+        /// API加密Key 
+        /// </summary>
+        public static string ApiKey
         {
             get
             {
-                var configurationBuilder = new ConfigurationBuilder();
-                var config = configurationBuilder.Build();
+                var builder = new ConfigurationBuilder()
+                  .SetBasePath(Directory.GetCurrentDirectory())
+                  .AddJsonFile("appsettings.json");
 
-
-                var list = new List<string>();
-                config.GetSection("SSOSetting:LogoutRedirectUris").Bind(list);
-
-
-                return list;
+                var config = builder.Build();
+            
+                string url = config.GetSection("Jwt:ApiKey").Value; // 分层键
+                return url;
             }
 
         }
 
-
-        public static string SSO_URL
+        /// <summary>
+        /// jwt 接收者 
+        /// </summary>
+        public static string Audience
         {
             get
             {
@@ -144,7 +128,25 @@ namespace YH.ASM.Entites
 
                 var config = builder.Build();
 
-                string url = config.GetSection("SSOSetting:LoginUrl").Value; // 分层键
+                string url = config.GetSection("Jwt:Audience").Value; // 分层键
+                return url;
+            }
+
+        }
+        /// <summary>
+        /// jwt 签发者 
+        /// </summary>
+        public static string Issuer
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder()
+                  .SetBasePath(Directory.GetCurrentDirectory())
+                  .AddJsonFile("appsettings.json");
+
+                var config = builder.Build();
+
+                string url = config.GetSection("Jwt:Issuer").Value; // 分层键
                 return url;
             }
 

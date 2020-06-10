@@ -79,7 +79,7 @@ select userid ,count( to_char(t.createtime,'yyyy-mm-dd')) mounthcount from tasm_
 where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid ) b  left join tasm_user tu on tu.user_id=b.userid";
 
 
-            int pagecount = 0;
+        
 
             if (string.IsNullOrEmpty(keyword))
             {
