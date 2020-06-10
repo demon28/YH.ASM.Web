@@ -35,7 +35,7 @@ namespace YH.ASM.Web.ControllerBase
                 return GetUser().MOBILE;
             }
         }
-        public string User_Sex
+        public int User_Sex
         {
             get
             {
@@ -51,11 +51,27 @@ namespace YH.ASM.Web.ControllerBase
             }
         }
 
+
+
+        public SysUserInfo UserInfo
+        {
+            get
+            {
+                return GetUser();
+            }
+        }
+
         public SysUserInfo GetUser() {
             var userinfo = (HttpContext.User.Identity as System.Security.Claims.ClaimsIdentity);
-            var json = userinfo.FindFirst("name");
+            
 
-            SysUserInfo usermodel = JsonConvert.DeserializeObject<SysUserInfo>(json.Value);
+            SysUserInfo usermodel = new SysUserInfo();
+            usermodel.USER_ID = int.Parse(userinfo.FindFirst("USER_ID").Value);
+            usermodel.WORK_ID = userinfo.FindFirst("WORK_ID").Value;
+            usermodel.USER_NAME = userinfo.FindFirst("USER_NAME").Value;
+            usermodel.MOBILE = userinfo.FindFirst("MOBILE").Value;
+            usermodel.USER_SEX = int.Parse(userinfo.FindFirst("USER_SEX").Value);
+
             return usermodel;
         }
 
@@ -106,7 +122,7 @@ namespace YH.ASM.Web.ControllerBase
 
         public string MOBILE { get; set; }
 
-        public string USER_SEX { get; set; }
+        public int USER_SEX { get; set; }
 
 
 

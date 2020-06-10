@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "";
+}
+
+    <html>
+    <head>
+        <meta charset="utf-8">
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/Ionicons/css/ionicons.min.css">
+        <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/AdminLTE.css?23" />
+    </head>
+    <body class="hold-transition ">
+
+        <div class="login-box">
+
+
+
+            <div class="login-logo">
+                <a></a>
+            </div>
+
+
+
+            <input type="hidden" />
+            <div class="login-box-body">
+                <p class="login-box-msg">请输入您的账号密码</p>
+
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" placeholder="账号" id="txt_username" />
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" class="form-control" placeholder="密码" id="txt_pwd" />
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+
+                <div class="row">
+
+
+                    <div class="col-xs-4 pull-right">
+                        <input type="button" class="btn btn-primary btn-block" value="登 录" id="btn_login" />
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+        <script src="~/Reference/adminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+
+        <script src="~/Reference/adminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/Reference/adminLTE/dist/js/adminlte.min.js"></script>
+
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/Reference/adminLTE/dist/js/demo.js"></script>
+
+        <script src="~/Reference/scripts/jquery.bootstrap-growl.js"></script>
+        <script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
+        <script src="~/js/jq-paginator.min.js"></script>
+        <script src="~/Reference/bootbox/bootbox.min.js"></script>
+        <script src="~/Reference/scripts/CommonScript.js"></script>
+
+        <script>
+
+
+            $(document).ready(function () {
+
+                $("#btn_login").click(function () {
+
+                    var username = $("#txt_username").val();
+                    var userpwd = $("#txt_pwd").val();
+                    var returnUrl = getQueryString("returnUrl");
+
+                    console.log(username + "===" + userpwd);
+
+                    $.ajax({
+                        url: "/Login/LoginByWorkid",
+                        type: "POST",
+                        data: {
+                            userName: username,
+                            password: userpwd,
+
+                        },
+                        success: function (result) {
+
+                            console.log(result);
+
+                            if (!result.Success) {
+
+                                alert_info(result.Message);
+
+                            } else {
+                                window.location.href = "/Home/Index";
+                            }
+                        }
+                    });
+
+                });
+
+            });
+
+
+        </script>
+    </body>
+    </html>
+

@@ -18,10 +18,15 @@ body {
   height: 100%;
 }
 body {
-  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  overflow-x: hidden;
-  overflow-y: auto;
+    font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-image: url('../../../../img/bg.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
 }
 /* Layout */
 .wrapper {
@@ -683,9 +688,8 @@ a:focus {
 .control-sidebar-bg,
 .control-sidebar {
   top: 0;
-  right: -45%;
-  width: 45%;
-  height:95%;
+  right: -230px;
+  width: 230px;
   -webkit-transition: right 0.3s ease-in-out;
   -o-transition: right 0.3s ease-in-out;
   transition: right 0.3s ease-in-out;
@@ -3242,6 +3246,7 @@ table.text-center th {
   text-align: center;
   margin-bottom: 25px;
   font-weight: 300;
+  margin-top:360px;
 }
 .login-logo a,
 .register-logo a {

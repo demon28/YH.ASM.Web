@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,25 @@ namespace YH.ASM.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddRazorRuntimeCompilation(); ;
+
+
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
+            {
+                //登录路径：这是当用户试图访问资源但未经过身份验证时，程序将会将请求重定向到这个相对路径
+                o.LoginPath = new PathString("/Login/Index");
+
+                //禁止访问路径：当用户试图访问资源时，但未通过该资源的任何授权策略，请求将被重定向到这个相对路径。
+                o.AccessDeniedPath = new PathString("/Permission/NoPermission");
+
+            });
+
+
+            services.AddMvc().AddRazorRuntimeCompilation();
+
+            /* SSO配置
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Cookies";
@@ -55,13 +74,15 @@ namespace YH.ASM.Web
                options.ClientSecret = "secret";
 
            });
-          
+          */
+
             services.AddControllers()
               .AddNewtonsoftJson(options =>
                {
                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
                });
+
 
         }
 

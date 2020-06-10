@@ -22,13 +22,17 @@ namespace YH.ASM.Web.ControllerBase
 
             //获取当前登录的用户信息
 
-            var json= Context.HttpContext.User.FindFirst("name");
+            SysUserInfo info = new SysUserInfo();
+            info.USER_ID = int.Parse(Context.HttpContext.User.FindFirst("USER_ID").Value);
+            info.WORK_ID = Context.HttpContext.User.FindFirst("WORK_ID").Value;
+            info.USER_NAME = Context.HttpContext.User.FindFirst("USER_NAME").Value;
+            info.MOBILE = Context.HttpContext.User.FindFirst("MOBILE").Value;
+            info.USER_SEX = int.Parse(Context.HttpContext.User.FindFirst("USER_SEX").Value);
+            
 
-            SysUserInfo info =  JsonConvert.DeserializeObject<SysUserInfo>(json.Value);
+                        //获取当前页面信息
 
-            //获取当前页面信息
-         
-            var controllerName = Context.ActionDescriptor.RouteValues["controller"];
+             var controllerName = Context.ActionDescriptor.RouteValues["controller"];
             var actionName = Context.ActionDescriptor.RouteValues["action"];
 
             var page = "/" + controllerName + "/" + actionName;
@@ -69,18 +73,6 @@ namespace YH.ASM.Web.ControllerBase
 
                 usermanage.Insert(urmodel);
             }
-
-
-            //该用户不存在任何角色
-            //if (!usermanage.ListByPmsView(info.USER_ID, ref pmslist))
-            //{
-            //    if (!isAjax)
-            //    {
-            //        Context.Result = new RedirectResult("/Permission/NoPermission");
-            //        return;
-            //    }
-            //    Context.Result = new JsonResult( new { Success = false, Code = 302, Message = "没有任何访问权限" });
-            //}
 
 
             //该用户的所有角色没有改页面权限

@@ -14,10 +14,10 @@ using YH.ASM.Web.Models;
 
 namespace YH.ASM.Web.Controllers
 {
-    
+    [Authorize]
     public class HomeController : ControllerBase.ControllerBase
     {
-        [Authorize]
+       
         public IActionResult Index()
         {
             return View();
@@ -37,7 +37,7 @@ namespace YH.ASM.Web.Controllers
         public IActionResult GetLoginUser()
         {
 
-            return Json(new { workid = Work_Id, sex = User_Sex, phone=User_Sex,name=User_Name});
+            return Json(new { UserInfo });
         }
 
     }

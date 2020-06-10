@@ -101,7 +101,7 @@
                                         </div>
                                     *@
                                     <div class="pull-right">
-                                        <a href="/Home/LoginOut" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="/Login/LoginOut" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -545,15 +545,16 @@
                 type: "POST",
                 success: function (result) {
 
-
-                    $("#p_username").html(result.workid + " : " + result.name);
-                    $("#span_user").html(result.workid + " : " + result.name);
-                    $("#span_rights").html(result.workid + " : " + result.name);
-                    $("#p2_user").html(result.workid + " : " + result.name);
+                    console.log(result);
 
 
+                    $("#p_username").html(result.UserInfo.WORK_ID + " : " + result.UserInfo.USER_NAME);
+                    $("#span_user").html(result.UserInfo.WORK_ID + " : " + result.UserInfo.USER_NAME);
+                    $("#span_rights").html(result.UserInfo.WORK_ID + " : " + result.UserInfo.USER_NAME);
+                    $("#p2_user").html(result.UserInfo.WORK_ID + " : " + result.UserInfo.USER_NAME);
 
-                    if (result.sex == "1") {
+
+                    if (result.UserInfo.USER_SEX == 1) {
 
                         $("#img_leftlogo").attr("src", "/Reference/adminLTE/dist/img/user4-128x128.jpg");
                         $("#img_rightlogo").attr("src", "/Reference/adminLTE/dist/img/user4-128x128.jpg");

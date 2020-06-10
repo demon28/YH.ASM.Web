@@ -28,7 +28,7 @@ namespace YH.ASM.DataAccess.CodeGenerator.DBCore
             Db.Aop.OnLogExecuting = (sql, pars) =>
             {
 
-                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss："));
+                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 Console.WriteLine(sql + "\r\n" +
                     Db.Utilities.SerializeObject(pars.ToDictionary(it => it.ParameterName, it => it.Value)));
                 Console.WriteLine();

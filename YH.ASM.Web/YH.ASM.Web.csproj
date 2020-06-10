@@ -7505,4 +7505,11 @@
     <TypeScriptCompile Include="wwwroot\Reference\adminLTE\bower_components\moment\moment.d.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\Reference\adminLTE\dist\css\AdminLTE.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
