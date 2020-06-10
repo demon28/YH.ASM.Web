@@ -58,19 +58,14 @@ namespace YH.ASM.Entites.CodeGenerator
            /// </summary>           
            public int? CITYID {get;set;}
 
-           /// <summary>
-           /// Desc:区id，外键tnet_area  出差的目的省
-           /// Default:
-           /// Nullable:True
-           /// </summary>           
-           public int? AREAID {get;set;}
+        
 
            /// <summary>
            /// Desc:数据类型（暂定上午打卡，下午打卡两种类型）
            /// Default:
            /// Nullable:True
            /// </summary>           
-           public short? TYPE {get;set;}
+           public int? TYPE {get;set;}
 
            /// <summary>
            /// Desc:售后工单表id， 前期可为空
@@ -127,6 +122,11 @@ namespace YH.ASM.Entites.CodeGenerator
            /// Nullable:True
            /// </summary>           
            public string REMARKS {get;set;}
+
+        /// <summary>
+        /// 地址
+        /// </summary>
+          public string ADDRESS { get; set; }
 
     }
 }

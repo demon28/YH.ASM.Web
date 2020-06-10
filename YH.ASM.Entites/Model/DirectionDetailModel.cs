@@ -29,5 +29,7 @@ namespace YH.ASM.Entites.Model
 
         public string department { get; set; }
         public string workid { get; set; }
+
+        public string address { get; set; }
     }                          
 }

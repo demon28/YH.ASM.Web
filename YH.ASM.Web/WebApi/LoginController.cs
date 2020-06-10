@@ -21,10 +21,12 @@ namespace YH.ASM.Web.WebApi
         [HttpPost("Login")]
         public JsonResult Login([FromBody] Models.LoginInputModel model) {
 
-            if (!Entites.Tool.VerifyApiMd5.Check(model.SigningKey,model.Username,model.Password))
-            {
-                return FailMessage("异常访问！");
-            }
+            //第一版不验证MD5
+
+            //if (!Entites.Tool.VerifyApiMd5.Check(model.SigningKey,model.Username,model.Password))
+            //{
+            //    return FailMessage("异常访问！");
+            //}
 
 
             TASM_USER usermodel = new TASM_USER();

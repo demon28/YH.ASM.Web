@@ -96,10 +96,6 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
             
 
-
-
-
-
             return list.Count > 0;
 
         }
@@ -149,11 +145,29 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
         }
 
 
+        public bool ListByUserId(int userid, int pageindex,int pagesize, ref List<TASM_TRAVEL> list) {
+
+
+            list = Db.Queryable<TASM_TRAVEL>().Where(s => s.USERID == userid).ToPageList(pageindex, pagesize);
+
+            return list.Count > 0;
+        
+        }
+
+        public bool SelectByDate(int userid,DateTime date,int type)
+        {
+
+            string day = date.ToString("yyyy-MM-dd");
+
+            int i= Db.Queryable<TASM_TRAVEL>().Count(s=>s.TYPE.Value==type&&s.USERID==userid &&  s.CREATETIME.Date.Equals(date.Date));
+
+            return i > 0;
+        }
 
         public DirectionDetailModel SelectByTraid(int traid) {
 
 
-            string sql = @"SELECT t.traid, t.userid,t.type,t.supportid,t.longitude,t.latitude,t.content,t.status,t.createtime,
+            string sql = @"SELECT t.traid, t.userid,t.type,t.supportid,t.longitude,t.latitude,t.content,t.status,t.createtime,t.address
  
                             tu.user_name  user_name,
                             tp.name project_name , 

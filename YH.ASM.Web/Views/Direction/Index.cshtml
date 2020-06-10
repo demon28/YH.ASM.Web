@@ -603,8 +603,9 @@
                     $("#txt_projectname").val(result.Content.project_name);
 
                     $("#txt_kehuname").val(result.Content.customer_name);
-                    $("#txt_address").val(result.Content.provincen_name + "-" + result.Content.city_name);
+                   // $("#txt_address").val(result.Content.provincen_name + "-" + result.Content.city_name);
 
+                    $("#txt_address").val(result.Content.Address);
                     if (result.Content.type == 0) {
 
                         $("#btn_zaoban").show();
