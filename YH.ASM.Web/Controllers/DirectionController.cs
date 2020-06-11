@@ -185,9 +185,9 @@ namespace YH.ASM.Web.Controllers
             row1.CreateCell(7).SetCellValue("经度");
             row1.CreateCell(8).SetCellValue("纬度");
 
-            row1.CreateCell(9).SetCellValue("省");
-            row1.CreateCell(10).SetCellValue("市");
-            row1.CreateCell(11).SetCellValue("工单名称");
+       
+            row1.CreateCell(9).SetCellValue("工单名称");
+            row1.CreateCell(10).SetCellValue("地址");
 
             for (int i = 0; i < list.Count(); i++)
             {
@@ -206,10 +206,8 @@ namespace YH.ASM.Web.Controllers
                 rowTemp.CreateCell(7).SetCellValue(list[i].longitude.ToString());
                 rowTemp.CreateCell(8).SetCellValue(list[i].latitude.ToString());
 
-                rowTemp.CreateCell(9).SetCellValue(list[i].provincen_name);
-                rowTemp.CreateCell(10).SetCellValue(list[i].city_name);
-                rowTemp.CreateCell(11).SetCellValue(list[i].support_title);
-
+                rowTemp.CreateCell(9).SetCellValue(list[i].support_title);
+                rowTemp.CreateCell(10).SetCellValue(list[i].address);
             }
 
             var fileName = "动向信息" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-ffff") + ".xls";//文件名

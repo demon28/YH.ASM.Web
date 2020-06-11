@@ -145,11 +145,12 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
         }
 
 
-        public bool ListByUserId(int userid, int pageindex,int pagesize, ref List<TASM_TRAVEL> list) {
+        public bool ListByUserId(int userid,ref SqlSugar.PageModel page , ref List<TASM_TRAVEL> list) {
 
+            int pagecount = 0;
+            list = Db.Queryable<TASM_TRAVEL>().Where(s => s.USERID == userid).ToPageList(page.PageIndex, page.PageSize,ref pagecount);
 
-            list = Db.Queryable<TASM_TRAVEL>().Where(s => s.USERID == userid).ToPageList(pageindex, pagesize);
-
+            page.PageCount = pagecount;
             return list.Count > 0;
         
         }
@@ -167,7 +168,7 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
         public DirectionDetailModel SelectByTraid(int traid) {
 
 
-            string sql = @"SELECT t.traid, t.userid,t.type,t.supportid,t.longitude,t.latitude,t.content,t.status,t.createtime,t.address
+            string sql = @"SELECT t.traid, t.userid,t.type,t.supportid,t.longitude,t.latitude,t.content,t.status,t.createtime,t.address,
  
                             tu.user_name  user_name,
                             tp.name project_name , 

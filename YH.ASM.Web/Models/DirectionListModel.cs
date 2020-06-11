@@ -10,8 +10,8 @@ namespace YH.ASM.Web.Models
     {
         public int userid { get; set; }
         public int pageindex { get; set; }
+        public int pagesize{ get; set; }
 
-    
 
     }
 }

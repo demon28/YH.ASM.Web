@@ -71,9 +71,14 @@ namespace YH.ASM.Web.WebApi
             DataAccess.TASM_TRAVELManager manager = new DataAccess.TASM_TRAVELManager();
 
             List<TASM_TRAVEL> list = new List<TASM_TRAVEL>();
-            manager.ListByUserId(model.userid, model.pageindex, 15, ref list);
 
-            return SuccessResultList(list);
+            SqlSugar.PageModel p = new SqlSugar.PageModel();
+            p.PageIndex = model.pageindex;
+            p.PageSize = model.pagesize;
+
+            manager.ListByUserId(model.userid, ref p, ref list);
+
+            return SuccessResultList(list,p);
         }
     }
 }
