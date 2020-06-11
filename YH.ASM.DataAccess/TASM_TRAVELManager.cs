@@ -139,6 +139,9 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
                 sql += "  and  ( tu.user_name like '%"+keyword+ "%'  or  tu.department like '%" + keyword + "%' or    tu.work_id  like '%" + keyword + "%' ）";
             }
 
+
+       
+
             list = Db.SqlQueryable<DirectionDetailModel>(sql).ToList();
             return list.Count > 0;
 
@@ -148,7 +151,9 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
         public bool ListByUserId(int userid,ref SqlSugar.PageModel page , ref List<TASM_TRAVEL> list) {
 
             int pagecount = 0;
-            list = Db.Queryable<TASM_TRAVEL>().Where(s => s.USERID == userid).ToPageList(page.PageIndex, page.PageSize,ref pagecount);
+            list = Db.Queryable<TASM_TRAVEL>().Where(s => s.USERID == userid )
+                .OrderBy(s => s.CREATETIME ,OrderByType.Desc)
+                .ToPageList(page.PageIndex, page.PageSize,ref pagecount);
 
             page.PageCount = pagecount;
             return list.Count > 0;
