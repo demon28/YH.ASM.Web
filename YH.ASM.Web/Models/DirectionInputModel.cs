@@ -29,5 +29,9 @@ namespace YH.ASM.Web.Models
 
         public DateTime date { get; set; }
 
+
+        public string projectName { get; set; }
+        public string customerName { get; set; }
+        public string supportName { get; set; }
     }
 }

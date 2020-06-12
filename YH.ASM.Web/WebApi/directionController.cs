@@ -46,6 +46,11 @@ namespace YH.ASM.Web.WebApi
                           TYPE=model.type,
                            ISDEL=0,
                             PROJECTID=model.projecId,
+
+                             CUSTOMER_NAME=model.customerName,
+                              PROJECT_NAME=model.projectName,
+                               SUPPORT_NAME=model.supportName
+                              
             };
 
            

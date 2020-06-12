@@ -79,8 +79,6 @@ namespace YH.ASM.Web.Controllers
 
         public IActionResult WrokReport(int traid) {
 
-         
-
             DataAccess.TASM_TRAVELManager mannager = new TASM_TRAVELManager();
             var model = mannager.SelectByTraid(traid);
 
@@ -162,7 +160,7 @@ namespace YH.ASM.Web.Controllers
             TASM_TRAVELManager manager = new TASM_TRAVELManager();
 
 
-            List<DirectionDetailModel> list = new List<DirectionDetailModel>();
+            List<DirectionCanderModel> list = new List<DirectionCanderModel>();
 
             manager.ListAllByDate(time, keyword, ref list);
 
@@ -194,20 +192,20 @@ namespace YH.ASM.Web.Controllers
 
                 NPOI.SS.UserModel.IRow rowTemp = sheet1.CreateRow(i + 1);
 
-                rowTemp.CreateCell(0).SetCellValue(list[i].workid);
-                rowTemp.CreateCell(1).SetCellValue(list[i].user_name);
-                rowTemp.CreateCell(2).SetCellValue(list[i].department);
+                rowTemp.CreateCell(0).SetCellValue(list[i].WORK_ID);
+                rowTemp.CreateCell(1).SetCellValue(list[i].USER_NAME);
+                rowTemp.CreateCell(2).SetCellValue(list[i].DEPARTMENT);
 
-                rowTemp.CreateCell(3).SetCellValue(list[i].type==0?"早报":"晚报");
-                rowTemp.CreateCell(4).SetCellValue(list[i].createtime);
-                rowTemp.CreateCell(5).SetCellValue(list[i].project_name);
+                rowTemp.CreateCell(3).SetCellValue(list[i].TYPE==0?"早报":"晚报");
+                rowTemp.CreateCell(4).SetCellValue(list[i].CREATETIME);
+                rowTemp.CreateCell(5).SetCellValue(list[i].PROJECT_NAME);
 
-                rowTemp.CreateCell(6).SetCellValue(list[i].customer_name);
-                rowTemp.CreateCell(7).SetCellValue(list[i].longitude.ToString());
-                rowTemp.CreateCell(8).SetCellValue(list[i].latitude.ToString());
+                rowTemp.CreateCell(6).SetCellValue(list[i].CUSTOMER_NAME);
+                rowTemp.CreateCell(7).SetCellValue(list[i].LONGITUDE.ToString());
+                rowTemp.CreateCell(8).SetCellValue(list[i].LATITUDE.ToString());
 
-                rowTemp.CreateCell(9).SetCellValue(list[i].support_title);
-                rowTemp.CreateCell(10).SetCellValue(list[i].address);
+                rowTemp.CreateCell(9).SetCellValue(list[i].SUPPORT_NAME);
+                rowTemp.CreateCell(10).SetCellValue(list[i].ADDRESS);
             }
 
             var fileName = "动向信息" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-ffff") + ".xls";//文件名

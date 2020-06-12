@@ -9,11 +9,11 @@ using YH.ASM.Entites.Model;
 
 namespace YH.ASM.DataAccess
 {
-   public class TASM_TRAVELManager : DbContext<TASM_TRAVEL>
+    public class TASM_TRAVELManager : DbContext<TASM_TRAVEL>
     {
 
 
-        public bool ListBaseUser(DateTime month, string keyword,ref PageModel p, ref List<DirectionModel> list)
+        public bool ListBaseUser(DateTime month, string keyword, ref PageModel p, ref List<DirectionModel> list)
         {
             string mounthstr = month.ToString("yyyy-MM");
 
@@ -31,8 +31,9 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
             }
 
             list = Db.SqlQueryable<DirectionModel>(sql)
-                .AddParameters(new {
-                    mounth= mounthstr
+                .AddParameters(new
+                {
+                    mounth = mounthstr
                 })
                 .Where(s => s.USER_NAME.Contains(keyword) || s.DEPARTMENT.Contains(keyword) || s.WORK_ID.Contains(keyword))
                   .ToPageList(p.PageIndex, p.PageSize, ref pagecount);
@@ -40,11 +41,12 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
             p.PageCount = pagecount;
 
-            return list.Count>0;
-        
+            return list.Count > 0;
+
         }
 
-        public bool ListByMonth(int userid ,DateTime month, ref List<DirectionCanderModel> list) {
+        public bool ListByMonth(int userid, DateTime month, ref List<DirectionCanderModel> list)
+        {
 
             //去掉月份条件查询
             string mounthstr = month.ToString("yyyy-MM");
@@ -69,7 +71,7 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
         /// <param name="keyword"></param>
         /// <param name="list"></param>
         /// <returns></returns>
-        public bool ListBaseUser(DateTime month, string keyword,  ref List<DirectionModel> list)
+        public bool ListBaseUser(DateTime month, string keyword, ref List<DirectionModel> list)
         {
             string mounthstr = month.ToString("yyyy-MM");
 
@@ -79,7 +81,7 @@ select userid ,count( to_char(t.createtime,'yyyy-mm-dd')) mounthcount from tasm_
 where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid ) b  left join tasm_user tu on tu.user_id=b.userid";
 
 
-        
+
 
             if (string.IsNullOrEmpty(keyword))
             {
@@ -94,18 +96,21 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
                 .Where(s => s.USER_NAME.Contains(keyword) || s.DEPARTMENT.Contains(keyword) || s.WORK_ID.Contains(keyword))
                 .ToList();
 
-            
+
 
             return list.Count > 0;
 
         }
 
 
+
+        /*  第一版 不导出
         /// <summary>
         /// 用于Excel导出
         /// </summary>
         /// <returns></returns>
-        public bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionDetailModel> list) {
+        public bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionDetailModel> list)
+        {
             string sql = @"SELECT t.traid, t.userid,t.type,t.supportid,t.longitude,t.latitude,t.content,t.status,t.createtime,
  
                             tu.user_name  user_name,
@@ -127,48 +132,72 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
                         WHERE  1=1";
 
-            if (month!=null)
+            if (month != null)
             {
                 string mounthstr = month.Value.ToString("yyyy-MM");
 
-                sql += "  and  to_char( t.createtime,'yyyy-mm') ='"+ mounthstr + "' ";
+                sql += "  and  to_char( t.createtime,'yyyy-mm') ='" + mounthstr + "' ";
             }
 
             if (string.IsNullOrEmpty(keyword))
             {
-                sql += "  and  ( tu.user_name like '%"+keyword+ "%'  or  tu.department like '%" + keyword + "%' or    tu.work_id  like '%" + keyword + "%' ）";
+                sql += "  and  ( tu.user_name like '%" + keyword + "%'  or  tu.department like '%" + keyword + "%' or    tu.work_id  like '%" + keyword + "%' ）";
             }
-
-
-       
 
             list = Db.SqlQueryable<DirectionDetailModel>(sql).ToList();
             return list.Count > 0;
 
         }
 
+            */
 
-        public bool ListByUserId(int userid,ref SqlSugar.PageModel page , ref List<TASM_TRAVEL> list) {
+
+        public  bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionCanderModel> list)
+        {
+            string sql = @"SELECT t.*, tu.user_name  user_name  , tu.work_id work_id  ,tu.department department                                   
+                            from tasm_travel t
+                            LEFT JOIN tasm_user tu ON t.userid =tu.user_id where 1=1 ";
+
+            if (month != null)
+            {
+                string mounthstr = month.Value.ToString("yyyy-MM");
+
+                sql += "  and  to_char( t.createtime,'yyyy-mm') ='" + mounthstr + "' ";
+            }
+
+            list = Db.SqlQueryable<DirectionCanderModel>(sql).ToList();
+
+            return list.Count>0;
+
+
+        }
+
+
+        public bool ListByUserId(int userid, ref SqlSugar.PageModel page, ref List<TASM_TRAVEL> list)
+        {
 
             int pagecount = 0;
-            list = Db.Queryable<TASM_TRAVEL>().Where(s => s.USERID == userid )
-                .OrderBy(s => s.CREATETIME ,OrderByType.Desc)
-                .ToPageList(page.PageIndex, page.PageSize,ref pagecount);
+            list = Db.Queryable<TASM_TRAVEL>().Where(s => s.USERID == userid)
+                .OrderBy(s => s.CREATETIME, OrderByType.Desc)
+                .ToPageList(page.PageIndex, page.PageSize, ref pagecount);
 
             page.PageCount = pagecount;
             return list.Count > 0;
-        
+
         }
 
-        public bool SelectByDate(int userid,DateTime date,int type)
+        public bool SelectByDate(int userid, DateTime date, int type)
         {
 
             string day = date.ToString("yyyy-MM-dd");
 
-            int i= Db.Queryable<TASM_TRAVEL>().Count(s=>s.TYPE.Value==type&&s.USERID==userid &&  s.CREATETIME.Date.Equals(date.Date));
+            int i = Db.Queryable<TASM_TRAVEL>().Count(s => s.TYPE.Value == type && s.USERID == userid && s.CREATETIME.Date.Equals(date.Date));
 
             return i > 0;
         }
+
+        /*  玛特 总又一天要改回来
+
 
         public DirectionDetailModel SelectByTraid(int traid) {
 
@@ -203,5 +232,44 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
         }
 
+
+        */
+
+
+
+        public DirectionCanderModel SelectByTraid(int traid)
+        {
+
+            string sql = @"SELECT t.traid,
+                           t.userid,
+                           t.type,
+                           t.supportid,
+                           t.longitude,
+                           t.latitude,
+                           t.content,
+                           t.status,
+                           t.createtime,
+                           t.address,
+                           t.project_name,
+                           t.customer_name,
+                           t.support_name,
+                           tu.user_name user_name
+
+                      from tasm_travel t
+                      LEFT JOIN tasm_user tu
+                        ON t.userid = tu.user_id
+
+                     WHERE t.traid = :traid";
+
+
+            DirectionCanderModel model = Db.SqlQueryable<DirectionCanderModel>(sql)
+                          .AddParameters(new
+                          {
+                              traid = traid
+                          })
+                          .First();
+            return model;
+
+        }
     }
 }

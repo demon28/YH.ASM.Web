@@ -598,15 +598,15 @@
                         return;
                     }
 
+                    console.log(JSON.stringify(result));
 
-                    $("#txt_username").html(result.Content.user_name+"  工作日报");
-                    $("#txt_projectname").val(result.Content.project_name);
+                    $("#txt_username").html(result.Content.user_name + "  工作日报");
+                    $("#txt_projectname").val(result.Content.PROJECT_NAME);
 
-                    $("#txt_kehuname").val(result.Content.customer_name);
-                   // $("#txt_address").val(result.Content.provincen_name + "-" + result.Content.city_name);
+                    $("#txt_kehuname").val(result.Content.CUSTOMER_NAME);
+                    $("#txt_address").val(result.Content.ADDRESS);
 
-                    $("#txt_address").val(result.Content.address);
-                    if (result.Content.type == 0) {
+                    if (result.Content.TYPE == 0) {
 
                         $("#btn_zaoban").show();
                         $("#btn_wanban").hide();
@@ -614,10 +614,10 @@
                         $("#btn_zaoban").hide();
                         $("#btn_wanban").show();
                     }
+                  
 
-
-                    $("#txt_support").val(result.Content.support_title);
-                    $("#txt_content").val(result.Content.content);
+                    $("#txt_support").val(result.Content.SUPPORT_NAME);
+                    $("#txt_content").val(result.Content.CONTENT);
 
                     $('#modal-default').modal('show');
 
