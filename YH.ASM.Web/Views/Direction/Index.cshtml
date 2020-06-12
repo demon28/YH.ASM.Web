@@ -243,7 +243,13 @@
                             <input type="text" class="form-control" id="txt_address" readonly="readonly">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="txt_address" class="col-sm-3 control-label">提交时间：</label>
 
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_date" readonly="readonly">
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="txt_type" class="col-sm-3 control-label">日报类型：</label>
@@ -600,12 +606,12 @@
 
                     console.log(JSON.stringify(result));
 
-                    $("#txt_username").html(result.Content.user_name + "  工作日报");
+                    $("#txt_username").html(result.Content.USER_NAME + "  工作日报");
                     $("#txt_projectname").val(result.Content.PROJECT_NAME);
 
                     $("#txt_kehuname").val(result.Content.CUSTOMER_NAME);
                     $("#txt_address").val(result.Content.ADDRESS);
-
+                    $("#txt_date").val(result.Content.CREATETIME);
                     if (result.Content.TYPE == 0) {
 
                         $("#btn_zaoban").show();

@@ -17,10 +17,29 @@ namespace YH.ASM.DataAccess
         {
             string mounthstr = month.ToString("yyyy-MM");
 
-            string sql = @"select tu.user_id,tu.user_name,tu.work_id,tu.department,tu.dtname ,tu.mobile, b.mounthcount from  
-(
-select userid ,count( to_char(t.createtime,'yyyy-mm-dd')) mounthcount from tasm_travel t  
-where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid ) b  left join tasm_user tu on tu.user_id=b.userid";
+            string sql = @"SELECT TU.USER_ID,
+       TU.USER_NAME,
+       TU.WORK_ID,
+       TU.DEPARTMENT,
+       TU.DTNAME,
+       TU.MOBILE,
+       
+       B.MOUNTHCOUNT
+  
+  FROM (
+  
+  select userid,to_char(trunc(mdate,'mm'),'yyyy-mm') date_month,count(0) MOUNTHCOUNT from (
+    
+    select userid,trunc(createtime) mdate,count(0) dailycount from TASM_TRAVEL group by userid,trunc(createTime )
+    
+    ) tab WHERE to_char(trunc(mdate,'mm'),'yyyy-mm')=:mounth
+    
+     group by trunc(tab.mdate,'mm'),userid
+         
+         
+         ) B
+  LEFT JOIN TASM_USER TU
+    ON TU.USER_ID = B.USERID ";
 
 
             int pagecount = 0;
