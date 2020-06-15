@@ -31,27 +31,31 @@ namespace YH.ASM.Web.WebApi
             }
 
 
-            Entites.CodeGenerator.TASM_TRAVEL _travelModel = new Entites.CodeGenerator.TASM_TRAVEL()
-            {
+            Entites.CodeGenerator.TASM_TRAVEL _travelModel = new Entites.CodeGenerator.TASM_TRAVEL();
 
-                 ADDRESS=model.address,
-                  CONTENT=model.content,
-                   CREATETIME=model.date,
-                    CUSTOMERID=model.customerId,
-                     LATITUDE= Convert.ToDouble( model.latitude),
-                      LONGITUDE = Convert.ToDouble(model.longitude),
-                       SUPPORTID=model.supportId,
-                        USERID=model.userId,
-                         STATUS=0,
-                          TYPE=model.type,
-                           ISDEL=0,
-                            PROJECTID=model.projecId,
 
-                             CUSTOMER_NAME=model.customerName,
-                              PROJECT_NAME=model.projectName,
-                               SUPPORT_NAME=model.supportName
+            _travelModel.ADDRESS = model.address;
+            _travelModel.CONTENT = model.content;
+            _travelModel.CREATETIME = model.date;
+            _travelModel.CUSTOMERID = model.customerId;
+            _travelModel.LATITUDE = Convert.ToDouble(model.latitude);
+            _travelModel.LONGITUDE = Convert.ToDouble(model.longitude);
+            _travelModel.SUPPORTID = model.supportId;
+            _travelModel.USERID = model.userId;
+            _travelModel.STATUS = 0;
+            _travelModel.TYPE = model.type;
+            _travelModel.ISDEL = 0;
+            _travelModel.PROJECTID = model.projecId;
+
+            _travelModel.CUSTOMER_NAME = model.customerName;
+            _travelModel.PROJECT_NAME = model.projectName;
+            _travelModel.SUPPORT_NAME = model.supportName;
+
+            _travelModel.MACHINE_NAME = model.machineName;
+            _travelModel.MACHINE_COUNT = model.machineCount;
+            _travelModel.REMARKS = model.remarks;
                               
-            };
+            //此处 有建 关联人员信息 表 ，未启用
 
            
 
