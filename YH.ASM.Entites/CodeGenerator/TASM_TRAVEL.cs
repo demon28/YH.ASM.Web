@@ -103,5 +103,22 @@ namespace YH.ASM.Entites.CodeGenerator
         /// 第一版 没有{工单表} 的情况下 先将工单变成手动输入
         /// </summary>
         public System.String SUPPORT_NAME { get; set; }
+
+
+
+        /// <summary>
+        /// 设备名称
+        /// </summary>
+        public System.String MACHINE_NAME { get; set; }
+
+        /// <summary>
+        /// 设备数量
+        /// </summary>
+        public System.Int32? MACHINE_COUNT { get; set; }
+
+        /// <summary>
+        /// 售后人员，外键关联 tasm_maintainer 表
+        /// </summary>
+        public System.Int32? MAINTAINER { get; set; }
     }
 }

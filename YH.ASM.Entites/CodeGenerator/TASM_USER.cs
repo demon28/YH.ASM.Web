@@ -118,5 +118,31 @@ namespace YH.ASM.Entites.CodeGenerator
         /// </summary>           
         public short USER_SEX { get; set; }
 
+
+        /// <summary>
+        /// 一级部门
+        /// </summary>
+        public System.String DEPT1 { get; set; }
+
+        /// <summary>
+        /// 二级部门
+        /// </summary>
+        public System.String DEPT2 { get; set; }
+
+        /// <summary>
+        /// 三级部门
+        /// </summary>
+        public System.String DEPT3 { get; set; }
+
+        /// <summary>
+        /// 四级部门
+        /// </summary>
+        public System.String DEPT4 { get; set; }
+
+        /// <summary>
+        /// 五级部门
+        /// </summary>
+        public System.String DEPT5 { get; set; }
+
     }
 }

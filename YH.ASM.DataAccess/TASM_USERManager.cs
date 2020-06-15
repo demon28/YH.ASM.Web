@@ -46,6 +46,22 @@ namespace YH.ASM.DataAccess
             list= TASM_USERDb.GetList().Where(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)).OrderBy(s=>s.WORK_ID).ToList();
             return list.Count > 0;
         }
+
+        public bool ListByDept(string keyword ,ref PageModel p, ref List<TASM_USER> list) {
+
+
+            list = TASM_USERDb.GetPageList(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)
+            || it.DEPARTMENT.Contains(keyword) 
+             || it.DEPT2.Contains(keyword)
+               || it.DEPT3.Contains(keyword)
+                  || it.DEPT4.Contains(keyword)
+                     || it.DEPT5.Contains(keyword)
+            , p, it => it.WORK_ID, OrderByType.Asc);
+
+            return list.Count > 0;
+        }
+    
+    
     }
 
 }

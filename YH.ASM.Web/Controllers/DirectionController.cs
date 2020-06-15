@@ -186,7 +186,7 @@ namespace YH.ASM.Web.Controllers
        
             row1.CreateCell(9).SetCellValue("工单名称");
             row1.CreateCell(10).SetCellValue("地址");
-
+            row1.CreateCell(11).SetCellValue("日报");
             for (int i = 0; i < list.Count(); i++)
             {
 
@@ -206,6 +206,8 @@ namespace YH.ASM.Web.Controllers
 
                 rowTemp.CreateCell(9).SetCellValue(list[i].SUPPORT_NAME);
                 rowTemp.CreateCell(10).SetCellValue(list[i].ADDRESS);
+
+                rowTemp.CreateCell(11).SetCellValue(list[i].CONTENT);
             }
 
             var fileName = "动向信息" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-ffff") + ".xls";//文件名

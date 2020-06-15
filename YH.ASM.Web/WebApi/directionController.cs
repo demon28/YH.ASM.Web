@@ -85,5 +85,26 @@ namespace YH.ASM.Web.WebApi
 
             return SuccessResultList(list,p);
         }
+
+
+        [HttpGet("UserList")]
+        public JsonResult UserList([FromQuery] ListUserApiModel model) {
+
+            DataAccess.TASM_USERManager manager = new DataAccess.TASM_USERManager();
+
+            SqlSugar.PageModel p = new SqlSugar.PageModel();
+            p.PageIndex = model.pageindex;
+            p.PageSize = model.pagesize;
+
+            List<TASM_USER> list = new List<TASM_USER>();
+
+            manager.ListByDept(model.keywords, ref p, ref list);
+
+            return SuccessResultList(list, p);
+
+        }
+
+
+
     }
 }

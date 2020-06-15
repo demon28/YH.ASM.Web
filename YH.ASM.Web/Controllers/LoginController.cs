@@ -60,9 +60,9 @@ namespace YH.ASM.Web.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, userPrincipal, new AuthenticationProperties
             {
-                ExpiresUtc = DateTime.UtcNow.AddMinutes(20),
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(120),
                 IsPersistent = false,
-                AllowRefresh = false
+                AllowRefresh = true
 
             });
 
