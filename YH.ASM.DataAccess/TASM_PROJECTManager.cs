@@ -22,7 +22,17 @@ namespace YH.ASM.DataAccess
         }
 
 
+        public bool ListByWhere(string keywords,  ref List<TASM_PROJECT> list)
+        {
 
+            list = Db.Queryable<TASM_PROJECT>().Where(s => s.NAME.Contains(keywords)).ToList();
+
+            return list.Count > 0;
+
+
+
+
+        }
 
 
 

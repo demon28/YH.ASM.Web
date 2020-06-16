@@ -68,7 +68,7 @@
                     <div class="box-tools">
 
                         <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
-                            <button type="button" class="btn btn-default pull-right" @@click="ExportExcel()" id="btn_Search">添加项目</button>
+                            <button type="button" class="btn btn-default pull-right" @@click="Add()" id="btn_Search">添加项目</button>
                         </div>
 
                         <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
@@ -151,8 +151,8 @@
 
                                 <td class="my-td"> 开始<br />时间</td>
                                 <td class="my-td"> 结束<br />时间</td>
-                                <td class="my-td"> 安装<br />天数</td>
-                                <td class="my-td"> 安装<br />进度</td>
+                                <td class="my-td"> 调试<br />天数</td>
+                                <td class="my-td"> 调试<br />进度</td>
 
                                 <td class="my-td"> 开始<br />时间</td>
                                 <td class="my-td"> 结束<br />时间</td>
@@ -189,12 +189,13 @@
                                 <td>{{item.DEBUG_STATUS}}</td>
                                 <td>{{item.CHECK_STARDATE}}</td>
                                 <td>{{item.CHECK_ENDDATE}}</td>
+                                <td>{{item.COUNT_DOWN}}</td>
                                 <td>{{item.CREATETIME}}</td>
 
-                                <td>{{item.}}</td>
+
                                 <td>
-                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="RefushCalendar(item)">修改</button>
-                                    <button type="button" class="btn bg-danger btn-xs" v-on:click="RefushCalendar(item)">删除</button>
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="Update(item)">修改</button>
+                                    <button type="button" class="btn bg-danger btn-xs" v-on:click="Del(item)">删除</button>
                                 </td>
                             </tr>
 
@@ -230,23 +231,34 @@
 
 </section>
 
+<!-- Control Sidebar -->
 
+<div class="wui-masked" style="position:fixed;background:#fff;top:0;left:0;right:0;bottom:0;z-index:9998;opacity:0.3;display:none;"
+     onclick="closeWui()"></div>
+
+
+<div class="wui-ilayout" style="position:absolute; position:fixed;top:0;right:0;z-index:9999;bottom:0;border-left:4px #eee solid;display:none;background:#fff;">
+    <div style="padding:2em;height:100%;background-color:gainsboro">
+        <iframe style="width:50%;border:0 none;height:100%;width:100%;" src="about:blank" onload="javascript:$('.wui-ilayout-loading').remove()"></iframe>
+    </div>
+</div>
+
+<!-- /.control-sidebar -->
 
 @section scripts{
- 
-   <script>
+
+    <script>
 
 
        var vm = new Vue({
            el: "#tab_account",
-           data() {
-               return {
+           data: {
                    list: [],
                    pageIndex:1,
                    pageSize:15,
                    pageCount:20,
                    TotalCount:0
-               };
+
            },
            created: function () {
 
@@ -274,20 +286,22 @@
                        },
                        success: function (result) {
 
-                           console.log(JSON.stringify(result));
+                          // console.log(JSON.stringify(result));
 
                            if (!result.Success) {
-                              
+
                                alert_danger(result.Message);
                                return;
                            }
 
                            self.list = result.Content;
 
-                           pageIndex = result.PageIndex;
-                           pageSize = result.PageSize;
-                           pageCount = result.PageCount;
-                           TotalCount = result.PageTotal;
+
+
+                           self.pageIndex = result.PageIndex;
+                           self.pageSize = result.PageSize;
+                           self.pageCount = result.PageCount;
+                           self.pageCount = result.PageTotal;
 
                            self.PageBind();
                        }
@@ -300,6 +314,8 @@
                },
                PageBind: function () {
                    var self = this;
+
+                   console.log()
 
                    $("#ul_page").jqPaginator({
                        totalPages: self.pageCount,
@@ -314,10 +330,10 @@
 
                        onPageChange: function (num, type) {
 
-                           pageIndex = num;
+                           self.pageIndex = num;
 
                            if (type == "change") {
-                               vm.Init();
+                               self.Init();
                            }
                        }
                    });
@@ -325,8 +341,44 @@
                ExportExcel: function () {
                    var keyword = $("#txt_Search").val();
                    window.location = "/Project/ExportExcel?keyword=" + keyword;
-               }
+               },
+               Del: function (item) {
+                   var self = this;
+                   bootbox.confirm("您确定删除改记录吗？", function (res) {
+                       if (res) {
 
+                           MyAjax({
+                               url: "/Project/Delete",
+                               type: "POST",
+                               data: {
+                                   pid: item.PID
+                               },
+                               success: function (result) {
+
+                                   if (!result.Success) {
+
+                                       alert_danger(result.Message);
+                                       return;
+                                   }
+                                   alert_info("删除成功");
+                                   self.Init();
+
+                               }
+                           })
+                       }
+                   });
+
+
+
+               },
+               Add: function () {
+
+                   showWui("/Project/AddAndUpdate?type=add","50%");
+               },
+               Update: function (item) {
+                   showWui("/Project/AddAndUpdate?type=update&id=" + item.PID);
+
+               }
 
            }
 
@@ -336,7 +388,7 @@
        });
 
 
-   </script>
+    </script>
 
 }
 

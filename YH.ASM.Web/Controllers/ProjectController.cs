@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
 
 namespace YH.ASM.Web.Controllers
@@ -47,13 +51,134 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
+
+      
         public IActionResult Update()
         {
             return View();
         }
-        public IActionResult Delete()
+
+        [HttpPost]
+        public IActionResult Delete(int pid)
         {
-            return View();
+
+            TASM_PROJECTManager dbContext = new TASM_PROJECTManager();
+            if (!dbContext.CurrentDb.Delete(S => S.PID == pid))
+            {
+                return FailMessage();
+            }
+            return SuccessMessage();
+
+
+        }
+
+        [HttpGet]
+        public IActionResult ExportExcel( string keyword = "")
+        {
+            DataAccess.TASM_PROJECTManager manager = new DataAccess.TASM_PROJECTManager();
+
+
+            List<TASM_PROJECT> list = new List<TASM_PROJECT>();
+            manager.ListByWhere(keyword,  ref list);
+
+            HSSFWorkbook excelBook = new HSSFWorkbook(); //创建工作簿Excel
+            ISheet sheet1 = excelBook.CreateSheet("项目履历表");
+
+            IRow row1 = sheet1.CreateRow(0);
+
+            row1.CreateCell(0).SetCellValue("项目名称");
+            row1.CreateCell(1).SetCellValue("客户名称");
+
+            row1.CreateCell(2).SetCellValue("出货时间");
+            row1.CreateCell(3).SetCellValue("设备名称");
+            row1.CreateCell(4).SetCellValue("数量");
+            row1.CreateCell(5).SetCellValue("安装负责人");
+
+
+
+
+            row1.CreateCell(6).SetCellValue("一级负责人");
+            row1.CreateCell(7).SetCellValue("二级负责人");
+            row1.CreateCell(8).SetCellValue("三级负责人");
+
+            row1.CreateCell(9).SetCellValue("安装时效-开始时间");
+            row1.CreateCell(10).SetCellValue("安装时效-结束时间");
+            row1.CreateCell(11).SetCellValue("安装时效-安装天数");
+            row1.CreateCell(12).SetCellValue("安装进度");
+
+            row1.CreateCell(13).SetCellValue("调试时效-开始时间");
+            row1.CreateCell(14).SetCellValue("调试时效-结束时间");
+            row1.CreateCell(15).SetCellValue("调试天数");
+            row1.CreateCell(16).SetCellValue("调试进度");
+
+
+
+            row1.CreateCell(17).SetCellValue("验收-开始时间");
+            row1.CreateCell(18).SetCellValue("验收-结束时间");
+            row1.CreateCell(19).SetCellValue("验收倒计时(天)");
+            row1.CreateCell(20).SetCellValue("创建时间");
+
+
+
+            for (int i = 0; i < list.Count(); i++)
+            {
+
+                NPOI.SS.UserModel.IRow rowTemp = sheet1.CreateRow(i + 1);
+
+                rowTemp.CreateCell(0).SetCellValue(list[i].NAME);
+                rowTemp.CreateCell(1).SetCellValue(list[i].CUSTOMER_NAME);
+
+                rowTemp.CreateCell(2).SetCellValue(list[i].PRODUCTDATE.ToString());
+                rowTemp.CreateCell(3).SetCellValue(list[i].MACHINE);
+                rowTemp.CreateCell(4).SetCellValue(list[i].COUNT.ToString());
+                rowTemp.CreateCell(5).SetCellValue(list[i].INSTALL_NAME);
+
+
+                rowTemp.CreateCell(6).SetCellValue(list[i].INSTALL_LV1);
+                rowTemp.CreateCell(7).SetCellValue(list[i].INSTALL_LV2);
+
+                rowTemp.CreateCell(8).SetCellValue(list[i].INSTALL_LV3);
+                rowTemp.CreateCell(9).SetCellValue(list[i].INSTALL_STARDATE.ToString());
+                rowTemp.CreateCell(10).SetCellValue(list[i].INSTALL_ENDDATE.ToString());
+                rowTemp.CreateCell(11).SetCellValue(list[i].INSTALL_DAYS.ToString());
+
+
+                rowTemp.CreateCell(12).SetCellValue(list[i].INSTALL_STATUS.ToString());
+                rowTemp.CreateCell(13).SetCellValue(list[i].DEBUG_STARDATE.ToString());
+
+                rowTemp.CreateCell(14).SetCellValue(list[i].DEBUG_ENDDATE.ToString());
+                rowTemp.CreateCell(15).SetCellValue(list[i].DEBUG_DAYS.ToString());
+                rowTemp.CreateCell(16).SetCellValue(list[i].DEBUG_STATUS.ToString());
+                rowTemp.CreateCell(17).SetCellValue(list[i].CHECK_STARDATE.ToString());
+
+
+                rowTemp.CreateCell(18).SetCellValue(list[i].CHECK_ENDDATE.ToString());
+                rowTemp.CreateCell(19).SetCellValue(list[i].COUNT_DOWN.ToString());
+                rowTemp.CreateCell(20).SetCellValue(list[i].CREATETIME.ToString());
+
+            }
+
+            var fileName = "项目履历表" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-ffff") + ".xls";//文件名
+
+            //将Excel表格转化为流，输出
+
+            MemoryStream bookStream = new MemoryStream();
+            excelBook.Write(bookStream);
+            bookStream.Seek(0, SeekOrigin.Begin);
+            return File(bookStream, "application/vnd.ms-excel", fileName);
+
+
+
+        }
+
+        [HttpPost]
+        public IActionResult GetUpdateInfo(int id)
+        {
+            TASM_PROJECTManager manager = new TASM_PROJECTManager();
+            TASM_PROJECT model = manager.GetById(id);
+
+            return SuccessResult(model);
+
         }
 
 
