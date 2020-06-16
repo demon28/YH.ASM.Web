@@ -57,8 +57,15 @@
                             <tr>
                                 <th>工号</th>
                                 <th>姓名</th>
-                                <th>部门</th>
+
                                 <th>职务</th>
+
+                                <th>一级部门</th>
+                                <th>二级部门</th>
+                                <th>三级部门</th>
+                                <th>四级部门</th>
+                                <th>五级部门</th>
+
                                 <th>电话</th>
                                 <th>性别</th>
                                 <th>状态</th>
@@ -69,14 +76,23 @@
                             <tr v-for="(item,index) in list">
                                 <td>{{item.WORK_ID}}</td>
                                 <td>{{item.USER_NAME}}</td>
-                                <td>{{item.DEPARTMENT }}</td>
+
                                 <td>{{item.DTNAME}}</td>
+
+
+                                <td>{{item.DEPT1}}</td>
+                                <td>{{item.DEPT2}}</td>
+                                <td>{{item.DEPT3}}</td>
+                                <td>{{item.DEPT4}}</td>
+                                <td>{{item.DEPT5}}</td>
+
+
                                 <td>{{item.MOBILE}}</td>
 
                                 <td>
-                                    <span class="label bg-blue"  v-if="item.USER_SEX ==0">男</span>
-                                    <span class="label bg-red "  v-if="item.USER_SEX ==1">女</span>
-                                   
+                                    <span class="label bg-blue" v-if="item.USER_SEX ==0">男</span>
+                                    <span class="label bg-red " v-if="item.USER_SEX ==1">女</span>
+
                                 </td>
 
                                 <td>
@@ -86,7 +102,7 @@
                                 </td>
 
                                 <td>{{item.COMEDATE}}</td>
-                        
+
                                 <td>
                                     <button type="button" class="btn bg-purple  btn-xs" v-on:click="Details(item)">详情</button>
                                 </td>

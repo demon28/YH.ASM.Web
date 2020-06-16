@@ -112,9 +112,13 @@
                             <tr>
                                 <th>工号</th>
                                 <th>姓名</th>
-                                <th>部门</th>
-                                <th>职务</th>
 
+                                <th>一级部门</th>
+                                <th>二级部门</th>
+                                <th>三级部门</th>
+                                <th>四级部门</th>
+                                <th>五级部门</th>
+                                <th>职务</th>
                                 <th>当月出差天数</th>
                                 <th>工作视图</th>
 
@@ -122,7 +126,15 @@
                             <tr v-for="(item,index) in list">
                                 <td>{{item.WORK_ID}}</td>
                                 <td>{{item.USER_NAME}}</td>
-                                <td>{{item.DEPARTMENT }}</td>
+
+
+                                <td>{{item.DEPT1}}</td>
+                                <td>{{item.DEPT2}}</td>
+                                <td>{{item.DEPT3}}</td>
+                                <td>{{item.DEPT4}}</td>
+                                <td>{{item.DEPT5}}</td>
+
+
                                 <td>{{item.DTNAME}}</td>
 
                                 <td>
@@ -262,7 +274,14 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">售后人员：</label>
 
+                        <div class="col-sm-7">
+                            <textarea class="form-control" style="height:50px" readonly="readonly" id="txt_remarks"></textarea>
+                        </div>
+
+                    </div>
 
 
                     <div class="form-group">
@@ -621,7 +640,9 @@
                         $("#btn_wanban").show();
                     }
                   
-
+                    
+                  
+                    $("#txt_remarks").val(result.Content.REMARKS);
                     $("#txt_support").val(result.Content.SUPPORT_NAME);
                     $("#txt_content").val(result.Content.CONTENT);
 

@@ -21,6 +21,14 @@ namespace YH.ASM.Entites.Model
         public string DTNAME { get; set; }
         public string MOBILE { get; set; }
 
+        public string DEPT1 { get; set; }
+        public string DEPT2 { get; set; }
+        public string DEPT3 { get; set; }
+        public string DEPT4 { get; set; }
+        public string DEPT5 { get; set; }
+
+
+
         /// <summary>
         /// 当月出差天数
         /// </summary>

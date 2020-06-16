@@ -23,6 +23,11 @@ namespace YH.ASM.DataAccess
        TU.DEPARTMENT,
        TU.DTNAME,
        TU.MOBILE,
+TU.DEPT1,
+TU.DEPT2,
+TU.DEPT3,
+TU.DEPT4,
+TU.DEPT5,
        
        B.MOUNTHCOUNT
   
@@ -54,7 +59,13 @@ namespace YH.ASM.DataAccess
                 {
                     mounth = mounthstr
                 })
-                .Where(s => s.USER_NAME.Contains(keyword) || s.DEPARTMENT.Contains(keyword) || s.WORK_ID.Contains(keyword))
+                .Where(s => s.USER_NAME.Contains(keyword)
+                || s.DEPARTMENT.Contains(keyword) 
+                || s.WORK_ID.Contains(keyword)
+                || s.DEPT2.Contains(keyword)
+                || s.DEPT3.Contains(keyword)
+                || s.DEPT4.Contains(keyword)
+                || s.DEPT5.Contains(keyword))
                   .ToPageList(p.PageIndex, p.PageSize, ref pagecount);
 
 
@@ -171,7 +182,7 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
             */
 
 
-        public  bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionCanderModel> list)
+        public bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionCanderModel> list)
         {
             string sql = @"SELECT t.*, tu.user_name  user_name  , tu.work_id work_id  ,tu.department department                                   
                             from tasm_travel t
@@ -186,7 +197,7 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
             list = Db.SqlQueryable<DirectionCanderModel>(sql).ToList();
 
-            return list.Count>0;
+            return list.Count > 0;
 
 
         }
@@ -272,6 +283,7 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
                            t.project_name,
                            t.customer_name,
                            t.support_name,
+                           t.remarks,
                            tu.user_name user_name
 
                       from tasm_travel t
