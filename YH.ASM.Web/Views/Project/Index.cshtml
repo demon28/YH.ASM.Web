@@ -2,6 +2,341 @@
 @{
     ViewData["Title"] = "Index";
 }
+@section Htmlhead{
 
-<h1>Index</h1>
+
+    <style>
+
+        .my-td {
+            vertical-align: middle !important;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+
+
+}
+
+
+@section Pageheader{
+
+    <script>
+
+        function closeWui() {
+            $(".wui-masked").hide();
+            $('.wui-ilayout').animate({ width: '0' }, function () {
+                $(".wui-ilayout iframe").attr("src", "about:blank");
+            });
+        }
+        function showWui(uri, width) {
+            var window_width = width || ($(window).width() / 2);
+            $(".wui-masked").show();
+            $(".wui-ilayout").show().animate({ width: window_width }, function () {
+                var html = $("<div class='wui-ilayout-loading'><i class='icon-spin icon-spinner'></i>正在加载页面...</div>");
+                $(".wui-ilayout iframe").before(html);
+                $(".wui-ilayout iframe").attr('src', uri);
+            });
+        }
+
+    </script>
+
+
+    <h1>
+        <small>  项目管理</small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Project</li>
+    </ol>
+
+
+}
+
+
+
+
+<section class="content">
+    <div class="row">
+
+        <!-- /.col -->
+        <div id="tab_account">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">List</h3>
+
+                    <div class="box-tools">
+
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                            <button type="button" class="btn btn-default pull-right" @@click="ExportExcel()" id="btn_Search">添加项目</button>
+                        </div>
+
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                            <button type="button" class="btn btn-default pull-right" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
+                        </div>
+
+                        <div class="input-group input-group-sm  col-md-2 pull-right ml-1" style="margin-left: 10px; width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search"><i class="fa fa-search"></i></button>
+                            </div>
+
+                        </div>
+
+                        @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px; width:150px;">
+                                <div class="input-group date">
+
+                                    <input type="text" class="form-control pull-right" id="datepicker">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>*@
+
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+
+                    <span style="display:none" id="sp_userid"></span>
+                    <span style="display:none" id="sp_username"></span>
+                    <table class="table table-bordered table-hover dataTable">
+                        <tbody>
+                            <tr>
+                                <td rowspan="2" class="my-td ">项目名称</td>
+                                <td rowspan="2" class="my-td ">客户名称</td>
+
+                                <td rowspan="2" class="my-td ">出货时间</td>
+                                <td rowspan="2" class="my-td ">设备名称</td>
+                                <td rowspan="2" class="my-td ">数量</td>
+                                <td rowspan="2" class="my-td ">安装<br />负责人</td>
+                                <td rowspan="2" class="my-td ">一级<br />负责人</td>
+                                <td rowspan="2" class="my-td ">二级<br />负责人</td>
+                                <td rowspan="2" class="my-td ">三级<br />负责人</td>
+
+                                <td colspan="4" class="my-td">
+                                    安装时效
+                                </td>
+
+                                <td colspan="4" class="my-td">
+                                    调试时效
+                                </td>
+
+                                <td colspan="2" class="my-td">
+                                    验收时效
+                                </td>
+
+                                <td rowspan="2" class="my-td">
+
+                                    验收<br />倒计时(天)
+                                </td>
+
+
+                                <td rowspan="2" class="my-td">
+                                    创建时间
+                                </td>
+                                <td rowspan="2" class="my-td">
+                                    操作
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td class="my-td"> 开始<br />时间</td>
+                                <td class="my-td"> 结束<br />时间</td>
+                                <td class="my-td"> 安装<br />天数</td>
+                                <td class="my-td"> 安装<br />进度</td>
+
+                                <td class="my-td"> 开始<br />时间</td>
+                                <td class="my-td"> 结束<br />时间</td>
+                                <td class="my-td"> 安装<br />天数</td>
+                                <td class="my-td"> 安装<br />进度</td>
+
+                                <td class="my-td"> 开始<br />时间</td>
+                                <td class="my-td"> 结束<br />时间</td>
+
+                            </tr>
+
+
+
+
+                            <tr v-for="(item,index) in list">
+                                <td>{{item.NAME}}</td>
+                                <td>{{item.CUSTOMER_NAME}}</td>
+
+
+                                <td>{{item.PRODUCTDATE}}</td>
+                                <td>{{item.MACHINE}}</td>
+                                <td>{{item.COUNT}}</td>
+                                <td>{{item.INSTALL_NAME}}</td>
+
+                                <td> {{item.INSTALL_LV1}}</td>
+                                <td>{{item.INSTALL_LV2}} </td>
+                                <td>{{item.INSTALL_LV3}}</td>
+
+
+                                <td>{{item.INSTALL_STARDATE}}</td>
+                                <td>{{item.INSTALL_ENDDATE}}</td>
+
+                                <td>{{item.INSTALL_DAYS}}</td>
+                                <td>{{item.INSTALL_STATUS}}</td>
+                                <td>{{item.DEBUG_STARDATE}}</td>
+
+                                <td>{{item.DEBUG_ENDDATE}}</td>
+                                <td>{{item.DEBUG_DAYS}}</td>
+                                <td>{{item.DEBUG_STATUS}}</td>
+                                <td>{{item.CHECK_STARDATE}}</td>
+                                <td>{{item.CHECK_ENDDATE}}</td>
+                                <td>{{item.CREATETIME}}</td>
+
+                                <td>{{item.}}</td>
+                                <td>
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="RefushCalendar(item)">修改</button>
+                                    <button type="button" class="btn bg-danger btn-xs" v-on:click="RefushCalendar(item)">删除</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+
+
+                <div class="box-footer no-padding">
+                    <div class="card-footer clearfix pull-left" style="margin-left:20px;margin-top:30px;margin-bottom:30px">
+
+                    </div>
+
+                    <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                        <ul class="pagination pagination-sm no-margin pull-right" id="ul_page">
+                        </ul>
+                    </div>
+
+
+                    <!-- /.pull-right -->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /.col -->
+    <!-- /.row -->
+
+
+
+</section>
+
+
+
+@section scripts{
+ 
+   <script>
+
+
+       var vm = new Vue({
+           el: "#tab_account",
+           data() {
+               return {
+                   list: [],
+                   pageIndex:1,
+                   pageSize:15,
+                   pageCount:20,
+                   TotalCount:0
+               };
+           },
+           created: function () {
+
+               this.Init();
+
+
+           },
+           methods: {
+
+               Init() {
+
+                   var self = this;
+                   var keywork = $("#txt_Search").val();
+
+                   console.log("请求数据：" + keywork);
+
+
+                   MyAjax({
+                       url: "/Project/List",
+                       type: "POST",
+                       data: {
+                           keywords: keywork,
+                           pageIndex: self.pageIndex,
+                           pageSize: self.pageSize
+                       },
+                       success: function (result) {
+
+                           console.log(JSON.stringify(result));
+
+                           if (!result.Success) {
+                              
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           self.list = result.Content;
+
+                           pageIndex = result.PageIndex;
+                           pageSize = result.PageSize;
+                           pageCount = result.PageCount;
+                           TotalCount = result.PageTotal;
+
+                           self.PageBind();
+                       }
+                   })
+               },
+
+               Search: function () {
+                   pageIndex = 1;
+                   this.Init();
+               },
+               PageBind: function () {
+                   var self = this;
+
+                   $("#ul_page").jqPaginator({
+                       totalPages: self.pageCount,
+                       visiblePages: self.pageSize,
+                       currentPage: self.pageIndex,
+
+                       first: ' <li><a href="#">First</a></li>',
+                       prev: ' <li><a href="#">&laquo;</a></li>',
+                       next: ' <li><a href="#">&raquo;</a></li>',
+                       last: '<li><a href="#">Last<\/a><\/li>',
+                       page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                       onPageChange: function (num, type) {
+
+                           pageIndex = num;
+
+                           if (type == "change") {
+                               vm.Init();
+                           }
+                       }
+                   });
+               },
+               ExportExcel: function () {
+                   var keyword = $("#txt_Search").val();
+                   window.location = "/Project/ExportExcel?keyword=" + keyword;
+               }
+
+
+           }
+
+
+
+
+       });
+
+
+   </script>
+
+}
 
