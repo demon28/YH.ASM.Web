@@ -40,5 +40,8 @@ namespace YH.ASM.Web.Models
         public List<int> maintainerList { get; set; }
 
         public string remarks { get; set; }
+
+        public string machineAssist { get; set; }
+        
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
@@ -25,8 +26,12 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
+        public IActionResult Attachment()
+        {
+            return View();
+        }
 
-
+        
 
 
         [HttpPost]
@@ -46,16 +51,34 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list, p);
         }
 
-        public IActionResult Add()
+        public IActionResult Add(Entites.CodeGenerator.TASM_PROJECT model)
         {
-            return View();
+
+            model.CREATETIME = DateTime.Now;
+            model.ISDEL = 0;
+            model.STATUS = 0;
+
+            DataAccess.TASM_PROJECTManager manager = new DataAccess.TASM_PROJECTManager();
+            if (!manager.Insert(model))
+            {
+                return FailMessage();
+            }
+            return SuccessMessage("添加成功");
+
         }
 
 
       
-        public IActionResult Update()
+        public IActionResult Update(Entites.CodeGenerator.TASM_PROJECT model)
         {
-            return View();
+
+            DataAccess.TASM_PROJECTManager manager = new DataAccess.TASM_PROJECTManager();
+            if (!manager.Update(model))
+            {
+                return FailMessage();
+            }
+            return SuccessMessage("修改成功");
+
         }
 
         [HttpPost]
@@ -142,13 +165,18 @@ namespace YH.ASM.Web.Controllers
                 rowTemp.CreateCell(10).SetCellValue(list[i].INSTALL_ENDDATE.ToString());
                 rowTemp.CreateCell(11).SetCellValue(list[i].INSTALL_DAYS.ToString());
 
+               
+                rowTemp.CreateCell(12).SetCellValue((Enum.GetName(typeof(Entites.EnumTypes.ProjectStatus), list[i].INSTALL_STATUS)));
 
-                rowTemp.CreateCell(12).SetCellValue(list[i].INSTALL_STATUS.ToString());
+
                 rowTemp.CreateCell(13).SetCellValue(list[i].DEBUG_STARDATE.ToString());
 
                 rowTemp.CreateCell(14).SetCellValue(list[i].DEBUG_ENDDATE.ToString());
                 rowTemp.CreateCell(15).SetCellValue(list[i].DEBUG_DAYS.ToString());
-                rowTemp.CreateCell(16).SetCellValue(list[i].DEBUG_STATUS.ToString());
+
+                
+                rowTemp.CreateCell(16).SetCellValue(Enum.GetName(typeof(Entites.EnumTypes.ProjectStatus), list[i].DEBUG_STATUS));
+                
                 rowTemp.CreateCell(17).SetCellValue(list[i].CHECK_STARDATE.ToString());
 
 
@@ -180,6 +208,35 @@ namespace YH.ASM.Web.Controllers
             return SuccessResult(model);
 
         }
+
+        [HttpPost]
+        public IActionResult LisAttachmentt(int id)
+        {
+
+            TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
+
+            List<TASM_ATTACHMENT> list = new List<TASM_ATTACHMENT>();
+
+            manager.ListByPid(id, ref list);
+
+            return SuccessResultList(list);
+
+
+        }
+
+        [HttpPost]
+        public IActionResult DeleteAttachment(int aid) {
+
+            DataAccess.TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
+
+            if (!manager.CurrentDb.DeleteById(aid))
+            {
+                return FailMessage();
+            }
+            return SuccessMessage();
+
+        }
+
 
 
     }

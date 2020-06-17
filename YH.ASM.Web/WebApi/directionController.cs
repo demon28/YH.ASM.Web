@@ -16,6 +16,13 @@ namespace YH.ASM.Web.WebApi
     public class DirectionController : ControllerBase.ControllerBase
     {
 
+        [HttpGet]
+        public IActionResult Get() {
+
+            return View("123333333");
+        }
+
+
 
         [HttpPost("Put")]
         public JsonResult Put([FromBody] Models.DirectionInputModel model)
@@ -54,10 +61,10 @@ namespace YH.ASM.Web.WebApi
             _travelModel.MACHINE_NAME = model.machineName;
             _travelModel.MACHINE_COUNT = model.machineCount;
             _travelModel.REMARKS = model.remarks;
-                              
+
             //此处 有建 关联人员信息 表 ，未启用
 
-           
+            _travelModel.MACHINEASSIST = model.machineAssist;
 
             if (!manager.Insert(_travelModel))
             {

@@ -113,7 +113,7 @@
                                 <th>工号</th>
                                 <th>姓名</th>
 
-                                <th>一级部门</th>
+                           
                                 <th>二级部门</th>
                                 <th>三级部门</th>
                                 <th>四级部门</th>
@@ -128,7 +128,6 @@
                                 <td>{{item.USER_NAME}}</td>
 
 
-                                <td>{{item.DEPT1}}</td>
                                 <td>{{item.DEPT2}}</td>
                                 <td>{{item.DEPT3}}</td>
                                 <td>{{item.DEPT4}}</td>
@@ -241,10 +240,20 @@
 
 
                     <div class="form-group">
-                        <label for="txt_kehuname" class="col-sm-3 control-label">客户名称：</label>
+                        <label for="txt_kehuname" class="col-sm-3 control-label">设备名称：</label>
 
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="txt_kehuname" readonly="readonly">
+                            <input type="text" class="form-control" id="txt_MACHINE_NAME" readonly="readonly">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="txt_kehuname" class="col-sm-3 control-label">设备名称：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_MACHINE_COUNT" readonly="readonly">
                         </div>
                     </div>
 
@@ -282,6 +291,17 @@
                         </div>
 
                     </div>
+
+
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-3 control-label">需求协助：</label>
+
+                        <div class="col-sm-7">
+                            <textarea class="form-control" style="height:50px" readonly="readonly" id="txt_machineAssist"></textarea>
+                        </div>
+
+                    </div>
+
 
 
                     <div class="form-group">
@@ -628,7 +648,10 @@
                     $("#txt_username").html(result.Content.USER_NAME + "  工作日报");
                     $("#txt_projectname").val(result.Content.PROJECT_NAME);
 
-                    $("#txt_kehuname").val(result.Content.CUSTOMER_NAME);
+                    $("#txt_MACHINE_NAME").val(result.Content.MACHINE_NAME);
+                    $("#txt_MACHINE_COUNT").val(result.Content.MACHINE_COUNT);
+
+
                     $("#txt_address").val(result.Content.ADDRESS);
                     $("#txt_date").val(result.Content.CREATETIME);
                     if (result.Content.TYPE == 0) {
@@ -645,6 +668,9 @@
                     $("#txt_remarks").val(result.Content.REMARKS);
                     $("#txt_support").val(result.Content.SUPPORT_NAME);
                     $("#txt_content").val(result.Content.CONTENT);
+                    $("#txt_machineAssist").val(result.Content.MACHINEASSIST);
+
+
 
                     $('#modal-default').modal('show');
 

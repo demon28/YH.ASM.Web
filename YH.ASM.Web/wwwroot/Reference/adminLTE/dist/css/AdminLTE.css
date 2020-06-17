@@ -22,11 +22,7 @@ body {
     font-weight: 400;
     overflow-x: hidden;
     overflow-y: auto;
-    background-image: url('../../../../img/bg.jpg');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+ 
 }
 /* Layout */
 .wrapper {
