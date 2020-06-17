@@ -270,20 +270,8 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
         public DirectionCanderModel SelectByTraid(int traid)
         {
 
-            string sql = @"SELECT t.traid,
-                           t.userid,
-                           t.type,
-                           t.supportid,
-                           t.longitude,
-                           t.latitude,
-                           t.content,
-                           t.status,
-                           t.createtime,
-                           t.address,
-                           t.project_name,
-                           t.customer_name,
-                           t.support_name,
-                           t.remarks,
+            string sql = @"SELECT t.*,
+                            
                            tu.user_name user_name
 
                       from tasm_travel t

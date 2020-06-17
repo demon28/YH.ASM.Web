@@ -180,13 +180,19 @@ namespace YH.ASM.Web.Controllers
             row1.CreateCell(5).SetCellValue("项目名称");
 
             row1.CreateCell(6).SetCellValue("客户名称");
-            row1.CreateCell(7).SetCellValue("经度");
-            row1.CreateCell(8).SetCellValue("纬度");
+
+            row1.CreateCell(7).SetCellValue("设备名称");
+            row1.CreateCell(8).SetCellValue("设备数量");
 
        
             row1.CreateCell(9).SetCellValue("工单名称");
             row1.CreateCell(10).SetCellValue("地址");
             row1.CreateCell(11).SetCellValue("日报");
+
+            row1.CreateCell(12).SetCellValue("需求协助");
+            row1.CreateCell(13).SetCellValue("售后人员");
+
+
             for (int i = 0; i < list.Count(); i++)
             {
 
@@ -197,17 +203,23 @@ namespace YH.ASM.Web.Controllers
                 rowTemp.CreateCell(2).SetCellValue(list[i].DEPARTMENT);
 
                 rowTemp.CreateCell(3).SetCellValue(list[i].TYPE==0?"早报":"晚报");
-                rowTemp.CreateCell(4).SetCellValue(list[i].CREATETIME);
+                rowTemp.CreateCell(4).SetCellValue(list[i].CREATETIME.ToString("yyyy-MM-dd HH:mm:ss"));
                 rowTemp.CreateCell(5).SetCellValue(list[i].PROJECT_NAME);
 
                 rowTemp.CreateCell(6).SetCellValue(list[i].CUSTOMER_NAME);
-                rowTemp.CreateCell(7).SetCellValue(list[i].LONGITUDE.ToString());
-                rowTemp.CreateCell(8).SetCellValue(list[i].LATITUDE.ToString());
+
+                rowTemp.CreateCell(7).SetCellValue(list[i].MACHINE_NAME);
+                rowTemp.CreateCell(8).SetCellValue(list[i].MACHINE_COUNT.ToString());
 
                 rowTemp.CreateCell(9).SetCellValue(list[i].SUPPORT_NAME);
                 rowTemp.CreateCell(10).SetCellValue(list[i].ADDRESS);
 
                 rowTemp.CreateCell(11).SetCellValue(list[i].CONTENT);
+
+
+
+                rowTemp.CreateCell(12).SetCellValue(list[i].MACHINEASSIST);
+                rowTemp.CreateCell(13).SetCellValue(list[i].REMARKS);
             }
 
             var fileName = "动向信息" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-ffff") + ".xls";//文件名

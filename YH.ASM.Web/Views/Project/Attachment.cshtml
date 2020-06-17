@@ -1,0 +1,226 @@
+﻿
+@{
+    ViewData["Title"] = "Attachment";
+  Layout = "";
+}
+
+
+<html>
+<head>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/AdminLTE.css">
+
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/skins/_all-skins.min.css">
+    <!-- Morris chart -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+    <script src="~/Reference/scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Reference/vue/vue.min.js"></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background-color:gainsboro">
+
+    <div id="tab_account">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">附件</h3>
+
+                <div class="box-tools">
+
+                    <div class="btn btn-default btn-file  pull-right" style="margin-left:15px">
+                        <i class="fa fa-paperclip"></i> 上传
+                        <input type="file" name="attachment" id="file_attachment">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- /.box-header -->
+            <div class="box-body">
+
+
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <th> 名称</th>
+
+                            <th>操作</th>
+                        </tr>
+                        <tr v-for="(item,index) in list">
+                            <td>{{item.FILENAME}}</td>
+
+
+                            <td>
+                                <button type="button" class="btn bg-green  btn-xs" v-on:click="View(item)">预览</button>
+                                <button type="button" class="btn bg-purple  btn-xs" v-on:click="Download(item)">下载</button>
+                                <button type="button" class="btn bg-red  btn-xs" v-on:click="Delete(item)">删除</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+
+
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<!-- jQuery 3 -->
+<!-- Bootstrap 3.3.7 -->
+<script src="~/Reference/adminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Slimscroll -->
+<script src="~/Reference/adminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="~/Reference/adminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="~/Reference/adminLTE/dist/js/adminlte.min.js"></script>
+
+
+<script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
+<!-- AdminLTE for demo purposes -->
+<script src="~/Reference/adminLTE/dist/js/demo.js"></script>
+<script src="~/Reference/adminLTE/plugins/iCheck/icheck.min.js"></script>
+<script src="~/Reference/scripts/jquery.bootstrap-growl.js"></script>
+
+
+<script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
+<script src="~/js/jq-paginator.min.js"></script>
+<script src="~/Reference/bootbox/bootbox.min.js"></script>
+<script src="~/Reference/scripts/CommonScript.js"></script>
+
+<script>
+
+
+    var vm = new Vue({
+        el: "#tab_account",
+        data: {
+            id: 0,      //主键id
+            list: [],
+        },
+        created: function () {
+
+            this.id = getQueryString("id");
+            this.Init();
+
+        },
+        mounted: function () {
+
+
+
+        },
+        methods: {
+
+            Init() {
+
+                var _self = this;
+
+                _self.id = getQueryString("id");
+
+
+                MyAjax({
+                    url: "/Project/LisAttachmentt",
+                    type: "POST",
+                    data: {
+                        id: _self.id
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        if (!result.Success) {
+                            alert_danger(result.Message);
+                            return;
+                        }
+                        _self.list = result.Content;
+
+
+                    }
+                })
+            },
+
+            View: function (item) {
+
+            },
+
+            Download: function (item) {
+
+            },
+            Delete: function (item) {
+
+                var _self = this;
+
+                MyAjax({
+                    url: "/Project/DeleteAttachment",
+                    type: "POST",
+                    data: {
+                        aid: item.AID,
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        if (!result.Success) {
+                            alert_danger(result.Message);
+                            return;
+                        }
+
+                        alert_info(result.Message);
+                    }
+                })
+
+
+
+            },
+
+            Add: function () {
+
+
+
+            }
+        }
+
+
+
+
+    });
+
+
+
+
+
+
+</script>

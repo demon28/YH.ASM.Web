@@ -120,5 +120,11 @@ namespace YH.ASM.Entites.CodeGenerator
         /// 售后人员，外键关联 tasm_maintainer 表
         /// </summary>
         public System.Int32? MAINTAINER { get; set; }
+
+        /// <summary>
+        /// 需求协助
+        /// </summary>
+        public System.String MACHINEASSIST { get; set; }
+        
     }
 }
