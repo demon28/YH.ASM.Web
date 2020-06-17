@@ -321,8 +321,8 @@
                                     alert_danger(result.Message);
                                     return;
                                 }
-
-                                alert_info(result.Message);
+                                _self.Init();
+                                alert_success(result.Message);
                             }
                         })
                     }
