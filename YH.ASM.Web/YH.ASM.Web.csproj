@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="FileUpload\**" />
     <Compile Remove="wwwroot\Pagination\**" />
     <Compile Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\.github\**" />
     <Compile Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\build\**" />
@@ -13,6 +14,7 @@
     <Compile Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\js\**" />
     <Compile Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\less\**" />
     <Compile Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\tests\**" />
+    <Content Remove="FileUpload\**" />
     <Content Remove="wwwroot\Pagination\**" />
     <Content Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\.github\**" />
     <Content Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\build\**" />
@@ -21,6 +23,7 @@
     <Content Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\js\**" />
     <Content Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\less\**" />
     <Content Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\tests\**" />
+    <EmbeddedResource Remove="FileUpload\**" />
     <EmbeddedResource Remove="wwwroot\Pagination\**" />
     <EmbeddedResource Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\.github\**" />
     <EmbeddedResource Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\build\**" />
@@ -29,6 +32,7 @@
     <EmbeddedResource Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\js\**" />
     <EmbeddedResource Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\less\**" />
     <EmbeddedResource Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\tests\**" />
+    <None Remove="FileUpload\**" />
     <None Remove="wwwroot\Pagination\**" />
     <None Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\.github\**" />
     <None Remove="wwwroot\Reference\adminLTE\bower_components\bootstrap-datepicker\build\**" />
@@ -7511,10 +7515,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="FileUpload\Project\" />
   </ItemGroup>
 
 </Project>

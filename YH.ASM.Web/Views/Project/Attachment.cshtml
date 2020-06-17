@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "Attachment";
-  Layout = "";
+    Layout = "";
 }
 
 
@@ -33,7 +33,15 @@
     <![endif]-->
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style>
 
+        .my-td {
+            vertical-align: middle !important;
+            text-align: center;
+            font-weight: bold;
+            font-size:12px;
+        }
+    </style>
 
     <script src="~/Reference/scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Reference/vue/vue.min.js"></script>
@@ -47,10 +55,6 @@
 
                 <div class="box-tools">
 
-                    <div class="btn btn-default btn-file  pull-right" style="margin-left:15px">
-                        <i class="fa fa-paperclip"></i> 上传
-                        <input type="file" name="attachment" id="file_attachment">
-                    </div>
 
                 </div>
 
@@ -62,18 +66,18 @@
             <div class="box-body">
 
 
-                <table class="table table-hover">
+                <table class="table table-bordered table-hover ">
                     <tbody>
                         <tr>
-                            <th> 名称</th>
+                            <th class="my-td "> 名称</th>
 
-                            <th>操作</th>
+                            <th class="my-td ">操作</th>
                         </tr>
                         <tr v-for="(item,index) in list">
-                            <td>{{item.FILENAME}}</td>
+                            <td class="my-td "> {{item.FILENAME}}</td>
 
 
-                            <td>
+                            <td class="my-td ">
                                 <button type="button" class="btn bg-green  btn-xs" v-on:click="View(item)">预览</button>
                                 <button type="button" class="btn bg-purple  btn-xs" v-on:click="Download(item)">下载</button>
                                 <button type="button" class="btn bg-red  btn-xs" v-on:click="Delete(item)">删除</button>
@@ -86,10 +90,22 @@
             <!-- /.box-body -->
             <div class="box-footer clearfix">
 
+                <div id="from_fileupload">
+                    <div class="btn btn-default btn-file  pull-right" style="margin-left:15px">
+                        <i class="fa fa-paperclip"></i> 上传
+                        <input type="file" name="attachment" id="file_attachment">
+                    </div>
 
+                    <ul class="list-group col-xs-6" style="margin-left:15px" id="ul_attachment"></ul>
+                </div>
 
             </div>
+
         </div>
+
+        <img id="img1" />
+
+
     </div>
 </body>
 </html>
@@ -121,9 +137,10 @@
 <script src="~/js/jq-paginator.min.js"></script>
 <script src="~/Reference/bootbox/bootbox.min.js"></script>
 <script src="~/Reference/scripts/CommonScript.js"></script>
-
+<script src="~/Reference/scripts/jquery.form.min.js"></script>
 <script>
-
+    var filelist = new Array();
+    var fileitem = new Array();
 
     var vm = new Vue({
         el: "#tab_account",
@@ -139,6 +156,88 @@
         },
         mounted: function () {
 
+            var _self = this;
+
+            $("#file_attachment").change(function () {
+
+
+                var uploadFile = $('#file_attachment')[0].files[0];
+
+                if (uploadFile.size >= 19653562) {
+                    alert_danger("单个文件请不要超过15M");
+                    return;
+                }
+                fileitem.push(uploadFile.name);
+
+                var index1 = uploadFile.name.lastIndexOf(".");
+                var index2 = uploadFile.name.length;
+                var suffix = uploadFile.name.substring(index1 + 1, index2);
+                var filename = uploadFile.name.substring(0, index1);
+
+
+                var element = "<li id='li_file_" + filename + "' class=\"list-group-item\" style=\"padding:5px 10px\">";
+                element += "      <span>";
+                element += "      <i class=\"fa fa-paperclip\"></i>";
+                element += "                   <small>  " + uploadFile.name + "</small>";
+                element += "                   <small id='small_progress_" + filename + "' class=\"pull-right\" style=\"display:block\">0%</small>";
+                element += "                </span>";
+                element += "                 <div id='div_progress_" + filename + "' class=\"progress xxs \" style=\"margin-bottom:0px;display:block\">";
+                element += "                    <div id='green_div_progress_" + filename + "' class=\"progress-bar progress-bar-green\" style=\"width: 0%\" role=\"progressbar\"  aria-valuenow=\"20\" aria-valuemin=\"0\" aria-valuemax=\"100\">";
+                element += "                     <span id='span_progress_" + filename + "' class=\"sr-only\">0% Complete</span>";
+                element += "             </div>";
+                element += "             </div>";
+                element += "     </li>";
+
+
+                $("#ul_attachment").append(element);
+
+                $("#from_fileupload").ajaxSubmit({
+                    url: '/Project/UploadAttachment',
+                    type: 'post',
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    data: {
+                        pid: _self.id
+                    },
+                    success: function (result) {
+
+                        if (!result.Success) {
+                            alert_danger(result.Message);
+                            return;
+                        }
+
+                        //添加到上传数组
+                        filelist.push(result.Message);
+                        alert_success("上传成功！");
+                        _self.Init();
+                    },
+                    xhr: function () {
+                        var xhr = new XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function (e) {
+                            var baserate = (e.loaded / e.total).toFixed(2);
+                            var progressRate = baserate * 100 + '%';
+                            var progress_node = document.getElementById("div_progress_" + filename);   //进度条父节点
+                            var progress_node_div = document.getElementById("green_div_progress_" + filename);
+                            var progress_node_span = document.getElementById("span_progress_" + filename);
+                            var progress_value = document.getElementById("small_progress_" + filename);
+
+                            //通过设置进度条的宽度达到效果
+                            progress_node_div.style.width = progressRate;
+                            progress_node_span.innerHTML = progressRate;
+                            progress_value.innerHTML = progressRate;
+
+                            //上传完成
+                            if (e.loaded == e.total) {
+                                progress_node.style.display = "none";
+                                progress_value.style.display = "none";
+                            }
+                        })
+
+                        return xhr;
+                    }
+                })
+            });
 
 
         },
@@ -174,38 +273,63 @@
 
             View: function (item) {
 
-            },
+                var index1 = item.URL.lastIndexOf(".");
+                var index2 = item.URL.length;
+                var suffix = item.URL.substring(index1 + 1, index2);
 
+                console.log(item.URL);
+                console.log(suffix);
+
+                if (suffix === "jpg" || suffix === "png" ) {
+
+                    $("#img1").attr("src", item.URL);
+                  
+                    return;
+                }
+                alert_danger("当前只支持预览图片类型文件");
+
+              
+            },
             Download: function (item) {
 
+                var filename = item.URL.substring(item.URL.lastIndexOf("\\") + 1); 
+
+                var a = document.createElement("a");
+                a.download = filename;
+                a.href = item.URL;
+                $("body").append(a); // 修复firefox中无法触发click
+                a.click();
+                $(a).remove();
+              
             },
             Delete: function (item) {
 
                 var _self = this;
+                bootbox.confirm("您确定删除改记录吗？", function (res) {
+                    if (res) {
+                        MyAjax({
+                            url: "/Project/DeleteAttachment",
+                            type: "POST",
+                            data: {
+                                aid: item.AID,
+                            },
+                            success: function (result) {
 
-                MyAjax({
-                    url: "/Project/DeleteAttachment",
-                    type: "POST",
-                    data: {
-                        aid: item.AID,
-                    },
-                    success: function (result) {
+                                console.log(JSON.stringify(result));
 
-                        console.log(JSON.stringify(result));
+                                if (!result.Success) {
+                                    alert_danger(result.Message);
+                                    return;
+                                }
 
-                        if (!result.Success) {
-                            alert_danger(result.Message);
-                            return;
-                        }
-
-                        alert_info(result.Message);
+                                alert_info(result.Message);
+                            }
+                        })
                     }
-                })
-
+                });
 
 
             },
-
             Add: function () {
 
 

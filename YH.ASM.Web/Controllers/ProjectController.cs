@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Hosting;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
@@ -31,7 +36,11 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
-        
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public ProjectController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
 
 
         [HttpPost]
@@ -237,7 +246,85 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult UploadAttachment(int pid)
+        {
+            try
+            {
+
+                #region
+
+                var path = "";
+                var files = Request.Form.Files;
+
+                if (files.Count<=0)
+                {
+                    return FailMessage("请选择要上传的文件");
+                }
+
+                var file = files[0];
+
+
+                    var filename = ContentDispositionHeaderValue
+                                    .Parse(file.ContentDisposition)
+                                    .FileName
+                                    .Trim('"');
+                    string fileExt = Path.GetExtension(file.FileName); 
+                   
+
+                   // string newFileName = System.Guid.NewGuid().ToString() + fileExt; //随机生成新的文件名
+
+                   string newFileName = filename.Remove(filename.LastIndexOf('.')) + "(" + DateTime.Now.ToString("yyyyMMddHHmmss") + ")" + fileExt;
+
+                    path = "/FileUpload/Project/" + UserInfo.USER_ID + "/" + newFileName;
+                    path = _hostingEnvironment.WebRootPath + $@"\{path}";
+                 
+                    using (FileStream fs = System.IO.File.Create(path))
+                    {
+                        file.CopyTo(fs);
+                        fs.Flush();
+                    }
+                    path= "/FileUpload/Project/" + UserInfo.USER_ID + "/" + newFileName;
+
+
+
+                #endregion
+
+                TASM_ATTACHMENT model = new TASM_ATTACHMENT();
+                model.PID = pid;
+                model.FILENAME = newFileName;
+                model.URL = path;
+
+
+                if (!AddAttachment( model))
+                {
+                    return FailMessage("上传失败！");
+                }
+
+                return SuccessMessage(path);
+
+            }
+            catch (Exception e)
+            {
+
+                return FailMessage(e.ToString());
+            }
+
+        }
+   
+    
+        public bool AddAttachment(TASM_ATTACHMENT model) {
+
+
+            DataAccess.TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
+
+            return manager.Insert(model);
+        
+        }
+
 
 
     }
+
+  
 }
