@@ -1,0 +1,285 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+@section Pageheader{
+    <h1>
+        <small>  创建工单</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Support Create</li>
+    </ol>
+
+}
+
+
+<section class="content">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-info" id="app">
+
+                <div class="box-header with-border">
+                    <h2 class="box-title">选项</h2>
+
+                </div>
+
+                <div class="box-body table-responsive ">
+
+
+                    <table class="table table-hover" id="tab_contact">
+                        <thead>
+
+
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td class="text-right col-sm-3 " style="vertical-align:middle">
+                                    创建者 ：
+                                </td>
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <input type="text" class="form-control input-sm" id="txt_sendermail" readonly="readonly">
+                                </td>
+                                <td class="text-right col-sm-2" style="vertical-align:middle">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-right col-sm-3 " style="vertical-align:middle">
+                                    归属项目：
+                                </td>
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <input type="text" class="form-control input-sm" id="txt_sendermail" readonly="readonly">
+                                </td>
+                                <td class="text-right col-sm-2" style="vertical-align:middle">
+                                    <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="useitem(item)">添加</button>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="text-right col-sm-3 " style="vertical-align:middle">
+                                    客户名称：
+                                </td>
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <input type="text" class="form-control input-sm" id="txt_sendermail">
+                                </td>
+                                <td class="text-right col-sm-2" style="vertical-align:middle">
+                                    <span></span>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="text-right col-sm-3 " style="vertical-align:middle">
+                                    优先级 ：
+                                </td>
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <select class="form-control">
+                                        <option>紧急</option>
+                                        <option>高</option>
+                                        <option>中</option>
+                                        <option>低</option>
+                                    </select>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+                                <td class="text-right col-sm-3 " style="vertical-align:middle">
+                                    严重程度 ：
+                                </td>
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <select class="form-control">
+                                        <option>致命</option>
+                                        <option>严重</option>
+                                        <option>一般</option>
+                                        <option>提示</option>
+                                        <option>建议</option>
+                                    </select>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+            <!-- About Me Box -->
+
+            <div class="box box-warning">
+                <div class="box-header">
+                    <h3 class="box-title">附件</h3>
+
+                    <div class="box-tools pull-right">
+                        <div class="box-tools pull-right">
+                            <div class="btn btn-default btn-file " style="margin-left:15px">
+                                <i class="fa fa-paperclip"></i> 上&nbsp;&nbsp; 传
+                                <input type="file" name="attachment" id="file_attachment">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive " id="App_Temp">
+                    <table class="table table-hover" id="tab_contact">
+                        <tbody>
+                            <tr>
+
+                                <th>Name</th>
+                                <th class="text-right"></th>
+                            </tr>
+                            <tr v-for="(item,index) in Data">
+
+                                <td>
+
+                                    <a v-on:click="useitem(item)" style="cursor:pointer;"> {{item.TempName}}</a>
+                                </td>
+                                <td class="text-right">
+                                    <button type="button" class="btn bg-blue  btn-xs " v-on:click="useitem(item)">插入</button>  &nbsp; &nbsp;
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+
+
+            <div class="box box-info">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-envelope "></i> &nbsp;&nbsp; 创建工单</h3>
+                    <div class="box-tools pull-right">
+
+                        <button type="button" id="btn_send" class="btn   btn-success pull-left" style="margin-left:20px;">    <i class="fa fa-send"></i> &nbsp;&nbsp; 提 交</button>  &nbsp;&nbsp;
+
+
+                    </div>
+
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body ">
+
+
+                        <div class="form-inline" style="margin-top:10px">
+                       
+                        </div>
+
+
+                        <form class="form-horizontal" style="margin-top:10px">
+
+                            <div class="form-group">
+                           
+                             
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control input-sm" id="txt_sendermail" placeholder="请填写工单标题">
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control input-sm" id="txt_sendermail" placeholder="请选择问题处理人员" readonly="readonly">
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="useitem(item)">添加</button>
+                                </div>
+
+                            </div>
+
+                            <!-- /.box-body -->
+                            <!-- /.box-footer -->
+
+
+                            <div class="form-horizontal">
+
+                                <textarea name="description" id="description"></textarea>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <div class="box-footer">
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+
+            <!-- Custom Tabs -->
+            <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+<!-- /.content -->
+
+
+@section scripts{
+    <script src="~/Reference/adminLTE/bower_components/ckeditor/ckeditor.js"></script>
+    <script src="~/Reference/scripts/jquery.form.min.js"></script>
+
+    <script>
+
+
+        var vm = new Vue({
+            el: "#tab",
+            data: {
+
+            },
+            created: function () {
+
+                this.Init();
+
+
+            },
+            mounted: function () {
+                CKEDITOR.replace('description', {
+                    filebrowserImageUploadUrl: "/Support/UploadImage?type=Images",  //粘贴即上传图片功能，暂时屏蔽
+                    height: 400
+                });
+
+            },
+            methods: {
+
+                Init() {
+
+
+                },
+
+
+            },
+
+
+
+        });
+
+
+
+    </script>
+
+
+
+
+}
