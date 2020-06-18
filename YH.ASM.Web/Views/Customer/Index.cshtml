@@ -3,5 +3,317 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+
+<style>
+
+    .my-td {
+        vertical-align: middle !important;
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+
+
+
+
+@section Pageheader{
+
+    <script>
+
+        function closeWui() {
+            $(".wui-masked").hide();
+            $('.wui-ilayout').animate({ width: '0' }, function () {
+                $(".wui-ilayout iframe").attr("src", "about:blank");
+            });
+        }
+        function showWui(uri, width) {
+            var window_width = width || ($(window).width() / 2);
+            $(".wui-masked").show();
+            $(".wui-ilayout").show().animate({ width: window_width }, function () {
+                var html = $("<div class='wui-ilayout-loading'><i class='icon-spin icon-spinner'></i>正在加载页面...</div>");
+                $(".wui-ilayout iframe").before(html);
+                $(".wui-ilayout iframe").attr('src', uri);
+            });
+        }
+
+    </script>
+
+
+    <h1>
+        <small> 客户信息 </small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Project</li>
+    </ol>
+
+}
+
+<section class="content">
+    <div class="row">
+
+        <!-- /.col -->
+        <div id="tab">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">List</h3>
+
+                    <div class="box-tools">
+
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                            <button type="button" class="btn btn-default pull-right" @@click="Add()" id="btn_Search">添加客户</button>
+                        </div>
+
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                            <button type="button" class="btn btn-default pull-right" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
+                        </div>
+
+                        <div class="input-group input-group-sm  col-md-2 pull-right ml-1" style="margin-left: 10px; width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search"><i class="fa fa-search"></i></button>
+                            </div>
+
+                        </div>
+
+                        @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px; width:150px;">
+                                <div class="input-group date">
+
+                                    <input type="text" class="form-control pull-right" id="datepicker">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>*@
+
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+
+                    <span style="display:none" id="sp_userid"></span>
+                    <span style="display:none" id="sp_username"></span>
+                    <table class="table  table-hover dataTable">
+                        <tbody>
+                            <tr>
+                                <th class="my-td">客户名称</th>
+                                <th >手机号码</th>
+                                <th  >邮箱</th>
+                                <th >地址</th>
+                                <th >  创建时间 </th>
+                                <th   style="width:150px">
+                                    操作
+                                </th>
+                            </tr>
+
+                            <tr v-for="(item,index) in list">
+                                <td class="my-td">{{item.NAME}}</td>
+                                <td>{{item.PHONE}}</td>
+                                <td>{{item.EMIAL}}</td>
+                                <td>{{item.ADRESS}}</td>
+                                <td>{{item.CREATETIME}}</td>
+
+                                <td>
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="Update(item)">修改</button>
+                                    <button type="button" class="btn bg-red btn-xs" v-on:click="Del(item)">删除</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+
+
+                <div class="box-footer no-padding">
+                    <div class="card-footer clearfix pull-left" style="margin-left:20px;margin-top:30px;margin-bottom:30px">
+
+                    </div>
+
+                    <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                        <ul class="pagination pagination-sm no-margin pull-right" id="ul_page">
+                        </ul>
+                    </div>
+
+
+                    <!-- /.pull-right -->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /.col -->
+    <!-- /.row -->
+
+
+
+</section>
+
+<!-- Control Sidebar -->
+
+<div class="wui-masked" style="position:fixed;background:#fff;top:0;left:0;right:0;bottom:0;z-index:9998;opacity:0.3;display:none;"
+     onclick="closeWui()"></div>
+
+
+<div class="wui-ilayout" style="position:absolute; position:fixed;top:0;right:0;z-index:9999;bottom:0;border-left:4px #eee solid;display:none;background:#fff;">
+    <div style="padding:2em;height:100%;background-color:gainsboro">
+        <iframe style="width:50%;border:0 none;height:100%;width:100%;" src="about:blank" onload="javascript:$('.wui-ilayout-loading').remove()"></iframe>
+    </div>
+</div>
+
+<!-- /.control-sidebar -->
+
+@section scripts{
+
+    <script>
+
+
+       var vm = new Vue({
+           el: "#tab",
+           data: {
+                   list: [],
+                   pageIndex:1,
+                   pageSize:15,
+                   pageCount:20,
+                   TotalCount:0
+
+           },
+           created: function () {
+
+               this.Init();
+
+
+           },
+           methods: {
+
+               Init() {
+
+                   var self = this;
+                   var keywork = $("#txt_Search").val();
+
+                   console.log("请求数据：" + keywork);
+
+
+                   MyAjax({
+                       url: "/Customer/List",
+                       type: "POST",
+                       data: {
+                           keywords: keywork,
+                           pageIndex: self.pageIndex,
+                           pageSize: self.pageSize
+                       },
+                       success: function (result) {
+
+                          // console.log(JSON.stringify(result));
+
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           self.list = result.Content;
+
+
+
+                           self.pageIndex = result.PageIndex;
+                           self.pageSize = result.PageSize;
+                           self.pageCount = result.PageCount;
+                           self.pageCount = result.PageTotal;
+
+                           self.PageBind();
+                       }
+                   })
+               },
+
+               Search: function () {
+                   pageIndex = 1;
+                   this.Init();
+               },
+               PageBind: function () {
+                   var self = this;
+
+                   console.log()
+
+                   $("#ul_page").jqPaginator({
+                       totalPages: self.pageCount,
+                       visiblePages: self.pageSize,
+                       currentPage: self.pageIndex,
+
+                       first: ' <li><a href="#">First</a></li>',
+                       prev: ' <li><a href="#">&laquo;</a></li>',
+                       next: ' <li><a href="#">&raquo;</a></li>',
+                       last: '<li><a href="#">Last<\/a><\/li>',
+                       page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                       onPageChange: function (num, type) {
+
+                           self.pageIndex = num;
+
+                           if (type == "change") {
+                               self.Init();
+                           }
+                       }
+                   });
+               },
+               ExportExcel: function () {
+                   var keyword = $("#txt_Search").val();
+                   window.location = "/Customer/ExportExcel?keyword=" + keyword;
+               },
+               Del: function (item) {
+                   var self = this;
+                   bootbox.confirm("您确定删除改记录吗？", function (res) {
+                       if (res) {
+
+                           MyAjax({
+                               url: "/Customer/Delete",
+                               type: "POST",
+                               data: {
+                                   pid: item.PID
+                               },
+                               success: function (result) {
+
+                                   if (!result.Success) {
+
+                                       alert_danger(result.Message);
+                                       return;
+                                   }
+                                   alert_success("删除成功");
+                                   self.Init();
+
+                               }
+                           })
+                       }
+                   });
+
+
+
+               },
+               Add: function () {
+
+                   showWui("/Customer/AddAndUpdate?type=add");
+               },
+               Update: function (item) {
+                   showWui("/Customer/AddAndUpdate?type=update&id=" + item.CID);
+
+               }
+
+           },
+
+
+
+       });
+
+
+    </script>
+
+}
+
+
+
 

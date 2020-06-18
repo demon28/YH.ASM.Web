@@ -1,0 +1,275 @@
+﻿
+@{
+    ViewData["Title"] = "AddAndUpdate";
+    Layout = "";
+}
+<html>
+<head>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/AdminLTE.css">
+
+    <link rel="stylesheet" href="~/Reference/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/skins/_all-skins.min.css">
+
+
+
+
+    <script src="~/Reference/scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Reference/vue/vue.min.js"></script>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background-color:gainsboro">
+
+    <div class="modal-dialog" id="tab_account">
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+
+
+                <button type="button" class="btn btn-default pull-right" v-if="type=='添加'" v-on:click="Add()">添 加</button>
+                <button type="button" class="btn btn-default pull-right" v-if="type=='修改'" v-on:click="Update()">修 改</button>
+
+                <h4 class="modal-title" id="txt_username">{{type}}</h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                        <label for="txt_projectname" class="col-sm-3 control-label">客户名称：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_name" v-model="name" placeholder="请输入客户名称" style="width:320px;" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="txt_kehuname" class="col-sm-3 control-label">联系电话：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_phpne" v-model="phone" placeholder="请输入联系电话" style="width:320px;" />
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label for="txt_address" class="col-sm-3 control-label">邮箱：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_email" v-model="emial" placeholder="请输入邮箱地址" style="width:320px;" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_address" class="col-sm-3 control-label">地址：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_address" v-model="address" placeholder="请输入地址" style="width:320px;" />
+                        </div>
+                    </div>
+
+
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-right" v-if="type=='添加'" v-on:click="Add()">添 加</button>
+                <button type="button" class="btn btn-default pull-right" v-if="type=='修改'" v-on:click="Update()">修 改</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+
+</body>
+</html>
+
+<!-- jQuery 3 -->
+<!-- Bootstrap 3.3.7 -->
+<script src="~/Reference/adminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Slimscroll -->
+<script src="~/Reference/adminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="~/Reference/adminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="~/Reference/adminLTE/dist/js/adminlte.min.js"></script>
+
+
+<script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
+<script src="~/Reference/scripts/jquery.bootstrap-growl.js"></script>
+
+
+<script src="~/js/jq-paginator.min.js"></script>
+<script src="~/Reference/bootbox/bootbox.min.js"></script>
+<script src="~/Reference/scripts/CommonScript.js"></script>
+
+<script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
+
+<script>
+
+
+
+    var vm = new Vue({
+        el: "#tab_account",
+        data: {
+            type: "add",
+            id: 0,      //主键id
+
+            cid: "",
+            name: "",
+            phone: "",
+            emial: "",
+            address: ""
+
+        },
+        created: function () {
+
+            var ops = getQueryString("type");
+
+            if (ops == "add") {
+                this.type = "添加";
+                return;
+            }
+            this.type = "修改";
+
+
+            this.Init();
+
+
+        },
+        mounted: function () {
+
+            var _self = this;
+
+
+
+        },
+        methods: {
+
+            Init() {
+
+                var _self = this;
+
+                _self.id = getQueryString("id");
+
+                console.log("当前ID：" + _self.id);
+
+                MyAjax({
+                    url: "/Customer/GetUpdateInfo",
+                    type: "POST",
+                    data: {
+                        id: _self.id
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        if (!result.Success) {
+                            alert_danger(result.Message);
+                            return;
+                        }
+
+                        _self.cid = result.Content.CID;
+                        _self.name = result.Content.NAME;
+                        _self.phone = result.Content.PHONE;
+                        _self.emial = result.Content.EMIAL;
+                        _self.address = result.Content.ADDRESS;
+                   
+
+                    }
+                })
+            },
+
+
+            Add: function () {
+                var _self = this;
+
+                MyAjax({
+                    url: "/Customer/Add",
+                    type: "POST",
+                    data: {
+                        NAME: _self.name,
+                        PHONE: _self.phone,
+                        EMIAL: _self.emial,
+                        ADRESS: _self.address
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        if (!result.Success) {
+                            alert_danger(result.Message);
+                            return;
+                        }
+
+                        alert_success(result.Message);
+
+                        window.parent.vm.Init();
+
+                    }
+                })
+
+            },
+            Update: function (item) {
+
+                var _self = this;
+
+                MyAjax({
+                    url: "/Customer/Update",
+                    type: "POST",
+                    data: {
+                        CID: _self.cid,
+                        NAME: _self.name,
+                        PHONE: _self.phone,
+                        EMIAL: _self.emial,
+                        ADRESS: _self.address
+
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        if (!result.Success) {
+                            alert_danger(result.Message);
+                            return;
+                        }
+
+                        alert_info(result.Message);
+
+                        window.parent.vm.Init();
+
+                    }
+                })
+
+
+
+            }
+
+        }
+
+
+
+
+    });
+
+
+
+
+
+</script>
