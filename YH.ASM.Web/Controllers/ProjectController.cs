@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
@@ -22,11 +23,15 @@ namespace YH.ASM.Web.Controllers
     //项目履历
     public class ProjectController : ControllerBase.ControllerBase
     {
+      
+
         [Authorize]
         public IActionResult Index()
         {
             return View();
         }
+
+
         public IActionResult AddAndUpdate()
         {
             return View();
@@ -37,9 +42,15 @@ namespace YH.ASM.Web.Controllers
         }
 
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public ProjectController(IWebHostEnvironment hostingEnvironment)
+        private readonly ILogger<ProjectController> logger;
+
+        public ProjectController(IWebHostEnvironment hostingEnvironment, ILogger<ProjectController> _logger)
         {
             _hostingEnvironment = hostingEnvironment;
+             logger =_logger;
+
+
+
         }
 
 
@@ -252,9 +263,11 @@ namespace YH.ASM.Web.Controllers
             try
             {
 
+                this.logger.LogInformation("LogInformation:开始上传文件");
+
                 #region
 
-                var path = "";
+                var path = "/FileUpload/Project/" + UserInfo.USER_ID + "/";
                 var files = Request.Form.Files;
 
                 if (files.Count<=0)
@@ -272,14 +285,24 @@ namespace YH.ASM.Web.Controllers
                     string fileExt = Path.GetExtension(file.FileName); 
                    
 
-                   // string newFileName = System.Guid.NewGuid().ToString() + fileExt; //随机生成新的文件名
 
                    string newFileName = filename.Remove(filename.LastIndexOf('.')) + "(" + DateTime.Now.ToString("yyyyMMddHHmmss") + ")" + fileExt;
 
-                    path = "/FileUpload/Project/" + UserInfo.USER_ID + "/" + newFileName;
-                    path = _hostingEnvironment.WebRootPath + $@"\{path}";
                  
-                    using (FileStream fs = System.IO.File.Create(path))
+                   string filepath = path + newFileName;
+                   string fullpath = _hostingEnvironment.WebRootPath + $@"\{filepath}";
+
+                  string dirpath = _hostingEnvironment.WebRootPath + path;
+
+
+
+                if (!Directory.Exists(dirpath))
+                {
+                    Directory.CreateDirectory(dirpath);
+                }
+               
+                 
+                    using (FileStream fs = System.IO.File.Create(fullpath))
                     {
                         file.CopyTo(fs);
                         fs.Flush();
@@ -298,15 +321,16 @@ namespace YH.ASM.Web.Controllers
 
                 if (!AddAttachment( model))
                 {
+                    logger.LogInformation("上传文件 数据库添加失败");
                     return FailMessage("上传失败！");
                 }
-
+                logger.LogDebug("上传文件成功");
                 return SuccessMessage(path);
 
             }
             catch (Exception e)
             {
-
+                logger.LogInformation("异常："+e);
                 return FailMessage(e.ToString());
             }
 

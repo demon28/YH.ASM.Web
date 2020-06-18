@@ -15,10 +15,14 @@
     <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
 
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/AdminLTE.css">
+
     <link rel="stylesheet" href="~/Reference/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
 
     <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/skins/_all-skins.min.css">
+
+
+
 
     <script src="~/Reference/scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Reference/vue/vue.min.js"></script>
@@ -30,8 +34,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>*@
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
 
 
                 <button type="button" class="btn btn-default pull-right" v-if="type=='添加'" v-on:click="Add()">添 加</button>
@@ -290,16 +294,14 @@
 <script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 
 
-<!-- AdminLTE for demo purposes -->
-<script src="~/Reference/adminLTE/dist/js/demo.js"></script>
-<script src="~/Reference/adminLTE/plugins/iCheck/icheck.min.js"></script>
 <script src="~/Reference/scripts/jquery.bootstrap-growl.js"></script>
 
 
-<script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
 <script src="~/js/jq-paginator.min.js"></script>
 <script src="~/Reference/bootbox/bootbox.min.js"></script>
 <script src="~/Reference/scripts/CommonScript.js"></script>
+
+<script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
 
 <script>
 
@@ -332,7 +334,7 @@
             check_stardate: "",
             check_enddate: "",
             count_down: 0,
-            REMARKS:"123"
+            REMARKS: "123"
 
         },
         created: function () {
@@ -345,7 +347,7 @@
             }
             this.type = "修改";
 
-        
+
             this.Init();
 
 
@@ -424,7 +426,7 @@
 
             $("#txt_install_status").change(function () {
 
-                _self.install_status=  $("#txt_install_status").val();
+                _self.install_status = $("#txt_install_status").val();
             });
 
 
@@ -438,7 +440,7 @@
         methods: {
 
             Init() {
-          
+
                 var _self = this;
 
                 _self.id = getQueryString("id");
@@ -459,7 +461,7 @@
                             alert_danger(result.Message);
                             return;
                         }
-                     
+
                         _self.pid = result.Content.PID;
                         _self.name = result.Content.NAME;
                         _self.customer_name = result.Content.CUSTOMER_NAME;
@@ -496,24 +498,24 @@
                     data: {
 
                         NAME: _self.name,
-                        CUSTOMER_NAME: _self.customer_name ,
+                        CUSTOMER_NAME: _self.customer_name,
                         PRODUCTDATE: _self.productdate,
-                        MACHINE:  _self.machine,
-                        COUNT:  _self.count ,
-                        INSTALL_NAME:_self.install_name,
+                        MACHINE: _self.machine,
+                        COUNT: _self.count,
+                        INSTALL_NAME: _self.install_name,
                         INSTALL_LV1: _self.install_lv1,
-                        INSTALL_LV2:  _self.install_lv2,
-                        INSTALL_LV3:_self.install_lv3,
-                        INSTALL_STARDATE: _self.install_stardate ,
-                        INSTALL_ENDDATE:_self.install_enddate ,
-                        INSTALL_DAYS: _self.install_days ,
+                        INSTALL_LV2: _self.install_lv2,
+                        INSTALL_LV3: _self.install_lv3,
+                        INSTALL_STARDATE: _self.install_stardate,
+                        INSTALL_ENDDATE: _self.install_enddate,
+                        INSTALL_DAYS: _self.install_days,
                         INSTALL_STATUS: _self.install_status,
                         DEBUG_STARDATE: _self.debug_stardate,
-                        DEBUG_ENDDATE:_self.debug_enddate ,
+                        DEBUG_ENDDATE: _self.debug_enddate,
                         DEBUG_DAYS: _self.debug_days,
                         DEBUG_STATUS: _self.debug_status,
-                        CHECK_STARDATE:_self.check_stardate ,
-                        CHECK_ENDDATE:_self.check_enddate ,
+                        CHECK_STARDATE: _self.check_stardate,
+                        CHECK_ENDDATE: _self.check_enddate,
                         COUNT_DOWN: _self.count_down,
 
                     },
@@ -526,7 +528,7 @@
                             return;
                         }
 
-                        alert_info(result.Message);
+                        alert_success(result.Message);
 
 
 
@@ -534,7 +536,7 @@
 
                     }
                 })
-             
+
             },
             Update: function (item) {
 
@@ -544,7 +546,7 @@
                     url: "/Project/Update",
                     type: "POST",
                     data: {
-                        PID:_self.pid,
+                        PID: _self.pid,
                         NAME: _self.name,
                         CUSTOMER_NAME: _self.customer_name,
                         PRODUCTDATE: _self.productdate,
