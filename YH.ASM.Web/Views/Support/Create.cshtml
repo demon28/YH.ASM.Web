@@ -255,10 +255,17 @@
 
             },
             mounted: function () {
+
+                // 显示文本编辑器
                 CKEDITOR.replace('description', {
                     filebrowserImageUploadUrl: "/Support/UploadImage?type=Images",  //粘贴即上传图片功能，暂时屏蔽
                     height: 400
                 });
+
+
+                //显示当前 创建人
+
+
 
             },
             methods: {

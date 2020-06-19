@@ -116,22 +116,18 @@
                                 <td rowspan="2" class="my-td ">二级<br />负责人</td>
                                 <td rowspan="2" class="my-td ">三级<br />负责人</td>
 
-                                <td colspan="4" class="my-td bg-success">
+                                <td colspan="3" class="my-td bg-success">
                                     安装时效
                                 </td>
 
-                                <td colspan="4" class="my-td bg-info">
+                                <td colspan="3" class="my-td bg-info">
                                     调试时效
                                 </td>
 
-                                <td colspan="2" class="my-td bg-warning">
+                                <td colspan="3" class="my-td bg-warning">
                                     验收时效
                                 </td>
 
-                                <td rowspan="2" class="my-td bg-danger">
-
-                                    验收<br />倒计时(天)
-                                </td>
 
 
                                 @*<td rowspan="2" class="my-td">
@@ -144,19 +140,29 @@
 
                             </tr>
                             <tr>
+
+
+
                                 <td class="my-td"> 开始<br />时间</td>
                                 <td class="my-td"> 结束<br />时间</td>
                                 <td class="my-td"> 安装<br />天数</td>
-                                <td class="my-td"> 安装<br />进度</td>
+
+            
+
+
+
+
+
+                                @*<td class="my-td"> 安装<br />进度</td>*@
 
                                 <td class="my-td"> 开始<br />时间</td>
                                 <td class="my-td"> 结束<br />时间</td>
                                 <td class="my-td"> 调试<br />天数</td>
-                                <td class="my-td"> 调试<br />进度</td>
+                                @*<td class="my-td"> 调试<br />进度</td>*@
 
                                 <td class="my-td"> 开始<br />时间</td>
                                 <td class="my-td"> 结束<br />时间</td>
-
+                                <td class="my-td"> 验收<br />天数</td>
                             </tr>
 
 
@@ -181,13 +187,15 @@
                                 <td>{{Formtat(item.INSTALL_ENDDATE)}}</td>
 
                                 <td>{{item.INSTALL_DAYS}}</td>
-                                <td>
+
+
+                                @*<td>
                                   
                                     <span class="label bg-green" v-if="item.INSTALL_STATUS ==0">正常</span>
                                     <span class="label bg-blue " v-if="item.INSTALL_STATUS ==1">超前</span>
                                     <span class="label bg-yellow " v-if="item.INSTALL_STATUS ==2">延迟</span>
 
-                                </td>
+                                </td>*@
 
                                 <td>{{ Formtat(item.DEBUG_STARDATE)}}</td>
                                 <td>{{Formtat(item.DEBUG_ENDDATE)}}</td>
@@ -197,12 +205,12 @@
                                 
                                 
                                 
-                                <td>
+                                @*<td>
 
                                     <span class="label bg-green" v-if="item.DEBUG_STATUS ==0">正常</span>
                                     <span class="label bg-blue " v-if="item.DEBUG_STATUS ==1">超前</span>
                                     <span class="label bg-yellow " v-if="item.DEBUG_STATUS ==2">延迟</span>
-                                </td>
+                                </td>*@
 
                                 <td>{{Formtat(item.CHECK_STARDATE)}}</td>
                                 <td>{{Formtat(item.CHECK_ENDDATE)}}</td>
