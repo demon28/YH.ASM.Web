@@ -3,5 +3,571 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+
+
+
+
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section Htmlhead{
+
+
+    <style>
+
+        .my-td {
+            vertical-align: middle !important;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+
+
+}
+
+
+@section Pageheader{
+
+    <script>
+
+        function closeWui() {
+            $(".wui-masked").hide();
+            $('.wui-ilayout').animate({ width: '0' }, function () {
+                $(".wui-ilayout iframe").attr("src", "about:blank");
+            });
+        }
+        function showWui(uri, width) {
+            var window_width = width || ($(window).width() / 2);
+            $(".wui-masked").show();
+            $(".wui-ilayout").show().animate({ width: window_width }, function () {
+                var html = $("<div class='wui-ilayout-loading'><i class='icon-spin icon-spinner'></i>正在加载页面...</div>");
+                $(".wui-ilayout iframe").before(html);
+                $(".wui-ilayout iframe").attr('src', uri);
+            });
+        }
+
+    </script>
+
+
+    <h1>
+        <small> 设备台账</small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Manchine</li>
+    </ol>
+
+
+}
+
+
+<div id="tab_account">
+
+    <section class="content">
+
+
+        <div class="row ">
+
+            <div class="col-md-3">
+                <div class="box box-info" id="app">
+
+
+
+                    <div class="box-header with-border">
+                        <h2 class="box-title">设备类型</h2>
+
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                                <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ShowAddTypes()">添加</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="box-body table-responsive ">
+
+                        <ul class="list-group">
+                            <li class="list-group-item" v-for="item in MachinTypes">
+
+                                <b>{{item.NAME}}</b>&nbsp;&nbsp;
+
+                                <button type="button" class="btn bg-danger  btn-xs pull-right ml-1" style="margin-left:5px"  v-on:click="DelTypes(item)">删除</button>
+                                &nbsp; &nbsp;
+                                <button type="button" class="btn bg-primary  btn-xs pull-right  ml-1" v-on:click="CheckMachine(item)">查看</button>
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <!-- About Me Box -->
+            </div>
+
+
+
+
+            <div class="col-md-9">
+
+                <!-- /.col -->
+                <div id="tab">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">List</h3>
+
+                            <div class="box-tools">
+
+                                <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                                    <button type="button" class="btn btn-default pull-right  btn-sm" @@click="Add()" id="btn_add">添加</button>
+                                </div>
+
+                                <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                                    <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
+                                </div>
+
+                                <div class="input-group input-group-sm  col-md-2 pull-right ml-1" style="margin-left: 10px; width: 150px;">
+                                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
+
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search"><i class="fa fa-search"></i></button>
+                                    </div>
+
+                                </div>
+
+                                @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px; width:150px;">
+
+
+                                    <div class="input-group date input-group-sm  ">
+
+                                        <input type="text" class="form-control pull-right" id="datepicker">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+
+                            <table class="table table-bordered table-hover dataTable">
+                                <tbody>
+                                    <tr>
+                                        <td class="my-td ">设备名称</td>
+                                        <td class="my-td ">设备类型</td>
+                                        <td class="my-td ">设备序号</td>
+
+                                        <td class="my-td ">客户名称</td>
+                                        <td class="my-td ">合同编号</td>
+                                        <td class="my-td ">订单时间</td>
+                                        <td class="my-td ">送货时间</td>
+                                        <td class="my-td ">送货单号</td>
+                                        <td class="my-td ">验收时间</td>
+
+
+
+                                        <td class="my-td">
+                                            创建时间
+                                        </td>
+                                        <td class="my-td " >
+                                            操作
+                                        </td>
+
+                                    </tr>
+
+
+
+                                    <tr v-for="(item,index) in list">
+                                        <td>{{item.NAME}}</td>
+                                        <td>{{item.TYPESNAME}}</td>
+                                        <td>{{item.SERIAL}}</td>
+
+
+                                        <td>{{item.CUSTOMER}}</td>
+                                        <td>{{item.CONTRACT}}</td>
+                                        <td>{{Formtat(item.ORDERTIME)}}</td>
+                                        <td> {{Formtat(item.DELIVERYTIME)}}</td>
+                                        <td>{{item.DELIVERYNUMBER}} </td>
+                                        <td>{{Formtat(item.CHECKTIME)}}</td>
+
+                                        <td>{{item.CREATETIME}}</td>
+
+
+                                        <td>
+                                            <button type="button" class="btn bg-purple  btn-xs" v-on:click="Update(item)">修改</button>
+                                            <button type="button" class="btn bg-danger btn-xs" v-on:click="Del(item)">删除</button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+
+
+                        <div class="box-footer no-padding">
+                            <div class="card-footer clearfix pull-left" style="margin-left:20px;margin-top:30px;margin-bottom:30px">
+
+                            </div>
+
+                            <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                                <ul class="pagination pagination-sm no-margin pull-right" id="ul_page">
+                                </ul>
+                            </div>
+
+
+                            <!-- /.pull-right -->
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /.col -->
+            <!-- /.row -->
+        </div>
+
+
+    </section>
+
+    <!-- Control Sidebar -->
+
+    <div class="wui-masked" style="position:fixed;background:#fff;top:0;left:0;right:0;bottom:0;z-index:9998;opacity:0.3;display:none;"
+         onclick="closeWui()"></div>
+
+
+    <div class="wui-ilayout" style="position:absolute; position:fixed;top:0;right:0;z-index:9999;bottom:0;border-left:4px #eee solid;display:none;background:#fff;">
+        <div style="padding:2em;height:100%;background-color:gainsboro">
+            <iframe style="width:50%;border:0 none;height:100%;width:100%;" src="about:blank" onload="javascript:$('.wui-ilayout-loading').remove()"></iframe>
+        </div>
+    </div>
+
+    <!-- /.control-sidebar -->
+
+
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="txt_username">添加设备类型</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal">
+
+                        <div class="form-group">
+                            <label for="txt_projectname" class="col-sm-3 control-label">类型名称：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="txt_typename" v-model="typename">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="txt_kehuname" class="col-sm-3 control-label">预期安装天数：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="txt_dasys1" v-model="installday">
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="txt_kehuname" class="col-sm-3 control-label">预期调试天数：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="txt_dasys2" v-model="debugday">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="txt_kehuname" class="col-sm-3 control-label">预期验收天数：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="txt_dasys3" v-model="checkday">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-right" v-on:click="AddTypes()">添 加</button>
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关 闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+    <!-- /.modal-dialog -->
+
+
+</div>
+
+
+@section scripts{
+
+    <script>
+
+
+       var vm = new Vue({
+           el: "#tab_account",
+           data: {
+               list: [],
+               MachinTypes: [],
+                   pageIndex:1,
+                   pageSize:15,
+                   pageCount:20,
+               TotalCount: 0,
+
+               typename:"",
+               installday:0,
+               debugday: 0,
+               checkday: 0,
+           },
+           created: function () {
+               this.Init();
+               this.InitTypes();
+           },
+           methods: {
+
+               Init() {
+
+                   var self = this;
+                   var keywork = $("#txt_Search").val();
+
+                   console.log("请求数据：" + keywork);
+
+
+                   MyAjax({
+                       url: "/Machine/List",
+                       type: "POST",
+                       data: {
+                           keywords: keywork,
+                           pageIndex: self.pageIndex,
+                           pageSize: self.pageSize
+                       },
+                       success: function (result) {
+
+                          // console.log(JSON.stringify(result));
+
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           self.list = result.Content;
+
+
+
+                           self.pageIndex = result.PageIndex;
+                           self.pageSize = result.PageSize;
+                           self.pageCount = result.PageCount;
+                           self.pageCount = result.PageTotal;
+
+                           self.PageBind();
+                       }
+                   })
+               },
+
+               Search: function () {
+                   pageIndex = 1;
+                   this.Init();
+               },
+               PageBind: function () {
+                   var self = this;
+
+                   console.log()
+
+                   $("#ul_page").jqPaginator({
+                       totalPages: self.pageCount,
+                       visiblePages: self.pageSize,
+                       currentPage: self.pageIndex,
+
+                       first: ' <li><a href="#">First</a></li>',
+                       prev: ' <li><a href="#">&laquo;</a></li>',
+                       next: ' <li><a href="#">&raquo;</a></li>',
+                       last: '<li><a href="#">Last<\/a><\/li>',
+                       page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                       onPageChange: function (num, type) {
+
+                           self.pageIndex = num;
+
+                           if (type == "change") {
+                               self.Init();
+                           }
+                       }
+                   });
+               },
+               ExportExcel: function () {
+                   var keyword = $("#txt_Search").val();
+                   window.location = "/Machine/ExportExcel?keyword=" + keyword;
+               },
+               Del: function (item) {
+                   var self = this;
+                   bootbox.confirm("您确定删除改记录吗？", function (res) {
+                       if (res) {
+
+                           MyAjax({
+                               url: "/Machine/Delete",
+                               type: "POST",
+                               data: {
+                                   id: item.MID
+                               },
+                               success: function (result) {
+
+                                   if (!result.Success) {
+
+                                       alert_danger(result.Message);
+                                       return;
+                                   }
+                                   alert_success("删除成功");
+                                   self.Init();
+
+                               }
+                           })
+                       }
+                   });
+
+
+
+               },
+               Add: function () {
+                   console.log("开始添加");
+                   showWui("/Machine/AddAndUpdate?type=add");
+               },
+               Update: function (item) {
+                   console.log("开始修改");
+                   showWui("/Machine/AddAndUpdate?type=update&id=" + item.MID);
+
+               },
+               Formtat: function (date) {
+
+                   if (date == "" || date == null || date=="null") {
+                       return "";
+                   }
+
+                   return date.substr(0, 10);
+               },
+
+               InitTypes: function () {
+
+                   var self = this;
+                   MyAjax({
+                       url: "/Machine/ListTypes",
+                       type: "POST",
+                       data: {
+
+                       },
+                       success: function (result) {
+
+                           // console.log(JSON.stringify(result));
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           self.MachinTypes = result.Content;
+
+                       }
+                   })
+               },
+               DelTypes: function (item) {
+                   var self = this;
+                   bootbox.confirm("您确定删除改记录吗？", function (res) {
+                       if (res) {
+
+                          
+                           MyAjax({
+                               url: "/Machine/DeleteTypes",
+                               type: "POST",
+                               data: {
+                                   id: item.ID
+                               },
+                               success: function (result) {
+
+                                   if (!result.Success) {
+
+                                       alert_danger(result.Message);
+                                       return;
+                                   }
+                                   alert_success("删除成功");
+                                   self.InitTypes();
+
+                               }
+                           })
+                       }
+                   });
+
+
+               },
+               ShowAddTypes: function () {
+
+                   $('#modal-default').modal('show');
+               },
+               CheckMachine: function (item) {
+
+                   $("#txt_Search").val(item.NAME);
+                   this.Search();
+               },
+               AddTypes: function () {
+
+                   var _self = this;
+
+                   console.log("AddTypes");
+                   MyAjax({
+                       url: "/Machine/AddTypes",
+                       type: "POST",
+                       data: {
+                           NAME: _self.typename,
+                           INSTALLDAYS: _self.installday,
+                           DEBUGDAYS: _self.debugday,
+                           CHECKDAYS: _self.checkday,
+                       },
+                       success: function (result) {
+
+                           console.log(JSON.stringify(result));
+
+                           if (!result.Success) {
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           alert_success(result.Message);
+
+                           _self.InitTypes();
+
+                       }
+                   })
+
+               }
+
+           },
+
+
+
+       });
+
+
+    </script>
+
+}
 
