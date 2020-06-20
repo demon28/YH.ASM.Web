@@ -174,7 +174,11 @@
 
 
                                 <td>{{Formtat(item.PRODUCTDATE)}}</td>
-                                <td>{{item.MACHINE}}</td>
+                                @*<td>{{item.MACHINE}}</td>*@
+
+                                <td>{{item.TYPESNAME}}-{{item.MACHINE}}</td>
+
+
                                 <td>{{item.COUNT}}</td>
                                 <td>{{item.INSTALL_NAME}}</td>
 
@@ -186,37 +190,48 @@
                                 <td>{{Formtat(item.INSTALL_STARDATE)}}</td>
                                 <td>{{Formtat(item.INSTALL_ENDDATE)}}</td>
 
-                                <td>{{item.INSTALL_DAYS}}</td>
+
+
+
+                                <!---如果安装时间 超过规定时间则做出背景颜色--->
+
+
+                                <td  v-bind:class="BindBgClass(item.INSTALL_DAYS,item.INSTALLDAYS)">{{item.INSTALL_DAYS}}</td>
+                               
+
+
+
+
 
 
                                 @*<td>
-                                  
-                                    <span class="label bg-green" v-if="item.INSTALL_STATUS ==0">正常</span>
-                                    <span class="label bg-blue " v-if="item.INSTALL_STATUS ==1">超前</span>
-                                    <span class="label bg-yellow " v-if="item.INSTALL_STATUS ==2">延迟</span>
 
-                                </td>*@
+            <span class="label bg-green" v-if="item.INSTALL_STATUS ==0">正常</span>
+            <span class="label bg-blue " v-if="item.INSTALL_STATUS ==1">超前</span>
+            <span class="label bg-yellow " v-if="item.INSTALL_STATUS ==2">延迟</span>
+
+        </td>*@
 
                                 <td>{{ Formtat(item.DEBUG_STARDATE)}}</td>
                                 <td>{{Formtat(item.DEBUG_ENDDATE)}}</td>
 
 
-                                <td>{{item.DEBUG_DAYS}}</td>
-                                
-                                
-                                
+                                <td   v-bind:class="BindBgClass(item.DEBUG_DAYS,item.DEBUGDAYS)">{{item.DEBUG_DAYS}}</td>
+
+
+
                                 @*<td>
 
-                                    <span class="label bg-green" v-if="item.DEBUG_STATUS ==0">正常</span>
-                                    <span class="label bg-blue " v-if="item.DEBUG_STATUS ==1">超前</span>
-                                    <span class="label bg-yellow " v-if="item.DEBUG_STATUS ==2">延迟</span>
-                                </td>*@
+            <span class="label bg-green" v-if="item.DEBUG_STATUS ==0">正常</span>
+            <span class="label bg-blue " v-if="item.DEBUG_STATUS ==1">超前</span>
+            <span class="label bg-yellow " v-if="item.DEBUG_STATUS ==2">延迟</span>
+        </td>*@
 
                                 <td>{{Formtat(item.CHECK_STARDATE)}}</td>
                                 <td>{{Formtat(item.CHECK_ENDDATE)}}</td>
 
-                                <td>{{item.COUNT_DOWN}}</td>
-                              
+                                <td  v-bind:class="BindBgClass(item.COUNT_DOWN,item.CHECKDAYS)" >{{item.COUNT_DOWN}}</td>
+
 
 
                                 <td>
@@ -316,7 +331,7 @@
                        },
                        success: function (result) {
 
-                          // console.log(JSON.stringify(result));
+                          console.log(JSON.stringify(result));
 
                            if (!result.Success) {
 
@@ -421,7 +436,27 @@
                Attachment(item) {
                    showWui("/Project/Attachment?id=" + item.PID);
 
+               },
+
+               BindBgClass: function (days1, days2) {
+
+                   console.log("===调用" + days1 + "====" + days2);
+                   if (days1 == days2) {
+                       return "bg-blue";
+                   }
+                   if (days1 < days2) {
+                       return "bg-green";
+                   }
+                   if (days1 > days2) {
+
+                       return "bg-red";
+                   }
+
+
                }
+
+
+
 
 
            },

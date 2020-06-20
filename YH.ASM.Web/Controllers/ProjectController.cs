@@ -17,6 +17,7 @@ using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
+using YH.ASM.Entites.Model;
 
 namespace YH.ASM.Web.Controllers
 {
@@ -65,7 +66,7 @@ namespace YH.ASM.Web.Controllers
                 PageSize = pageSize
             };
 
-            List<TASM_PROJECT> list = new List<TASM_PROJECT>();
+            List<ProjectModel> list = new List<ProjectModel>();
             manager.ListByWhere(keywords, ref p, ref list);
 
             return SuccessResultList(list, p);
@@ -79,7 +80,7 @@ namespace YH.ASM.Web.Controllers
             model.STATUS = 0;
 
             DataAccess.TASM_PROJECTManager manager = new DataAccess.TASM_PROJECTManager();
-            if (!manager.Insert(model))
+            if (!manager.CurrentDb.Insert(model))
             {
                 return FailMessage();
             }
@@ -121,7 +122,7 @@ namespace YH.ASM.Web.Controllers
             DataAccess.TASM_PROJECTManager manager = new DataAccess.TASM_PROJECTManager();
 
 
-            List<TASM_PROJECT> list = new List<TASM_PROJECT>();
+            List<ProjectModel> list = new List<ProjectModel>();
             manager.ListByWhere(keyword,  ref list);
 
             HSSFWorkbook excelBook = new HSSFWorkbook(); //创建工作簿Excel
@@ -147,18 +148,18 @@ namespace YH.ASM.Web.Controllers
             row1.CreateCell(9).SetCellValue("安装时效-开始时间");
             row1.CreateCell(10).SetCellValue("安装时效-结束时间");
             row1.CreateCell(11).SetCellValue("安装时效-安装天数");
-            row1.CreateCell(12).SetCellValue("安装进度");
+          //  row1.CreateCell(12).SetCellValue("安装进度");
 
             row1.CreateCell(13).SetCellValue("调试时效-开始时间");
             row1.CreateCell(14).SetCellValue("调试时效-结束时间");
             row1.CreateCell(15).SetCellValue("调试天数");
-            row1.CreateCell(16).SetCellValue("调试进度");
+         //   row1.CreateCell(16).SetCellValue("调试进度");
 
 
 
             row1.CreateCell(17).SetCellValue("验收-开始时间");
             row1.CreateCell(18).SetCellValue("验收-结束时间");
-            row1.CreateCell(19).SetCellValue("验收倒计时(天)");
+            row1.CreateCell(19).SetCellValue("验收天数");
             row1.CreateCell(20).SetCellValue("创建时间");
 
 
@@ -186,7 +187,7 @@ namespace YH.ASM.Web.Controllers
                 rowTemp.CreateCell(11).SetCellValue(list[i].INSTALL_DAYS.ToString());
 
                
-                rowTemp.CreateCell(12).SetCellValue((Enum.GetName(typeof(Entites.EnumTypes.ProjectStatus), list[i].INSTALL_STATUS)));
+              //  rowTemp.CreateCell(12).SetCellValue((Enum.GetName(typeof(Entites.EnumTypes.ProjectStatus), list[i].INSTALL_STATUS)));
 
 
                 rowTemp.CreateCell(13).SetCellValue(list[i].DEBUG_STARDATE.ToString());
@@ -195,7 +196,7 @@ namespace YH.ASM.Web.Controllers
                 rowTemp.CreateCell(15).SetCellValue(list[i].DEBUG_DAYS.ToString());
 
                 
-                rowTemp.CreateCell(16).SetCellValue(Enum.GetName(typeof(Entites.EnumTypes.ProjectStatus), list[i].DEBUG_STATUS));
+             //   rowTemp.CreateCell(16).SetCellValue(Enum.GetName(typeof(Entites.EnumTypes.ProjectStatus), list[i].DEBUG_STATUS));
                 
                 rowTemp.CreateCell(17).SetCellValue(list[i].CHECK_STARDATE.ToString());
 
@@ -347,6 +348,26 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult ListTypes()
+        {
+            DataAccess.TASM_MACHINE_TYPEManager manager = new TASM_MACHINE_TYPEManager();
+            var list=  manager.GetList();
+
+            return SuccessResultList(list);
+        }
+
+
+        [HttpPost]
+        public IActionResult ListMachines(int typeid)
+        {
+            DataAccess.TASM_MACHINEManager manager = new TASM_MACHINEManager();
+            List<TASM_MACHINE> list = new List<TASM_MACHINE>();
+
+            manager.ListByType(typeid,ref list);
+
+            return SuccessResultList(list);
+        }
 
     }
 

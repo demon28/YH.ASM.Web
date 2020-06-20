@@ -77,10 +77,24 @@
                     <div class="form-group ">
                         <label for="txt_address" class="col-sm-3 control-label">设备名称：</label>
 
+                        <div class="col-sm-3">
+
+                            <select class="form-control" id="txt_types" v-model="MACHINETYPE" style="width:320px;">
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txt_address" class="col-sm-3 control-label">设备编号：</label>
                         <div class="col-sm-7">
-                            <input type="text" class="form-control" id="txt_machine" v-model="machine" placeholder="请输入设备名称" style="width:320px;" />
+                            <input type="text" class="form-control" id="txt_machine" v-model="machine" placeholder="请输入设备编号" style="width:320px;" />
                         </div>
                     </div>
+
+
+
 
                     <div class="form-group">
                         <label for="txt_address" class="col-sm-3 control-label">设备数量：</label>
@@ -162,19 +176,23 @@
                         </div>
 
                     </div>
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-3 control-label">安装状态：</label>
-
-                        <div class="col-sm-7">
 
 
-                            <select class="form-control" id="txt_install_status" v-model="install_status" style="width:320px;">
-                            </select>
+                    @*<div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">安装状态：</label>
+
+            <div class="col-sm-7">
 
 
-                        </div>
+                <select class="form-control" id="txt_install_status" v-model="install_status" style="width:320px;">
+                </select>
 
-                    </div>
+
+            </div>
+
+        </div>*@
+
+
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-3 control-label">调试开始时间：</label>
 
@@ -207,18 +225,20 @@
                         </div>
 
                     </div>
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-3 control-label">调试状态：</label>
-
-                        <div class="col-sm-7">
-
-                            <select class="form-control" id="txt_debug_status" v-model="debug_status" style="width:320px;">
-                            </select>
 
 
-                        </div>
+                    @*<div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">调试状态：</label>
 
-                    </div>
+            <div class="col-sm-7">
+
+                <select class="form-control" id="txt_debug_status" v-model="debug_status" style="width:320px;">
+                </select>
+
+
+            </div>
+
+        </div>*@
 
 
 
@@ -255,7 +275,7 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-3 control-label">倒计时(天)：</label>
+                        <label for="inputEmail3" class="col-sm-3 control-label">验收天数：</label>
 
                         <div class="col-sm-7">
                             <input type="text" class="form-control" id="txt_count_down" v-model="count_down" placeholder="请输入倒计时天数" style="width:320px;" />
@@ -334,12 +354,16 @@
             check_stardate: "",
             check_enddate: "",
             count_down: 0,
-            REMARKS: "123"
+            REMARKS: "123",
+            MACHINETYPE: 0,
+            MACHINET:0
 
         },
         created: function () {
 
             var ops = getQueryString("type");
+
+
 
             if (ops == "add") {
                 this.type = "添加";
@@ -349,7 +373,7 @@
 
 
             this.Init();
-
+           
 
         },
         mounted: function () {
@@ -373,43 +397,66 @@
 
             $('#txt_install_stardate').datetimepicker()
                 .on('hide', function (ev) {
-                    var value = $("#txt_install_stardate").val();
-                    _self.install_stardate = value;
+                    var stardate = $("#txt_install_stardate").val();
+
+                    _self.install_stardate = stardate;
+
+                    var enddate = $("#txt_install_enddate").val();
+
+                    _self.install_days = _self.DateSpan(stardate, enddate);
 
                 });
 
             $('#txt_install_enddate').datetimepicker()
                 .on('hide', function (ev) {
-                    var value = $("#txt_install_enddate").val();
-                    _self.install_enddate = value;
+                    var enddate = $("#txt_install_enddate").val();
+
+                    _self.install_enddate = enddate;
+
+                    var stardate = $("#txt_install_stardate").val();
+                    _self.install_days = _self.DateSpan(stardate, enddate);
+
 
                 });
 
             $('#txt_debug_stardate').datetimepicker()
                 .on('hide', function (ev) {
-                    var value = $("#txt_debug_stardate").val();
-                    _self.debug_stardate = value;
+                    var stardate = $("#txt_debug_stardate").val();
+                    _self.debug_stardate = stardate;
+
+                    var enddate = $("#txt_debug_enddate").val();
+
+                    _self.debug_days = _self.DateSpan(stardate, enddate);
 
                 });
 
             $('#txt_debug_enddate').datetimepicker()
                 .on('hide', function (ev) {
-                    var value = $("#txt_debug_enddate").val();
-                    _self.debug_enddate = value;
+                    var enddate = $("#txt_debug_enddate").val();
+                    _self.debug_enddate = enddate;
+                    var stardate = $("#txt_debug_stardate").val();
+                    _self.debug_days = _self.DateSpan(stardate, enddate);
 
                 });
 
             $('#txt_check_stardate').datetimepicker()
                 .on('hide', function (ev) {
-                    var value = $("#txt_check_stardate").val();
-                    _self.check_stardate = value;
+                    var stardate = $("#txt_check_stardate").val();
+                    _self.check_stardate = stardate;
+                    var enddate = $("#txt_check_enddate").val();
 
+                    _self.count_down = _self.DateSpan(stardate, enddate);
                 });
 
             $('#txt_check_enddate').datetimepicker()
                 .on('hide', function (ev) {
-                    var value = $("#txt_check_enddate").val();
-                    _self.check_enddate = value;
+                    var enddate = $("#txt_check_enddate").val();
+                    _self.check_enddate = enddate;
+
+                    var stardate = $("#txt_check_stardate").val();
+
+                    _self.count_down = _self.DateSpan(stardate, enddate);
+
                 });
 
             $('#txt_productdate').datetimepicker()
@@ -436,6 +483,10 @@
             });
 
 
+
+            this.BindTypes();
+           
+           
         },
         methods: {
 
@@ -483,7 +534,8 @@
                         _self.check_stardate = result.Content.CHECK_STARDATE;
                         _self.check_enddate = result.Content.CHECK_ENDDATE;
                         _self.count_down = result.Content.COUNT_DOWN;
-
+                        _self.MACHINETYPE = result.Content.MACHINETYPE;
+                        _self.MACHINET = result.Content.MACHINET;
                     }
                 })
             },
@@ -517,7 +569,8 @@
                         CHECK_STARDATE: _self.check_stardate,
                         CHECK_ENDDATE: _self.check_enddate,
                         COUNT_DOWN: _self.count_down,
-
+                        MACHINETYPE: _self.MACHINETYPE,
+                        MACHINET:_self.MACHINET
                     },
                     success: function (result) {
 
@@ -567,7 +620,8 @@
                         CHECK_STARDATE: _self.check_stardate,
                         CHECK_ENDDATE: _self.check_enddate,
                         COUNT_DOWN: _self.count_down,
-
+                        MACHINETYPE: _self.MACHINETYPE,
+                        MACHINET: _self.MACHINET
                     },
                     success: function (result) {
 
@@ -587,7 +641,62 @@
 
 
 
-            }
+            },
+            DateSpan: function (datestar, dateend) {
+
+                datestar = datestar.replace(/-/g, "/");
+                var startdate = new Date(datestar);
+
+                dateend = dateend.replace(/-/g, "/");
+                var enddate = new Date(dateend);
+
+                var time = enddate.getTime() - startdate.getTime();
+                var days = parseInt(time / (1000 * 60 * 60 * 24));
+
+                return days
+
+
+
+            },
+
+            BindTypes: function () {
+
+                var _self = this;
+                MyAjax({
+                    url: "/Project/ListTypes",
+                    type: "POST",
+                    data: {
+                        id: _self.id
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        if (!result.Success) {
+                            alert_danger(result.Message);
+                            return;
+                        }
+
+
+                        for (var i = 0; i < result.Content.length; i++) {
+                            $("#txt_types").append($("<option value='" + result.Content[i].ID + "' >" + result.Content[i].NAME + "</option>     "));
+
+                        }
+                       
+
+                        $("#txt_types").change(function () {
+
+                            _self.MACHINETYPE = $("#txt_types").val();
+
+                         
+                        });
+
+
+                    }
+                })
+            
+            },
+
 
         }
 

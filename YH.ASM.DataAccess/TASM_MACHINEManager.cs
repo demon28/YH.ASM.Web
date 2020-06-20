@@ -1,6 +1,7 @@
 ﻿using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using YH.ASM.DataAccess.CodeGenerator.DBCore;
 using YH.ASM.Entites.CodeGenerator;
@@ -47,7 +48,14 @@ namespace YH.ASM.DataAccess
             return list.Count > 0;
         }
 
+        public bool  ListByType(int typeid, ref List<TASM_MACHINE> list)
+        {
 
+            list = TASM_MACHINERDb.GetList().Where(s => s.TYPES == typeid).ToList();
+
+            return list.Count > 0;
+
+        }
 
 
 

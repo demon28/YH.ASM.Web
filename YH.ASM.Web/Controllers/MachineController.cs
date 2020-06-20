@@ -70,7 +70,7 @@ namespace YH.ASM.Web.Controllers
             model.STATUS = 0;
 
             DataAccess.TASM_MACHINEManager manager = new DataAccess.TASM_MACHINEManager();
-            if (!manager.Insert(model))
+            if (!manager.CurrentDb.Insert(model))
             {
                 return FailMessage();
             }
@@ -83,9 +83,9 @@ namespace YH.ASM.Web.Controllers
 
             model.CREATETIME = DateTime.Now;
             model.STATUS = 0;
-
+           
             DataAccess.TASM_MACHINE_TYPEManager manager = new DataAccess.TASM_MACHINE_TYPEManager();
-            if (!manager.Insert(model))
+            if (!manager.CurrentDb.Insert(model))
             {
                 return FailMessage();
             }
@@ -210,7 +210,26 @@ namespace YH.ASM.Web.Controllers
             return SuccessResult(model);
 
         }
+        [HttpPost]
+        public IActionResult GetTypesInfo(int id)
+        {
+            TASM_MACHINE_TYPEManager manager = new TASM_MACHINE_TYPEManager();
+            TASM_MACHINE_TYPE model = manager.GetById(id);
 
+            return SuccessResult(model);
+
+        }
+        [HttpPost]
+        public IActionResult UpdateTypes(TASM_MACHINE_TYPE model)
+        {
+            DataAccess.TASM_MACHINE_TYPEManager manager = new DataAccess.TASM_MACHINE_TYPEManager();
+            if (!manager.Update(model))
+            {
+                return FailMessage();
+            }
+            return SuccessMessage("修改成功");
+
+        }
 
     }
 }

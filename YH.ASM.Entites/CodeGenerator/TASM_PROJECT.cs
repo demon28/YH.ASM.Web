@@ -12,13 +12,12 @@ namespace YH.ASM.Entites.CodeGenerator
         /// </summary>
         public TASM_PROJECT()
         {
-
         }
 
         /// <summary>
         /// 主键
         /// </summary>
-        [SugarColumn(IsPrimaryKey = true,OracleSequenceName = "SEQ_TASM_PROJECT")]
+        [SugarColumn(IsPrimaryKey = true)]
         public System.Int32 PID { get; set; }
 
         /// <summary>
@@ -140,5 +139,15 @@ namespace YH.ASM.Entites.CodeGenerator
         /// 逻辑删除
         /// </summary>
         public System.Int16? ISDEL { get; set; }
+
+        /// <summary>
+        /// 设备类型 外键设备类型表
+        /// </summary>
+        public System.Int32? MACHINETYPE { get; set; }
+
+        /// <summary>
+        /// 设备 外键设备表
+        /// </summary>
+        public System.Int32? MACHINET { get; set; }
     }
 }
