@@ -29,6 +29,9 @@ namespace YH.ASM.DataAccess
             ||s.CONTRACT.Contains(keyword)
             || s.TYPESNAME.Contains(keyword)).OrderBy(s=>s.MID,OrderByType.Asc).ToPageList(p.PageIndex,p.PageSize, ref pagecount);
 
+
+          
+
             p.PageCount = pagecount;
 
             return list.Count > 0;

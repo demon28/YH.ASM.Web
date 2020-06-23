@@ -1,6 +1,7 @@
 ﻿using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using YH.ASM.DataAccess.CodeGenerator.DBCore;
 using YH.ASM.Entites.CodeGenerator;

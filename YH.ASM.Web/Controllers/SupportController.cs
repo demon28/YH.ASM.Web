@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using Microsoft.Extensions.Logging;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
+using YH.ASM.Entites.Model;
 using YH.ASM.Web.ControllerBase;
 
 namespace YH.ASM.Web.Controllers
@@ -33,6 +36,16 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
+
+        public IActionResult FillProject()
+        {
+            return View();
+        }
+        
+        public IActionResult FillUser()
+        {
+            return View();
+        }
         public IActionResult Create()
         {
             return View();
@@ -261,6 +274,63 @@ namespace YH.ASM.Web.Controllers
                   logger.LogInformation("异常：" + e);
                 return FailMessage(e.ToString());
             }
+
+        }
+
+        [HttpPost]
+        public IActionResult CreateSupport(SupportCreateModel model)
+        {
+            DataAccess.TASM_SUPPORT_Da da = new TASM_SUPPORT_Da();
+            da.Db.BeginTran();
+            try
+            {
+                TASM_SUPPORT supportModel = new TASM_SUPPORT()
+                {
+                    CREATOR = model.CreatorId,
+                    CONDUCTOR = model.ConductorId,
+                    CONTENT = model.Content,
+                    CREATETIME = DateTime.Now,
+                    FINDATE = model.FindDate,
+                    ISDEL = 0,
+                    MEMBERID = 0,
+                    PRIORITY = model.Priority,
+                    PROJECT = model.ProjectId,
+                    SEVERITY = model.Severity,
+                    STATUS = 0,
+                    TITLE = model.Title,
+                    TYPE = model.Type
+                };
+
+               int newid= da.CurrentDb.InsertReturnIdentity(supportModel);
+
+
+
+                foreach (var item in model.Filelist)
+                {
+                    TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
+                    TASM_ATTACHMENT attModel = manager.GetById(item.ID);
+                    attModel.TYPE = 1;
+                    attModel.PID = newid;
+
+
+                    manager.Update(attModel);
+
+                }
+
+
+                da.Db.CommitTran();
+
+                return SuccessMessage("创建成功");
+            }
+            catch (Exception e)
+            {
+                logger.LogWarning(e.ToString());
+                da.Db.RollbackTran();
+
+                return FailMessage("创建工单失败！");
+            }
+            
+            
 
         }
 

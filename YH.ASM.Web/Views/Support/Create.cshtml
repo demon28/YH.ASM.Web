@@ -3,6 +3,28 @@
     ViewData["Title"] = "Create";
 }
 @section Pageheader{
+
+    <script>
+
+        function closeWui() {
+            $(".wui-masked").hide();
+            $('.wui-ilayout').animate({ width: '0' }, function () {
+                $(".wui-ilayout iframe").attr("src", "about:blank");
+            });
+        }
+        function showWui(uri, width) {
+            var window_width = width || ($(window).width() / 2);
+            $(".wui-masked").show();
+            $(".wui-ilayout").show().animate({ width: window_width }, function () {
+                var html = $("<div class='wui-ilayout-loading'><i class='icon-spin icon-spinner'></i>正在加载页面...</div>");
+                $(".wui-ilayout iframe").before(html);
+                $(".wui-ilayout iframe").attr('src', uri);
+            });
+        }
+
+    </script>
+
+
     <h1>
         <small>  创建工单</small>
     </h1>
@@ -40,7 +62,7 @@
                                     创建者 ：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm"  v-model="creator.USER_NAME"  readonly="readonly">
+                                    <input type="text" class="form-control input-sm" v-model="creator.USER_NAME" readonly="readonly">
                                 </td>
                                 <td class="text-right col-sm-2" style="vertical-align:middle">
                                 </td>
@@ -51,10 +73,10 @@
                                     项目名称：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm"   v-model="project.NAME" readonly="readonly">
+                                    <input type="text" class="form-control input-sm" v-model="project.NAME" readonly="readonly">
                                 </td>
                                 <td class="text-right col-sm-2" style="vertical-align:middle">
-                                    <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="useitem(item)">添加</button>
+                                    <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillProject()">添加</button>
                                 </td>
                             </tr>
 
@@ -66,8 +88,8 @@
                                 <td class="col-sm-3 " style="vertical-align:middle">
                                     问题类型 ：
                                 </td>
-                                <td class="col-sm-7" style="vertical-align:middle" >
-                                    <select class="form-control"  v-model="type">
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <select class="form-control" v-model="type">
                                         <option value="0">操作调试</option>
                                         <option value="1">来料质量</option>
                                         <option value="2">商务问题</option>
@@ -81,8 +103,8 @@
                                 <td class="text-right col-sm-3 " style="vertical-align:middle">
                                     优先级 ：
                                 </td>
-                                <td class="col-sm-7" style="vertical-align:middle" >
-                                    <select class="form-control"  v-model="priority">
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <select class="form-control" v-model="priority">
                                         <option value="0">紧急</option>
                                         <option value="1">高</option>
                                         <option value="2">中</option>
@@ -96,7 +118,7 @@
                                 <td class="col-sm-3 " style="vertical-align:middle">
                                     严重程度：
                                 </td>
-                                <td class="col-sm-7" style="vertical-align:middle" >
+                                <td class="col-sm-7" style="vertical-align:middle">
                                     <select class="form-control" v-model="severity">
                                         <option value="0">致命</option>
                                         <option value="1">严重</option>
@@ -112,7 +134,7 @@
                                     发现日期：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" id="txt_finddate"  v-model="finddate" readonly="readonly" />
+                                    <input type="text" class="form-control input-sm" id="txt_finddate" v-model="finddate" readonly="readonly" />
                                 </td>
 
                             </tr>
@@ -121,10 +143,10 @@
                                     处理人：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" v-model="conductor.USER_NAME"  readonly="readonly">
+                                    <input type="text" class="form-control input-sm" v-model="conductor.USER_NAME" readonly="readonly">
                                 </td>
                                 <td class="text-right col-sm-2" style="vertical-align:middle">
-                                    <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="useitem(item)">添加</button>
+                                    <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillUser()">添加</button>
                                 </td>
                             </tr>
 
@@ -140,14 +162,14 @@
             <!-- /.box -->
             <!-- About Me Box -->
 
-            <div class="box box-warning" id="" >
+            <div class="box box-warning" id="">
                 <div class="box-header">
                     <h3 class="box-title">附件</h3>
 
                     <div class="box-tools pull-right">
                         <div class="btn btn-default btn-file  pull-right  btn-sm" style="margin-left:15px" id="from_fileupload">
                             <i class="fa fa-paperclip"></i> 上传
-                            <input type="file" name="attachment" id="file_attachment"  @@change="UploadFile()">
+                            <input type="file" name="attachment" id="file_attachment" @@change="UploadFile()">
                         </div>
                     </div>
 
@@ -193,7 +215,7 @@
                     <h3 class="box-title"><i class="fa fa-envelope "></i> &nbsp;&nbsp; 创建工单</h3>
                     <div class="box-tools pull-right">
 
-                        <button type="button" id="btn_send" class="btn   btn-success pull-left" style="margin-left:20px;">    <i class="fa fa-send"></i> &nbsp;&nbsp; 提 交</button>  &nbsp;&nbsp;
+                        <button type="button" id="btn_send" class="btn   btn-success pull-left" style="margin-left:20px;" @@click="Submit()">    <i class="fa fa-send"></i> &nbsp;&nbsp; 提 交</button>  &nbsp;&nbsp;
 
 
                     </div>
@@ -213,7 +235,7 @@
                         <div class="form-group">
 
                             <div class="col-sm-8">
-                                <input type="text" class="form-control input-sm"   v-model="title" placeholder="请填写工单概要">
+                                <input type="text" class="form-control input-sm" v-model="title" placeholder="请填写工单概要">
                             </div>
 
                         </div>
@@ -225,7 +247,7 @@
 
                         <div class="form-horizontal">
 
-                            <textarea name="description" id="description" v-model="content"></textarea>
+                            <textarea name="description" id="description" v-model="content" ></textarea>
                         </div>
 
                     </form>
@@ -246,8 +268,19 @@
 
 </section>
 <!-- /.content -->
+<!-- Control Sidebar -->
+
+<div class="wui-masked" style="position:fixed;background:#fff;top:0;left:0;right:0;bottom:0;z-index:9998;opacity:0.3;display:none;"
+     onclick="closeWui()"></div>
 
 
+<div class="wui-ilayout" style="position:absolute; position:fixed;top:0;right:0;z-index:9999;bottom:0;border-left:4px #eee solid;display:none;background:#fff;">
+    <div style="padding:2em;height:100%;background-color:gainsboro">
+        <iframe style="width:50%;border:0 none;height:100%;width:100%;" src="about:blank" onload="javascript:$('.wui-ilayout-loading').remove()"></iframe>
+    </div>
+</div>
+
+<!-- /.control-sidebar -->
 @section scripts{
     <script src="~/Reference/adminLTE/bower_components/ckeditor/ckeditor.js"></script>
     <script src="~/Reference/scripts/jquery.form.min.js"></script>
@@ -259,7 +292,7 @@
 
     <script>
 
-
+       
         var vm = new Vue({
             el: "#tab",
             data: {
@@ -272,7 +305,7 @@
                 priority: 0,         //优先级
                 severity: 0,          //严重程度
                 title: "",
-                content:""
+                content: ""
             },
             created: function () {
 
@@ -281,12 +314,22 @@
 
             },
             mounted: function () {
-                var _self  = this;
+                var _self = this;
                 // 显示文本编辑器
-                CKEDITOR.replace('description', {
+               var ck= CKEDITOR.replace('description', {
                     filebrowserImageUploadUrl: "/Support/UploadImage?type=Images",  //粘贴即上传图片功能，暂时屏蔽
                     height: 400
                 });
+
+                for (var i in CKEDITOR.instances) {
+                    CKEDITOR.instances[i].on('change', function () {
+
+                        _self.content=  ck.getData();
+
+                    });
+                }
+
+
                 $('#txt_finddate').datetimepicker({
                     format: 'yyyy-mm-dd ',
                     autoclose: true,
@@ -317,12 +360,32 @@
             methods: {
 
                 Init() {
+                    var _self = this;
 
+                    MyAjax({
+                        url: "/Support/CreatorInfo",
+                        type: "POST",
+
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            _self.creator = result.Content;
+
+
+                        }
+                    })
 
                 },
                 UploadFile() {
-                    var _self = this; 
-                 
+                    var _self = this;
+                    var loading = alert_loading_show("文件上传中...")
                     var uploadFile = $('#file_attachment')[0].files[0];
 
                     if (uploadFile.size >= 39307124) {
@@ -331,7 +394,7 @@
                     }
 
 
-                    var loading= alert_loading_show("文件上传中...")
+             
                     console.log("提交ajax");
                     $("#from_fileupload").ajaxSubmit({
                         url: '/Support/UploadAttachment',
@@ -339,7 +402,7 @@
                         dataType: 'json',
                         processData: false,
                         contentType: false,
-                       
+
                         success: function (result) {
 
                             alert_loading_close(loading);
@@ -358,7 +421,7 @@
                         }, xhr: function () {
                             var xhr = new XMLHttpRequest();
                             xhr.upload.addEventListener('progress', function (e) {
-                              
+
                             })
 
                             return xhr;
@@ -375,10 +438,71 @@
                 },
                 Submit() {
 
+                    
+                    var CreatorId = this.creator.USER_ID;
+                    var ConductorId = this.conductor.USER_ID;
+                    var ProjectId = this.project.PID;
+                    var Type = this.type;
+                    var Priority = this.priority;
+                    var Severity = this.severity;
+                    var FindDate = this.finddate;
+                    var Title = this.title;
+                    var Content = this.content;
+
+                    var Filelist = this.filelist;
+
+                   
+                    var json = { CreatorId: CreatorId, ConductorId: ConductorId, ProjectId: ProjectId, Type: Type, Priority: Priority, Severity: Severity, FindDate: FindDate, Title: Title, Content: Content, Filelist: Filelist };
+                   
+                    MyAjax({
+                        url: "/Support/CreateSupport",
+                        type: "POST",
+                        data: json,
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            bootbox.confirm({
+                                size: "small",
+                                message: "创建工单成功！是否前去查看工单?",
+                                callback: function (result) {
+
+                                    if (result) {
+                                        window.location.href = "/Support/Index";
+                                    }
+                                }
+                            });
+                         
 
 
+                        }
+                    })
+                },
+                FillUser() {
 
-                }
+                    showWui("/Support/FillUser");
+                },
+                FillProject() {
+
+                    showWui("/Support/FillProject");
+                },
+                SetProject(item) {
+
+                    this.project = item;
+
+                },
+                SetUser(item) {
+
+                    this.conductor = item;
+
+                },
+                
             },
 
 
