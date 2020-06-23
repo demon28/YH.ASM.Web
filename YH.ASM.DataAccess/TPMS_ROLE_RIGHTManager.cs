@@ -12,7 +12,7 @@ namespace YH.ASM.DataAccess
         public bool ListByRoleid(int roleid ,ref List<TPMS_ROLE_RIGHT> list)
         {
 
-            list=TPMS_ROLE_RIGHTDb.GetList(s=>s.ROLE_ID==roleid);
+            list= CurrentDb.GetList(s=>s.ROLE_ID==roleid);
 
             return list.Count > 0;
         }

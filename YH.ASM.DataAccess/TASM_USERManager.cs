@@ -31,7 +31,7 @@ namespace YH.ASM.DataAccess
         public bool GetListByWhere(string keyword,ref PageModel p, ref List<TASM_USER> list) 
         {
 
-            list = TASM_USERDb.GetPageList(it =>it.USER_NAME.Contains(keyword) 
+            list = CurrentDb.GetPageList(it =>it.USER_NAME.Contains(keyword) 
             || it.WORK_ID.Contains(keyword)
             || it.DEPARTMENT.Contains(keyword)
              || it.DEPT2.Contains(keyword)
@@ -50,14 +50,14 @@ namespace YH.ASM.DataAccess
                 keyword = string.Empty;
             }
 
-            list= TASM_USERDb.GetList().Where(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)).OrderBy(s=>s.WORK_ID).ToList();
+            list= CurrentDb.GetList().Where(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)).OrderBy(s=>s.WORK_ID).ToList();
             return list.Count > 0;
         }
 
         public bool ListByDept(string keyword ,ref PageModel p, ref List<TASM_USER> list) {
 
 
-            list = TASM_USERDb.GetPageList(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)
+            list = CurrentDb.GetPageList(it => it.USER_NAME.Contains(keyword) || it.WORK_ID.Contains(keyword)
             || it.DEPARTMENT.Contains(keyword) 
              || it.DEPT2.Contains(keyword)
                || it.DEPT3.Contains(keyword)

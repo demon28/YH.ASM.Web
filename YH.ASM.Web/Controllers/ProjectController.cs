@@ -286,7 +286,6 @@ namespace YH.ASM.Web.Controllers
                     string fileExt = Path.GetExtension(file.FileName); 
                    
 
-
                    string newFileName = filename.Remove(filename.LastIndexOf('.')) + "(" + DateTime.Now.ToString("yyyyMMddHHmmss") + ")" + fileExt;
 
                  
@@ -314,11 +313,13 @@ namespace YH.ASM.Web.Controllers
 
                 #endregion
 
-                TASM_ATTACHMENT model = new TASM_ATTACHMENT();
-                model.PID = pid;
-                model.FILENAME = newFileName;
-                model.URL = path;
-
+                TASM_ATTACHMENT model = new TASM_ATTACHMENT
+                {
+                    PID = pid,
+                    FILENAME = newFileName,
+                    URL = path,
+                    TYPE = 0
+                };
 
                 if (!AddAttachment( model))
                 {

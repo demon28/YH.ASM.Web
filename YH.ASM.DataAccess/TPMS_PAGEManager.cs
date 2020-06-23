@@ -13,7 +13,7 @@ namespace YH.ASM.DataAccess
         public bool PageListByWhere(string keyword, ref PageModel p, ref List<TPMS_PAGE> list)
         {
 
-            list = TPMS_PAGEDb.GetPageList(it => it.PAGE_NAME.Contains(keyword) && it.APP_ID == 1, p, it => it.PAGE_ID, OrderByType.Asc);
+            list = CurrentDb.GetPageList(it => it.PAGE_NAME.Contains(keyword) && it.APP_ID == 1, p, it => it.PAGE_ID, OrderByType.Asc);
 
             return list.Count > 0;
         }
@@ -21,7 +21,7 @@ namespace YH.ASM.DataAccess
 
         public bool GetPageAll(ref List<TPMS_PAGE> list)
         {
-             list = TPMS_PAGEDb.GetList(s => s.APP_ID == 1);
+             list = CurrentDb.GetList(s => s.APP_ID == 1);
                return list.Count > 0;
 
         }

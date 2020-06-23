@@ -36,8 +36,14 @@ namespace YH.ASM.Entites.CodeGenerator
         public System.String REAMRKS { get; set; }
 
         /// <summary>
-        /// 项目id
+        /// 归属id
         /// </summary>
         public System.Int32   PID { get; set; }
+
+        /// <summary>
+        /// 归属表
+        /// </summary>
+        public System.Int32 TYPE { get; set; }
+        
     }
 }

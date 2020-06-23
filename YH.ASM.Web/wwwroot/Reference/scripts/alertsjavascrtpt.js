@@ -53,3 +53,21 @@ function alert_info(message) {
 
 }
 
+
+
+function alert_loading_show(message) {
+
+    var dialog = bootbox.dialog({
+        title: message,
+        message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+    });
+
+    return dialog;
+
+} 
+
+function alert_loading_close(dialog) {
+
+    dialog.modal('hide');
+
+}

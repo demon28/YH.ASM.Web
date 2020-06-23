@@ -41,9 +41,11 @@ namespace YH.ASM.Web.Controllers
         {
 
             TPMS_ROLEManager manager = new TPMS_ROLEManager();
-            SqlSugar.PageModel p = new SqlSugar.PageModel();
-            p.PageIndex = pageIndex;
-            p.PageSize = pageSize;
+            SqlSugar.PageModel p = new SqlSugar.PageModel
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
 
             List<TPMS_ROLE> list = new List<TPMS_ROLE>();
             manager.RoleListByWhere(keyword, ref p, ref list);
@@ -204,7 +206,7 @@ namespace YH.ASM.Web.Controllers
         public IActionResult GetFuncList(string keyword, int pageIndex, int pageSize)
         {
 
-            TPMS_USER_RIGHTManager tASM_USERManager = new TPMS_USER_RIGHTManager();
+            TPMS_FUNCManager tASM_USERManager = new TPMS_FUNCManager();
             SqlSugar.PageModel p = new SqlSugar.PageModel();
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;

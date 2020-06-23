@@ -20,14 +20,14 @@ namespace YH.ASM.DataAccess
         public bool RoleListByWhere(string keyword, ref PageModel p, ref List<TPMS_ROLE> list)
         {
 
-            list = TPMS_ROLEDb.GetPageList(it => it.ROLE_NAME.Contains(keyword) && it.APP_ID == 1, p, it => it.ROLE_ID, OrderByType.Asc);
+            list = CurrentDb.GetPageList(it => it.ROLE_NAME.Contains(keyword) && it.APP_ID == 1, p, it => it.ROLE_ID, OrderByType.Asc);
 
             return list.Count > 0;
         }
 
         public bool RoleListByAll(ref List<TPMS_ROLE> list) {
 
-            list=TPMS_ROLEDb.GetList(s => s.APP_ID == 1);
+            list= CurrentDb.GetList(s => s.APP_ID == 1);
             return list.Count > 0;
         }
     }

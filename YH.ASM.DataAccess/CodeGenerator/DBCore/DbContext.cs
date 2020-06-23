@@ -12,6 +12,13 @@ namespace YH.ASM.DataAccess.CodeGenerator.DBCore
 {
     public class DbContext<T> where T : class, new()
     {
+
+
+        //注意：不能写成静态的
+        public SqlSugarClient Db;//用来处理事务多表查询和复杂的操作
+        public SimpleClient<T> CurrentDb { get { return new SimpleClient<T>(Db); } }//用来操作当前表的数据
+
+
         public DbContext()
         {
 
@@ -35,19 +42,7 @@ namespace YH.ASM.DataAccess.CodeGenerator.DBCore
             };
 
         }
-        //注意：不能写成静态的
-        public SqlSugarClient Db;//用来处理事务多表查询和复杂的操作
-        public SimpleClient<T> CurrentDb { get { return new SimpleClient<T>(Db); } }//用来操作当前表的数据
-
-
-        public SimpleClient<TASM_USER> TASM_USERDb { get { return new SimpleClient<TASM_USER>(Db); } }//用来处理TASM_USER表的常用操作
-  
-        public SimpleClient<TPMS_FUNCTION> TPMS_FUNCTIONDb { get { return new SimpleClient<TPMS_FUNCTION>(Db); } }//用来处理TPMS_FUNCTION表的常用操作
-        public SimpleClient<TPMS_PAGE> TPMS_PAGEDb { get { return new SimpleClient<TPMS_PAGE>(Db); } }//用来处理TPMS_PAGE表的常用操作
-        public SimpleClient<TPMS_FUNC_MEMBER> TPMS_FUNC_MEMBERDb { get { return new SimpleClient<TPMS_FUNC_MEMBER>(Db); } }//用来处理TPMS_FUNC_MEMBER表的常用操作
-        public SimpleClient<TPMS_ROLE> TPMS_ROLEDb { get { return new SimpleClient<TPMS_ROLE>(Db); } }//用来处理TPMS_ROLE表的常用操作
-        public SimpleClient<TPMS_ROLE_RIGHT> TPMS_ROLE_RIGHTDb { get { return new SimpleClient<TPMS_ROLE_RIGHT>(Db); } }//用来处理TPMS_ROLE_RIGHT表的常用操作
-        public SimpleClient<TPMS_USER_RIGHT> TPMS_USER_RIGHTDb { get { return new SimpleClient<TPMS_USER_RIGHT>(Db); } }//用来处理TPMS_USER_RIGHT表的常用操作
+     
 
 
         /// <summary>

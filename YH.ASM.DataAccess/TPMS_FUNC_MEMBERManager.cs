@@ -11,7 +11,7 @@ namespace YH.ASM.DataAccess
         public bool ListByFuncid(int funcid,ref List<TPMS_FUNC_MEMBER> list)
         {
            
-            list=TPMS_FUNC_MEMBERDb.GetList(it => it.FUNC_ID == funcid );
+            list= CurrentDb.GetList(it => it.FUNC_ID == funcid );
 
             return list.Count>0;
         }

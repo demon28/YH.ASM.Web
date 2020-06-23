@@ -16,7 +16,7 @@
 
 <section class="content">
 
-    <div class="row">
+    <div class="row" id="tab">
         <div class="col-md-3">
             <div class="box box-info" id="app">
 
@@ -40,7 +40,7 @@
                                     创建者 ：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" id="txt_sendermail" readonly="readonly">
+                                    <input type="text" class="form-control input-sm"  v-model="creator.USER_NAME"  readonly="readonly">
                                 </td>
                                 <td class="text-right col-sm-2" style="vertical-align:middle">
                                 </td>
@@ -48,10 +48,10 @@
 
                             <tr>
                                 <td class="text-right col-sm-3 " style="vertical-align:middle">
-                                    归属项目：
+                                    项目名称：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" id="txt_sendermail" readonly="readonly">
+                                    <input type="text" class="form-control input-sm"   v-model="project.NAME" readonly="readonly">
                                 </td>
                                 <td class="text-right col-sm-2" style="vertical-align:middle">
                                     <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="useitem(item)">添加</button>
@@ -59,50 +59,75 @@
                             </tr>
 
 
+
+
+
                             <tr>
-                                <td class="text-right col-sm-3 " style="vertical-align:middle">
-                                    客户名称：
+                                <td class="col-sm-3 " style="vertical-align:middle">
+                                    问题类型 ：
                                 </td>
-                                <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" id="txt_sendermail">
-                                </td>
-                                <td class="text-right col-sm-2" style="vertical-align:middle">
-                                    <span></span>
+                                <td class="col-sm-7" style="vertical-align:middle" >
+                                    <select class="form-control"  v-model="type">
+                                        <option value="0">操作调试</option>
+                                        <option value="1">来料质量</option>
+                                        <option value="2">商务问题</option>
+                                        <option value="3">设计问题</option>
+                                        <option value="4">装配误差</option>
+                                    </select>
                                 </td>
                             </tr>
-
 
                             <tr>
                                 <td class="text-right col-sm-3 " style="vertical-align:middle">
                                     优先级 ：
                                 </td>
-                                <td class="col-sm-7" style="vertical-align:middle">
-                                    <select class="form-control">
-                                        <option>紧急</option>
-                                        <option>高</option>
-                                        <option>中</option>
-                                        <option>低</option>
+                                <td class="col-sm-7" style="vertical-align:middle" >
+                                    <select class="form-control"  v-model="priority">
+                                        <option value="0">紧急</option>
+                                        <option value="1">高</option>
+                                        <option value="2">中</option>
+                                        <option value="3">低</option>
                                     </select>
                                 </td>
-
                             </tr>
 
 
                             <tr>
-                                <td class="text-right col-sm-3 " style="vertical-align:middle">
-                                    严重程度 ：
+                                <td class="col-sm-3 " style="vertical-align:middle">
+                                    严重程度：
                                 </td>
-                                <td class="col-sm-7" style="vertical-align:middle">
-                                    <select class="form-control">
-                                        <option>致命</option>
-                                        <option>严重</option>
-                                        <option>一般</option>
-                                        <option>提示</option>
-                                        <option>建议</option>
+                                <td class="col-sm-7" style="vertical-align:middle" >
+                                    <select class="form-control" v-model="severity">
+                                        <option value="0">致命</option>
+                                        <option value="1">严重</option>
+                                        <option value="2">一般</option>
+                                        <option value="3">提示</option>
+                                        <option value="4">建议</option>
                                     </select>
                                 </td>
 
                             </tr>
+                            <tr>
+                                <td class="col-sm-3 " style="vertical-align:middle">
+                                    发现日期：
+                                </td>
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <input type="text" class="form-control input-sm" id="txt_finddate"  v-model="finddate" readonly="readonly" />
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right col-sm-3 " style="vertical-align:middle">
+                                    处理人：
+                                </td>
+                                <td class="col-sm-7" style="vertical-align:middle">
+                                    <input type="text" class="form-control input-sm" v-model="conductor.USER_NAME"  readonly="readonly">
+                                </td>
+                                <td class="text-right col-sm-2" style="vertical-align:middle">
+                                    <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="useitem(item)">添加</button>
+                                </td>
+                            </tr>
+
 
                         </tbody>
                     </table>
@@ -115,18 +140,15 @@
             <!-- /.box -->
             <!-- About Me Box -->
 
-            <div class="box box-warning">
+            <div class="box box-warning" id="" >
                 <div class="box-header">
                     <h3 class="box-title">附件</h3>
 
                     <div class="box-tools pull-right">
-                        <div class="box-tools pull-right">
-                            <div class="btn btn-default btn-file " style="margin-left:15px">
-                                <i class="fa fa-paperclip"></i> 上&nbsp;&nbsp; 传
-                                <input type="file" name="attachment" id="file_attachment">
-                            </div>
+                        <div class="btn btn-default btn-file  pull-right  btn-sm" style="margin-left:15px" id="from_fileupload">
+                            <i class="fa fa-paperclip"></i> 上传
+                            <input type="file" name="attachment" id="file_attachment"  @@change="UploadFile()">
                         </div>
-
                     </div>
 
                 </div>
@@ -136,17 +158,17 @@
                         <tbody>
                             <tr>
 
-                                <th>Name</th>
+                                <th>名称</th>
                                 <th class="text-right"></th>
                             </tr>
-                            <tr v-for="(item,index) in Data">
+                            <tr v-for="(item,index) in filelist">
 
                                 <td>
 
-                                    <a v-on:click="useitem(item)" style="cursor:pointer;"> {{item.TempName}}</a>
+                                    <a @@click="ViewFile(item.URL)" style="cursor:pointer;"> {{item.FILENAME}}</a>
                                 </td>
                                 <td class="text-right">
-                                    <button type="button" class="btn bg-blue  btn-xs " v-on:click="useitem(item)">插入</button>  &nbsp; &nbsp;
+                                    @*<button type="button" class="btn bg-blue  btn-xs " v-on:click="viewitem(item)">预览</button>  &nbsp; &nbsp;*@
                                 </td>
                             </tr>
 
@@ -176,54 +198,44 @@
 
                     </div>
 
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body ">
+
+
+                    <div class="form-inline" style="margin-top:10px">
+
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body ">
 
 
-                        <div class="form-inline" style="margin-top:10px">
-                       
+                    <form class="form-horizontal" style="margin-top:10px">
+
+                        <div class="form-group">
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control input-sm"   v-model="title" placeholder="请填写工单概要">
+                            </div>
+
                         </div>
 
 
-                        <form class="form-horizontal" style="margin-top:10px">
-
-                            <div class="form-group">
-                           
-                             
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control input-sm" id="txt_sendermail" placeholder="请填写工单标题">
-                                </div>
-
-                            </div>
-                            <div class="form-group">
-
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control input-sm" id="txt_sendermail" placeholder="请选择问题处理人员" readonly="readonly">
-                                </div>
-                                <div class="col-sm-2">
-                                    <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="useitem(item)">添加</button>
-                                </div>
-
-                            </div>
-
-                            <!-- /.box-body -->
-                            <!-- /.box-footer -->
+                        <!-- /.box-body -->
+                        <!-- /.box-footer -->
 
 
-                            <div class="form-horizontal">
+                        <div class="form-horizontal">
 
-                                <textarea name="description" id="description"></textarea>
-                            </div>
+                            <textarea name="description" id="description" v-model="content"></textarea>
+                        </div>
 
-                        </form>
+                    </form>
 
-                    </div>
-                    <div class="box-footer">
-
-                    </div>
-                    <!-- /.box-body -->
                 </div>
+                <div class="box-footer">
+
+                </div>
+                <!-- /.box-body -->
+            </div>
 
             <!-- Custom Tabs -->
             <!-- /.nav-tabs-custom -->
@@ -240,13 +252,27 @@
     <script src="~/Reference/adminLTE/bower_components/ckeditor/ckeditor.js"></script>
     <script src="~/Reference/scripts/jquery.form.min.js"></script>
 
+
+    <script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
     <script>
 
 
         var vm = new Vue({
             el: "#tab",
             data: {
-
+                finddate: "",       //发现时间
+                filelist: [],        //附件集合
+                creator: {},          //问题创建者
+                project: {},            //项目信息
+                conductor: {},          //问题处理者
+                type: 0,             //问题类型
+                priority: 0,         //优先级
+                severity: 0,          //严重程度
+                title: "",
+                content:""
             },
             created: function () {
 
@@ -255,12 +281,32 @@
 
             },
             mounted: function () {
-
+                var _self  = this;
                 // 显示文本编辑器
                 CKEDITOR.replace('description', {
                     filebrowserImageUploadUrl: "/Support/UploadImage?type=Images",  //粘贴即上传图片功能，暂时屏蔽
                     height: 400
                 });
+                $('#txt_finddate').datetimepicker({
+                    format: 'yyyy-mm-dd ',
+                    autoclose: true,
+                    minView: "month",  ///选择日期后，不会再跳转去选择时分秒
+                    language: 'zh-CN',
+                    dateFormat: 'yyyy-mm-dd',//日期显示格式
+                    // timeFormat: 'HH:mm:ss',//时间显示格式
+                    todayBtn: 1,
+                    autoclose: 1,
+                    // minView: 0,  //0表示可以选择小时、分钟   1只可以选择小时
+                    // minuteStep: 1,//分钟间隔1分钟
+                });
+
+
+                $('#txt_finddate').datetimepicker()
+                    .on('hide', function (ev) {
+                        var enddate = $("#txt_finddate").val();
+                        _self.finddate = enddate;
+                    });
+
 
 
                 //显示当前 创建人
@@ -274,8 +320,65 @@
 
 
                 },
+                UploadFile() {
+                    var _self = this; 
+                 
+                    var uploadFile = $('#file_attachment')[0].files[0];
+
+                    if (uploadFile.size >= 39307124) {
+                        alert_danger("单个文件请不要超过30M");
+                        return;
+                    }
 
 
+                    var loading= alert_loading_show("文件上传中...")
+                    console.log("提交ajax");
+                    $("#from_fileupload").ajaxSubmit({
+                        url: '/Support/UploadAttachment',
+                        type: 'post',
+                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                       
+                        success: function (result) {
+
+                            alert_loading_close(loading);
+
+                            if (!result.Success) {
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            alert_success("上传成功！");
+
+                            console.log(JSON.stringify(result));
+                            _self.filelist.push(result.Content);
+
+
+                        }, xhr: function () {
+                            var xhr = new XMLHttpRequest();
+                            xhr.upload.addEventListener('progress', function (e) {
+                              
+                            })
+
+                            return xhr;
+                        }
+                    });
+
+
+
+                },
+                ViewFile(url) {
+
+                    window.open(url);
+
+                },
+                Submit() {
+
+
+
+
+                }
             },
 
 

@@ -12,20 +12,6 @@ public class TPMS_USER_RIGHTManager : DbContext<TPMS_USER_RIGHT>
 
 
 
-    /// <summary>
-    /// 查询功能
-    /// </summary>
-    /// <param name="keyword"></param>
-    /// <param name="p"></param>
-    /// <param name="list"></param>
-    /// <returns></returns>
-    public bool FuncListByWhere(string keyword, ref PageModel p, ref List<TPMS_FUNCTION> list)
-    {
-
-        list = TPMS_FUNCTIONDb.GetPageList(it => it.FUNC_NAME.Contains(keyword) && it.APP_ID == 1, p, it => it.FUNC_ID, OrderByType.Asc);
-
-        return list.Count > 0;
-    }
 
 
     /// <summary>
@@ -73,7 +59,7 @@ WHERE te.app_id=1 and  tr.role_id !=4
     public bool ListByUserid(int uesrid,ref List<TPMS_USER_RIGHT> list)
     {
 
-        list = TPMS_USER_RIGHTDb.GetList(it => it.USER_ID == uesrid);
+        list = CurrentDb.GetList(it => it.USER_ID == uesrid);
 
         return list.Count > 0;
     }
