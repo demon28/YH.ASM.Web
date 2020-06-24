@@ -533,20 +533,21 @@
     <script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
     <script src="~/js/jq-paginator.min.js"></script>
     <script src="~/Reference/bootbox/bootbox.min.js"></script>
+    <script src="~/Reference/bootbox/bootbox.locales.min.js"></script>
     <script src="~/Reference/scripts/CommonScript.js"></script>
 
 
     <script type="text/javascript">
-      
-        $(document).ready(function () {
 
+        $(document).ready(function () {
+            bootbox.setDefaults("locale", "zh_CN");  
 
             $.ajax({
                 url: "/Home/GetLoginUser",
                 type: "POST",
                 success: function (result) {
 
-                 //   console.log(result);
+                    //   console.log(result);
 
 
                     $("#p_username").html(result.UserInfo.WORK_ID + " : " + result.UserInfo.USER_NAME);

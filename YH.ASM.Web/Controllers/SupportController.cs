@@ -58,14 +58,13 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        #region  代码生成器 生成
 
         public IActionResult AddAndUpdate()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult List(string keywords, int pageIndex, int pageSize)
+        public IActionResult List(string keywords, int pageIndex, int pageSize,string orderby="SID")
         {
 
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
@@ -73,7 +72,7 @@ namespace YH.ASM.Web.Controllers
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 
-            List<TASM_SUPPORT> list=manager.ListByWhere(keywords, ref p);
+            List<SupportListModel> list=manager.ListByWhere(keywords, ref p, orderby);
 
             return SuccessResultList(list, p);
 
@@ -94,6 +93,12 @@ namespace YH.ASM.Web.Controllers
         [HttpPost]
         public IActionResult Update(Entites.CodeGenerator.TASM_SUPPORT model)
         {
+
+            if (model.CREATOR!=this.User_Id || model.CONDUCTOR != this.User_Id)
+            {
+                return FailMessage("抱歉您不是项目相关人员,无法修改项目状态");
+            }
+
 
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
             if (!manager.Update(model))
@@ -130,11 +135,6 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        /// <summary>
-        /// 导出Excel
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <returns></returns>
         [HttpGet]
         public IActionResult ExportExcel(string keyword = "")
         {
@@ -180,7 +180,6 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        #endregion
 
 
         [HttpPost]
@@ -304,18 +303,19 @@ namespace YH.ASM.Web.Controllers
                int newid= da.CurrentDb.InsertReturnIdentity(supportModel);
 
 
-
-                foreach (var item in model.Filelist)
+                if (model.Filelist!=null && model.Filelist.Count>0)
                 {
-                    TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
-                    TASM_ATTACHMENT attModel = manager.GetById(item.ID);
-                    attModel.TYPE = 1;
-                    attModel.PID = newid;
+                    foreach (var item in model.Filelist)
+                    {
+                        TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
+                        TASM_ATTACHMENT attModel = manager.GetById(item.ID);
+                        attModel.TYPE = 1;
+                        attModel.PID = newid;
 
-
-                    manager.Update(attModel);
-
+                        manager.Update(attModel);
+                    }
                 }
+            
 
 
                 da.Db.CommitTran();

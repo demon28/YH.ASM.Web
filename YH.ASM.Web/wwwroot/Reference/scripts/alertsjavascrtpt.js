@@ -59,7 +59,8 @@ function alert_loading_show(message) {
 
     var dialog = bootbox.dialog({
         title: message,
-        message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+        message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+        closeButton: false 
     });
 
     return dialog;

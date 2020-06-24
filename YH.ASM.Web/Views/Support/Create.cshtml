@@ -317,7 +317,7 @@
                 var _self = this;
                 // 显示文本编辑器
                var ck= CKEDITOR.replace('description', {
-                    filebrowserImageUploadUrl: "/Support/UploadImage?type=Images",  //粘贴即上传图片功能，暂时屏蔽
+                
                     height: 400
                 });
 
@@ -469,6 +469,7 @@
                             }
 
                             bootbox.confirm({
+                                title: "提示",
                                 size: "small",
                                 message: "创建工单成功！是否前去查看工单?",
                                 callback: function (result) {
@@ -495,11 +496,12 @@
                 SetProject(item) {
 
                     this.project = item;
-
+                    closeWui();
                 },
                 SetUser(item) {
 
                     this.conductor = item;
+                    closeWui();
 
                 },
                 

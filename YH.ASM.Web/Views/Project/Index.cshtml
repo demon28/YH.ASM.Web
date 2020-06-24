@@ -389,27 +389,32 @@
                },
                Del: function (item) {
                    var self = this;
-                   bootbox.confirm("您确定删除改记录吗？", function (res) {
-                       if (res) {
+                   bootbox.confirm({
+                       size: "small",
+                       message: "您确定要删除该记录吗?",
 
-                           MyAjax({
-                               url: "/Project/Delete",
-                               type: "POST",
-                               data: {
-                                   pid: item.PID
-                               },
-                               success: function (result) {
+                       callback: function (res) {
+                           if (res) {
 
-                                   if (!result.Success) {
+                               MyAjax({
+                                   url: "/Project/Delete",
+                                   type: "POST",
+                                   data: {
+                                       pid: item.PID
+                                   },
+                                   success: function (result) {
 
-                                       alert_danger(result.Message);
-                                       return;
+                                       if (!result.Success) {
+
+                                           alert_danger(result.Message);
+                                           return;
+                                       }
+                                       alert_success("删除成功");
+                                       self.Init();
+
                                    }
-                                   alert_success("删除成功");
-                                   self.Init();
-
-                               }
-                           })
+                               })
+                           }
                        }
                    });
 
