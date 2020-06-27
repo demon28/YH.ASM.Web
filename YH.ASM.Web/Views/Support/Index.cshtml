@@ -72,6 +72,16 @@
                             <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
                         </div>
 
+
+
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px; width:150px;">
+                            <select class="form-control" id="txt_types" v-model="watchType" @@change="Init()">
+                                <option value="0" checked="true">全部</option>
+                                <option value="1" >我创建的</option>
+                                <option value="2" >我处理的</option>
+                            </select>
+                        </div>
+
                         <div class="input-group input-group-sm  col-md-2 pull-right ml-1" style="margin-left: 10px; width: 150px;">
                             <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
 
@@ -80,16 +90,6 @@
                             </div>
 
                         </div>
-
-                        @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px; width:150px;">
-                                <div class="input-group date">
-
-                                    <input type="text" class="form-control pull-right" id="datepicker">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                </div>
-                            </div>*@
 
 
                     </div>
@@ -131,7 +131,13 @@
                                 </td>
 
                                 <td class="my-td ">{{item.CREATORNAME}}</td>
-                                <td style="text-align:right">{{item.CONDUCTORNAME}} &nbsp; <i class="fa fa-edit"></i></td>
+                                <td class="my-td " >
+
+                                    <a  @@click="ChangeUser(item)">
+                                        {{item.CONDUCTORNAME}}
+                                        </a>
+
+                                </td>
 
                                 <td class="my-td ">{{item.PROJECTNAME}}</td>
                                 <td class="my-td ">
@@ -151,7 +157,7 @@
 
                                     <small class="label  text-red" v-if="item.PRIORITY==0" @@click="ChangePriority(item.PRIORITY,item)"> ·{{SetPriority(item.PRIORITY)}}</small>
                                     <small class="label  text-yellow" v-if="item.PRIORITY==1" @@click="ChangePriority(item.PRIORITY,item)">·{{SetPriority(item.PRIORITY)}}</small>
-                                    <small class="label  text-gray" v-if="item.PRIORITY==2" @@click="ChangePriority(item.PRIORITY,item)"> ·{{SetPriority(item.PRIORITY)}}</small>
+                                    <small class="label  text-aqua" v-if="item.PRIORITY==2" @@click="ChangePriority(item.PRIORITY,item)"> ·{{SetPriority(item.PRIORITY)}}</small>
                                     <small class="label  text-blue" v-if="item.PRIORITY==3" @@click="ChangePriority(item.PRIORITY,item)"> ·{{SetPriority(item.PRIORITY)}}</small>
                                 </td>
 
@@ -165,10 +171,14 @@
                                 <td class="my-td ">{{item.CREATETIME}}</td>
                                 <td class="my-td ">
 
-                                    <button type="button" class="btn bg-teal  btn-xs" v-on:click="View(item)">详情</button>
 
+                                    <button type="button" class="btn bg-primary  btn-xs" v-on:click="View(item)">详情</button>
                                     &nbsp;
                                     <button type="button" class="btn bg-purple  btn-xs " v-on:click="Dispose(item)">处理</button>
+                                    &nbsp;
+                                    <button type="button" class="btn bg-teal  btn-xs" v-on:click="Att(item)">附件</button>
+
+
 
                                 </td>
                             </tr>
@@ -267,7 +277,7 @@
 
                             <button type="button" class="btn  btn-primary pull-right">去处理</button>
                             &nbsp;
-                            <button type="button" class="btn  btn-primary pull-right">修 改</button>
+                            <button type="button" class="btn  btn-primary pull-right" @@click="ChangeContent()" >修 改</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -328,7 +338,9 @@
                 Prioritylist: [],
                 Severitylist: [],
                 Statuslist: [],
-                supprotInfo: {}
+                supprotInfo: {},
+                orderby: "SID",
+                watchType:0
             },
             created: function () {
 
@@ -350,11 +362,11 @@
                 this.Prioritylist.push({ value: 3, text: "低" });
 
                 this.Statuslist.push({ value: 0, text: "已提交" });
-                this.Statuslist.push({ value: 1, text: "处理中" });
-                this.Statuslist.push({ value: 2, text: "已解决" });
-                this.Statuslist.push({ value: 3, text: "已完成" });
-                this.Statuslist.push({ value: 4, text: "已拒绝" });
-
+                this.Statuslist.push({ value: 1, text: "处理中(PMC跟进)" });
+                this.Statuslist.push({ value: 2, text: "已处理(无需PMC)" });
+                this.Statuslist.push({ value: 3, text: "待审核" });
+                this.Statuslist.push({ value: 4, text: "已完成" });
+                this.Statuslist.push({ value: 5, text: "已拒绝" });
 
                 this.Severitylist.push({ value: 0, text: "致命" });
                 this.Severitylist.push({ value: 1, text: "严重" });
@@ -389,7 +401,9 @@
                        data: {
                            keywords: keywork,
                            pageIndex: self.pageIndex,
-                           pageSize: self.pageSize
+                           pageSize: self.pageSize,
+                           orderby: self.orderby,
+                           watchType: self.watchType
                        },
                        success: function (result) {
 
@@ -475,7 +489,7 @@
                        }
                    })
                 },
-                View: function (item) {
+               View: function (item) {
                     this.supprotInfo = item;
                     ck.setData(this.supprotInfo.CONTENT);
                     $('#modal-default').modal('show');
@@ -552,7 +566,7 @@
                         title: "工单状态",
                         inputType: "select",
                         value: value,
-                        inputOptions: _self.Statuslist,
+                        inputOptions: [{ value: 4, text: "已完成" }, { value: 5, text: "已拒绝" }],
                         callback: function (result) {
 
                             if (result == null) {
@@ -606,8 +620,38 @@
                         }
                     });
                 },
+                ChangeUser(item) {
+                    this.supprotInfo = item;
+                    showWui("/Support/FillUser");
+                },
+                SetUser(item) {
+
+                    console.log(item);
+
+                    var _self = this;
+                    _self.supprotInfo.CONDUCTOR = item.USER_ID;
+                    _self.supprotInfo.CONDUCTORNAME = item.USER_NAME;
+
+                    _self.Update(_self.supprotInfo);
 
 
+                    closeWui();
+
+                },
+                Dispose(item) {
+                    window.location.href = "/Support/Disposer?id=" + item.SID;
+                },
+                Att(item) {
+
+                    showWui("/Support/Attachment?id=" + item.SID);
+
+                },
+                ChangeContent() {
+
+                    this.supprotInfo.CONTENT = ck.getData();
+                    this.Update(this.supprotInfo);
+
+                }
            },
 
 

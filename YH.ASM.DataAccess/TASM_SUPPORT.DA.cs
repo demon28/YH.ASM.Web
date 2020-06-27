@@ -50,7 +50,7 @@ namespace YH.ASM.DataAccess
             return list;
         }
 
-        public List<SupportListModel> ListByWhere(string keyword,ref PageModel p, string order = "SID")
+        public List<SupportListModel> ListByWhere(string keyword,ref PageModel p, int watchType,int? watchId,string order = "SID")
         {
 
             string sql = @"SELECT T.*,
@@ -69,14 +69,30 @@ namespace YH.ASM.DataAccess
     ON TU.USER_ID = T.CONDUCTOR
    LEFT JOIN TASM_PROJECT TP ON TP.PID=T.PROJECT
 
+WHERE 1=1 
 
 ";
+            var configParms = new List<SugarParameter>();
+
+            if (watchType==1)
+            {
+                sql += " and t.creator=:watchId ";
+
+                configParms.Add( new SugarParameter("watchId", watchId.Value));
+            }
+            if (watchType == 2)
+            {
+                sql += " and  t.conductor=:watchId ";
+                configParms.Add(new SugarParameter("watchId", watchId.Value));
+            }
+
 
             int totalCount = 0;
             int totalPage = 0;
             List<SupportListModel> list = Db.SqlQueryable<SupportListModel>(sql)
                 .Where(s => s.TITLE.Contains(keyword))
-                .OrderBy(order)
+                .OrderBy(s=>s.SID,OrderByType.Desc)
+                .AddParameters(configParms)
                 .ToPageList(p.PageIndex, p.PageSize, ref totalCount, ref totalPage);
             p.PageCount = totalCount;
 
@@ -85,6 +101,44 @@ namespace YH.ASM.DataAccess
 
         }
 
+
+
+
+        public SupportListModel SelectById(int sid)
+        {
+
+            string sql = @"SELECT T.*,
+       TR.USER_ID   CREATORID,
+       TR.USER_NAME CREATORNAME,
+       TU.USER_ID   CONDUCTORID,
+       TU.USER_NAME CONDUCTORNAME,
+       TP.PID PROJECTID,
+       TP.NAME PROJECTNAME
+       
+  FROM TASM_SUPPORT T
+
+  LEFT JOIN TASM_USER TR
+    ON TR.USER_ID = T.CREATOR
+  LEFT JOIN TASM_USER TU
+    ON TU.USER_ID = T.CONDUCTOR
+   LEFT JOIN TASM_PROJECT TP ON TP.PID=T.PROJECT
+
+WHERE 1=1  and t.SID=:sid
+
+";
+            var configParms = new List<SugarParameter>();
+
+            configParms.Add(new SugarParameter("sid", sid));
+
+
+            SupportListModel model = Db.SqlQueryable<SupportListModel>(sql)  
+                .AddParameters(configParms)
+                .First();
+
+            return model;
+
+
+        }
     }
 
 }

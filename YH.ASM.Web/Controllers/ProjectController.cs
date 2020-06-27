@@ -238,7 +238,7 @@ namespace YH.ASM.Web.Controllers
 
             List<TASM_ATTACHMENT> list = new List<TASM_ATTACHMENT>();
 
-            manager.ListByPid(id, ref list);
+            manager.ListByPid(id,0, ref list);
 
             return SuccessResultList(list);
 
