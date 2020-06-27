@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Disposer";
+    ViewData["Title"] = "PmcCheck";
 }
 @section Pageheader{
 
@@ -151,7 +151,7 @@
                 <div class="box-header">
                     <h3 class="box-title">附件</h3>
 
-                 
+
 
                 </div>
                 <!-- /.box-header -->
@@ -221,26 +221,99 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">分析人员：</label>
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">BOM图纸：</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="analyzeUser.USER_NAME" placeholder="请选择分析人员" readonly="readonly">
+                                <input type="text" class="form-control input-sm" v-model="bom" placeholder="请输入BOM图纸">
                             </div>
 
                         </div>
+
+
+
+
+
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单状态：</label>
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">是否需要下单：</label>
                             <div class="col-sm-6">
-                                <select class="form-control" v-model="status">
-                                    <option value="1">处理中(PMC跟进)</option>
-                                    <option value="2">已处理(无需PMC)</option>
+                                <select class="form-control" v-model="isbook">
+                                    <option value="0">无需下单</option>
+                                    <option value="1">需要下单</option>
 
                                 </select>
                             </div>
                         </div>
-                    
 
 
-                        <div class="form-group" >
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下单日期：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="txt_bookdate" v-model="bookdate" readonly="readonly" />
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下单人：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="bookuser" placeholder="请输入下单人姓名">
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">物料单号：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="bookno" placeholder="请输入物料单号">
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">交付日期：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="txt_delivery" v-model="delivery" readonly="readonly" />
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">发货日期：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="txt_senddate" v-model="senddate" readonly="readonly" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">发货单号：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="sendno" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">收货人：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="consignee" />
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单状态：</label>
+                            <div class="col-sm-6">
+                                <select class="form-control" v-model="status">
+                                    <option value="3">已处理(PMC)</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下一经办人：</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control input-sm" v-model="nextuser.USER_NAME" placeholder="请选择下一处理人员" readonly="readonly">
@@ -252,19 +325,12 @@
 
 
 
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">初步原因：</label>
-                            <div class="col-sm-8">
 
-                                <textarea class="form-control" rows="1" placeholder="请填写初步原因分析" v-model="analyze"></textarea>
-                            </div>
-
-                        </div>
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">解决方案：</label>
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">备注：</label>
                             <div class="col-sm-8" style="text-align:left">
 
-                                <textarea class="form-control" style="margin-left:0px" rows="1" placeholder="请填写建议解决方案" v-model="solution"></textarea>
+                                <textarea class="form-control" style="margin-left:0px" rows="1" placeholder="请填写备注(非必填项)" v-model="remarks"></textarea>
                             </div>
 
                         </div>
@@ -316,7 +382,7 @@
 
     <script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-    
+
 
     <script>
         var ck;
@@ -331,24 +397,31 @@
                 Statuslist: [],
                 id: 0,      //主键id
                 filelist: [],        //附件集合
-                analyze: "",   //初步原因分析
-                analyzeUser: {},    //分析人员
-                solution: "",    //解决方案
-             
+
+                bom:"",
+                isbook:0,
+                bookdate:"",
+                bookuser:"",
+                bookno:"",
+                delivery:"",
+                senddate:"",
+                sendno:"",
+                consignee:"",
+
                 nextuser: {},     //下一处理人员
                 status: 1,
 
             },
             created: function () {
-            
+
                 this.Init();
                 this.InitAtt();
                 this.InitConductor();
             },
             mounted: function () {
                 var _self = this;
-             
-                
+
+
 
                 this.Typelist.push({ value: 0, text: "操作调试" });
                 this.Typelist.push({ value: 1, text: "来料质量" });
@@ -375,9 +448,9 @@
                 this.Severitylist.push({ value: 2, text: "一般" });
                 this.Severitylist.push({ value: 3, text: "提示" });
                 this.Severitylist.push({ value: 4, text: "建议" });
-          
 
-               
+
+
 
             },
             methods: {
@@ -406,7 +479,7 @@
                             // 显示文本编辑器
                             ck = CKEDITOR.replace('description', {
                                 readOnly: true,
-                                height: 300
+                                height: 100
                             });
 
                             ck.setData (_self.supprotInfo.CONTENT);
@@ -536,17 +609,22 @@
                     var _self = this;
 
                     var json = {};
-                    json.SID = _self.id;
-                    json.ANALYZEUSER = _self.analyzeUser.USER_ID;
-                    json.ANALYZE = _self.analyze;
-                    json.SOLUTION = _self.solution;
-                 
+                    json.BOM = _self.bom;
+                    json.ISBOOK = _self.isbook;
+                    json.BOOKDATE = _self.bookdate;
+                    json.BOOKUSER = _self.bookuser;
 
+                    json.BOOKNO = _self.bookno;
+                    json.DELIVERY = _self.delivery;
+                    json.SENDDATE = _self.senddate;
+                    json.SENDNO = _self.sendno;
+                    json.CONSIGNEE = _self.consignee;
+                    json.SID = _self.id;
                     ////////////////////
 
 
                     MyAjax({
-                        url: "/Support/AddDisposer",
+                        url: "/Support/AddPmcOrder",
                         type: "POST",
                         data: {
                             nextUser: _self.nextuser.USERID,

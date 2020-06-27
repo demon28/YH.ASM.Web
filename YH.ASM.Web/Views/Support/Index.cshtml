@@ -174,7 +174,7 @@
 
                                     <button type="button" class="btn bg-primary  btn-xs" v-on:click="View(item)">详情</button>
                                     &nbsp;
-                                    <button type="button" class="btn bg-purple  btn-xs " v-on:click="Dispose(item)">处理</button>
+                                    <button type="button" class="btn bg-purple  btn-xs " v-if="item.STATUS!=4 && item.STATUS!=5" v-on:click="Dispose(item)">处理</button>
                                     &nbsp;
                                     <button type="button" class="btn bg-teal  btn-xs" v-on:click="Att(item)">附件</button>
 
@@ -275,7 +275,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
 
-                            <button type="button" class="btn  btn-primary pull-right">去处理</button>
+                            @*<button type="button" class="btn  btn-primary pull-right">去处理</button>*@
                             &nbsp;
                             <button type="button" class="btn  btn-primary pull-right" @@click="ChangeContent()" >修 改</button>
                         </div>
@@ -364,9 +364,10 @@
                 this.Statuslist.push({ value: 0, text: "已提交" });
                 this.Statuslist.push({ value: 1, text: "处理中(PMC跟进)" });
                 this.Statuslist.push({ value: 2, text: "已处理(无需PMC)" });
-                this.Statuslist.push({ value: 3, text: "待审核" });
-                this.Statuslist.push({ value: 4, text: "已完成" });
-                this.Statuslist.push({ value: 5, text: "已拒绝" });
+                this.Statuslist.push({ value: 3, text: "已处理(PMC完成)" });
+                this.Statuslist.push({ value: 4, text: "待审核" });
+                this.Statuslist.push({ value: 5, text: "已完成" });
+                this.Statuslist.push({ value: 6, text: "已拒绝" });
 
                 this.Severitylist.push({ value: 0, text: "致命" });
                 this.Severitylist.push({ value: 1, text: "严重" });
@@ -566,7 +567,7 @@
                         title: "工单状态",
                         inputType: "select",
                         value: value,
-                        inputOptions: [{ value: 4, text: "已完成" }, { value: 5, text: "已拒绝" }],
+                        inputOptions: [{ value: 5, text: "已完成" }, { value: 6, text: "已拒绝" }],
                         callback: function (result) {
 
                             if (result == null) {
@@ -639,7 +640,25 @@
 
                 },
                 Dispose(item) {
-                    window.location.href = "/Support/Disposer?id=" + item.SID;
+
+                    if (item.STATUS==0) {
+                        window.location.href = "/Support/Disposer?id=" + item.SID;
+                        return;
+                    }
+                    if (item.STATUS == 1) {
+                        window.location.href = "/Support/PmcOrder?id=" + item.SID;
+                        return;
+                    }
+                    if (item.STATUS == 2) {
+                        window.location.href = "/Support/SiteCheck?id=" + item.SID;
+                        return;
+                    }
+                    if (item.STATUS == 3) {
+                        window.location.href = "/Support/PrincipalCheck?id=" + item.SID;
+                        return;
+                    }
+
+                 
                 },
                 Att(item) {
 

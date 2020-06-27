@@ -33,15 +33,6 @@ namespace YH.ASM.Entites.CodeGenerator
         ///</summary>
         public System.Int32 ANALYZEUSER { get; set; }
         
-        ///<summary>
-        ///描述：是否需要PMC跟进，0为不需要，1为需要
-        ///</summary>
-        public System.Int32 ISPMC { get; set; }
-        
-        ///<summary>
-        ///描述：需要pmc跟进时，为PMC跟进人员冗余PMC采购表
-        ///</summary>
-        public System.Int32 PMCUSER { get; set; }
         
         ///<summary>
         ///描述：分析原因

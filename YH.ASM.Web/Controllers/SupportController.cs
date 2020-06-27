@@ -44,7 +44,19 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
-        
+        public IActionResult PmcOrder()
+        {
+            return View();
+        }
+        public IActionResult PrincipalCheck()
+        {
+            return View();
+        }
+        public IActionResult SiteCheck()
+        {
+            return View();
+        }
+
         public IActionResult FillProject()
         {
             return View();
@@ -360,7 +372,7 @@ namespace YH.ASM.Web.Controllers
 
 
         [HttpPost]
-        public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model,int supportStatus)
+        public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model,int supportStatus,int nextUser)
         {
 
             model.CREATETIME = DateTime.Now;
@@ -368,19 +380,15 @@ namespace YH.ASM.Web.Controllers
 
             DataAccess.TASM_SUPPORT_Da support_manager = new DataAccess.TASM_SUPPORT_Da();
             DataAccess.TASM_SUPPORT_DISPOSER_Da disposer_manager = new DataAccess.TASM_SUPPORT_DISPOSER_Da();
-            DataAccess.TASM_SUPPORT_PMC_Da pmc_manager = new DataAccess.TASM_SUPPORT_PMC_Da();
+        
             DataAccess.TASM_SUPPORT_HIS_Da his_manager = new TASM_SUPPORT_HIS_Da();
             try
             {
                 disposer_manager.Db.BeginTran();
           
-            
-                
-             
 
                 //1，添加 工单处理表数据，并获得disposerId
                 var disposerId = disposer_manager.Db.Insertable(model).ExecuteReturnIdentity();
-
 
              
 
@@ -389,33 +397,20 @@ namespace YH.ASM.Web.Controllers
 
 
 
-
                 //3,当前处理人员发生修改，新增一条 修改记录 history
                 TASM_SUPPORT_HIS hisModel = new TASM_SUPPORT_HIS();
                 hisModel.CREATETIME = DateTime.Now;
                 hisModel.PRE_USER = supportModel.CONDUCTOR;
-                hisModel.NEXT_USER = model.PMCUSER;
+                hisModel.NEXT_USER = nextUser;
                 hisModel.SID = model.SID;
                 his_manager.Insert(hisModel);
 
 
-
                 supportModel.MEMBERID = disposerId;    //将处理表的 设置给 工单表   
                 supportModel.STATUS = supportStatus;  //修改工单状态
-                supportModel.CONDUCTOR = model.PMCUSER;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
+                supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
 
                 support_manager.Update(supportModel);  //修改工单表
-
-
-
-
-                //4,如果工单需要 PMC处理，则添加一条PMC 数据
-                if (model.ISPMC == 1)
-                {
-                    TASM_SUPPORT_PMC pmcmodel = new TASM_SUPPORT_PMC();
-                    pmcmodel.DID = disposerId;
-                    pmc_manager.Insert(pmcmodel);
-                }
 
 
 
@@ -436,6 +431,60 @@ namespace YH.ASM.Web.Controllers
 
 
 
+        [HttpPost]
+        public IActionResult AddPmcOrder(TASM_SUPPORT_PMC model, int supportStatus, int nextUser)
+        {
+            model.CREATETIME = DateTime.Now;
+            model.STATUS = 0;
 
+            DataAccess.TASM_SUPPORT_Da support_manager = new DataAccess.TASM_SUPPORT_Da();
+            DataAccess.TASM_SUPPORT_PMC_Da disposer_manager = new DataAccess.TASM_SUPPORT_PMC_Da();
+
+            DataAccess.TASM_SUPPORT_HIS_Da his_manager = new TASM_SUPPORT_HIS_Da();
+
+            try
+            {
+                disposer_manager.Db.BeginTran();
+
+
+                //1，添加 PMC处理表数据，并获得PMCID
+
+                var pmcId = disposer_manager.Db.Insertable(model).ExecuteReturnIdentity();
+
+
+
+                //2,修改工单表的状态
+                var supportModel = support_manager.GetById(model.SID);  //工单id 查询工单信息
+
+
+
+                //3,当前处理人员发生修改，新增一条 修改记录 history
+                TASM_SUPPORT_HIS hisModel = new TASM_SUPPORT_HIS();
+                hisModel.CREATETIME = DateTime.Now;
+                hisModel.PRE_USER = supportModel.CONDUCTOR;
+                hisModel.NEXT_USER = nextUser;
+                hisModel.SID = model.SID;
+                his_manager.Insert(hisModel);
+
+        
+                supportModel.STATUS = supportStatus;  //修改工单状态
+                supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
+
+                support_manager.Update(supportModel);  //修改工单表
+
+
+
+                disposer_manager.Db.CommitTran();
+
+                return SuccessMessage("处理成功！");
+            }
+            catch (Exception e)
+            {
+                disposer_manager.Db.RollbackTran();
+                return FailMessage("处理失败！");
+            }
+
+        }
+        
     }
 }
