@@ -41,7 +41,7 @@ namespace YH.ASM.Entites.CodeGenerator
         ///<summary>
         ///描述：下单人
         ///</summary>
-        public System.String BOOKUSER { get; set; }
+        public System.Int32 BOOKUSER { get; set; }
         
         ///<summary>
         ///描述：物料订单号
@@ -67,11 +67,6 @@ namespace YH.ASM.Entites.CodeGenerator
         ///描述：收货人
         ///</summary>
         public System.String CONSIGNEE { get; set; }
-
-        ///<summary>
-        ///描述：归属于哪个处理 数据外键 tasm_support
-        ///</summary>
-        public System.Int32 SID { get; set; }
         
         ///<summary>
         ///描述：状态
@@ -82,6 +77,16 @@ namespace YH.ASM.Entites.CodeGenerator
         ///描述：创建时间
         ///</summary>
         public System.DateTime CREATETIME { get; set; }
+        
+        ///<summary>
+        ///描述：归属于哪个处理 数据外键 tasm_support
+        ///</summary>
+        public System.Int32 SID { get; set; }
+        
+        ///<summary>
+        ///描述：备注
+        ///</summary>
+        public System.String REMARKS { get; set; }
         
 
     }

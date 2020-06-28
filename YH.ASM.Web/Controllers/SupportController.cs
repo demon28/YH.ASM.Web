@@ -671,8 +671,51 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult GetSupportInfo(int id)
+        {
+            DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
+            TASM_SUPPORT model = manager.GetById(id);
 
+            return SuccessResult(model);
 
+        }
 
+        [HttpPost]
+        public IActionResult GetDisposerInfo(int id)
+        {
+            DataAccess.TASM_SUPPORT_DISPOSER_Da manager = new DataAccess.TASM_SUPPORT_DISPOSER_Da();
+            TASM_SUPPORT_DISPOSER model = manager.GetById(id);
+
+            return SuccessResult(model);
+
+        }
+
+        [HttpPost]
+        public IActionResult GetPmcInfo(int id)
+        {
+            DataAccess.TASM_SUPPORT_PMC_Da manager = new DataAccess.TASM_SUPPORT_PMC_Da();
+            TASM_SUPPORT_PMC model = manager.GetById(id);
+
+            return SuccessResult(model);
+
+        }
+
+        [HttpPost]
+        public IActionResult GetSiteInfo(int id)
+        {
+            DataAccess.TASM_SUPPORT_SITE_Da manager = new DataAccess.TASM_SUPPORT_SITE_Da();
+            TASM_SUPPORT_SITE model = manager.GetById(id);
+
+            return SuccessResult(model);
+        }
+        [HttpPost]
+        public IActionResult GetPrincipalInfo(int id)
+        {
+            DataAccess.TASM_SUPPORT_PRINCIPAL_Da manager = new DataAccess.TASM_SUPPORT_PRINCIPAL_Da();
+            TASM_SUPPORT_PRINCIPAL model = manager.GetById(id);
+
+            return SuccessResult(model);
+        }
     }
 }
