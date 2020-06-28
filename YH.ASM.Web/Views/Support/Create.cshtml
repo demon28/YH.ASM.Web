@@ -215,8 +215,7 @@
                     <h3 class="box-title"><i class="fa fa-envelope "></i> &nbsp;&nbsp; 创建工单</h3>
                     <div class="box-tools pull-right">
 
-                        <button type="button" id="btn_send" class="btn   btn-success pull-left" style="margin-left:20px;" @@click="Submit()">    <i class="fa fa-send"></i> &nbsp;&nbsp; 提 交</button>  &nbsp;&nbsp;
-
+                    
 
                     </div>
 
@@ -232,28 +231,40 @@
 
                     <form class="form-horizontal" style="margin-top:10px">
 
-                        <div class="form-group">
+                       
 
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control input-sm" v-model="title" placeholder="请填写工单概要">
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单标题：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="title" placeholder="请填写工单概要" >
                             </div>
 
                         </div>
 
 
-                        <!-- /.box-body -->
-                        <!-- /.box-footer -->
 
 
-                        <div class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单内容：</label>
+                            <div class="col-sm-8" style="text-align:left">
 
-                            <textarea name="description" id="description" v-model="content" ></textarea>
+                                <textarea class="form-control" style="margin-left:0px" rows="16" placeholder="请描述详细问题" v-model="content"></textarea>
+                            </div>
+
                         </div>
+
+
+
+
+
+
 
                     </form>
 
                 </div>
                 <div class="box-footer">
+                    <button type="button" id="btn_send" class="btn   btn-success pull-left" style="margin-left:20px;" @@click="Submit()">    <i class="fa fa-send"></i> &nbsp;&nbsp; 提 交</button>  &nbsp;&nbsp;
 
                 </div>
                 <!-- /.box-body -->
@@ -316,18 +327,7 @@
             mounted: function () {
                 var _self = this;
                 // 显示文本编辑器
-               var ck= CKEDITOR.replace('description', {
-                
-                    height: 400
-                });
-
-                for (var i in CKEDITOR.instances) {
-                    CKEDITOR.instances[i].on('change', function () {
-
-                        _self.content=  ck.getData();
-
-                    });
-                }
+           
 
 
                 $('#txt_finddate').datetimepicker({

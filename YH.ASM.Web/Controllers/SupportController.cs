@@ -71,7 +71,15 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
-        public  SupportController(IWebHostEnvironment hostingEnvironment, ILogger<ProjectController> _logger)
+        public IActionResult Details()
+        {
+            return View();
+        }
+
+
+
+
+        public SupportController(IWebHostEnvironment hostingEnvironment, ILogger<ProjectController> _logger)
         {
             _hostingEnvironment = hostingEnvironment;
             logger = _logger;
@@ -83,6 +91,9 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
+
+
+
         [HttpPost]
         public IActionResult List(string keywords, int pageIndex, int pageSize, int watchType=0, string orderby="SID")
         {
@@ -208,6 +219,20 @@ namespace YH.ASM.Web.Controllers
             return SuccessResult(this.UserInfo);
         }
 
+        [HttpPost]
+        public IActionResult LisAttachmentt(int id)
+        {
+
+            TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
+
+            List<TASM_ATTACHMENT> list = new List<TASM_ATTACHMENT>();
+
+            manager.ListByPid(id, 1, ref list);
+
+            return SuccessResultList(list);
+
+
+        }
 
         [HttpPost]
         public ActionResult UploadAttachment()
@@ -296,6 +321,10 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+
+
+
+
         [HttpPost]
         public IActionResult CreateSupport(SupportCreateModel model)
         {
@@ -321,6 +350,27 @@ namespace YH.ASM.Web.Controllers
                 };
 
                int newid= da.CurrentDb.InsertReturnIdentity(supportModel);
+
+
+
+                //当前处理人员发生修改，新增一条 修改记录 history
+
+                DataAccess.TASM_SUPPORT_HIS_Da his_manager = new TASM_SUPPORT_HIS_Da();
+                TASM_SUPPORT_HIS hisModel = new TASM_SUPPORT_HIS();
+                hisModel.CREATETIME = DateTime.Now;
+                hisModel.PRE_USER = supportModel.CREATOR;
+                hisModel.NEXT_USER = supportModel.CONDUCTOR;
+                hisModel.SID = newid;
+                hisModel.REMARKS = "工单创建，等待技术处理";
+
+                hisModel.PRE_STATUS = supportModel.STATUS;
+                hisModel.NEXT_STATUS = supportModel.STATUS; //初始状态
+                hisModel.TYPE = 0;   //tasm_disposer表
+                hisModel.TID = newid;
+
+
+                his_manager.Insert(hisModel);
+
 
 
                 if (model.Filelist!=null && model.Filelist.Count>0)
@@ -354,22 +404,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
-        [HttpPost]
-        public IActionResult LisAttachmentt(int id)
-        {
-
-            TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
-
-            List<TASM_ATTACHMENT> list = new List<TASM_ATTACHMENT>();
-
-            manager.ListByPid(id,1, ref list);
-
-            return SuccessResultList(list);
-
-
-        }
-
+      
 
         [HttpPost]
         public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model,int supportStatus,int nextUser)
@@ -403,6 +438,12 @@ namespace YH.ASM.Web.Controllers
                 hisModel.PRE_USER = supportModel.CONDUCTOR;
                 hisModel.NEXT_USER = nextUser;
                 hisModel.SID = model.SID;
+                hisModel.REMARKS = model.STATUS==1?"技术已处理，等待PMC处理":"技术已处理，等待现场处理";
+                hisModel.PRE_STATUS = supportModel.STATUS;
+                hisModel.NEXT_STATUS = supportStatus;
+                hisModel.TYPE = 1;   //tasm_disposer表
+                hisModel.TID = disposerId;
+
                 his_manager.Insert(hisModel);
 
 
@@ -447,9 +488,9 @@ namespace YH.ASM.Web.Controllers
                 disposer_manager.Db.BeginTran();
 
 
-                //1，添加 PMC处理表数据，并获得PMCID
+                //1，添加 PMC处理表数据
 
-                var pmcId = disposer_manager.Db.Insertable(model).ExecuteReturnIdentity();
+               int newid= disposer_manager.Db.Insertable(model).ExecuteReturnIdentity(); ;
 
 
 
@@ -462,8 +503,14 @@ namespace YH.ASM.Web.Controllers
                 TASM_SUPPORT_HIS hisModel = new TASM_SUPPORT_HIS();
                 hisModel.CREATETIME = DateTime.Now;
                 hisModel.PRE_USER = supportModel.CONDUCTOR;
-                hisModel.NEXT_USER = nextUser;
                 hisModel.SID = model.SID;
+                hisModel.REMARKS = "PMC已处理,等待现场处理";
+
+                hisModel.PRE_STATUS = supportModel.STATUS;
+                hisModel.NEXT_STATUS = supportStatus;
+                hisModel.TYPE = 2;   //tasm_disposer表
+                hisModel.TID = newid;
+
                 his_manager.Insert(hisModel);
 
         
@@ -471,8 +518,6 @@ namespace YH.ASM.Web.Controllers
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
 
                 support_manager.Update(supportModel);  //修改工单表
-
-
 
                 disposer_manager.Db.CommitTran();
 
@@ -485,6 +530,149 @@ namespace YH.ASM.Web.Controllers
             }
 
         }
-        
+
+
+
+        [HttpPost]
+        public IActionResult AddSiteCheck(TASM_SUPPORT_SITE model, int supportStatus, int nextUser)
+        {
+            model.CREATETIME = DateTime.Now;
+
+            DataAccess.TASM_SUPPORT_Da support_manager = new DataAccess.TASM_SUPPORT_Da();
+            DataAccess.TASM_SUPPORT_SITE_Da disposer_manager = new DataAccess.TASM_SUPPORT_SITE_Da();
+
+            DataAccess.TASM_SUPPORT_HIS_Da his_manager = new TASM_SUPPORT_HIS_Da();
+
+
+            try
+            {
+                disposer_manager.Db.BeginTran();
+
+
+
+                //1，添加 PMC处理表数据，
+
+                int newid = disposer_manager.Db.Insertable(model).ExecuteReturnIdentity();
+
+
+
+                //2,修改工单表的状态
+                var supportModel = support_manager.GetById(model.SID);  //工单id 查询工单信息
+
+
+                string remark ="现场已处理，等待审核";
+
+                //3,当前处理人员发生修改，新增一条 修改记录 history
+                TASM_SUPPORT_HIS hisModel = new TASM_SUPPORT_HIS();
+                hisModel.CREATETIME = DateTime.Now;
+                hisModel.PRE_USER = supportModel.CONDUCTOR;
+                hisModel.NEXT_USER = nextUser;
+                hisModel.SID = model.SID;
+                hisModel.REMARKS = remark;
+
+                hisModel.PRE_STATUS = supportModel.STATUS;
+                hisModel.NEXT_STATUS = supportStatus;
+                hisModel.TYPE = 3;   //tasm_disposer表
+                hisModel.TID = newid;
+
+                his_manager.Insert(hisModel);
+
+
+                his_manager.Insert(hisModel);
+
+
+                supportModel.STATUS = supportStatus;  //修改  新状态工单状态
+                supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
+
+                support_manager.Update(supportModel);  //修改工单表
+
+                disposer_manager.Db.CommitTran();
+
+                return SuccessMessage("处理成功！");
+            }
+            catch (Exception e)
+            {
+                disposer_manager.Db.RollbackTran();
+                return FailMessage("处理失败！");
+            }
+
+        }
+
+
+
+        [HttpPost]
+        public IActionResult AddPrincipalCheck(TASM_SUPPORT_PRINCIPAL model, int supportStatus, int nextUser)
+        {
+            model.CREATETIME = DateTime.Now;
+            model.STATUS = 0;
+
+            DataAccess.TASM_SUPPORT_Da support_manager = new DataAccess.TASM_SUPPORT_Da();
+            DataAccess.TASM_SUPPORT_PRINCIPAL_Da disposer_manager = new DataAccess.TASM_SUPPORT_PRINCIPAL_Da();
+
+            DataAccess.TASM_SUPPORT_HIS_Da his_manager = new TASM_SUPPORT_HIS_Da();
+
+            try
+            {
+                disposer_manager.Db.BeginTran();
+
+
+                //1，添加 PMC处理表数据，并获得新id
+                int newid= disposer_manager.Db.Insertable(model).ExecuteReturnIdentity();
+
+
+                //2,修改工单表的状态
+                var supportModel = support_manager.GetById(model.SID);  //工单id 查询工单信息
+
+
+                string remarks = supportStatus == 5 ? "未完成" : "已完成";
+
+                //3,当前处理人员发生修改，新增一条 修改记录 history
+                TASM_SUPPORT_HIS hisModel = new TASM_SUPPORT_HIS();
+                hisModel.CREATETIME = DateTime.Now;
+                hisModel.PRE_USER = supportModel.CONDUCTOR;
+                hisModel.NEXT_USER = nextUser;
+                hisModel.SID = model.SID;
+                hisModel.REMARKS = "负责人已审核:"+remarks;
+
+                hisModel.PRE_STATUS = supportModel.STATUS;
+                hisModel.NEXT_STATUS = supportStatus;
+                hisModel.TYPE = 4;   //tasm_disposer表
+                hisModel.TID = newid;
+
+                his_manager.Insert(hisModel);
+
+
+                supportModel.STATUS = supportStatus;  //修改工单状态
+                supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
+
+                support_manager.Update(supportModel);  //修改工单表
+
+                disposer_manager.Db.CommitTran();
+
+                return SuccessMessage("处理成功！");
+            }
+            catch (Exception e)
+            {
+                disposer_manager.Db.RollbackTran();
+                return FailMessage("处理失败！");
+            }
+
+        }
+
+
+        [HttpPost]
+        public IActionResult ListDetails(int id)
+        {
+            DataAccess.TASM_SUPPORT_HIS_Da manger = new TASM_SUPPORT_HIS_Da();
+
+            List<SupportHisModel> list = manger.List(id);
+
+            return SuccessResultList(list);
+        }
+
+
+
+
+
     }
 }

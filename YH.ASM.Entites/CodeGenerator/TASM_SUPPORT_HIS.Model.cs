@@ -48,6 +48,26 @@ namespace YH.ASM.Entites.CodeGenerator
         ///</summary>
         public System.String REMARKS { get; set; }
         
+        ///<summary>
+        ///描述：变更前的 工单状态
+        ///</summary>
+        public System.Int32 PRE_STATUS { get; set; }
+        
+        ///<summary>
+        ///描述：变更后的 工单状态
+        ///</summary>
+        public System.Int32 NEXT_STATUS { get; set; }
+        
+        ///<summary>
+        ///描述：记录属于哪个环节的表，0，tasm_support ， 1，tasm_disposer,    2, tasm_support_pmc，3,tasm_support_site, 4,TASM_SUPPORT_PRINCIPAL
+        ///</summary>
+        public System.Int32 TYPE { get; set; }
+        
+        ///<summary>
+        ///描述：记录属于哪个表的 哪条数据
+        ///</summary>
+        public System.Int32 TID { get; set; }
+        
 
     }
  }

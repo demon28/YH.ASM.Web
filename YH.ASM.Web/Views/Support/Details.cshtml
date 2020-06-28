@@ -1,0 +1,226 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<style>
+
+    .my-td {
+        vertical-align: middle !important;
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+
+
+
+
+@section Pageheader{
+
+    <script>
+
+        function closeWui() {
+            $(".wui-masked").hide();
+            $('.wui-ilayout').animate({ width: '0' }, function () {
+                $(".wui-ilayout iframe").attr("src", "about:blank");
+            });
+        }
+        function showWui(uri, width) {
+            var window_width = width || ($(window).width() / 2);
+            $(".wui-masked").show();
+            $(".wui-ilayout").show().animate({ width: window_width }, function () {
+                var html = $("<div class='wui-ilayout-loading'><i class='icon-spin icon-spinner'></i>正在加载页面...</div>");
+                $(".wui-ilayout iframe").before(html);
+                $(".wui-ilayout iframe").attr('src', uri);
+            });
+        }
+
+    </script>
+
+
+    <h1>
+        <small> 工单详情 </small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Support</a></li>
+        <li class="active">Details</li>
+    </ol>
+
+}
+
+<section class="content">
+    <div class="row">
+
+        <!-- /.col -->
+        <div id="tab">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">List</h3>
+
+                    <div class="box-tools">
+
+                     
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+
+              
+                    <table class="table  table-hover dataTable">
+                        <tbody>
+                            <tr>
+
+                                <th>变更时间</th>
+                                <th>上一处理人</th>
+                                <th>下一处理人</th>
+                                <th>  上一状态 </th>
+                                <th>  下一状态 </th>
+                                <th>  变更备注 </th>
+                                <th style="width:150px">
+                                    查看内容
+                                </th>
+                            </tr>
+
+                            <tr v-for="(item,index) in list">
+                                <td>{{item.CREATETIME}}</td>
+                                <td>{{item.PRENAME}}</td>
+                                <td>
+                                    
+                                    <span class="badge bg-green"> {{(item.NEXTNAME)}}</span>
+                                </td>
+
+
+                                <td>{{SetStatus(item.PRE_STATUS)}}</td>
+                                <td>
+                                    <span class="badge bg-light-blue"> {{SetStatus(item.NEXT_STATUS)}}</span>
+                                </td>
+                                <td>{{item.REMARKS}}</td>
+                                <td>
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="View(item)">查看</button>
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+
+
+                <div class="box-footer no-padding">
+
+                    <!-- /.pull-right -->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /.col -->
+    <!-- /.row -->
+
+
+
+</section>
+
+<!-- Control Sidebar -->
+
+<div class="wui-masked" style="position:fixed;background:#fff;top:0;left:0;right:0;bottom:0;z-index:9998;opacity:0.3;display:none;"
+     onclick="closeWui()"></div>
+
+
+<div class="wui-ilayout" style="position:absolute; position:fixed;top:0;right:0;z-index:9999;bottom:0;border-left:4px #eee solid;display:none;background:#fff;">
+    <div style="padding:2em;height:100%;background-color:gainsboro">
+        <iframe style="width:50%;border:0 none;height:100%;width:100%;" src="about:blank" onload="javascript:$('.wui-ilayout-loading').remove()"></iframe>
+    </div>
+</div>
+
+<!-- /.control-sidebar -->
+
+@section scripts{
+
+    <script>
+
+
+       var vm = new Vue({
+           el: "#tab",
+           data: {
+               id:0,
+                   list: [],
+               Statuslist:[],
+
+           },
+           created: function () {
+
+               this.Init();
+           },
+           mounted: function () {
+
+
+               this.Statuslist.push({ value: 0, text: "已提交" });
+               this.Statuslist.push({ value: 1, text: "处理中(PMC跟进)" });
+               this.Statuslist.push({ value: 2, text: "已处理(无需PMC)" });
+               this.Statuslist.push({ value: 3, text: "已处理(PMC完成)" });
+               this.Statuslist.push({ value: 4, text: "待审核" });
+               this.Statuslist.push({ value: 5, text: "未完成" });
+               this.Statuslist.push({ value: 6, text: "已完成" });
+               this.Statuslist.push({ value: 7, text: "已拒绝" });
+
+
+           },
+           methods: {
+
+               Init() {
+
+                   var self = this;
+                   self.id = getQueryString("id");
+
+                   MyAjax({
+                       url: "/Support/ListDetails",
+                       type: "POST",
+                       data: {
+                           id: self.id
+                       },
+                       success: function (result) {
+
+                          // console.log(JSON.stringify(result));
+
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           self.list = result.Content;
+
+                       }
+                   })
+               },
+               SetStatus(value) {
+
+                   var res = "";
+                   this.Statuslist.forEach(function (element) {
+                       if (element.value == value) {
+                           res = element.text;
+                       }
+                   });
+                   return res;
+               },
+
+           },
+
+
+
+       });
+
+
+    </script>
+
+}
+
+
+
+

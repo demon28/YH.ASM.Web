@@ -68,9 +68,9 @@
                             <button type="button" class="btn btn-default pull-right  btn-sm" @@click="Add()" id="btn_Add">创建工单</button>
                         </div>
 
-                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                        @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
                             <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
-                        </div>
+                        </div>*@
 
 
 
@@ -172,9 +172,9 @@
                                 <td class="my-td ">
 
 
-                                    <button type="button" class="btn bg-primary  btn-xs" v-on:click="View(item)">详情</button>
+                                    <button type="button" class="btn bg-primary  btn-xs" v-on:click="Details(item)">详情</button>
                                     &nbsp;
-                                    <button type="button" class="btn bg-purple  btn-xs " v-if="item.STATUS!=4 && item.STATUS!=5" v-on:click="Dispose(item)">处理</button>
+                                    <button type="button" class="btn bg-purple  btn-xs " v-if="item.STATUS!=6 && item.STATUS!=7" v-on:click="Dispose(item)">处理</button>
                                     &nbsp;
                                     <button type="button" class="btn bg-teal  btn-xs" v-on:click="Att(item)">附件</button>
 
@@ -361,13 +361,15 @@
                 this.Prioritylist.push({ value: 2, text: "中" });
                 this.Prioritylist.push({ value: 3, text: "低" });
 
+
                 this.Statuslist.push({ value: 0, text: "已提交" });
                 this.Statuslist.push({ value: 1, text: "处理中(PMC跟进)" });
                 this.Statuslist.push({ value: 2, text: "已处理(无需PMC)" });
                 this.Statuslist.push({ value: 3, text: "已处理(PMC完成)" });
                 this.Statuslist.push({ value: 4, text: "待审核" });
-                this.Statuslist.push({ value: 5, text: "已完成" });
-                this.Statuslist.push({ value: 6, text: "已拒绝" });
+                this.Statuslist.push({ value: 5, text: "未完成" });
+                this.Statuslist.push({ value: 6, text: "已完成" });
+                this.Statuslist.push({ value: 7, text: "已拒绝" });
 
                 this.Severitylist.push({ value: 0, text: "致命" });
                 this.Severitylist.push({ value: 1, text: "严重" });
@@ -567,7 +569,7 @@
                         title: "工单状态",
                         inputType: "select",
                         value: value,
-                        inputOptions: [{ value: 5, text: "已完成" }, { value: 6, text: "已拒绝" }],
+                        inputOptions: [{ value: 6, text: "已完成" }, { value: 7, text: "已拒绝" }],
                         callback: function (result) {
 
                             if (result == null) {
@@ -642,19 +644,27 @@
                 Dispose(item) {
 
                     if (item.STATUS==0) {
-                        window.location.href = "/Support/Disposer?id=" + item.SID;
+                        window.location.href = "/Support/Disposer?id=" + item.SID;      //创建工单后，状态为0， 跳转到处理工单  （处理后状态为1 或 2  PMC 或 非PMC ）
                         return;
                     }
                     if (item.STATUS == 1) {
-                        window.location.href = "/Support/PmcOrder?id=" + item.SID;
+                        window.location.href = "/Support/PmcOrder?id=" + item.SID;      //处理工单后，状态为1， 需要PMC处理，（处理完成后 状态为3   PMC）
                         return;
                     }
                     if (item.STATUS == 2) {
-                        window.location.href = "/Support/SiteCheck?id=" + item.SID;
+                        window.location.href = "/Support/SiteCheck?id=" + item.SID;      //处理工单后，状态为2，无需PMC处理 （处理完成后  状态为3  非PMC）
                         return;
                     }
                     if (item.STATUS == 3) {
-                        window.location.href = "/Support/PrincipalCheck?id=" + item.SID;
+                        window.location.href = "/Support/SiteCheck?id=" + item.SID;     //技术或PMC处理后，状态为3， 现场人员检测 （处理完成后状态为4  负责人审核） 
+                        return;
+                    }
+                    if (item.STATUS == 4) {
+                        window.location.href = "/Support/PrincipalCheck?id=" + item.SID;  //现场取人后， 状态为4， 负责人审核， （处理完成后状态 为 5或 6，6为已完成，5为完成）
+                        return;
+                    }
+                    if (item.STATUS == 5) {
+                        window.location.href = "/Support/SiteCheck?id=" + item.SID;   //审核后，状态为5属于未完成，被打回，重新提交审核
                         return;
                     }
 
@@ -669,6 +679,10 @@
 
                     this.supprotInfo.CONTENT = ck.getData();
                     this.Update(this.supprotInfo);
+
+                },
+                Details(item) {
+                    window.location.href = "/Support/Details?id=" + item.SID;
 
                 }
            },

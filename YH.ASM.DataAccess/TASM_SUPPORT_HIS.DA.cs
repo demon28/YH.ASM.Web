@@ -5,6 +5,7 @@ using System.Linq;
 using YH.ASM.DataAccess.CodeGenerator;
 using YH.ASM.DataAccess.CodeGenerator.DBCore;
 using YH.ASM.Entites.CodeGenerator;
+using YH.ASM.Entites.Model;
 
 namespace  YH.ASM.DataAccess
 {
@@ -22,13 +23,28 @@ namespace  YH.ASM.DataAccess
        }
 
        //关键字查找,自行修改或增加关键字 字段
-       public List<TASM_SUPPORT_HIS> ListByWhere(string keyword, ref PageModel p)
+       public List<SupportHisModel> List(int Sid)
        {
+            
+            string sql = @"select t.*, tr.user_name prename, tu.user_name nextname
+  from tasm_support_his t
+  left join tasm_user tr
+    on tr.user_id = t.pre_user
+  left join tasm_user tu
+    on tu.user_id=t.next_user
+    where t.sid=:sid
+  order by t.createtime desc  
+
+";
+            var configParms = new List<SugarParameter>();
+
+            configParms.Add(new SugarParameter("sid", Sid));
 
 
-            List<TASM_SUPPORT_HIS> list = new List<TASM_SUPPORT_HIS>();
-           return list;
-       }
+            return Db.SqlQueryable<SupportHisModel>(sql).AddParameters(configParms).ToList();
+        }
+
+       
 
 
     }
