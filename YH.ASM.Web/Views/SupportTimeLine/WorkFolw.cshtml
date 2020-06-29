@@ -1,0 +1,329 @@
+﻿
+@{
+    ViewData["Title"] = "WorkFolw";
+}
+@section Pageheader{
+
+    <script>
+
+        function closeWui() {
+            $(".wui-masked").hide();
+            $('.wui-ilayout').animate({ width: '0' }, function () {
+                $(".wui-ilayout iframe").attr("src", "about:blank");
+            });
+        }
+        function showWui(uri, width) {
+            var window_width = width || ($(window).width() / 2);
+            $(".wui-masked").show();
+            $(".wui-ilayout").show().animate({ width: window_width }, function () {
+                var html = $("<div class='wui-ilayout-loading'><i class='icon-spin icon-spinner'></i>正在加载页面...</div>");
+                $(".wui-ilayout iframe").before(html);
+                $(".wui-ilayout iframe").attr('src', uri);
+            });
+        }
+
+    </script>
+
+
+    <h1>
+        <small>  工单详情</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Details </li>
+    </ol>
+
+}
+
+<section class="content">
+
+    <!-- row -->
+    <div class="row" id="tab">
+        <div class="col-md-12">
+            <!-- The time line -->
+            <ul class="timeline" id="ul_wf">
+            </ul>
+        </div>
+        <!-- /.col -->
+    </div>
+
+</section>
+
+
+
+@section scripts{
+    <script src="~/js/Support_WorkFolw.js"></script>
+
+    <script src="~/Reference/scripts/jquery.form.min.js"></script>
+
+    <script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
+    <script>
+        var vm = new Vue({
+            el: "#tab",
+            data: {
+                id: 0,
+
+                his:[],
+
+                supprotInfo: {},
+                supportShow: false,
+
+                disposerInfo: {},
+                disposerShow: false,
+
+                pmcInfo: {},
+                pmcShow: false,
+
+                siteInfo: {},
+                siteShow: false,
+
+                principalInfo: {},
+                principalShow: false
+            },
+            created: function () {
+
+                this.Init();
+
+            },
+            mounted: function () {
+                var _self = this;
+            },
+            methods: {
+
+                Init() {
+                    var _self = this;
+                    _self.id = getQueryString("id");
+                    MyAjax({
+                        url: "/SupportTimeLine/ListByHis",
+                        type: "POST",
+                        data: {
+                            sid: _self.id
+                        },
+                        success: function (result) {
+
+                            console.log("获取流程==="+JSON.stringify(result));
+
+                            if (!result.Success) {
+
+                                alert_danger(result.Message);
+                                return;
+                            }
+                            _self.his = result.Content;
+
+                            for (var i = 0; i < result.Content.length; i++) {
+
+                                var type = result.Content[i].TYPE;
+                                var sid = result.Content[i].SID;
+                                var tid = result.Content[i].TID;
+
+                                if (type==0) {
+                                    _self.InsertSupport(sid, tid);
+                                    console.log(1);
+                                }
+                                if (type == 1) {
+
+                                    _self.InsertDisposer(sid, tid);
+                                    console.log(2);
+                                }
+                                if (type == 2) {
+
+                                    _self.InsertPmc(sid, tid);
+                                    console.log(3);
+                                }
+                                if (type == 3) {
+
+                                    _self.InsertSite(sid, tid);
+                                    console.log(4);
+                                }
+                                if (type == 4) {
+
+                                    _self.InsertPrincipal(sid, tid);
+                                    console.log(5);
+                                }
+                            }
+
+
+
+                            //var  html = "<li> <i class=\"fa fa-envelope bg-blue\" ></i> </li>";
+
+                            //$("#ul_wf").appendTo(html);
+
+
+                        }
+                    })
+
+                },
+                InsertSupport(sid, tid) {
+
+                    var _self = this;
+                    _self.id = getQueryString("id");
+                    MyAjax({
+                        url: "/Support/GetUpdateInfo",
+                        type: "POST",
+                        data: {
+                            id: _self.id
+                        },
+                        success: function (result) {
+
+                            console.log("加载工单信息："+JSON.stringify(result));
+
+                            if (!result.Success) {
+
+                                alert_danger(result.Message);
+                                return;
+                            }
+                            _self.supprotInfo = result.Content;
+                            var html = SupportWF(_self.supprotInfo);
+
+                            $("#ul_wf").append(html);
+
+                        }
+                    })
+
+                },
+                InsertDisposer(sid, tid) {
+
+                    var _self = this;
+                  
+                    MyAjax({
+                        url: "/SupportTimeLine/GetDisposerInfo",
+                        type: "POST",
+                        data: {
+                            sid: sid,
+                            tid: tid
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+
+                                return;
+                            }
+
+                            _self.disposerInfo = result.Content;
+                            var html = DisposerWF(_self.disposerInfo);
+                            $("#ul_wf").append(html);
+                        }
+                    })
+
+
+
+                },
+                InsertPmc(sid, tid) {
+                    var _self = this;
+
+                    MyAjax({
+                        url: "/SupportTimeLine/GetPmcInfo",
+                        type: "POST",
+                        data: {
+                            sid: sid,
+                            tid: tid
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+                                return;
+                            }
+
+                            _self.pmcInfo = result.Content;
+                            var html = PmcWF(_self.pmcInfo);
+                            $("#ul_wf").append(html);
+                        }
+                    })
+
+
+
+                },
+                InsertSite(sid, tid) {
+                    var _self = this;
+
+
+                    MyAjax({
+                        url: "/SupportTimeLine/GetSiteInfo",
+                        type: "POST",
+                        data: {
+                            sid: sid,
+                            tid: tid
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+
+                                return;
+                            }
+
+                            _self.siteInfo = result.Content;
+                            var html = SiteWF(_self.siteInfo);
+                            $("#ul_wf").append(html);
+                        }
+                    })
+
+
+
+
+
+                },
+                InsertPrincipal(sid, tid) {
+                    var _self = this;
+
+                    MyAjax({
+                        url: "/SupportTimeLine/GetPrincipalInfo",
+                        type: "POST",
+                        data: {
+                            sid: sid,
+                            tid: tid
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+
+                                return;
+                            }
+
+                            _self.principalInfo = result.Content;
+                            var html = PrincipalWF(_self.principalInfo);
+                            $("#ul_wf").append(html);
+                        }
+                    })
+
+
+
+
+                }
+
+              
+            },
+
+
+
+        });
+
+
+
+        function SetSeverity (value) {
+            return EnumGetSingle(value, Support_Severitylist());
+        }
+        function  SetType  (value) {
+            return EnumGetSingle(value, Support_Typelist());
+        }
+        function  SetPriority(value) {
+            return EnumGetSingle(value, Support_Prioritylist());
+        }
+        function  SetStatus(value) {
+            return EnumGetSingle(value, Support_Statuslist());
+        }
+
+    </script>
+
+}
+

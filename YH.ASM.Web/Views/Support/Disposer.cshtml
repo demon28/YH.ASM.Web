@@ -169,7 +169,13 @@
                 <div class="box-header">
                     <h3 class="box-title">附件</h3>
 
-                 
+                    <div class="box-tools pull-right">
+                        <div class="btn btn-default btn-file  pull-right  btn-sm" style="margin-left:15px" id="from_fileupload">
+                            <i class="fa fa-paperclip"></i> 上传
+                            <input type="file" name="attachment" id="file_attachment" @@change="UploadFile()">
+                        </div>
+                    </div>
+
 
                 </div>
                 <!-- /.box-header -->
@@ -237,6 +243,25 @@
                             </div>
 
                         </div>
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">责任方：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="responsible" placeholder="请填写责任方信息">
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">责任人：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="duty" placeholder="请责任人信息" >
+                            </div>
+
+                        </div>
+
+
+
+
 
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">处理人：</label>
@@ -317,31 +342,28 @@
 
 <!-- /.control-sidebar -->
 @section scripts{
-    <script src="~/Reference/adminLTE/bower_components/ckeditor/ckeditor.js"></script>
     <script src="~/Reference/scripts/jquery.form.min.js"></script>
-
 
     <script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     
 
     <script>
-        var ck;
+        
 
         var vm = new Vue({
             el: "#tab",
             data: {
                 supprotInfo: {},
-                Typelist: [],
-                Prioritylist: [],
-                Severitylist: [],
-                Statuslist: [],
+               
                 id: 0,      //主键id
                 filelist: [],        //附件集合
                 analyze: "",   //初步原因分析
                 analyzeUser: {},    //分析人员
                 solution: "",    //解决方案
-             
+                responsible: "",
+                duty:"",
+
                 nextuser: {},     //下一处理人员
                 status: 1,
 
@@ -357,33 +379,6 @@
              
                 
 
-                this.Typelist.push({ value: 0, text: "操作调试" });
-                this.Typelist.push({ value: 1, text: "来料质量" });
-                this.Typelist.push({ value: 2, text: "商务问题" });
-                this.Typelist.push({ value: 3, text: "设计问题" });
-                this.Typelist.push({ value: 4, text: "装配误差" });
-
-                this.Prioritylist.push({ value: 0, text: "紧急" });
-                this.Prioritylist.push({ value: 1, text: "高" });
-                this.Prioritylist.push({ value: 2, text: "中" });
-                this.Prioritylist.push({ value: 3, text: "低" });
-
-
-                this.Statuslist.push({ value: 0, text: "已提交" });
-                this.Statuslist.push({ value: 1, text: "处理中(PMC跟进)" });
-                this.Statuslist.push({ value: 2, text: "已处理(无需PMC)" });
-                this.Statuslist.push({ value: 3, text: "已处理(PMC完成)" });
-                this.Statuslist.push({ value: 4, text: "待审核" });
-                this.Statuslist.push({ value: 5, text: "未完成" });
-                this.Statuslist.push({ value: 6, text: "已完成" });
-                this.Statuslist.push({ value: 7, text: "已拒绝" });
-
-
-                this.Severitylist.push({ value: 0, text: "致命" });
-                this.Severitylist.push({ value: 1, text: "严重" });
-                this.Severitylist.push({ value: 2, text: "一般" });
-                this.Severitylist.push({ value: 3, text: "提示" });
-                this.Severitylist.push({ value: 4, text: "建议" });
           
 
                
@@ -471,46 +466,21 @@
                     })
 
                 },
-                SetSeverity(value) {
-                    var res = "";
-                    this.Severitylist.forEach(function (element) {
-                        if (element.value == value) {
-                            res = element.text;
-                        }
-                    });
-                    return res;
-
+                SetSeverity: function (value) {
+                    return EnumGetSingle(value, Support_Severitylist());
                 },
-                SetType (value) {
+                SetType: function (value) {
 
-                    var res = "";
-                    this.Typelist.forEach(function (element) {
-                        if (element.value == value) {
-                            res = element.text;
-                        }
-                    });
-                    return res;
+                    return EnumGetSingle(value, Support_Typelist());
 
                 },
                 SetPriority(value) {
-                    var res = "";
-                    this.Prioritylist.forEach(function (element) {
-                        if (element.value == value) {
-                            res = element.text;
-                        }
-                    });
-                    return res;
+                    return EnumGetSingle(value, Support_Prioritylist());
 
                 },
                 SetStatus(value) {
 
-                    var res = "";
-                    this.Statuslist.forEach(function (element) {
-                        if (element.value == value) {
-                            res = element.text;
-                        }
-                    });
-                    return res;
+                    return EnumGetSingle(value, Support_Statuslist());
                 },
                 Download: function (item) {
 
@@ -538,18 +508,32 @@
 
                     var _self = this;
 
-                    var json = {};
-                    json.SID = _self.id;
-                    json.ANALYZEUSER = _self.analyzeUser.USER_ID;
-                    json.ANALYZE = _self.analyze;
-                    json.SOLUTION = _self.solution;
-                 
 
 
                     if (Object.keys(_self.nextuser).length == 0) {
                         alert_danger("请选择下一经办人！");
                         return;
                     }
+
+                    if (_self.analyze=="") {
+                        alert_danger("请填写分析原因");
+                        return;
+                    }
+
+                    if (_self.solution == "") {
+                        alert_danger("请填写解决方案");
+                        return;
+                    }
+
+                    var json = {};
+                    json.SID = _self.id;
+                    json.ANALYZEUSER = _self.analyzeUser.USER_ID;
+                    json.ANALYZE = _self.analyze;
+                    json.SOLUTION = _self.solution;
+                    json.DUTY = _self.duty;
+                    json.RESPONSIBLE = _self.responsible;
+
+                  
 
                     ////////////////////
 
@@ -560,6 +544,7 @@
                         data: {
                             nextUser: _self.nextuser.USER_ID,
                             supportStatus: _self.status,
+                            fileList: _self.filelist,
                             model: json
                         },
                         success: function (result) {
@@ -586,7 +571,57 @@
                         }
                     })
 
-                }
+                },
+                UploadFile() {
+                    var _self = this;
+                    var loading = alert_loading_show("文件上传中...")
+                    var uploadFile = $('#file_attachment')[0].files[0];
+
+                    if (uploadFile.size >= 39307124) {
+                        alert_danger("单个文件请不要超过30M");
+                        return;
+                    }
+
+
+
+                    console.log("提交ajax");
+                    $("#from_fileupload").ajaxSubmit({
+                        url: '/Support/UploadOther',
+                        type: 'post',
+                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                        data: {
+                            sid: _self.id
+                         },
+                        success: function (result) {
+
+                            alert_loading_close(loading);
+
+                            if (!result.Success) {
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            alert_success("上传成功！");
+
+                            console.log(JSON.stringify(result));
+                            _self.filelist.push(result.Content);
+
+
+                        }, xhr: function () {
+                            var xhr = new XMLHttpRequest();
+                            xhr.upload.addEventListener('progress', function (e) {
+
+                            })
+
+                            return xhr;
+                        }
+                    });
+
+
+
+                },
             },
 
 

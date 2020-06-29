@@ -39,7 +39,11 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
-
+        
+          public IActionResult TimeLine()
+        {
+            return View();
+        }
         public IActionResult Disposer()
         {
             return View();
@@ -75,8 +79,6 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
-
-
 
 
         public SupportController(IWebHostEnvironment hostingEnvironment, ILogger<ProjectController> _logger)
@@ -246,7 +248,7 @@ namespace YH.ASM.Web.Controllers
 
                 #region
 
-                var path = "/FileUpload/Project/" + UserInfo.USER_ID + "/";
+                var path = "/FileUpload/Support/" + UserInfo.USER_ID + "/";
                 var files = Request.Form.Files;
 
                 if (files.Count <= 0)
@@ -285,7 +287,7 @@ namespace YH.ASM.Web.Controllers
                     file.CopyTo(fs);
                     fs.Flush();
                 }
-                path = "/FileUpload/Project/" + UserInfo.USER_ID + "/" + newFileName;
+                path = "/FileUpload/Support/" + UserInfo.USER_ID + "/" + newFileName;
 
 
 
@@ -321,6 +323,93 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+
+        [HttpPost]
+        public ActionResult UploadOther(int sid)
+        {
+            TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
+
+            try
+            {
+
+                this.logger.LogInformation("LogInformation:开始上传文件");
+
+                #region
+
+                var path = "/FileUpload/Support/" + UserInfo.USER_ID + "/";
+                var files = Request.Form.Files;
+
+                if (files.Count <= 0)
+                {
+                    return FailMessage("请选择要上传的文件");
+                }
+
+                var file = files[0];
+
+
+                var filename = ContentDispositionHeaderValue
+                                .Parse(file.ContentDisposition)
+                                .FileName
+                                .Trim('"');
+                string fileExt = Path.GetExtension(file.FileName);
+
+
+                string newFileName = filename.Remove(filename.LastIndexOf('.')) + "(" + DateTime.Now.ToString("yyyyMMddHHmmss") + ")" + fileExt;
+
+
+                string filepath = path + newFileName;
+                string fullpath = _hostingEnvironment.WebRootPath + $@"\{filepath}";
+
+                string dirpath = _hostingEnvironment.WebRootPath + path;
+
+
+
+                if (!Directory.Exists(dirpath))
+                {
+                    Directory.CreateDirectory(dirpath);
+                }
+
+
+                using (FileStream fs = System.IO.File.Create(fullpath))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+                path = "/FileUpload/Support/" + UserInfo.USER_ID + "/" + newFileName;
+
+
+
+                #endregion
+
+                TASM_ATTACHMENT model = new TASM_ATTACHMENT();
+
+                model.FILENAME = newFileName;
+                model.URL = path;
+                model.TYPE = 1;
+                model.PID = sid;
+
+
+                manager.Db.BeginTran();
+
+                var newid = manager.Db.Insertable(model).ExecuteReturnIdentity();
+
+                manager.Db.CommitTran();
+
+
+
+                var json = new { ID = newid, FILENAME = newFileName, URL = path };
+
+                return SuccessResult(json);
+
+            }
+            catch (Exception e)
+            {
+                manager.Db.RollbackTran();
+                logger.LogInformation("异常：" + e);
+                return FailMessage(e.ToString());
+            }
+
+        }
 
 
 
@@ -437,9 +526,11 @@ namespace YH.ASM.Web.Controllers
                 hisModel.CREATETIME = DateTime.Now;
                 hisModel.PRE_USER = supportModel.CONDUCTOR;
                 hisModel.NEXT_USER = nextUser;
+               
                 hisModel.SID = model.SID;
                 hisModel.REMARKS = model.STATUS==1?"技术已处理，等待PMC处理":"技术已处理，等待现场处理";
                 hisModel.PRE_STATUS = supportModel.STATUS;
+                
                 hisModel.NEXT_STATUS = supportStatus;
                 hisModel.TYPE = 1;   //tasm_disposer表
                 hisModel.TID = disposerId;
@@ -454,6 +545,7 @@ namespace YH.ASM.Web.Controllers
                 support_manager.Update(supportModel);  //修改工单表
 
 
+             
 
                 disposer_manager.Db.CommitTran();
 
@@ -501,12 +593,15 @@ namespace YH.ASM.Web.Controllers
 
                 //3,当前处理人员发生修改，新增一条 修改记录 history
                 TASM_SUPPORT_HIS hisModel = new TASM_SUPPORT_HIS();
+
                 hisModel.CREATETIME = DateTime.Now;
                 hisModel.PRE_USER = supportModel.CONDUCTOR;
+                hisModel.NEXT_USER = nextUser;
+
                 hisModel.SID = model.SID;
                 hisModel.REMARKS = "PMC已处理,等待现场处理";
-
                 hisModel.PRE_STATUS = supportModel.STATUS;
+            
                 hisModel.NEXT_STATUS = supportStatus;
                 hisModel.TYPE = 2;   //tasm_disposer表
                 hisModel.TID = newid;
@@ -567,10 +662,11 @@ namespace YH.ASM.Web.Controllers
                 hisModel.CREATETIME = DateTime.Now;
                 hisModel.PRE_USER = supportModel.CONDUCTOR;
                 hisModel.NEXT_USER = nextUser;
+               
                 hisModel.SID = model.SID;
                 hisModel.REMARKS = remark;
-
                 hisModel.PRE_STATUS = supportModel.STATUS;
+                
                 hisModel.NEXT_STATUS = supportStatus;
                 hisModel.TYPE = 3;   //tasm_disposer表
                 hisModel.TID = newid;
@@ -578,7 +674,6 @@ namespace YH.ASM.Web.Controllers
                 his_manager.Insert(hisModel);
 
 
-                his_manager.Insert(hisModel);
 
 
                 supportModel.STATUS = supportStatus;  //修改  新状态工单状态
@@ -631,10 +726,11 @@ namespace YH.ASM.Web.Controllers
                 hisModel.CREATETIME = DateTime.Now;
                 hisModel.PRE_USER = supportModel.CONDUCTOR;
                 hisModel.NEXT_USER = nextUser;
+               
                 hisModel.SID = model.SID;
                 hisModel.REMARKS = "负责人已审核:"+remarks;
-
                 hisModel.PRE_STATUS = supportModel.STATUS;
+                
                 hisModel.NEXT_STATUS = supportStatus;
                 hisModel.TYPE = 4;   //tasm_disposer表
                 hisModel.TID = newid;
@@ -660,8 +756,15 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+
+       
+
+
+
+
+        #region 各个处理表信息
         [HttpPost]
-        public IActionResult ListDetails(int id)
+        public IActionResult GetHisList(int id)
         {
             DataAccess.TASM_SUPPORT_HIS_Da manger = new TASM_SUPPORT_HIS_Da();
 
@@ -717,5 +820,7 @@ namespace YH.ASM.Web.Controllers
 
             return SuccessResult(model);
         }
+
+        #endregion
     }
 }

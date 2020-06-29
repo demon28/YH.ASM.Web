@@ -190,7 +190,7 @@
                                     <a @@click="ViewFile(item.URL)" style="cursor:pointer;"> {{item.FILENAME}}</a>
                                 </td>
                                 <td class="text-right">
-                                    @*<button type="button" class="btn bg-blue  btn-xs " v-on:click="viewitem(item)">预览</button>  &nbsp; &nbsp;*@
+                                
                                 </td>
                             </tr>
 
@@ -237,7 +237,7 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单标题：</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="title" placeholder="请填写工单概要" >
+                                <input type="text" class="form-control input-sm" v-model="title" placeholder="请填写工单概要" required="required">
                             </div>
 
                         </div>
@@ -293,7 +293,6 @@
 
 <!-- /.control-sidebar -->
 @section scripts{
-    <script src="~/Reference/adminLTE/bower_components/ckeditor/ckeditor.js"></script>
     <script src="~/Reference/scripts/jquery.form.min.js"></script>
 
 
@@ -326,8 +325,6 @@
             },
             mounted: function () {
                 var _self = this;
-                // 显示文本编辑器
-           
 
 
                 $('#txt_finddate').datetimepicker({
@@ -343,16 +340,12 @@
                     // minuteStep: 1,//分钟间隔1分钟
                 });
 
-
-                $('#txt_finddate').datetimepicker()
-                    .on('hide', function (ev) {
+                $('#txt_finddate').datetimepicker() .on('hide', function (ev) {
                         var enddate = $("#txt_finddate").val();
                         _self.finddate = enddate;
                     });
 
 
-
-                //显示当前 创建人
 
 
 
@@ -438,7 +431,27 @@
                 },
                 Submit() {
 
-                    
+
+
+
+                    if (this.title == "") {
+                        alert_danger("请填写工单标题");
+                        return;
+                    }
+                    if ( this.content == "") {
+                        alert_danger("请填写工单问题描述");
+                        return;
+                    }
+                    if (this.content == "") {
+                        alert_danger("请填写工单问题描述");
+                        return;
+                    }
+
+                    if (Object.keys(this.conductor).length == 0) {
+                        alert_danger("请选择工单处理人员！");
+                        return;
+                    }
+
                     var CreatorId = this.creator.USER_ID;
                     var ConductorId = this.conductor.USER_ID;
                     var ProjectId = this.project.PID;
@@ -449,9 +462,10 @@
                     var Title = this.title;
                     var Content = this.content;
 
-                    var Filelist = this.filelist;
 
-                   
+
+
+                    var Filelist = this.filelist;
                     var json = { CreatorId: CreatorId, ConductorId: ConductorId, ProjectId: ProjectId, Type: Type, Priority: Priority, Severity: Severity, FindDate: FindDate, Title: Title, Content: Content, Filelist: Filelist };
                    
                     MyAjax({

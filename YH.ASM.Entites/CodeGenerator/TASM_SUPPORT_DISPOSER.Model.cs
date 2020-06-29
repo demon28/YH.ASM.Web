@@ -33,7 +33,6 @@ namespace YH.ASM.Entites.CodeGenerator
         ///</summary>
         public System.Int32 ANALYZEUSER { get; set; }
         
-        
         ///<summary>
         ///描述：分析原因
         ///</summary>
@@ -43,8 +42,6 @@ namespace YH.ASM.Entites.CodeGenerator
         ///描述：解决方案
         ///</summary>
         public System.String SOLUTION { get; set; }
-        
-   
         
         ///<summary>
         ///描述：当前信息状态，非工单状态
@@ -60,6 +57,16 @@ namespace YH.ASM.Entites.CodeGenerator
         ///描述：备注
         ///</summary>
         public System.String REMARKS { get; set; }
+        
+        ///<summary>
+        ///描述：责任方
+        ///</summary>
+        public System.String RESPONSIBLE { get; set; }
+        
+        ///<summary>
+        ///描述：责任人
+        ///</summary>
+        public System.String DUTY { get; set; }
         
 
     }

@@ -41,7 +41,7 @@ namespace YH.ASM.Entites.CodeGenerator
         ///<summary>
         ///描述：下单人
         ///</summary>
-        public System.Int32 BOOKUSER { get; set; }
+        public System.String BOOKUSER { get; set; }
         
         ///<summary>
         ///描述：物料订单号

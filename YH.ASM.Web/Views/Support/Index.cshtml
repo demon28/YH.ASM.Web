@@ -69,16 +69,16 @@
                         </div>
 
                         @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
-                            <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
-                        </div>*@
+                                <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
+                            </div>*@
 
 
 
                         <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px; width:150px;">
                             <select class="form-control" id="txt_types" v-model="watchType" @@change="Init()">
                                 <option value="0" checked="true">全部</option>
-                                <option value="1" >我创建的</option>
-                                <option value="2" >我处理的</option>
+                                <option value="1">我创建的</option>
+                                <option value="2">我处理的</option>
                             </select>
                         </div>
 
@@ -131,11 +131,11 @@
                                 </td>
 
                                 <td class="my-td ">{{item.CREATORNAME}}</td>
-                                <td class="my-td " >
+                                <td class="my-td ">
 
-                                    <a  @@click="ChangeUser(item)">
+                                    <a @@click="ChangeUser(item)">
                                         {{item.CONDUCTORNAME}}
-                                        </a>
+                                    </a>
 
                                 </td>
 
@@ -225,7 +225,7 @@
                                     <label for="txt_projectname" class="col-sm-2 control-label">标题：</label>
 
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="txt_Title" v-model="supprotInfo.TITLE">
+                                        <input type="text" class="form-control" id="txt_Title" v-model="supprotInfo.TITLE" readonly="readonly">
                                     </div>
                                 </div>
 
@@ -238,6 +238,14 @@
                                     </div>
                                 </div>
 
+
+                                <div class="form-group">
+                                    <label for="txt_kehuname" class="col-sm-2 control-label">发现时间：</label>
+
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" v-model="supprotInfo.FINDATE" readonly="readonly">
+                                    </div>
+                                </div>
 
 
                                 <div class="form-group">
@@ -261,7 +269,7 @@
                                     <label for="txt_address" class="col-sm-2 control-label">内容：</label>
 
                                     <div class="col-sm-10 pull-right">
-                                        <textarea class="form-control" style="height:250px" id="txt_remarks"></textarea>
+                                        <textarea class="form-control" style="margin-left:0px" rows="3" id="txt_remarks" v-model="supprotInfo.CONTENT" readonly="readonly"></textarea>
                                     </div>
 
                                 </div>
@@ -273,11 +281,9 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">关闭</button>
 
-                            @*<button type="button" class="btn  btn-primary pull-right">去处理</button>*@
-                            &nbsp;
-                            <button type="button" class="btn  btn-primary pull-right" @@click="ChangeContent()" >修 改</button>
+
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -316,7 +322,6 @@
 <!-- /.control-sidebar -->
 @section scripts{
 
-    <script src="~/Reference/adminLTE/bower_components/ckeditor/ckeditor.js"></script>
     <script src="~/Reference/scripts/jquery.form.min.js"></script>
 
 
@@ -334,10 +339,7 @@
                 pageSize: 15,
                 pageCount: 20,
                 TotalCount: 0,
-                Typelist: [],
-                Prioritylist: [],
-                Severitylist: [],
-                Statuslist: [],
+
                 supprotInfo: {},
                 orderby: "SID",
                 watchType:0
@@ -350,40 +352,6 @@
             },
             mounted: function () {
 
-                this.Typelist.push({ value: 0, text:"操作调试"});
-                this.Typelist.push({ value: 1, text: "来料质量" });
-                this.Typelist.push({ value: 2, text: "商务问题" });
-                this.Typelist.push({ value: 3, text: "设计问题" });
-                this.Typelist.push({ value: 4, text: "装配误差" });
-
-                this.Prioritylist.push({ value: 0, text: "紧急" });
-                this.Prioritylist.push({ value: 1, text: "高" });
-                this.Prioritylist.push({ value: 2, text: "中" });
-                this.Prioritylist.push({ value: 3, text: "低" });
-
-
-                this.Statuslist.push({ value: 0, text: "已提交" });
-                this.Statuslist.push({ value: 1, text: "处理中(PMC跟进)" });
-                this.Statuslist.push({ value: 2, text: "已处理(无需PMC)" });
-                this.Statuslist.push({ value: 3, text: "已处理(PMC完成)" });
-                this.Statuslist.push({ value: 4, text: "待审核" });
-                this.Statuslist.push({ value: 5, text: "未完成" });
-                this.Statuslist.push({ value: 6, text: "已完成" });
-                this.Statuslist.push({ value: 7, text: "已拒绝" });
-
-                this.Severitylist.push({ value: 0, text: "致命" });
-                this.Severitylist.push({ value: 1, text: "严重" });
-                this.Severitylist.push({ value: 2, text: "一般" });
-                this.Severitylist.push({ value: 3, text: "提示" });
-                this.Severitylist.push({ value: 4, text: "建议" });
-
-
-
-                 ck = CKEDITOR.replace('txt_remarks', {
-                    height: 250
-                });
-
-               
 
 
 
@@ -494,50 +462,24 @@
                 },
                View: function (item) {
                     this.supprotInfo = item;
-                    ck.setData(this.supprotInfo.CONTENT);
                     $('#modal-default').modal('show');
 
                 },
                SetSeverity: function (value) {
-                   var res = "";
-                   this.Severitylist.forEach(function (element) {
-                       if (element.value == value) {
-                           res = element.text;
-                       }
-                   });
-                   return res;
-
+                    return EnumGetSingle(value, Support_Severitylist());
                },
                SetType: function (value) {
 
-                   var res = "";
-                   this.Typelist.forEach(function (element) {
-                       if (element.value == value) {
-                           res = element.text;
-                       }
-                   });
-                   return res;
+                   return EnumGetSingle(value, Support_Typelist());
 
                },
                SetPriority(value) {
-                   var res = "";
-                   this.Prioritylist.forEach(function (element) {
-                       if (element.value == value) {
-                           res = element.text;
-                       }
-                   });
-                   return res;
+                   return EnumGetSingle(value, Support_Prioritylist());
 
                },
                SetStatus(value) {
 
-                   var res = "";
-                   this.Statuslist.forEach(function (element) {
-                       if (element.value == value) {
-                           res = element.text;
-                       }
-                   });
-                   return res;
+                   return EnumGetSingle(value, Support_Statuslist());
                },
                ChangeType(value,item) {
                    var _self = this;
@@ -547,7 +489,7 @@
                        title: "问题类型",
                        inputType: "select",
                        value: value,
-                       inputOptions: _self.Typelist,
+                       inputOptions: Support_Typelist(),
                        callback: function (result) {
 
                            if (result == null) {
@@ -560,7 +502,6 @@
                        }
                    });
                 },
-
                 ChangeStatus(value, item) {
                     var _self = this;
 
@@ -581,7 +522,6 @@
                         }
                     });
                 },
-
                 ChangePriority(value, item) {
                     var _self = this;
 
@@ -590,7 +530,7 @@
                         title: "工单状态",
                         inputType: "select",
                         value: value,
-                        inputOptions: _self.Prioritylist,
+                        inputOptions: Support_Prioritylist(),
                         callback: function (result) {
 
                             if (result == null) {
@@ -602,7 +542,6 @@
                         }
                     });
                 },
-
                 ChangeSeverity(value, item) {
                     var _self = this;
 
@@ -611,7 +550,7 @@
                         title: "工单状态",
                         inputType: "select",
                         value: value,
-                        inputOptions: _self.Severitylist,
+                        inputOptions: Support_Severitylist(),
                         callback: function (result) {
 
                             if (result == null) {
@@ -656,7 +595,7 @@
                         return;
                     }
                     if (item.STATUS == 3) {
-                        window.location.href = "/Support/SiteCheck?id=" + item.SID;     //技术或PMC处理后，状态为3， 现场人员检测 （处理完成后状态为4  负责人审核） 
+                        window.location.href = "/Support/SiteCheck?id=" + item.SID;     //技术或PMC处理后，状态为3， 现场人员检测 （处理完成后状态为4  负责人审核）
                         return;
                     }
                     if (item.STATUS == 4) {
@@ -668,7 +607,7 @@
                         return;
                     }
 
-                 
+
                 },
                 Att(item) {
 
@@ -682,8 +621,10 @@
 
                 },
                 Details(item) {
-                    window.location.href = "/Support/Details?id=" + item.SID;
-
+                   // window.location.href = "/Support/Details?id=" + item.SID;
+                   // window.location.href = "/SupportTimeLine/TimeLine?id=" + item.SID;
+                    window.location.href = "/SupportTimeLine/WorkFolw?id=" + item.SID;
+                    
                 }
            },
 
