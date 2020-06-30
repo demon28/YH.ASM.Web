@@ -56,6 +56,13 @@ WHERE te.app_id=1 and  tr.role_id !=4
         return model != null;
     }
 
+
+    /// <summary>
+    /// 根据用户id 查询该用户有哪些角色
+    /// </summary>
+    /// <param name="uesrid"></param>
+    /// <param name="list"></param>
+    /// <returns></returns>
     public bool ListByUserid(int uesrid,ref List<TPMS_USER_RIGHT> list)
     {
 
@@ -79,6 +86,30 @@ WHERE te.app_id=1 and  tr.role_id !=4
         list = Db.SqlQueryable<PMSViewModel>(sql).Where(s => s.USER_ID == userid && s.PAGE_URL== pageurl).ToList();
 
         return list.Count > 0;
+    }
+
+    /// <summary>
+    /// 根据页面查出 该页面哪些角色有 权限访问
+    /// </summary>
+    /// <param name="pageurl"></param>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public List<RoleRightModel>  ListRoleRightPageView(int userid,string pageurl )
+    {
+        string sql = @"SELECT T.*
+  FROM TPMS_USER_RIGHT T
+ WHERE T.USER_ID = :userid
+   AND T.ROLE_ID IN (SELECT TR.ROLE_ID
+                       FROM VPMS_ROLE_RIGHT TR
+                      WHERE TR.PAGE_URL = :pageurl)";
+
+
+        var configParms = new List<SugarParameter>();
+
+        configParms.Add(new SugarParameter("userid", userid));
+        configParms.Add(new SugarParameter("pageurl", pageurl));
+
+        return Db.SqlQueryable<RoleRightModel>(sql).AddParameters(configParms).ToList();
     }
 
 }
