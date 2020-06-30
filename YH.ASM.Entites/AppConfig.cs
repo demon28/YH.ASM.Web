@@ -41,7 +41,7 @@ namespace YH.ASM.Entites
                     return DevelopmentDatabase;
                 }
 
-                 return ProductDatabase;
+                 return TestDatabase;
                 
 
             }
@@ -79,7 +79,7 @@ namespace YH.ASM.Entites
 
         }
 
-        private static string ProductDatabase
+        private static string TestDatabase
         {
             get
             {
@@ -89,7 +89,7 @@ namespace YH.ASM.Entites
 
                 var config = builder.Build();
 
-                string conn = config.GetSection("ConnectionStrings:ProductDatabase").Value; 
+                string conn = config.GetSection("ConnectionStrings:TestDatabase").Value; 
                 return conn;
             }
 
