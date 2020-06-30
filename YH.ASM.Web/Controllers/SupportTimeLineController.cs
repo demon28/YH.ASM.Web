@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
@@ -11,11 +12,12 @@ namespace YH.ASM.Web.Controllers
 {
     public class SupportTimeLineController : ControllerBase.ControllerBase
     {
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult TimeLine()
         {
             return View();
