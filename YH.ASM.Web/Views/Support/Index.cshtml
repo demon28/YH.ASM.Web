@@ -97,8 +97,8 @@
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
 
-                    <span style="display:none" id="sp_userid"></span>
-                    <span style="display:none" id="sp_username"></span>
+                  
+
                     <table class="table table-bordered table-hover dataTable">
                         <tbody>
                             <tr>
@@ -339,6 +339,7 @@
                 pageSize: 15,
                 pageCount: 20,
                 TotalCount: 0,
+                user_id: 0,
 
                 supprotInfo: {},
                 orderby: "SID",
@@ -483,90 +484,91 @@
                },
                ChangeType(value,item) {
                    var _self = this;
+                 
+                   //bootbox.prompt({
+                   //    size: "small",
+                   //    title: "问题类型",
+                   //    inputType: "select",
+                   //    value: value,
+                   //    inputOptions: Support_Typelist(),
+                   //    callback: function (result) {
 
-                   bootbox.prompt({
-                       size: "small",
-                       title: "问题类型",
-                       inputType: "select",
-                       value: value,
-                       inputOptions: Support_Typelist(),
-                       callback: function (result) {
-
-                           if (result == null) {
-                               return;
-                           }
-                           item.TYPE = result;
-                           _self.Update(item);
+                   //        if (result == null) {
+                   //            return;
+                   //        }
+                   //        item.TYPE = result;
+                   //        _self.Update(item);
 
 
-                       }
-                   });
+                   //    }
+                   //});
                 },
-                ChangeStatus(value, item) {
+               ChangeStatus(value, item) {
                     var _self = this;
+                 
+                    //bootbox.prompt({
+                    //    size: "small",
+                    //    title: "工单状态",
+                    //    inputType: "select",
+                    //    value: value,
+                    //    inputOptions: [{ value: 6, text: "已完成" }, { value: 7, text: "已拒绝" }],
+                    //    callback: function (result) {
 
-                    bootbox.prompt({
-                        size: "small",
-                        title: "工单状态",
-                        inputType: "select",
-                        value: value,
-                        inputOptions: [{ value: 6, text: "已完成" }, { value: 7, text: "已拒绝" }],
-                        callback: function (result) {
+                    //        if (result == null) {
+                    //            return;
+                    //        }
+                    //        item.STATUS = result;
+                    //        _self.Update(item);
 
-                            if (result == null) {
-                                return;
-                            }
-                            item.STATUS = result;
-                            _self.Update(item);
-
-                        }
-                    });
+                    //    }
+                    //});
                 },
-                ChangePriority(value, item) {
+               ChangePriority(value, item) {
                     var _self = this;
+                  
+                    //bootbox.prompt({
+                    //    size: "small",
+                    //    title: "工单状态",
+                    //    inputType: "select",
+                    //    value: value,
+                    //    inputOptions: Support_Prioritylist(),
+                    //    callback: function (result) {
 
-                    bootbox.prompt({
-                        size: "small",
-                        title: "工单状态",
-                        inputType: "select",
-                        value: value,
-                        inputOptions: Support_Prioritylist(),
-                        callback: function (result) {
+                    //        if (result == null) {
+                    //            return;
+                    //        }
+                    //        item.PRIORITY = result;
+                    //        _self.Update(item);
 
-                            if (result == null) {
-                                return;
-                            }
-                            item.PRIORITY = result;
-                            _self.Update(item);
-
-                        }
-                    });
+                    //    }
+                    //});
                 },
-                ChangeSeverity(value, item) {
+               ChangeSeverity(value, item) {
                     var _self = this;
+                 
+                    //bootbox.prompt({
+                    //    size: "small",
+                    //    title: "工单状态",
+                    //    inputType: "select",
+                    //    value: value,
+                    //    inputOptions: Support_Severitylist(),
+                    //    callback: function (result) {
 
-                    bootbox.prompt({
-                        size: "small",
-                        title: "工单状态",
-                        inputType: "select",
-                        value: value,
-                        inputOptions: Support_Severitylist(),
-                        callback: function (result) {
+                    //        if (result == null) {
+                    //            return;
+                    //        }
+                    //        item.SEVERITY = result;
+                    //        _self.Update(item);
 
-                            if (result == null) {
-                                return;
-                            }
-                            item.SEVERITY = result;
-                            _self.Update(item);
-
-                        }
-                    });
+                    //    }
+                    //});
                 },
                 ChangeUser(item) {
-                    this.supprotInfo = item;
-                    showWui("/Support/FillUser");
+                  
+                    //this.supprotInfo = item;
+                    //showWui("/Support/FillUser");
                 },
-                SetUser(item) {
+               SetUser(item) {
 
                     console.log(item);
 
@@ -580,32 +582,63 @@
                     closeWui();
 
                 },
-                Dispose(item) {
+               Dispose(item) {
 
-                    if (item.STATUS==0) {
-                        window.location.href = "/Support/Disposer?id=" + item.SID;      //创建工单后，状态为0， 跳转到处理工单  （处理后状态为1 或 2  PMC 或 非PMC ）
-                        return;
-                    }
-                    if (item.STATUS == 1) {
-                        window.location.href = "/Support/PmcOrder?id=" + item.SID;      //处理工单后，状态为1， 需要PMC处理，（处理完成后 状态为3   PMC）
-                        return;
-                    }
-                    if (item.STATUS == 2) {
-                        window.location.href = "/Support/SiteCheck?id=" + item.SID;      //处理工单后，状态为2，无需PMC处理 （处理完成后  状态为3  非PMC）
-                        return;
-                    }
-                    if (item.STATUS == 3) {
-                        window.location.href = "/Support/SiteCheck?id=" + item.SID;     //技术或PMC处理后，状态为3， 现场人员检测 （处理完成后状态为4  负责人审核）
-                        return;
-                    }
-                    if (item.STATUS == 4) {
-                        window.location.href = "/Support/PrincipalCheck?id=" + item.SID;  //现场取人后， 状态为4， 负责人审核， （处理完成后状态 为 5或 6，6为已完成，5为完成）
-                        return;
-                    }
-                    if (item.STATUS == 5) {
-                        window.location.href = "/Support/SiteCheck?id=" + item.SID;   //审核后，状态为5属于未完成，被打回，重新提交审核
-                        return;
-                    }
+                   var _self = this;
+                   MyAjax({
+                       url: "/Support/CreatorInfo",
+                       type: "POST",
+
+                       success: function (result) {
+
+                           console.log(JSON.stringify(result));
+
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           _self.user_id = result.Content.USER_ID;
+
+                           if (_self.user_id != item.CONDUCTOR) {
+                               alert_info("抱歉您不是该工单处理人员！");
+                               return
+                           }
+
+                           if (item.STATUS == 0) {
+                               window.location.href = "/Support/Disposer?id=" + item.SID;      //创建工单后，状态为0， 跳转到处理工单  （处理后状态为1 或 2  PMC 或 非PMC ）
+                               return;
+                           }
+                           if (item.STATUS == 1) {
+                               window.location.href = "/Support/PmcOrder?id=" + item.SID;      //处理工单后，状态为1， 需要PMC处理，（处理完成后 状态为3   PMC）
+                               return;
+                           }
+                           if (item.STATUS == 2) {
+                               window.location.href = "/Support/SiteCheck?id=" + item.SID;      //处理工单后，状态为2，无需PMC处理 （处理完成后  状态为3  非PMC）
+                               return;
+                           }
+                           if (item.STATUS == 3) {
+                               window.location.href = "/Support/SiteCheck?id=" + item.SID;     //技术或PMC处理后，状态为3， 现场人员检测 （处理完成后状态为4  负责人审核）
+                               return;
+                           }
+                           if (item.STATUS == 4) {
+                               window.location.href = "/Support/PrincipalCheck?id=" + item.SID;  //现场取人后， 状态为4， 负责人审核， （处理完成后状态 为 5或 6，6为已完成，5为完成）
+                               return;
+                           }
+                           if (item.STATUS == 5) {
+                               window.location.href = "/Support/SiteCheck?id=" + item.SID;   //审核后，状态为5属于未完成，被打回，重新提交审核
+                               return;
+                           }
+
+
+
+
+                       }
+                   })
+
+
+                
 
 
                 },
@@ -621,8 +654,7 @@
 
                 },
                 Details(item) {
-                   // window.location.href = "/Support/Details?id=" + item.SID;
-                   // window.location.href = "/SupportTimeLine/TimeLine?id=" + item.SID;
+              
                     window.location.href = "/SupportTimeLine/WorkFolw?id=" + item.SID;
                     
                 }

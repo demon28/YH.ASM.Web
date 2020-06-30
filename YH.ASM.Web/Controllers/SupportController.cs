@@ -26,13 +26,14 @@ namespace YH.ASM.Web.Controllers
     public class SupportController : ControllerBase.ControllerBase
     {
 
-
+       
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ILogger<ProjectController> logger;
 
         [AuthRight]
         public IActionResult Index()
         {
+           
             return View();
         }
         public IActionResult Attachment()

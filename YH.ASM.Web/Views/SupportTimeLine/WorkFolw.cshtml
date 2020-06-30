@@ -98,7 +98,7 @@
                     _self.id = getQueryString("id");
                     MyAjax({
                         url: "/SupportTimeLine/ListByHis",
-                        type: "POST",
+                        type: "POST", async: false,
                         data: {
                             sid: _self.id
                         },
@@ -147,10 +147,6 @@
 
 
 
-                            //var  html = "<li> <i class=\"fa fa-envelope bg-blue\" ></i> </li>";
-
-                            //$("#ul_wf").appendTo(html);
-
 
                         }
                     })
@@ -158,11 +154,13 @@
                 },
                 InsertSupport(sid, tid) {
 
+                    console.log("InsertSupport=======1");
                     var _self = this;
                     _self.id = getQueryString("id");
-                    MyAjax({
+                    $.ajax({
                         url: "/Support/GetUpdateInfo",
                         type: "POST",
+                        async: false,
                         data: {
                             id: _self.id
                         },
@@ -185,12 +183,12 @@
 
                 },
                 InsertDisposer(sid, tid) {
-
+                    console.log("InsertDisposer=======2");
                     var _self = this;
                   
-                    MyAjax({
+                    $.ajax({
                         url: "/SupportTimeLine/GetDisposerInfo",
-                        type: "POST",
+                        type: "POST", async: false,
                         data: {
                             sid: sid,
                             tid: tid
@@ -214,11 +212,12 @@
 
                 },
                 InsertPmc(sid, tid) {
+                    console.log("InsertPmc=======3");
                     var _self = this;
 
-                    MyAjax({
+                    $.ajax({
                         url: "/SupportTimeLine/GetPmcInfo",
-                        type: "POST",
+                        type: "POST", async: false,
                         data: {
                             sid: sid,
                             tid: tid
@@ -241,12 +240,14 @@
 
                 },
                 InsertSite(sid, tid) {
+
+                    console.log("InsertSite=======4");
                     var _self = this;
 
 
-                    MyAjax({
+                    $.ajax({
                         url: "/SupportTimeLine/GetSiteInfo",
-                        type: "POST",
+                        type: "POST", async: false,
                         data: {
                             sid: sid,
                             tid: tid
@@ -272,11 +273,12 @@
 
                 },
                 InsertPrincipal(sid, tid) {
+                    console.log("InsertPrincipal=======5");
                     var _self = this;
 
-                    MyAjax({
+                    $.ajax({
                         url: "/SupportTimeLine/GetPrincipalInfo",
-                        type: "POST",
+                        type: "POST", async: false,
                         data: {
                             sid: sid,
                             tid: tid
