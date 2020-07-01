@@ -1,6 +1,22 @@
 ﻿
 
 
+
+//工单类型
+function Power_Typelist() {
+
+    var Typelist = [];
+
+    Typelist.push({ value: 1, text: "页面访问" });
+    Typelist.push({ value: 2, text: "功能操作" });
+
+
+    return Typelist;
+
+}
+
+
+
 //工单类型
 function Support_Typelist() {
 

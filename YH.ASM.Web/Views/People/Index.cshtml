@@ -3,9 +3,23 @@
 @{
     ViewBag.Title = "Index";
 }
+@section Htmlhead{
 
+
+
+
+    <style>
+
+        .my-td {
+            vertical-align: middle !important;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+
+
+}
 @section Pageheader{
-
 
 
 
@@ -21,11 +35,11 @@
 }
 
 
-<section class="content">
+<section class="content" id="tab_account">
     <div class="row">
 
         <!-- /.col -->
-        <div id="tab_account">
+        <div >
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">List</h3>
@@ -33,8 +47,8 @@
                     <div class="box-tools">
 
                         @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1">
-                            <button type="button" class="btn btn-default pull-right" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
-                        </div>*@
+                                <button type="button" class="btn btn-default pull-right" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
+                            </div>*@
 
 
                         <div class="input-group input-group-sm hidden-xs" style="width: 200px;">
@@ -60,7 +74,7 @@
 
                                 <th>职务</th>
 
-                             
+
                                 <th>二级部门</th>
                                 <th>三级部门</th>
                                 <th>四级部门</th>
@@ -80,7 +94,7 @@
                                 <td>{{item.DTNAME}}</td>
 
 
-                            
+
                                 <td>{{item.DEPT2}}</td>
                                 <td>{{item.DEPT3}}</td>
                                 <td>{{item.DEPT4}}</td>
@@ -104,7 +118,8 @@
                                 <td>{{item.COMEDATE}}</td>
 
                                 <td>
-                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="Details(item)">详情</button>
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="Role(item)">分配权限</button>
+                                    @*<button type="button" class="btn bg-purple  btn-xs" v-on:click="Details(item)">详情</button>*@
                                 </td>
                             </tr>
 
@@ -115,8 +130,8 @@
 
 
                 <div class="box-footer no-padding">
-                    <div class="card-footer clearfix pull-left"  style="margin-left:20px;margin-top:30px;margin-bottom:30px">
-                        @*Showing {{pIndex}} to {{pSize}} of {{pageTotal}}*@
+                    <div class="card-footer clearfix pull-left" style="margin-left:20px;margin-top:30px;margin-bottom:30px">
+
                     </div>
 
                     <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
@@ -134,11 +149,59 @@
     </div>
     <!-- /.col -->
     <!-- /.row -->
+    <!-- /.modal-dialog -->
 
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="txt_username"></h4>
+                </div>
+                <div class="modal-body">
 
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>角色列表</th>
 
+                                    <th></th>
+                                </tr>
+                                <tr v-for="(item,index) in rolelist">
+                                    <td style=" vertical-align:middle">
+                                        <label >
+
+                                            <input type="checkbox"  @@click="ChangeRole(item)"  v-model="item.checked" style="height:20px;width:20px;"   />
+                                        {{ item.ROLENAME }}
+                                        </label>
+
+                                    </td>
+
+                                    <td>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+    <!-- /.modal-dialog -->
 
 </section>
+
+
+
 
 
 <script type="text/javascript">
@@ -154,6 +217,7 @@
 
     $(document).ready(function () {
         Load();
+     
     });
 
 
@@ -164,14 +228,24 @@
             el: "#tab_account",
             data: {
                 list: [],
+                rolelist: [],
+                userrolelist:[],
                 pIndex: pageIndex,
                 pSize: pageSize,
                 pCount: pageCount,
-                pTotal: pageTotal
+                pTotal: pageTotal,
+                userid: 0,
+              
             },
             created: function () {
-
+            
                 this.Init();
+
+              
+
+            }, mounted: function () {
+
+             
 
             },
             methods: {
@@ -209,7 +283,7 @@
                         url: "/People/Details",
                         type: "POST",
                         data: {
-                            workid: item.work_id
+                            workid: item.WORK_ID
                         },
                         success: function (result) {
                             if (result.Success) {
@@ -249,6 +323,138 @@
                 ExportExcel: function () {
                     var keyword = $("#txt_Search").val();
                     window.location = "/People/ExportExcel?keyword=" + keyword;
+                },
+                ChangeRole(item) {
+
+                    console.log("两次=====")
+
+                    var _self = this;
+                    if (!item.checked) {
+
+                        MyAjax({
+                            url: "/UserRight/AddUserRoleMebmer",
+                            type: "POST",
+                            data: {
+                                userid: _self.userid,
+                                roleid: item.ID
+                            },
+                            success: function (res) {
+                                console.log(res);
+                                if (!res.Success) {
+                                    alert_danger(res.Message);
+                                    return;
+                                }
+                               _self.BindRoleList();
+                                alert_success(res.Message);
+                                return;
+                            }
+                        })
+
+                    } else {
+
+
+                        MyAjax({
+                            url: "/UserRight/DeleteUserRoleMebmer",
+                            type: "POST",
+                            data: {
+                                id: item.URID
+                            },
+                            success: function (res) {
+
+                                if (!res.Success) {
+                                    alert_danger(res.Message);
+                                    return;
+                                }
+                                _self.BindRoleList();
+                                alert_success(res.Message);
+                                return;
+                            }
+                        })
+
+                    }
+
+
+
+
+
+                },
+                Role: function (item) {
+
+                    var _self = this;
+                    _self.userid = item.USER_ID;
+
+                    _self.BindRoleList();
+
+                    $('#modal-default').modal('show');
+
+                },
+                BindRoleList() {
+                    var _self = this;
+
+                    MyAjax({
+                        url: "/UserRight/GetAllRole",
+                        type: "POST",
+                        data: {
+
+                        },
+                        success: function (result) {
+
+                            if (!result.Success) {
+                                return;
+                            }
+
+                            var rolearray = result.Content;
+
+                            MyAjax({
+                                url: "/UserRight/GetUserRoleMebmer",
+                                type: "POST",
+                                data: {
+                                    userid: _self.userid
+                                },
+                                success: function (res) {
+
+                                    if (!res.Success) {
+                                        return;
+                                    }
+
+                                    _self.userrolelist = res.Content;
+
+
+                                    console.log(JSON.stringify(_self.userrolelist) + "用户与角色关联");
+
+                               
+
+                                    //第一层循环，系统有多少角色
+                                    for (var i = 0; i < rolearray.length; i++) {
+
+                                        //第二层循环，用户与角色关联表， 查询出用户
+                                        for (var j = 0; j < _self.userrolelist.length; j++) {
+
+                                            if (rolearray[i].ID == _self.userrolelist[j].ROLEID) {
+
+                                                rolearray[i].checked = true;
+                                                rolearray[i].URID = _self.userrolelist[j].ID;
+
+                                                console.log(rolearray[j].ID + "======" + rolearray[j].checked);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    _self.rolelist = rolearray;
+
+                                    console.log(JSON.stringify(_self.rolelist)+"角色查看");
+
+
+                                }
+                            })
+
+
+
+                        }
+                    })
+
                 }
             }
         });

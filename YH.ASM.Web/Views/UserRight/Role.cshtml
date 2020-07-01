@@ -1,0 +1,347 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<style>
+
+    .my-td {
+        vertical-align: middle !important;
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+
+
+
+
+@section Pageheader{
+
+    <script>
+
+        function closeWui() {
+            $(".wui-masked").hide();
+            $('.wui-ilayout').animate({ width: '0' }, function () {
+                $(".wui-ilayout iframe").attr("src", "about:blank");
+            });
+        }
+        function showWui(uri, width) {
+            var window_width = width || ($(window).width() / 2);
+            $(".wui-masked").show();
+            $(".wui-ilayout").show().animate({ width: window_width }, function () {
+                var html = $("<div class='wui-ilayout-loading'><i class='icon-spin icon-spinner'></i>正在加载页面...</div>");
+                $(".wui-ilayout iframe").before(html);
+                $(".wui-ilayout iframe").attr('src', uri);
+            });
+        }
+
+    </script>
+
+
+    <h1>
+        <small> 角色管理 </small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Role</li>
+    </ol>
+
+}
+
+<section class="content" id="tab">
+    <div class="row">
+
+        <!-- /.col -->
+        <div>
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">List</h3>
+
+                    <div class="box-tools">
+
+                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                            <button type="button" class="btn btn-default pull-right" @@click="ShowAdd()" id="btn_Search">添加角色</button>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+
+               
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>角色名称</th>
+                                <th>备注</th>
+                       
+                                <th style="text-align:right">
+                                    操作
+                                </th>
+                            </tr>
+
+                            <tr v-for="(item,index) in list">
+                                <td >{{item.ROLENAME}}</td>
+                                <td>{{item.REMARKS}}</td>
+                               
+
+                                <td style="text-align:right">
+                                    <button type="button" class="btn bg-blue  btn-xs" v-on:click="Func(item)">配置功能</button>
+                                    &nbsp;      &nbsp;
+                                    <button type="button" class="btn bg-purple  btn-xs" v-on:click="ShowUpdate(item)">修改</button>
+                                    &nbsp;      &nbsp;
+                                    <button type="button" class="btn bg-red btn-xs" v-on:click="Del(item)">删除</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+
+
+                <div class="box-footer no-padding">
+                    <div class="card-footer clearfix pull-left" style="margin-left:20px;margin-top:30px;margin-bottom:30px">
+
+                    </div>
+
+                    <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                        <ul class="pagination pagination-sm no-margin pull-right" id="ul_page">
+                        </ul>
+                    </div>
+
+
+                    <!-- /.pull-right -->
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /.col -->
+    <!-- /.row -->
+
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="txt_username">角色信息</h4>
+                </div>
+                <div class="modal-body">
+
+
+                    <form class="form-horizontal">
+
+                        <div class="form-group">
+                            <label for="txt_projectname" class="col-sm-3 control-label">角色名称：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" v-model="roleitem.ROLENAME">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="txt_kehuname" class="col-sm-3 control-label">备注：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control"  v-model="roleitem.REMARKS">
+                            </div>
+                        </div>
+
+
+                    
+                    </form>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary pull-right" v-on:click="Add()" v-if="operation=='add'">添 加</button>
+                    <button type="button" class="btn btn-primary pull-right" v-on:click="Update()" v-if="operation=='update'">修 改</button>
+
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关 闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+
+
+
+</section>
+
+<!-- Control Sidebar -->
+
+<div class="wui-masked" style="position:fixed;background:#fff;top:0;left:0;right:0;bottom:0;z-index:9998;opacity:0.3;display:none;"
+     onclick="closeWui()"></div>
+
+
+<div class="wui-ilayout" style="position:absolute; position:fixed;top:0;right:0;z-index:9999;bottom:0;border-left:4px #eee solid;display:none;background:#fff;">
+    <div style="padding:2em;height:100%;background-color:gainsboro">
+        <iframe style="width:50%;border:0 none;height:100%;width:100%;" src="about:blank" onload="javascript:$('.wui-ilayout-loading').remove()"></iframe>
+    </div>
+</div>
+
+<!-- /.control-sidebar -->
+
+@section scripts{
+
+    <script>
+
+
+       var vm = new Vue({
+           el: "#tab",
+           data: {
+                   list: [],
+               operation:"add",
+               roleitem: {}
+           },
+           created: function () {
+
+               this.Init();
+
+
+           },
+           methods: {
+
+               Init() {
+
+                   var self = this;
+                   var keywork = $("#txt_Search").val();
+
+                   console.log("请求数据：" + keywork);
+
+
+                   MyAjax({
+                       url: "/UserRight/ListRole",
+                       type: "POST",
+                       data: {
+                          
+                       },
+                       success: function (result) {
+
+                          console.log(JSON.stringify(result));
+
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           self.list = result.Content;
+
+                       
+                       }
+                   })
+               },
+
+               Del: function (item) {
+                   var self = this;
+                   bootbox.confirm("您确定删除改记录吗？", function (res) {
+                       if (res) {
+
+                           MyAjax({
+                               url: "/UserRight/DelRole",
+                               type: "POST",
+                               data: {
+                                   id: item.ID
+                               },
+                               success: function (result) {
+
+                                   if (!result.Success) {
+
+                                       alert_danger(result.Message);
+                                       return;
+                                   }
+                                   alert_success("删除成功");
+                                   self.Init();
+
+                               }
+                           })
+                       }
+                   });
+
+
+
+               },
+               Add: function () {
+                   var _self = this;
+
+
+                   MyAjax({
+                       url: "/UserRight/AddRole",
+                       type: "POST",
+                       data: _self.roleitem,
+                       success: function (result) {
+
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+                           $('#modal-default').modal('hide');
+                           alert_success(result.Message);
+                           _self.Init();
+              
+
+                       }
+                   })
+               },
+               Update: function () {
+                   var _self = this;
+                   MyAjax({
+                       url: "/UserRight/UpdateRole",
+                       type: "POST",
+                       data: _self.roleitem,
+                       success: function (result) {
+
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+                           $('#modal-default').modal('hide');
+                           alert_success(result.Message);
+                           _self.Init();
+                      
+                       }
+                   })
+
+               },
+               ShowUpdate: function (item) {
+                   this.operation = "update";
+                   $('#modal-default').modal('show');
+                   this.roleitem = item;
+
+               },
+               ShowAdd() {
+                   this.operation = "add";
+                   $('#modal-default').modal('show');
+                   this.roleitem = {};
+               },
+               Config(item) {
+
+                   showWui("/UserRight/RoleConifg?id=" + item.ID);
+               }
+           },
+
+
+
+       });
+
+
+    </script>
+
+}
+
+
+
+

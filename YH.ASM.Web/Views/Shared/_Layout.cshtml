@@ -32,6 +32,7 @@
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
+    <link rel="stylesheet" href="~/Reference/adminLTE/plugins/iCheck/all.css">
 
     <script src="~/Reference/scripts/jquery-3.3.1.min.js"></script>
 
@@ -198,7 +199,7 @@
                             <li><a href="/People/Index"><i class="fa fa-user"></i> 人员信息</a></li>
                             <li><a href="/Direction/Index"><i class="fa fa-send "></i> 动向记录</a></li>
                             <li><a href="/WorkHour/Index"><i class="fa fa-wrench"></i> 工时配置</a></li>
-                            <li><a href="/Permission/Index"><i class="fa fa-street-view"></i> 权限管理</a></li>
+                            @*<li><a href="/Permission/Index"><i class="fa fa-street-view"></i> 权限管理</a></li>*@
                         </ul>
                     </li>
 
@@ -238,7 +239,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="/Support/Index"><i class="fa fa-server"></i> 工单列表</a></li>
+                            <li><a href="/Support/Index"><i class="fa fa-reorder"></i> 工单列表</a></li>
                             <li><a href="/Support/Create"><i class="fa  fa-sticky-note-o"></i> 创建工单</a></li>
                             @*<li><a href="/PmcOrder/Index"><i class="fa  fa-cart-plus"></i> PMC跟进</a></li>*@
                         </ul>
@@ -259,6 +260,23 @@
 
                         </ul>
                     </li>
+
+
+                    <li class=" treeview">
+                        <a href="#">
+                            <i class="fa   fa-cogs"></i> <span>系统管理</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/UserRight/Role"><i class="fa  fa-user-plus"></i> 角色管理</a></li>
+                            <li><a href="/UserRight/Func"><i class="fa fa-random"></i> 功能配置</a></li>
+
+                        </ul>
+                    </li>
+
+
 
                 </ul>
                 <!-- /.sidebar-menu -->
@@ -528,6 +546,9 @@
 
     <!-- AdminLTE for demo purposes -->
     <script src="~/Reference/adminLTE/dist/js/demo.js"></script>
+
+    <script src="~/Reference/adminLTE/plugins/iCheck/icheck.js"></script>
+
 
     <script src="~/Reference/scripts/jquery.bootstrap-growl.js"></script>
     <script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
