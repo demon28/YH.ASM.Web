@@ -19,13 +19,13 @@ namespace YH.ASM.Web.Controllers
     public class DirectionController : ControllerBase.ControllerBase
     {
 
-        [AuthRight]
+        [Right]
         public IActionResult Index()
         {
             return View();
         }
 
-
+        [Right]
         public IActionResult List(string date,string keyword,int pageIndex, int pageSize) {
 
             TASM_TRAVELManager manager = new TASM_TRAVELManager();
@@ -46,7 +46,9 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list, p);
 
         }
-
+       
+        
+        [Right]
         public IActionResult ListCander(int userid,string date)
         {
              DateTime time = DateTime.Now;
@@ -64,19 +66,22 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
+        
+        [Right]
         public IActionResult MonthView() {
 
             return View();
         }
 
+
+        [Right]
         public IActionResult Canlder()
         {
 
             return View();
         }
 
-
+        [Right]
         public IActionResult WrokReport(int traid) {
 
             DataAccess.TASM_TRAVELManager mannager = new TASM_TRAVELManager();
@@ -87,6 +92,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+        [Right(Ignore=true)]
         [HttpGet]
         public IActionResult ExportExcelUnion(string date,string keyword = "")
         {
@@ -146,6 +152,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+        [Right(Ignore = true)]
         [HttpGet]
         public IActionResult ExportExcelAll(string date, string keyword = "")
         {

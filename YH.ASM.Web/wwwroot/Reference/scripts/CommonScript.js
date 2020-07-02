@@ -67,9 +67,11 @@ function MyAjax(ajaxjson) {
 
 
             if (result.Code === 302) {
+                console.log("请配置权限");
+                window.location = "/UserRight/NoPermission";
 
-                window.location.href = "/Permission/NoPermission";
-
+            } else if (result.Code === 404) {
+                alert_danger(result.Message);
             } else if (result.Code === 405) {
                 alert_danger(result.Message);
             } else if (result.Code === 401) {

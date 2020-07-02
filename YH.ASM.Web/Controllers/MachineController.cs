@@ -20,17 +20,20 @@ namespace YH.ASM.Web.Controllers
     /// </summary>
     public class MachineController :  ControllerBase.ControllerBase
     {
-        [AuthRight]
+        [Right]
         public IActionResult Index()
         {
             return View();
         }
+
+
+        [Right(Ignore =true)]
         public IActionResult AddAndUpdate()
         {
             return View();
         }
 
-
+        [Right]
         [HttpPost]
         public IActionResult List(string keywords, int pageIndex, int pageSize)
         {
@@ -48,7 +51,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list, p);
         }
 
-
+        [Right]
         [HttpPost]
         public IActionResult ListTypes()
         {
@@ -61,6 +64,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list);
         }
 
+        [Right]
         [HttpPost]
         public IActionResult Add(Entites.CodeGenerator.TASM_MACHINE model)
         {
@@ -77,6 +81,8 @@ namespace YH.ASM.Web.Controllers
             return SuccessMessage("添加成功");
 
         }
+
+        [Right]
         [HttpPost]
         public IActionResult AddTypes(Entites.CodeGenerator.TASM_MACHINE_TYPE model)
         {
@@ -92,7 +98,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessMessage("添加成功");
 
         }
-
+        [Right]
         [HttpPost]
         public IActionResult Update(Entites.CodeGenerator.TASM_MACHINE model)
         {
@@ -105,7 +111,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessMessage("修改成功");
 
         }
-
+        [Right]
         [HttpPost]
         public IActionResult Delete(int id)
         {
@@ -121,7 +127,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [Right]
         [HttpPost]
         public IActionResult DeleteTypes(int id)
         {
@@ -137,7 +143,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [Right(Ignore =true)]
         [HttpGet]
         public IActionResult ExportExcel(string keyword = "")
         {
@@ -201,6 +207,8 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+
+        [Right]
         [HttpPost]
         public IActionResult GetUpdateInfo(int id)
         {
@@ -210,6 +218,8 @@ namespace YH.ASM.Web.Controllers
             return SuccessResult(model);
 
         }
+
+        [Right]
         [HttpPost]
         public IActionResult GetTypesInfo(int id)
         {
@@ -219,6 +229,8 @@ namespace YH.ASM.Web.Controllers
             return SuccessResult(model);
 
         }
+
+        [Right]
         [HttpPost]
         public IActionResult UpdateTypes(TASM_MACHINE_TYPE model)
         {

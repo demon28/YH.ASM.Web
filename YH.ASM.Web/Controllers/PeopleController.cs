@@ -9,21 +9,23 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using SqlSugar;
 using YH.ASM.Entites.CodeGenerator;
+using YH.ASM.Web.ControllerBase;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace YH.ASM.Web.Controllers
 {
+    [Authorize]
     public class PeopleController : ControllerBase.ControllerBase
     {
 
-        [Authorize]
-        // GET: /<controller>/
+        [Right]
         public IActionResult Index()
         {
             return View();
         }
 
+        [Right]
         [HttpPost]
         public IActionResult GetList(string keyword,int pageIndex,int pageSize)
         {
@@ -39,6 +41,8 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list,p);
            
         }
+
+        [Right(Ignore =true)]
         [HttpGet]
         public IActionResult ExportExcel(string keyword = "") {
 

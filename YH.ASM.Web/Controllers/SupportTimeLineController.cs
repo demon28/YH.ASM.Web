@@ -7,23 +7,30 @@ using Microsoft.AspNetCore.Mvc;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
+using YH.ASM.Web.ControllerBase;
 
 namespace YH.ASM.Web.Controllers
 {
+    [Authorize]
     public class SupportTimeLineController : ControllerBase.ControllerBase
     {
-        [Authorize]
+    
+        [Right]
         public IActionResult Index()
         {
             return View();
         }
-        [Authorize]
+
+
+        [Right]
         public IActionResult TimeLine()
         {
             return View();
 
         }
 
+
+        [Right]
 
         public IActionResult WorkFolw()
         {
@@ -32,6 +39,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+        [Right]
         [HttpPost]
         public IActionResult ListByHis(int sid)
         {
@@ -44,6 +52,7 @@ namespace YH.ASM.Web.Controllers
 
         #region  工作流
 
+        [Right]
         [HttpPost]
         public IActionResult GetDisposerInfo(int sid,int tid)
         {
@@ -59,6 +68,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+        [Right]
         [HttpPost]
         public IActionResult GetPmcInfo(int sid, int tid)
         {
@@ -72,6 +82,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [Right]
         [HttpPost]
         public IActionResult GetSiteInfo(int sid, int tid)
         {
@@ -85,6 +96,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+        [Right]
         [HttpPost]
         public IActionResult GetPrincipalInfo(int sid, int tid)
         {
@@ -103,7 +115,7 @@ namespace YH.ASM.Web.Controllers
 
 
 
-        /*
+        /*  单项修改
 
        
 

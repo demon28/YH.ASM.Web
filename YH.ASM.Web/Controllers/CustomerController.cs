@@ -18,15 +18,20 @@ namespace YH.ASM.Web.Controllers
     //客户信息
     public class CustomerController : ControllerBase.ControllerBase
     {
-        [AuthRight]
+        [Right]
         public IActionResult Index()
         {
             return View();
         }
+
+
+        [Right(Ignore =true)]
         public IActionResult AddAndUpdate()
         {
             return View();
         }
+        
+        [Right]
         [HttpPost]
         public IActionResult List(string keywords, int pageIndex, int pageSize)
         {
@@ -42,6 +47,8 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list, p);
 
         }
+
+        [Right]
         [HttpPost]
         public IActionResult Delete(int cid)
         {
@@ -55,6 +62,8 @@ namespace YH.ASM.Web.Controllers
 
 
         }
+
+        [Right]
         [HttpPost]
         public IActionResult Update(Entites.CodeGenerator.TASM_CUSTOMER model)
         {
@@ -67,6 +76,8 @@ namespace YH.ASM.Web.Controllers
             return SuccessMessage("修改成功");
 
         }
+
+        [Right]
         public IActionResult Add(Entites.CodeGenerator.TASM_CUSTOMER model)
         {
 
@@ -83,7 +94,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
+        [Right]
         [HttpPost]
         public IActionResult GetUpdateInfo(int id)
         {
@@ -95,6 +106,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
+        [Right(Ignore = true)]
         /// <summary>
         /// 导出Excel
         /// </summary>

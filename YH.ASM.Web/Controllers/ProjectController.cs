@@ -18,25 +18,30 @@ using NPOI.SS.UserModel;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
+using YH.ASM.Web.ControllerBase;
 
 namespace YH.ASM.Web.Controllers
 {
+    [Authorize]
     //项目履历
     public class ProjectController : ControllerBase.ControllerBase
     {
       
 
-        [Authorize]
+      
         public IActionResult Index()
         {
             return View();
         }
 
-
+        [Right(Ignore =true)]
         public IActionResult AddAndUpdate()
         {
             return View();
         }
+
+
+        [Right(Ignore = true)]
         public IActionResult Attachment()
         {
             return View();
@@ -44,6 +49,7 @@ namespace YH.ASM.Web.Controllers
 
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ILogger<ProjectController> logger;
+
 
         public ProjectController(IWebHostEnvironment hostingEnvironment, ILogger<ProjectController> _logger)
         {
@@ -54,7 +60,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
+        [Right]
         [HttpPost]
         public IActionResult List(string keywords,int pageIndex, int pageSize)
         {
@@ -72,6 +78,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list, p);
         }
 
+        [Right]
         public IActionResult Add(Entites.CodeGenerator.TASM_PROJECT model)
         {
 
@@ -89,7 +96,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-      
+        [Right]
         public IActionResult Update(Entites.CodeGenerator.TASM_PROJECT model)
         {
 
@@ -102,6 +109,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [Right]
         [HttpPost]
         public IActionResult Delete(int pid)
         {
@@ -116,6 +124,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [Right]
         [HttpGet]
         public IActionResult ExportExcel( string keyword = "")
         {
@@ -230,6 +239,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [Right]
         [HttpPost]
         public IActionResult LisAttachmentt(int id)
         {
@@ -258,6 +268,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [Right]
         [HttpPost]
         public ActionResult UploadAttachment(int pid)
         {
@@ -337,8 +348,8 @@ namespace YH.ASM.Web.Controllers
             }
 
         }
-   
-    
+
+      
         public bool AddAttachment(TASM_ATTACHMENT model) {
 
 
@@ -348,7 +359,7 @@ namespace YH.ASM.Web.Controllers
         
         }
 
-
+        [Right]
         [HttpPost]
         public IActionResult ListTypes()
         {
@@ -358,7 +369,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list);
         }
 
-
+        [Right]
         [HttpPost]
         public IActionResult ListMachines(int typeid)
         {

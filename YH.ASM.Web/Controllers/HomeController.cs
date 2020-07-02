@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using YH.ASM.DataAccess.CodeGenerator;
+using YH.ASM.Web.ControllerBase;
 using YH.ASM.Web.Models;
 
 namespace YH.ASM.Web.Controllers
@@ -17,13 +18,14 @@ namespace YH.ASM.Web.Controllers
     [Authorize]
     public class HomeController : ControllerBase.ControllerBase
     {
-       
+        [Right]
         public IActionResult Index()
         {
             return View();
         }
 
-         [HttpGet]
+        [Right(Ignore =true)]
+        [HttpGet]
         public async Task<IActionResult> LoginOut() 
         {
 
@@ -32,7 +34,8 @@ namespace YH.ASM.Web.Controllers
 
             return View();
         }
-
+       
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetLoginUser()
         {

@@ -70,25 +70,27 @@
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
 
-               
+
                     <table class="table">
                         <tbody>
                             <tr>
+                                <th>ID</th>
                                 <th>角色名称</th>
                                 <th>备注</th>
-                       
+
                                 <th style="text-align:right">
                                     操作
                                 </th>
                             </tr>
 
                             <tr v-for="(item,index) in list">
-                                <td >{{item.ROLENAME}}</td>
+                                <td>{{item.ID}}</td>
+                                <td>{{item.ROLENAME}}</td>
                                 <td>{{item.REMARKS}}</td>
-                               
+
 
                                 <td style="text-align:right">
-                                    <button type="button" class="btn bg-blue  btn-xs" v-on:click="Func(item)">配置功能</button>
+                                    <button type="button" class="btn bg-blue  btn-xs" v-on:click="ShowPower(item)">页面权限</button>
                                     &nbsp;      &nbsp;
                                     <button type="button" class="btn bg-purple  btn-xs" v-on:click="ShowUpdate(item)">修改</button>
                                     &nbsp;      &nbsp;
@@ -152,12 +154,12 @@
                             <label for="txt_kehuname" class="col-sm-3 control-label">备注：</label>
 
                             <div class="col-sm-7">
-                                <input type="text" class="form-control"  v-model="roleitem.REMARKS">
+                                <input type="text" class="form-control" v-model="roleitem.REMARKS">
                             </div>
                         </div>
 
 
-                    
+
                     </form>
 
 
@@ -166,6 +168,53 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary pull-right" v-on:click="Add()" v-if="operation=='add'">添 加</button>
                     <button type="button" class="btn btn-primary pull-right" v-on:click="Update()" v-if="operation=='update'">修 改</button>
+
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关 闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-config">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="txt_username">页面权限</h4>
+                </div>
+                <div class="modal-body">
+
+
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+
+                            </tr>
+                            <tr v-for="(item,index) in powerlist">
+                                <td style=" vertical-align:middle">
+
+
+                                    <span v-if="item.POWERTYPE==2" style="margin-left:30px">&nbsp;&nbsp;&nbsp;&nbsp;L</span>
+                                    <label>
+
+                                        @*<input type="checkbox" @@click="BatchPower(item)" v-model="item.checked" style="height:20px;width:20px;" v-if="item.POWERTYPE==1 " />*@
+                                        <input type="checkbox" @@click="ChangePower(item)" v-model="item.checked" style="height:20px;width:20px;" v-if="item.POWERTYPE==2 " />
+                                        {{ item.POWERNAME }}
+                                    </label>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div class="modal-footer">
 
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关 闭</button>
                 </div>
@@ -202,7 +251,10 @@
            data: {
                    list: [],
                operation:"add",
-               roleitem: {}
+               roleitem: {},
+               powerlist: {},
+               roleid:0,
+
            },
            created: function () {
 
@@ -215,9 +267,6 @@
                Init() {
 
                    var self = this;
-                   var keywork = $("#txt_Search").val();
-
-                   console.log("请求数据：" + keywork);
 
 
                    MyAjax({
@@ -327,9 +376,136 @@
                    $('#modal-default').modal('show');
                    this.roleitem = {};
                },
-               Config(item) {
+               ShowPower(item) {
+                   //先按顺序查出所有的权限
+                   var _self = this;
+                   _self.roleid = item.ID;
 
-                   showWui("/UserRight/RoleConifg?id=" + item.ID);
+                   _self.BindPowerList();
+
+                   $('#modal-config').modal('show');
+
+               },
+               BatchPower(item) {
+                   //批量修改
+
+
+               },
+               ChangePower(item) {
+                   //单项添加 或 删除权限
+
+                   var _self = this;
+                   if (!item.checked) {
+
+                       MyAjax({
+                           url: "/UserRight/AddRolePowerMebmer",
+                           type: "POST",
+                           data: {
+                               powerid: item.ID,
+                               roleid: _self.roleid,
+                           },
+                           success: function (res) {
+                               console.log(res);
+                               if (!res.Success) {
+                                   alert_danger(res.Message);
+                                   return;
+                               }
+                               _self.BindPowerList();
+                               alert_success(res.Message);
+                               return;
+                           }
+                       })
+
+                   } else {
+
+                       MyAjax({
+                           url: "/UserRight/DeletedRolePowerMebmer",
+                           type: "POST",
+                           data: {
+                               id: item.RPID
+                           },
+                           success: function (res) {
+
+                               if (!res.Success) {
+                                   alert_danger(res.Message);
+                                   return;
+                               }
+                               _self.BindPowerList();
+                               alert_success(res.Message);
+                               return;
+                           }
+                       })
+
+                   }
+
+
+
+
+
+               },
+               BindPowerList() {
+                   var _self = this;
+                   MyAjax({
+                       url: "/UserRight/ListFunc",
+                       type: "POST",
+                       success: function (result) {
+
+                           if (!result.Success) {
+
+                               alert_danger(result.Message);
+                               return;
+                           }
+
+                           var Powerlist = result.Content;
+                           console.log(Powerlist);
+
+
+
+                           MyAjax({
+                               url: "/UserRight/GetRolePowerMebmer",
+                               type: "POST",
+                               data: {
+                                   roleid: _self.roleid
+                               },
+                               success: function (res) {
+
+                                   if (!res.Success) {
+
+                                       alert_danger(res.Message);
+                                       return;
+                                   }
+
+
+                                   var RolePowerlist = res.Content;
+                                   console.log(RolePowerlist);
+
+                                   for (var i = 0; i < Powerlist.length; i++) {
+
+                                       for (var j = 0; j < RolePowerlist.length; j++) {
+
+                                           if (Powerlist[i].ID == RolePowerlist[j].POWERID) {
+
+                                               Powerlist[i].checked = true;
+                                               Powerlist[i].RPID = RolePowerlist[j].ID;
+
+                                           }
+
+
+                                       }
+
+                                   }
+
+
+                                   _self.powerlist = Powerlist;
+
+                               
+
+                               }
+                           })
+
+
+                       }
+                   })
                }
            },
 

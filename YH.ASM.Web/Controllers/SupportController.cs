@@ -25,12 +25,11 @@ namespace YH.ASM.Web.Controllers
     /// </summary>
     public class SupportController : ControllerBase.ControllerBase
     {
-
        
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ILogger<ProjectController> logger;
 
-        [AuthRight]
+        [Right]
         public IActionResult Index()
         {
            

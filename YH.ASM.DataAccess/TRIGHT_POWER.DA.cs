@@ -20,6 +20,22 @@ namespace YH.ASM.DataAccess
       
        }
 
+        public List<TRIGHT_POWER> ListOderBy()
+        {
+
+            string sql = @"SELECT tr.*
+FROM tright_power tr 
+
+start with tr.parentid =0 
+  connect by prior tr.id = tr.parentid
+  order siblings by tr.id ";
+
+            return Db.SqlQueryable<TRIGHT_POWER>(sql).ToList();
+
+
+        }
+
+
     }
 
 }

@@ -4,16 +4,29 @@ using System.Text;
 
 namespace YH.ASM.Entites
 {
-    public class EnumTypes
+
+
+    /// <summary>
+    /// 权限类型
+    /// </summary>
+
+    public enum PowerType
     {
-
-        public enum ProjectStatus
-        {
-            正常 = 0,
-            超前 = 1,
-            延迟 = 2
-        }
-
-
+        页面访问 = 1,
+        功能操作 = 2
     }
+
+    /// <summary>
+    /// 项目状态
+    /// </summary>
+    public enum ProjectStatus
+    {
+        正常 = 0,
+        超前 = 1,
+        延迟 = 2
+    }
+
+
+
+   
 }

@@ -96,6 +96,19 @@ namespace YH.ASM.Entites
         }
 
 
+        public static bool IgnoreAuthRight { get
+            {
+
+                var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json");
+
+                var config = builder.Build();
+                string conn = config.GetSection("IgnoreAuthRight").Value;
+                return bool.Parse(conn);
+            } }
+
+
         /// <summary>
         /// API加密Key 
         /// </summary>
