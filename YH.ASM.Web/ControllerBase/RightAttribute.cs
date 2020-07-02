@@ -37,7 +37,7 @@ namespace YH.ASM.Web.ControllerBase
                     ROLEID = 1,   //默认1为普通会员
                     USERID = userid
                 };
-                userrole.Insert(userolemodel);
+                userrole.CurrentDb.Insert(userolemodel);
             }
 
 
@@ -48,11 +48,6 @@ namespace YH.ASM.Web.ControllerBase
                 return;
             }
 
-            //如果全局配置忽略权限，则忽略检测
-            if (Entites.AppConfig.IgnoreAuthRight)
-            {
-                return;
-            }
 
 
 
@@ -114,7 +109,7 @@ namespace YH.ASM.Web.ControllerBase
                 if (isAjax)
                 {
                     // 添加一个功能功能操作的权限
-                    var m = pwmanager.Db.Queryable<TRIGHT_POWER>().Where(s => s.CONTROLLER == controllerName).First();
+                    var m = pwmanager.Db.Queryable<TRIGHT_POWER>().Where(s => s.CONTROLLER == controllerName && s.POWERTYPE == (int)PowerType.页面访问).First();
 
                     powermodel.PARENTID = m.ID;
                     powermodel.POWERTYPE = (int)PowerType.功能操作;
@@ -128,8 +123,16 @@ namespace YH.ASM.Web.ControllerBase
                  
                 }
 
-                pwmanager.Insert(powermodel);
+                pwmanager.CurrentDb.Insert(powermodel);
 
+            }
+
+
+
+            //如果全局配置忽略权限，则忽略检测
+            if (Entites.AppConfig.IgnoreAuthRight)
+            {
+                return;
             }
 
 

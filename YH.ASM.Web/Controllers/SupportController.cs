@@ -29,51 +29,71 @@ namespace YH.ASM.Web.Controllers
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ILogger<ProjectController> logger;
 
-        [Right]
+        [Right(PowerName ="工单列表")]
         public IActionResult Index()
         {
            
             return View();
         }
+
+
+        [Right(Ignore = true)]
         public IActionResult Attachment()
         {
             return View();
         }
-        
-          public IActionResult TimeLine()
+        [Right(Ignore = true)]
+        public IActionResult TimeLine()
         {
             return View();
         }
+
+        [Right(Ignore = true)]
         public IActionResult Disposer()
         {
             return View();
         }
+
+        [Right(Ignore = true)]
         public IActionResult PmcOrder()
         {
             return View();
         }
+
+
+        [Right(Ignore = true)]
         public IActionResult PrincipalCheck()
         {
             return View();
         }
+
+        [Right(Ignore = true)]
         public IActionResult SiteCheck()
         {
             return View();
         }
 
+        [Right(Ignore = true)]
+
         public IActionResult FillProject()
         {
             return View();
         }
-        
+
+        [Right(Ignore = true)]
+
         public IActionResult FillUser()
         {
             return View();
         }
+
+        [Right(Ignore = true)]
         public IActionResult Create()
         {
             return View();
         }
+
+        [Right(Ignore = true)]
 
         public IActionResult Details()
         {
@@ -88,14 +108,14 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [Right(Ignore = true)]
         public IActionResult AddAndUpdate()
         {
             return View();
         }
 
 
-
+        [Right(PowerName = "查询")]
         [HttpPost]
         public IActionResult List(string keywords, int pageIndex, int pageSize, int watchType=0, string orderby="SID")
         {
@@ -110,6 +130,8 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list, p);
 
         }
+
+        [Right(PowerName = "删除")]
         [HttpPost]
         public IActionResult Delete(int id)
         {
@@ -123,6 +145,8 @@ namespace YH.ASM.Web.Controllers
 
 
         }
+
+        [Right(PowerName = "修改")]
         [HttpPost]
         public IActionResult Update(Entites.CodeGenerator.TASM_SUPPORT model)
         {
@@ -134,13 +158,15 @@ namespace YH.ASM.Web.Controllers
 
 
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            if (!manager.Update(model))
+            if (!manager.CurrentDb.Update(model))
             {
                 return FailMessage();
             }
             return SuccessMessage("修改成功");
 
         }
+
+        [Right(PowerName = "添加")]
         public IActionResult Add(Entites.CodeGenerator.TASM_SUPPORT model)
         {
 
@@ -149,7 +175,7 @@ namespace YH.ASM.Web.Controllers
             model.STATUS = 0;
 
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            if (!manager.Insert(model))
+            if (!manager.CurrentDb.Insert(model))
             {
                 return FailMessage();
             }
@@ -157,6 +183,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [Right(Ignore =true)]
         [HttpPost]
         public IActionResult GetUpdateInfo(int id)
         {
@@ -167,7 +194,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
+        [Right(Ignore = true)]
         [HttpGet]
         public IActionResult ExportExcel(string keyword = "")
         {
@@ -214,13 +241,14 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult CreatorInfo()
         {
             return SuccessResult(this.UserInfo);
         }
 
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult LisAttachmentt(int id)
         {
@@ -236,6 +264,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [Right(Ignore = true)]
         [HttpPost]
         public ActionResult UploadAttachment()
         {
@@ -323,7 +352,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
+        [Right(Ignore = true)]
         [HttpPost]
         public ActionResult UploadOther(int sid)
         {
@@ -413,7 +442,7 @@ namespace YH.ASM.Web.Controllers
 
 
 
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult CreateSupport(SupportCreateModel model)
         {
@@ -458,7 +487,7 @@ namespace YH.ASM.Web.Controllers
                 hisModel.TID = newid;
 
 
-                his_manager.Insert(hisModel);
+                his_manager.CurrentDb.Insert(hisModel);
 
 
 
@@ -467,11 +496,11 @@ namespace YH.ASM.Web.Controllers
                     foreach (var item in model.Filelist)
                     {
                         TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
-                        TASM_ATTACHMENT attModel = manager.GetById(item.ID);
+                        TASM_ATTACHMENT attModel = manager.CurrentDb.GetById(item.ID);
                         attModel.TYPE = 1;
                         attModel.PID = newid;
 
-                        manager.Update(attModel);
+                        manager.CurrentDb.Update(attModel);
                     }
                 }
             
@@ -493,8 +522,8 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-      
 
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model,int supportStatus,int nextUser)
         {
@@ -517,7 +546,7 @@ namespace YH.ASM.Web.Controllers
              
 
                 //2,修改工单表的memberid，memberid为处理表的主键id 
-                var supportModel = support_manager.GetById(model.SID);  //工单id 查询工单信息
+                var supportModel = support_manager.CurrentDb.GetById(model.SID);  //工单id 查询工单信息
 
 
 
@@ -535,14 +564,14 @@ namespace YH.ASM.Web.Controllers
                 hisModel.TYPE = 1;   //tasm_disposer表
                 hisModel.TID = disposerId;
 
-                his_manager.Insert(hisModel);
+                his_manager.CurrentDb.Insert(hisModel);
 
 
                 supportModel.MEMBERID = disposerId;    //将处理表的 设置给 工单表   
                 supportModel.STATUS = supportStatus;  //修改工单状态
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
 
-                support_manager.Update(supportModel);  //修改工单表
+                support_manager.CurrentDb.Update(supportModel);  //修改工单表
 
 
              
@@ -563,7 +592,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult AddPmcOrder(TASM_SUPPORT_PMC model, int supportStatus, int nextUser)
         {
@@ -587,7 +616,7 @@ namespace YH.ASM.Web.Controllers
 
 
                 //2,修改工单表的状态
-                var supportModel = support_manager.GetById(model.SID);  //工单id 查询工单信息
+                var supportModel = support_manager.CurrentDb.GetById(model.SID);  //工单id 查询工单信息
 
 
 
@@ -606,13 +635,13 @@ namespace YH.ASM.Web.Controllers
                 hisModel.TYPE = 2;   //tasm_disposer表
                 hisModel.TID = newid;
 
-                his_manager.Insert(hisModel);
+                his_manager.CurrentDb.Insert(hisModel);
 
         
                 supportModel.STATUS = supportStatus;  //修改工单状态
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
 
-                support_manager.Update(supportModel);  //修改工单表
+                support_manager.CurrentDb.Update(supportModel);  //修改工单表
 
                 disposer_manager.Db.CommitTran();
 
@@ -627,7 +656,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult AddSiteCheck(TASM_SUPPORT_SITE model, int supportStatus, int nextUser)
         {
@@ -652,7 +681,7 @@ namespace YH.ASM.Web.Controllers
 
 
                 //2,修改工单表的状态
-                var supportModel = support_manager.GetById(model.SID);  //工单id 查询工单信息
+                var supportModel = support_manager.CurrentDb.GetById(model.SID);  //工单id 查询工单信息
 
 
                 string remark ="现场已处理，等待审核";
@@ -671,7 +700,7 @@ namespace YH.ASM.Web.Controllers
                 hisModel.TYPE = 3;   //tasm_disposer表
                 hisModel.TID = newid;
 
-                his_manager.Insert(hisModel);
+                his_manager.CurrentDb.Insert(hisModel);
 
 
 
@@ -679,7 +708,7 @@ namespace YH.ASM.Web.Controllers
                 supportModel.STATUS = supportStatus;  //修改  新状态工单状态
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
 
-                support_manager.Update(supportModel);  //修改工单表
+                support_manager.CurrentDb.Update(supportModel);  //修改工单表
 
                 disposer_manager.Db.CommitTran();
 
@@ -694,7 +723,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult AddPrincipalCheck(TASM_SUPPORT_PRINCIPAL model, int supportStatus, int nextUser)
         {
@@ -716,7 +745,7 @@ namespace YH.ASM.Web.Controllers
 
 
                 //2,修改工单表的状态
-                var supportModel = support_manager.GetById(model.SID);  //工单id 查询工单信息
+                var supportModel = support_manager.CurrentDb.GetById(model.SID);  //工单id 查询工单信息
 
 
                 string remarks = supportStatus == 5 ? "未完成" : "已完成";
@@ -735,13 +764,13 @@ namespace YH.ASM.Web.Controllers
                 hisModel.TYPE = 4;   //tasm_disposer表
                 hisModel.TID = newid;
 
-                his_manager.Insert(hisModel);
+                his_manager.CurrentDb.Insert(hisModel);
 
 
                 supportModel.STATUS = supportStatus;  //修改工单状态
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
 
-                support_manager.Update(supportModel);  //修改工单表
+                support_manager.CurrentDb.Update(supportModel);  //修改工单表
 
                 disposer_manager.Db.CommitTran();
 
@@ -757,12 +786,13 @@ namespace YH.ASM.Web.Controllers
 
 
 
-       
+
 
 
 
 
         #region 各个处理表信息
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetHisList(int id)
         {
@@ -773,50 +803,51 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list);
         }
 
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetSupportInfo(int id)
         {
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            TASM_SUPPORT model = manager.GetById(id);
+            TASM_SUPPORT model = manager.CurrentDb.GetById(id);
 
             return SuccessResult(model);
 
         }
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetDisposerInfo(int id)
         {
             DataAccess.TASM_SUPPORT_DISPOSER_Da manager = new DataAccess.TASM_SUPPORT_DISPOSER_Da();
-            TASM_SUPPORT_DISPOSER model = manager.GetById(id);
+            TASM_SUPPORT_DISPOSER model = manager.CurrentDb.GetById(id);
 
             return SuccessResult(model);
 
         }
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetPmcInfo(int id)
         {
             DataAccess.TASM_SUPPORT_PMC_Da manager = new DataAccess.TASM_SUPPORT_PMC_Da();
-            TASM_SUPPORT_PMC model = manager.GetById(id);
+            TASM_SUPPORT_PMC model = manager.CurrentDb.GetById(id);
 
             return SuccessResult(model);
 
         }
-
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetSiteInfo(int id)
         {
             DataAccess.TASM_SUPPORT_SITE_Da manager = new DataAccess.TASM_SUPPORT_SITE_Da();
-            TASM_SUPPORT_SITE model = manager.GetById(id);
+            TASM_SUPPORT_SITE model = manager.CurrentDb.GetById(id);
 
             return SuccessResult(model);
         }
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetPrincipalInfo(int id)
         {
             DataAccess.TASM_SUPPORT_PRINCIPAL_Da manager = new DataAccess.TASM_SUPPORT_PRINCIPAL_Da();
-            TASM_SUPPORT_PRINCIPAL model = manager.GetById(id);
+            TASM_SUPPORT_PRINCIPAL model = manager.CurrentDb.GetById(id);
 
             return SuccessResult(model);
         }

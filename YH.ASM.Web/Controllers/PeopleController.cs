@@ -19,13 +19,13 @@ namespace YH.ASM.Web.Controllers
     public class PeopleController : ControllerBase.ControllerBase
     {
 
-        [Right]
+        [Right(PowerName ="人员信息")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Right]
+        [Right(PowerName = "查询")]
         [HttpPost]
         public IActionResult GetList(string keyword,int pageIndex,int pageSize)
         {

@@ -26,9 +26,9 @@ namespace YH.ASM.Web.Controllers
     //项目履历
     public class ProjectController : ControllerBase.ControllerBase
     {
-      
 
-      
+
+        [Right(PowerName = "项目履历")]
         public IActionResult Index()
         {
             return View();
@@ -60,7 +60,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(PowerName = "查询")]
         [HttpPost]
         public IActionResult List(string keywords,int pageIndex, int pageSize)
         {
@@ -78,7 +78,7 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list, p);
         }
 
-        [Right]
+        [Right(PowerName = "添加")]
         public IActionResult Add(Entites.CodeGenerator.TASM_PROJECT model)
         {
 
@@ -96,12 +96,12 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right]
+        [Right(PowerName = "修改")]
         public IActionResult Update(Entites.CodeGenerator.TASM_PROJECT model)
         {
 
             DataAccess.TASM_PROJECTManager manager = new DataAccess.TASM_PROJECTManager();
-            if (!manager.Update(model))
+            if (!manager.CurrentDb.Update(model))
             {
                 return FailMessage();
             }
@@ -109,7 +109,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(PowerName = "删除")]
         [HttpPost]
         public IActionResult Delete(int pid)
         {
@@ -124,7 +124,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(Ignore =true)]
         [HttpGet]
         public IActionResult ExportExcel( string keyword = "")
         {
@@ -229,17 +229,18 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        [Right(Ignore =true)]
         [HttpPost]
         public IActionResult GetUpdateInfo(int id)
         {
             TASM_PROJECTManager manager = new TASM_PROJECTManager();
-            TASM_PROJECT model = manager.GetById(id);
+            TASM_PROJECT model = manager.CurrentDb.GetById(id);
 
             return SuccessResult(model);
 
         }
 
-        [Right]
+        [Right(PowerName = "查看附件")]
         [HttpPost]
         public IActionResult LisAttachmentt(int id)
         {
@@ -254,7 +255,7 @@ namespace YH.ASM.Web.Controllers
 
 
         }
-
+        [Right(PowerName = "删除附件")]
         [HttpPost]
         public IActionResult DeleteAttachment(int aid) {
 
@@ -268,7 +269,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(Ignore =true)]
         [HttpPost]
         public ActionResult UploadAttachment(int pid)
         {
@@ -355,21 +356,21 @@ namespace YH.ASM.Web.Controllers
 
             DataAccess.TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
 
-            return manager.Insert(model);
+            return manager.CurrentDb.Insert(model);
         
         }
 
-        [Right]
+        [Right(Ignore =true)]
         [HttpPost]
         public IActionResult ListTypes()
         {
             DataAccess.TASM_MACHINE_TYPEManager manager = new TASM_MACHINE_TYPEManager();
-            var list=  manager.GetList();
+            var list=  manager.CurrentDb.GetList();
 
             return SuccessResultList(list);
         }
 
-        [Right]
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult ListMachines(int typeid)
         {

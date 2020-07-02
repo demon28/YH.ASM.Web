@@ -16,20 +16,20 @@ namespace YH.ASM.Web.Controllers
     public class UserRightController : ControllerBase.ControllerBase
     {
 
-        [Right]
+        [Right(PowerName ="主页面")]
         public IActionResult Index()
         {
             return View();
         }
 
 
-        [Right]
+        [Right(PowerName = "角色管理")]
         public IActionResult Role()
         {
             return View();
         }
 
-        [Right]
+        [Right(PowerName = "功能配置")]
         public IActionResult Func()
         {
             return View();
@@ -42,7 +42,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right]
+        [Right(PowerName = "页面权限")]
         [HttpPost]
         public IActionResult GetAllRole()
         {
@@ -61,7 +61,7 @@ namespace YH.ASM.Web.Controllers
         /// <param name="userid"></param>
         /// <returns></returns>
         /// 
-        [Right]
+        [Right(PowerName = "分配权限")]
         [HttpPost]
         public IActionResult GetUserRoleMebmer(int userid)
         {
@@ -80,7 +80,7 @@ namespace YH.ASM.Web.Controllers
         /// </summary>
         /// <param name="roleid"></param>
         /// <returns></returns>
-        [Right]
+        [Right(PowerName = "角色功能配置")]
         [HttpPost]
         public IActionResult GetRolePowerMebmer(int roleid)
         {
@@ -93,7 +93,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right]
+        [Right(PowerName = "用户关联角色")]
         [HttpPost]
         public IActionResult AddUserRoleMebmer(int userid,int roleid)
         {
@@ -111,30 +111,30 @@ namespace YH.ASM.Web.Controllers
                 ROLEID = roleid,
                 USERID = userid
             };
-            userroleManage.Insert(model);
+            userroleManage.CurrentDb.Insert(model);
 
             return SuccessMessage("已添加！");
         }
-        [Right]
+        [Right(PowerName = "用户退出角色")]
         [HttpPost]
         public IActionResult DeleteUserRoleMebmer(int id)
         {
             TRIGHT_USER_ROLE_Da userroleManage = new TRIGHT_USER_ROLE_Da();
-            var model= userroleManage.GetById(id);
+            var model= userroleManage.CurrentDb.GetById(id);
 
             if (model==null)
             {
                 return SuccessMessage("请不要反复取消！"); ;
             }
 
-            userroleManage.Delete(model);
+            userroleManage.CurrentDb.Delete(model);
 
             return SuccessMessage("已取消！");
         }
 
 
 
-        [Right]
+        [Right(PowerName = "角色关联功能")]
         [HttpPost]
         public IActionResult AddRolePowerMebmer( int roleid, int powerid)
         {
@@ -152,24 +152,24 @@ namespace YH.ASM.Web.Controllers
                 ROLEID = roleid,
                 POWERID = powerid
             };
-            Manage.Insert(model);
+            Manage.CurrentDb.Insert(model);
 
             return SuccessMessage("已添加！");
         }
 
-        [Right]
+        [Right(PowerName = "角色取消功能")]
         [HttpPost]
         public IActionResult DeletedRolePowerMebmer(int id)
         {
             TRIGHT_ROLE_POWER_Da userroleManage = new TRIGHT_ROLE_POWER_Da();
-            var model = userroleManage.GetById(id);
+            var model = userroleManage.CurrentDb.GetById(id);
 
             if (model == null)
             {
                 return SuccessMessage("请不要反复取消！"); ;
             }
 
-            userroleManage.Delete(model);
+            userroleManage.CurrentDb.Delete(model);
 
             return SuccessMessage("已取消！");
         }
@@ -181,7 +181,7 @@ namespace YH.ASM.Web.Controllers
 
 
         #region 角色操作
-        [Right]
+        [Right(PowerName = "添加角色")]
         [HttpPost]
         public IActionResult AddRole(TRIGHT_ROLE model)
         {
@@ -196,13 +196,15 @@ namespace YH.ASM.Web.Controllers
             }
 
             DataAccess.TRIGHT_ROLE_Da da = new TRIGHT_ROLE_Da();
-            if (da.Insert(model))
+            if (da.CurrentDb.Insert(model))
             {
                 return SuccessMessage("成功！");
             }
             return FailMessage("失败！");
         }
-        [Right]
+
+
+        [Right(PowerName = "修改角色")]
         [HttpPost]
         public IActionResult UpdateRole(TRIGHT_ROLE model)
         {
@@ -216,23 +218,24 @@ namespace YH.ASM.Web.Controllers
 
 
             DataAccess.TRIGHT_ROLE_Da da = new TRIGHT_ROLE_Da();
-            if (da.Update(model))
+            if (da.CurrentDb.Update(model))
             {
                 return SuccessMessage("成功！");
             }
             return FailMessage("失败！");
         }
 
-        [Right]
+
+        [Right(PowerName = "角色查询")]
         [HttpPost]
         public IActionResult ListRole()
         {
             DataAccess.TRIGHT_ROLE_Da da = new TRIGHT_ROLE_Da();
 
-            return SuccessResultList(da.GetList());
+            return SuccessResultList(da.CurrentDb.GetList());
         }
-        
-        [Right]
+
+        [Right(PowerName = "删除角色")]
         [HttpPost]
         public IActionResult DelRole(int id)
         {
@@ -247,7 +250,7 @@ namespace YH.ASM.Web.Controllers
 
 
         #region 权限操作
-        [Right]
+        [Right(PowerName = "查询功能")]
         [HttpPost]
         public IActionResult ListFunc()
         {
@@ -255,7 +258,7 @@ namespace YH.ASM.Web.Controllers
 
             return SuccessResultList(da.ListOderBy());
         }
-        [Right]
+        [Right(PowerName = "添加功能")]
         [HttpPost]
         public IActionResult AddFunc(TRIGHT_POWER model)
         {
@@ -264,20 +267,17 @@ namespace YH.ASM.Web.Controllers
                 return FailMessage("权限名不能为空！");
             }
 
-        
-
-            
 
 
             DataAccess.TRIGHT_POWER_Da da = new TRIGHT_POWER_Da();
-            if (da.Insert(model))
+            if (da.CurrentDb.Insert(model))
             {
                 return SuccessMessage("成功！");
             }
             return FailMessage("失败！");
         }
 
-        [Right]
+        [Right(PowerName = "修改功能")]
         [HttpPost]
         public IActionResult UpdateFunc(TRIGHT_POWER model)
         {
@@ -289,7 +289,7 @@ namespace YH.ASM.Web.Controllers
 
 
             DataAccess.TRIGHT_POWER_Da da = new TRIGHT_POWER_Da();
-            if (da.Update(model))
+            if (da.CurrentDb.Update(model))
             {
                 return SuccessMessage("成功！");
             }
@@ -297,7 +297,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right]
+        [Right(PowerName = "删除功能")]
         [HttpPost]
         public IActionResult DelFunc(int id)
         {

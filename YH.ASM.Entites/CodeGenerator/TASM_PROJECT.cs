@@ -17,7 +17,7 @@ namespace YH.ASM.Entites.CodeGenerator
         /// <summary>
         /// 主键
         /// </summary>
-        [SugarColumn(IsPrimaryKey = true)]
+        [SugarColumn(IsPrimaryKey = true,OracleSequenceName = "SEQ_TASM_PROJECT")]
         public System.Int32 PID { get; set; }
 
         /// <summary>

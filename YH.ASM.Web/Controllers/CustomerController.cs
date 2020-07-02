@@ -18,7 +18,7 @@ namespace YH.ASM.Web.Controllers
     //客户信息
     public class CustomerController : ControllerBase.ControllerBase
     {
-        [Right]
+        [Right(PowerName = "客户信息")]
         public IActionResult Index()
         {
             return View();
@@ -31,7 +31,7 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
         
-        [Right]
+        [Right(PowerName ="查询")]
         [HttpPost]
         public IActionResult List(string keywords, int pageIndex, int pageSize)
         {
@@ -48,13 +48,13 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(PowerName = "删除")]
         [HttpPost]
         public IActionResult Delete(int cid)
         {
 
             TASM_CUSTOMERManager manager = new TASM_CUSTOMERManager();
-            if (!manager.CurrentDb.Delete(S => S.CID == cid))
+            if (!manager.CurrentDb.DeleteById(cid))
             {
                 return FailMessage();
             }
@@ -63,13 +63,13 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(PowerName = "修改")]
         [HttpPost]
         public IActionResult Update(Entites.CodeGenerator.TASM_CUSTOMER model)
         {
 
             DataAccess.TASM_CUSTOMERManager manager = new DataAccess.TASM_CUSTOMERManager();
-            if (!manager.Update(model))
+            if (!manager.CurrentDb.Update(model))
             {
                 return FailMessage();
             }
@@ -77,7 +77,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(PowerName = "添加")]
         public IActionResult Add(Entites.CodeGenerator.TASM_CUSTOMER model)
         {
 
@@ -86,7 +86,7 @@ namespace YH.ASM.Web.Controllers
             model.STATUS = 0;
 
             DataAccess.TASM_CUSTOMERManager manager = new DataAccess.TASM_CUSTOMERManager();
-            if (!manager.Insert(model))
+            if (!manager.CurrentDb.Insert(model))
             {
                 return FailMessage();
             }
@@ -94,12 +94,12 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(Ignore =true)]
         [HttpPost]
         public IActionResult GetUpdateInfo(int id)
         {
             TASM_CUSTOMERManager manager = new TASM_CUSTOMERManager();
-            TASM_CUSTOMER model = manager.GetById(id);
+            TASM_CUSTOMER model = manager.CurrentDb.GetById(id);
 
             return SuccessResult(model);
 

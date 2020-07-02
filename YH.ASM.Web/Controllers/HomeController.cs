@@ -18,13 +18,13 @@ namespace YH.ASM.Web.Controllers
     [Authorize]
     public class HomeController : ControllerBase.ControllerBase
     {
-        [Right]
+        [Right(PowerName = "工作台")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Right(Ignore =true)]
+     
         [HttpGet]
         public async Task<IActionResult> LoginOut() 
         {
@@ -35,7 +35,7 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
        
-        [Right(Ignore = true)]
+ 
         [HttpPost]
         public IActionResult GetLoginUser()
         {

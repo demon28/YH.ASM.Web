@@ -19,13 +19,13 @@ namespace YH.ASM.Web.Controllers
     public class DirectionController : ControllerBase.ControllerBase
     {
 
-        [Right]
+        [Right(PowerName = "动向记录")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Right]
+        [Right(PowerName = "查询")]
         public IActionResult List(string date,string keyword,int pageIndex, int pageSize) {
 
             TASM_TRAVELManager manager = new TASM_TRAVELManager();
@@ -48,7 +48,7 @@ namespace YH.ASM.Web.Controllers
         }
        
         
-        [Right]
+        [Right(PowerName = "工作日历")]
         public IActionResult ListCander(int userid,string date)
         {
              DateTime time = DateTime.Now;
@@ -67,21 +67,21 @@ namespace YH.ASM.Web.Controllers
         }
 
         
-        [Right]
+        [Right(Ignore =true)]
         public IActionResult MonthView() {
 
             return View();
         }
 
 
-        [Right]
+        [Right(Ignore = true)]
         public IActionResult Canlder()
         {
 
             return View();
         }
 
-        [Right]
+        [Right(PowerName = "查看日报")]
         public IActionResult WrokReport(int traid) {
 
             DataAccess.TASM_TRAVELManager mannager = new TASM_TRAVELManager();

@@ -66,7 +66,7 @@ namespace YH.ASM.Web.WebApi
 
             _travelModel.MACHINEASSIST = model.machineAssist;
 
-            if (!manager.Insert(_travelModel))
+            if (!manager.CurrentDb.Insert(_travelModel))
             {
                 return FailMessage("添加失败！");
             }

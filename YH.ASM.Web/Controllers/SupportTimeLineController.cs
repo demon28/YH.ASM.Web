@@ -14,15 +14,14 @@ namespace YH.ASM.Web.Controllers
     [Authorize]
     public class SupportTimeLineController : ControllerBase.ControllerBase
     {
-    
-        [Right]
+
+        [Right(PowerName = "工单历史")]
         public IActionResult Index()
         {
             return View();
         }
 
-
-        [Right]
+        [Right(PowerName = "工单详情")]
         public IActionResult TimeLine()
         {
             return View();
@@ -30,7 +29,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right]
+        [Right(PowerName = "工单流程")]
 
         public IActionResult WorkFolw()
         {
@@ -39,7 +38,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right]
+        [Right(Ignore =true)]
         [HttpPost]
         public IActionResult ListByHis(int sid)
         {
@@ -52,7 +51,7 @@ namespace YH.ASM.Web.Controllers
 
         #region  工作流
 
-        [Right]
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetDisposerInfo(int sid,int tid)
         {
@@ -68,7 +67,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right]
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetPmcInfo(int sid, int tid)
         {
@@ -82,7 +81,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right]
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetSiteInfo(int sid, int tid)
         {
@@ -96,7 +95,7 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right]
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetPrincipalInfo(int sid, int tid)
         {

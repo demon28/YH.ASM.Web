@@ -201,7 +201,7 @@
                                     <label>
 
                                         @*<input type="checkbox" @@click="BatchPower(item)" v-model="item.checked" style="height:20px;width:20px;" v-if="item.POWERTYPE==1 " />*@
-                                        <input type="checkbox" @@click="ChangePower(item)" v-model="item.checked" style="height:20px;width:20px;" v-if="item.POWERTYPE==2 " />
+                                        <input type="checkbox" @@click="ChangePower(item)" v-model="item.checked" style="height:20px;width:20px;"  />
                                         {{ item.POWERNAME }}
                                     </label>
 
@@ -380,7 +380,7 @@
                    //先按顺序查出所有的权限
                    var _self = this;
                    _self.roleid = item.ID;
-
+                   _self.powerlist = {};
                    _self.BindPowerList();
 
                    $('#modal-config').modal('show');
@@ -395,6 +395,7 @@
                    //单项添加 或 删除权限
 
                    var _self = this;
+                  
                    if (!item.checked) {
 
                        MyAjax({
@@ -410,7 +411,7 @@
                                    alert_danger(res.Message);
                                    return;
                                }
-                               _self.BindPowerList();
+                              _self.BindPowerList();
                                alert_success(res.Message);
                                return;
                            }
