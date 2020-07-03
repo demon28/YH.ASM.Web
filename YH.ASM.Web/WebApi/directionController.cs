@@ -38,7 +38,7 @@ namespace YH.ASM.Web.WebApi
             }
 
 
-            Entites.CodeGenerator.TASM_TRAVEL _travelModel = new Entites.CodeGenerator.TASM_TRAVEL();
+            TASM_TRAVEL _travelModel = new TASM_TRAVEL();
 
 
             _travelModel.ADDRESS = model.address;
