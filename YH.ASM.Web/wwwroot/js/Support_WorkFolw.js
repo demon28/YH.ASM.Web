@@ -46,14 +46,10 @@ function SupportWF(supprotInfo) {
     html += "                     <input type=\"text\" class=\"form-control input-sm\" value=\""+SetType(supprotInfo.TYPE)+"\" readonly=\"readonly\">" 
     html += "                             </div>" 
 
-    html +=  "           </div>"
-    html += "           <div class=\"form-group\">" 
-    html += "                 <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">优先级：</label>" 
-    html += "                   <div class=\"col-sm-6\">" 
-    html += "                       <input type=\"text\" class=\"form-control input-sm\" value=\""+SetPriority(supprotInfo.PRIORITY)+"\" readonly=\"readonly\">" 
-    html += "                             </div>" 
+    html += "           </div>"
 
-    html += "             </div>" 
+
+
 
 
 
@@ -82,7 +78,7 @@ function SupportWF(supprotInfo) {
 
 
     html += "             <div class=\"form-group\">" 
-    html += "                <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">工单标题：</label>" 
+    html += "                <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">问题机型：</label>" 
     html += "                  <div class=\"col-sm-6\">" 
     html += "                      <input type=\"text\" class=\"form-control input-sm\" value=\""+supprotInfo.TITLE+"\" placeholder=\"请填写工单概要\" readonly=\"readonly\">" 
     html += "                     </div>" 
@@ -91,7 +87,7 @@ function SupportWF(supprotInfo) {
 
 
     html += "               <div class=\"form-group\">" 
-    html += "                   <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">工单内容：</label>" 
+    html += "                   <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">问题描述：</label>" 
     html += "                   <div class=\"col-sm-8\" style=\"text-align:left\">" 
     html += "                                 <textarea class=\"form-control\" style=\"margin-left:0px\" rows=\"3\" placeholder=\"请描述详细问题\" value=\"\" readonly=\"readonly\">" + supprotInfo.CONTENT +"</textarea>" 
     html += "                              </div>" 

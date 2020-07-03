@@ -464,7 +464,9 @@ namespace YH.ASM.Web.Controllers
                     SEVERITY = model.Severity,
                     STATUS = 0,
                     TITLE = model.Title,
-                    TYPE = model.Type
+                    TYPE = model.Type,
+                    STATE = 0
+                     
                 };
 
                int newid= da.CurrentDb.InsertReturnIdentity(supportModel);
@@ -570,7 +572,7 @@ namespace YH.ASM.Web.Controllers
                 supportModel.MEMBERID = disposerId;    //将处理表的 设置给 工单表   
                 supportModel.STATUS = supportStatus;  //修改工单状态
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
-
+                supportModel.STATE = 1;  //工单处理中
                 support_manager.CurrentDb.Update(supportModel);  //修改工单表
 
 
@@ -640,7 +642,7 @@ namespace YH.ASM.Web.Controllers
         
                 supportModel.STATUS = supportStatus;  //修改工单状态
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
-
+                supportModel.STATE = 1;  //工单处理中
                 support_manager.CurrentDb.Update(supportModel);  //修改工单表
 
                 disposer_manager.Db.CommitTran();
@@ -707,7 +709,7 @@ namespace YH.ASM.Web.Controllers
 
                 supportModel.STATUS = supportStatus;  //修改  新状态工单状态
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
-
+                supportModel.STATE = 1;  //工单处理中
                 support_manager.CurrentDb.Update(supportModel);  //修改工单表
 
                 disposer_manager.Db.CommitTran();
@@ -769,6 +771,11 @@ namespace YH.ASM.Web.Controllers
 
                 supportModel.STATUS = supportStatus;  //修改工单状态
                 supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
+
+                if (supportModel.STATUS==6 || supportModel.STATUS == 7)
+                {
+                    supportModel.STATE = 2;  //工单已完成
+                }
 
                 support_manager.CurrentDb.Update(supportModel);  //修改工单表
 

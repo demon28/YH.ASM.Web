@@ -103,17 +103,22 @@
                         <tbody>
                             <tr>
                                 <th class="my-td ">ID</th>
-                                <th class="my-td ">标题</th>
+
+                                <th class="my-td ">项目名称</th>
+
+
+                                <th class="my-td ">问题机型</th>
+                                <th class="my-td ">问题类型</th>
 
                                 <th class="my-td ">创建人</th>
                                 <th class="my-td ">处理人</th>
 
-                                <th class="my-td ">项目名称</th>
-                                <th class="my-td ">问题类型</th>
+                                <th class="my-td ">问题描述</th>
 
                                 <th class="my-td ">严重程度</th>
-                                <th class="my-td ">优先级</th>
 
+
+                                <th class="my-td ">流程节点</th>
                                 <th class="my-td ">工单状态</th>
                                 <th class="my-td ">创建时间</th>
                                 <th class="my-td ">操作</th>
@@ -124,10 +129,20 @@
 
                             <tr v-for="(item,index) in list">
                                 <td class="my-td ">{{item.SID}}</td>
+                                <td class="my-td ">{{item.PROJECTNAME}}</td>
+
                                 <td class="my-td ">
-                                    <a @@click="View(item)">
-                                        {{item.TITLE}}
-                                    </a>
+                                    @*<a @@click="View(item)">  {{item.TITLE}} </a>*@
+
+                                    {{item.TITLE}}
+
+                                </td>
+
+                                <td class="my-td ">
+
+                                    @*<a @@click="ChangeType(item.TYPE,item)">{{SetType(item.TYPE)}}</a>*@
+                                    {{SetType(item.TYPE)}}
+
                                 </td>
 
                                 <td class="my-td ">{{item.CREATORNAME}}</td>
@@ -139,11 +154,8 @@
 
                                 </td>
 
-                                <td class="my-td ">{{item.PROJECTNAME}}</td>
-                                <td class="my-td ">
-                                    <a @@click="ChangeType(item.TYPE,item)">{{SetType(item.TYPE)}}</a>
+                                <td class="my-td ">{{item.CONTENT}}</td>
 
-                                </td>
 
                                 <td class="my-td ">
                                     <small class="label  bg-black" v-if="item.SEVERITY==0" @@click="ChangeSeverity(item.SEVERITY,item)"> {{SetSeverity(item.SEVERITY)}}</small>
@@ -153,21 +165,23 @@
                                     <small class="label  bg-blue" v-if="item.SEVERITY==4" @@click="ChangeSeverity(item.SEVERITY,item)"> {{SetSeverity(item.SEVERITY)}}</small>
 
                                 </td>
-                                <td class="my-td ">
 
-                                    <small class="label  text-red" v-if="item.PRIORITY==0" @@click="ChangePriority(item.PRIORITY,item)"> ·{{SetPriority(item.PRIORITY)}}</small>
-                                    <small class="label  text-yellow" v-if="item.PRIORITY==1" @@click="ChangePriority(item.PRIORITY,item)">·{{SetPriority(item.PRIORITY)}}</small>
-                                    <small class="label  text-aqua" v-if="item.PRIORITY==2" @@click="ChangePriority(item.PRIORITY,item)"> ·{{SetPriority(item.PRIORITY)}}</small>
-                                    <small class="label  text-blue" v-if="item.PRIORITY==3" @@click="ChangePriority(item.PRIORITY,item)"> ·{{SetPriority(item.PRIORITY)}}</small>
-                                </td>
 
                                 <td class="my-td ">
 
-                                    <span class="badge bg-light-blue" @@click="ChangeStatus(item.STATUS,item)"> {{SetStatus(item.STATUS)}}</span>
-
-
+                                    <span class="text-light-blue" @@click="ChangeStatus(item.STATUS,item)"> {{SetStatus(item.STATUS)}}</span>
 
                                 </td>
+
+
+                                <td class="my-td ">
+
+                                    <lable class="text-red" v-if="item.STATE==0"> {{SetState(item.STATE)}}</lable>
+                                    <lable class="text-green" v-if="item.STATE==1"> {{SetState(item.STATE)}}</lable>
+                                    <lable class="text-blue" v-if="item.STATE==2"> {{SetState(item.STATE)}}</lable>
+                                </td>
+
+
                                 <td class="my-td ">{{item.CREATETIME}}</td>
                                 <td class="my-td ">
 
@@ -222,7 +236,7 @@
                             <form class="form-horizontal">
 
                                 <div class="form-group">
-                                    <label for="txt_projectname" class="col-sm-2 control-label">标题：</label>
+                                    <label for="txt_projectname" class="col-sm-2 control-label">问题机型：</label>
 
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" id="txt_Title" v-model="supprotInfo.TITLE" readonly="readonly">
@@ -481,7 +495,11 @@
                SetStatus(value) {
 
                    return EnumGetSingle(value, Support_Statuslist());
-               },
+                },
+                SetState(value) {
+
+                    return EnumGetSingle(value, Support_State());
+                },
                ChangeType(value,item) {
                    var _self = this;
                  
@@ -565,8 +583,8 @@
                 },
                 ChangeUser(item) {
                   
-                    //this.supprotInfo = item;
-                    //showWui("/Support/FillUser");
+                    this.supprotInfo = item;
+                    showWui("/Support/FillUser");
                 },
                SetUser(item) {
 

@@ -99,19 +99,7 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="text-right col-sm-3 " style="vertical-align:middle">
-                                    优先级 ：
-                                </td>
-                                <td class="col-sm-7" style="vertical-align:middle">
-                                    <select class="form-control" v-model="priority">
-                                        <option value="0">紧急</option>
-                                        <option value="1">高</option>
-                                        <option value="2">中</option>
-                                        <option value="3">低</option>
-                                    </select>
-                                </td>
-                            </tr>
+                  
 
 
                             <tr>
@@ -235,7 +223,7 @@
 
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单标题：</label>
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">问题机型：</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control input-sm" v-model="title" placeholder="请填写工单概要" required="required">
                             </div>
@@ -246,7 +234,7 @@
 
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单内容：</label>
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">问题描述：</label>
                             <div class="col-sm-8" style="text-align:left">
 
                                 <textarea class="form-control" style="margin-left:0px" rows="16" placeholder="请描述详细问题" v-model="content"></textarea>
@@ -336,6 +324,7 @@
                     // timeFormat: 'HH:mm:ss',//时间显示格式
                     todayBtn: 1,
                     autoclose: 1,
+                    endDate: new Date(),
                     // minView: 0,  //0表示可以选择小时、分钟   1只可以选择小时
                     // minuteStep: 1,//分钟间隔1分钟
                 });
@@ -482,17 +471,24 @@
                                 return;
                             }
 
-                            bootbox.confirm({
-                                title: "提示",
-                                size: "small",
-                                message: "创建工单成功！是否前去查看工单?",
-                                callback: function (result) {
 
-                                    if (result) {
-                                        window.location.href = "/Support/Index";
-                                    }
-                                }
-                            });
+
+                            alert_success(result.Message);
+
+                            window.location.href = "/Support/Index";
+
+
+                            //bootbox.confirm({
+                            //    title: "提示",
+                            //    size: "small",
+                            //    message: "创建工单成功！是否前去查看工单?",
+                            //    callback: function (result) {
+
+                            //        if (result) {
+                                      
+                            //        }
+                            //    }
+                            //});
                          
 
 

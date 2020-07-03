@@ -91,14 +91,7 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="text-right col-sm-3 " style="vertical-align:middle">
-                                    优先级 ：
-                                </td>
-                                <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" :value="SetPriority(supprotInfo.PRIORITY)" readonly="readonly">
-                                </td>
-                            </tr>
+                      
 
 
                             <tr>
@@ -140,7 +133,7 @@
 
                             <tr>
                                 <td class="text-right col-sm-3 " style="vertical-align:middle">
-                                    工单标题：
+                                    问题机型：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
                                     <input type="text" class="form-control input-sm" v-model="supprotInfo.TITLE" readonly="readonly">
@@ -556,7 +549,13 @@
                                 return;
                             }
 
-                            bootbox.confirm({
+
+
+                            alert_success(result.Message);
+
+                            window.location.href = "/Support/Index";
+
+                           @* bootbox.confirm({
                                 title: "提示",
                                 size: "small",
                                 message: "工单处理成功！是否前去查看工单?",
@@ -566,7 +565,7 @@
                                         window.location.href = "/Support/Index";
                                     }
                                 }
-                            });
+                            });*@
 
                         }
                     })

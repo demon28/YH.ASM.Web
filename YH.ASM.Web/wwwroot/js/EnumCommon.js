@@ -44,18 +44,18 @@ function Support_Prioritylist() {
     return Prioritylist;
 }
 
-//工单状态
+//流程节点
 function Support_Statuslist() {
 
     var Statuslist = [];
 
-    Statuslist.push({ value: 0, text: "已提交" });
-    Statuslist.push({ value: 1, text: "处理中(PMC跟进)" });
-    Statuslist.push({ value: 2, text: "已处理(无需PMC)" });
-    Statuslist.push({ value: 3, text: "已处理(PMC完成)" });
-    Statuslist.push({ value: 4, text: "待审核" });
-    Statuslist.push({ value: 5, text: "未完成" });
-    Statuslist.push({ value: 6, text: "已完成" });
+    Statuslist.push({ value: 0, text: "创建工单-->技术分析" });
+    Statuslist.push({ value: 1, text: "分析完成-->PMC跟进" });
+    Statuslist.push({ value: 2, text: "分析完成-->现场处理" });
+    Statuslist.push({ value: 3, text: "PMC完成-->现场处理" });
+    Statuslist.push({ value: 4, text: "现场处理-->负责人审核" });
+    Statuslist.push({ value: 5, text: "负责人审核-->未完成" });
+    Statuslist.push({ value: 6, text: "负责人审核-->已完成" });
     Statuslist.push({ value: 7, text: "已拒绝" });
 
 
@@ -67,14 +67,34 @@ function Support_Severitylist() {
 
     var Severitylist = [];
 
-    Severitylist.push({ value: 0, text: "致命" });
-    Severitylist.push({ value: 1, text: "严重" });
-    Severitylist.push({ value: 2, text: "一般" });
-    Severitylist.push({ value: 3, text: "提示" });
-    Severitylist.push({ value: 4, text: "建议" });
+
+
+    Severitylist.push({ value: 0, text: "五级" });
+    Severitylist.push({ value: 1, text: "四级" });
+    Severitylist.push({ value: 2, text: "三级" });
+    Severitylist.push({ value: 3, text: "二级" });
+    Severitylist.push({ value: 4, text: "一级" });
+
 
     return Severitylist;
 }
+
+//工单状态
+function Support_State() {
+    var list = [];
+
+
+
+    list.push({ value: 0, text: "待办" });
+    list.push({ value: 1, text: "处理中" });
+    list.push({ value: 2, text: "已完成" });
+
+
+
+    return list;
+
+}
+
 
 //取值工单类型
 function EnumGetSingle(value,Array) {

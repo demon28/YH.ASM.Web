@@ -69,7 +69,7 @@ namespace YH.ASM.Entites.CodeGenerator
         public System.Int32 PROJECT { get; set; }
         
         ///<summary>
-        ///描述：工单状态 0，已提交，1，处理中，2，已解决，3，已完成，4，已拒绝
+        ///描述：流程节点 0，已提交，1，处理中(PMC跟进)，2，已处理（无需PMC），3，已处理(PMC完成)，4，待审核，5未完成，6,已完成  7，已拒绝
         ///</summary>
         public System.Int32 STATUS { get; set; }
         
@@ -88,10 +88,14 @@ namespace YH.ASM.Entites.CodeGenerator
         ///</summary>
         public System.Int32 MEMBERID { get; set; }
         
+        ///<summary>
+        ///描述：工单状态： 0.待办，1处理中，2，已完成
+        ///</summary>
+        public System.Int32 STATE { get; set; }
+        
 
     }
  }
-
 
 
 
