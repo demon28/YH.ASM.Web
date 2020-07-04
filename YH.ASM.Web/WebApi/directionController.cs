@@ -77,9 +77,6 @@ namespace YH.ASM.Web.WebApi
         }
 
 
-
-
-
         [HttpGet("List")]
         public JsonResult List([FromQuery] DirectionListModel model)
         {

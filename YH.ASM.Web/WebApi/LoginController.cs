@@ -22,9 +22,6 @@ namespace YH.ASM.Web.WebApi
         public JsonResult Login([FromBody] Models.LoginInputModel model) 
         {
 
-           
-
-
             TASM_USER usermodel = new TASM_USER();
             TASM_USERManager tASM_USERManager = new TASM_USERManager();
 

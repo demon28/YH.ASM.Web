@@ -27,7 +27,7 @@ namespace YH.ASM.Entites.CodeGenerator
 
         /// <summary>
         /// 客户名称
-        /// </summary>
+        /// </summary>  
         public System.String CUSTOMER_NAME { get; set; }
 
         /// <summary>

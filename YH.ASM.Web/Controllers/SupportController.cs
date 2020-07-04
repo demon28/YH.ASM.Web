@@ -441,7 +441,6 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-
         [Right(Ignore = true)]
         [HttpPost]
         public IActionResult CreateSupport(SupportCreateModel model)
