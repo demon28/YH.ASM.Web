@@ -445,81 +445,12 @@ namespace YH.ASM.Web.Controllers
         [HttpPost]
         public IActionResult CreateSupport(SupportCreateModel model)
         {
-            DataAccess.TASM_SUPPORT_Da da = new TASM_SUPPORT_Da();
-            da.Db.BeginTran();
-            try
+            Facade.SupportFacade support = new Facade.SupportFacade();
+            if (!support.Create(model))
             {
-                TASM_SUPPORT supportModel = new TASM_SUPPORT()
-                {
-                    CREATOR = model.CreatorId,
-                    CONDUCTOR = model.ConductorId,
-                    CONTENT = model.Content,
-                    CREATETIME = DateTime.Now,
-                    FINDATE = model.FindDate,
-                    ISDEL = 0,
-                    MEMBERID = 0,
-                    PRIORITY = model.Priority,
-                    PROJECT = model.ProjectId,
-                    SEVERITY = model.Severity,
-                    STATUS = 0,
-                    TITLE = model.Title,
-                    TYPE = model.Type,
-                    STATE = 0
-                     
-                };
-
-               int newid= da.CurrentDb.InsertReturnIdentity(supportModel);
-
-
-
-                //当前处理人员发生修改，新增一条 修改记录 history
-
-                DataAccess.TASM_SUPPORT_HIS_Da his_manager = new TASM_SUPPORT_HIS_Da();
-                TASM_SUPPORT_HIS hisModel = new TASM_SUPPORT_HIS();
-                hisModel.CREATETIME = DateTime.Now;
-                hisModel.PRE_USER = supportModel.CREATOR;
-                hisModel.NEXT_USER = supportModel.CONDUCTOR;
-                hisModel.SID = newid;
-                hisModel.REMARKS = "工单创建，等待技术处理";
-
-                hisModel.PRE_STATUS = supportModel.STATUS;
-                hisModel.NEXT_STATUS = supportModel.STATUS; //初始状态
-                hisModel.TYPE = 0;   //tasm_disposer表
-                hisModel.TID = newid;
-
-
-                his_manager.CurrentDb.Insert(hisModel);
-
-
-
-                if (model.Filelist!=null && model.Filelist.Count>0)
-                {
-                    foreach (var item in model.Filelist)
-                    {
-                        TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
-                        TASM_ATTACHMENT attModel = manager.CurrentDb.GetById(item.ID);
-                        attModel.TYPE = 1;
-                        attModel.PID = newid;
-
-                        manager.CurrentDb.Update(attModel);
-                    }
-                }
-            
-
-
-                da.Db.CommitTran();
-
-                return SuccessMessage("创建成功");
+                return SuccessMessage("创建工单成功！");
             }
-            catch (Exception e)
-            {
-                logger.LogWarning(e.ToString());
-                da.Db.RollbackTran();
-
-                return FailMessage("创建工单失败！");
-            }
-            
-            
+            return FailMessage(support.Msg);
 
         }
 

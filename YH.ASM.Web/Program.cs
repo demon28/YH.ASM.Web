@@ -14,29 +14,22 @@ namespace YH.ASM.Web
     {
         public static void Main(string[] args)
         {
-           CreateHostBuilder(args).Build().Run();
-          // BuildWebHost(args).Run();
+            CreateHostBuilder(args).Build().Run();
 
         }
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-             .ConfigureLogging(loggingBuilder =>
-            {
-                loggingBuilder.AddLog4Net();//需要配置文件
-            })
+         Host.CreateDefaultBuilder(args)
+            .ConfigureLogging(loggingBuilder =>
+         {
+             loggingBuilder.AddLog4Net();//需要配置文件
+         })
              .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                    
-                });
+             {
+                 webBuilder.UseStartup<Startup>();
+             });
 
-        public static IWebHost BuildWebHost(string[] args) =>
-           WebHost.CreateDefaultBuilder(args)
-               .UseStartup<Startup>()
-               .UseUrls("http://www.asm.cn:50428")
-               .Build();
 
+      
 
     }
 }

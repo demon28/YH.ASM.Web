@@ -114,62 +114,6 @@ namespace YH.ASM.Web.Controllers
 
 
 
-        /*  单项修改
-
-
-        [HttpPost]
-        public IActionResult GetDisposerInfo(int id)
-        {
-            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
-            HisDisposerModel model = manager.SelectHisDisposer(id);
-
-            if (model==null)
-            {
-                return FailMessage("未创建");
-            }
-            return SuccessResult(model);
-
-        }
-
-        [HttpPost]
-        public IActionResult GetPmcInfo(int id)
-        {
-            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
-            HisPmcModel model = manager.SelectHisPmc(id);
-            if (model == null)
-            {
-                return FailMessage("未创建");
-            }
-            return SuccessResult(model);
-
-        }
-
-        [HttpPost]
-        public IActionResult GetSiteInfo(int id)
-        {
-            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
-            HisSiteModel model = manager.SelectHisSite(id);
-            if (model == null)
-            {
-                return FailMessage("未创建");
-            }
-            return SuccessResult(model);
-        }
-        [HttpPost]
-        public IActionResult GetPrincipalInfo(int id)
-        {
-            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
-            HisPrincipalModel model = manager.SelectHisPrincipal(id);
-
-            if (model == null)
-            {
-                return FailMessage("未创建");
-            }
-            return SuccessResult(model);
-        }
-
-       
-        */
         
     }
 }
