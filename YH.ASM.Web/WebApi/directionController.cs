@@ -100,6 +100,8 @@ namespace YH.ASM.Web.WebApi
 
             DataAccess.TASM_USERManager manager = new DataAccess.TASM_USERManager();
 
+
+
             SqlSugar.PageModel p = new SqlSugar.PageModel();
             p.PageIndex = model.pageindex;
             p.PageSize = model.pagesize;
@@ -112,7 +114,7 @@ namespace YH.ASM.Web.WebApi
 
         }
 
-
+            
 
     }
 }
