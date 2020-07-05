@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using YH.ASM.DataAccess;
+using YH.ASM.Entites;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
 
@@ -100,7 +101,7 @@ namespace YH.ASM.Facade
 
             hisModel.PRE_STATUS = supportModel.STATUS;
             hisModel.NEXT_STATUS = supportModel.STATUS; //初始状态
-            hisModel.TYPE = 0;   //tasm_disposer表
+            hisModel.TYPE = (int)SupportHisType.创建工单;   //tasm_disposer表
             hisModel.TID = sid;
 
 

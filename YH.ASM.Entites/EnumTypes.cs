@@ -26,7 +26,14 @@ namespace YH.ASM.Entites
         延迟 = 2
     }
 
+    public enum SupportHisType
+    {
+        创建工单 = 0,    //
+        技术处理 = 1,  //
+        PMC跟进 = 2,       //
+        现场处理 = 3 ,   //
+          负责人审核=4
 
+    }
 
-   
 }
