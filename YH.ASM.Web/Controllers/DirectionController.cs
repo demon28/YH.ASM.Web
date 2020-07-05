@@ -16,7 +16,7 @@ namespace YH.ASM.Web.Controllers
 {
     [Authorize]
     //动向记录
-    public class DirectionController : ControllerBase.ControllerBase
+    public class DirectionController : ControllerBase.ComControllerBase
     {
 
         [Right(PowerName = "动向记录")]

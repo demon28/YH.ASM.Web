@@ -13,7 +13,7 @@ using YH.ASM.Web.ControllerBase;
 namespace YH.ASM.Web.Controllers
 {
     [Authorize]
-    public class UserRightController : ControllerBase.ControllerBase
+    public class UserRightController : ControllerBase.ComControllerBase
     {
 
         [Right(PowerName ="主页面")]

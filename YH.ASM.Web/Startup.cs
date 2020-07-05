@@ -43,28 +43,12 @@ namespace YH.ASM.Web
                 o.LoginPath = new PathString("/Login/Index");
 
                 //禁止访问路径：当用户试图访问资源时，但未通过该资源的任何授权策略，请求将被重定向到这个相对路径。
-                o.AccessDeniedPath = new PathString("/Permission/NoPermission");
+                o.AccessDeniedPath = new PathString("/UserRight/NoPermission");
 
             });
 
-            ////添加jwt验证：
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options => {
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,//是否验证Issuer
-            //            ValidateAudience = true,//是否验证Audience
-            //            ValidateLifetime = true,//是否验证失效时间
-            //            ClockSkew = TimeSpan.FromSeconds(30),
-            //            ValidateIssuerSigningKey = true,//是否验证SecurityKey
-            //            ValidAudience = Entites.AppConfig.Audience,//Audience
-            //            ValidIssuer = Entites.AppConfig.Issuer,//Issuer，这两项和前面签发jwt的设置一致
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppConfig.ApiKey))//拿到SecurityKey
-            //        };
-            //    });
-
-
-
+            services.Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
+                ;
 
 
             services.AddMvc().AddRazorRuntimeCompilation();
@@ -92,6 +76,12 @@ namespace YH.ASM.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.Use(next => context =>
+            {
+                context.Request.EnableBuffering();
+                return next(context);
+            });
 
 
             app.UseHttpsRedirection();

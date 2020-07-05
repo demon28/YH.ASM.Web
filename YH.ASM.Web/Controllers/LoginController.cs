@@ -11,7 +11,7 @@ using YH.ASM.Entites.CodeGenerator;
 
 namespace YH.ASM.Web.Controllers
 {
-    public class LoginController : ControllerBase.ControllerBase
+    public class LoginController : ControllerBase.ComControllerBase
     {
         public IActionResult Index()
         {

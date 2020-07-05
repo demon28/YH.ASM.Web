@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using YH.ASM.Entites.CodeGenerator;
 
 namespace YH.ASM.Entites.Model
 {
@@ -21,10 +22,12 @@ namespace YH.ASM.Entites.Model
 
         public string Content { get; set; }
 
-        public List<FilelList> Filelist { get; set; }
+        public List<FileInfo> Filelist { get; set; }
+
+        public TASM_SUPPORT_PUSH Push{ get; set; }
     }
 
-    public class FilelList
+    public class FileInfo
     {
         public int ID { get; set; }
         public string FILENAME { get; set; }

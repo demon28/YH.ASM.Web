@@ -24,7 +24,7 @@ namespace YH.ASM.Web.Controllers
     /// <summary>
     /// 工单
     /// </summary>
-    public class SupportController : ControllerBase.ControllerBase
+    public class SupportController : ControllerBase.ComControllerBase
     {
        
         private readonly IWebHostEnvironment _hostingEnvironment;

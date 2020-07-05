@@ -12,7 +12,7 @@ namespace YH.ASM.Web.WebApi
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProjectController : ControllerBase.ControllerBase
+    public class ProjectController : ControllerBase.ComControllerBase
     {
         [HttpGet("ProjectList")]
         public JsonResult ProjectList([FromQuery] ApiListModelBase model)

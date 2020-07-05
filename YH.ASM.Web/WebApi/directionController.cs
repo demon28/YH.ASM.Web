@@ -13,7 +13,7 @@ namespace YH.ASM.Web.WebApi
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DirectionController : ControllerBase.ControllerBase
+    public class DirectionController : ControllerBase.ComControllerBase
     {
 
         [HttpGet]

@@ -15,7 +15,7 @@ namespace YH.ASM.Web.WebApi
 
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase.ControllerBase
+    public class LoginController : ControllerBase.ComControllerBase
     {
 
         [HttpPost("Login")]

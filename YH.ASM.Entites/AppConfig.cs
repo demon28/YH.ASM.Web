@@ -109,6 +109,23 @@ namespace YH.ASM.Entites
             } }
 
 
+
+
+        public static string WebApiKey
+        {
+            get
+            {
+                var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json");
+
+                var config = builder.Build();
+                string conn = config.GetSection("WebApiKey").Value;
+                return conn;
+            }
+        }
+
+
         /// <summary>
         /// API加密Key 
         /// </summary>

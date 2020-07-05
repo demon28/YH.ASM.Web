@@ -18,7 +18,7 @@ namespace YH.ASM.Web.Controllers
     /// <summary>
     /// 设备履历
     /// </summary>
-    public class MachineController :  ControllerBase.ControllerBase
+    public class MachineController :  ControllerBase.ComControllerBase
     {
         [Right(PowerName = "设备台账")]
         public IActionResult Index()

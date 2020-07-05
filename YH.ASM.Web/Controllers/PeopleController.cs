@@ -16,7 +16,7 @@ using YH.ASM.Web.ControllerBase;
 namespace YH.ASM.Web.Controllers
 {
     [Authorize]
-    public class PeopleController : ControllerBase.ControllerBase
+    public class PeopleController : ControllerBase.ComControllerBase
     {
 
         [Right(PowerName ="人员信息")]

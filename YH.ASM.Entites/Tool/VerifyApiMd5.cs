@@ -19,7 +19,6 @@ namespace YH.ASM.Entites.Tool
     public static class VerifyApiMd5 
     {
 
-
         public static bool Check(string encryptString,params string[] array) {
 
             StringBuilder builder = new StringBuilder();

@@ -16,7 +16,7 @@ namespace YH.ASM.Web.Controllers
 {
     [Authorize]
     //客户信息
-    public class CustomerController : ControllerBase.ControllerBase
+    public class CustomerController : ControllerBase.ComControllerBase
     {
         [Right(PowerName = "客户信息")]
         public IActionResult Index()

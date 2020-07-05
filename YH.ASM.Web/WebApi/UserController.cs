@@ -11,7 +11,7 @@ namespace YH.ASM.Web.WebApi
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase.ControllerBase
+    public class UserController : ControllerBase.ComControllerBase
     {
 
         [HttpGet("UserList")]

@@ -15,7 +15,7 @@ namespace YH.ASM.Web.WebApi
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UploadController : ControllerBase.ControllerBase
+    public class UploadController : ControllerBase.ComControllerBase
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ILogger<UploadController> logger;
@@ -60,7 +60,7 @@ namespace YH.ASM.Web.WebApi
                 string fileExt = Path.GetExtension(file.FileName);
 
 
-                string newFileName = filename.Remove(filename.LastIndexOf('.')) + "(" + DateTime.Now.ToString("yyyyMMddHHmmss") + ")" + fileExt;
+                string newFileName =  DateTime.Now.ToString("yyyyMMddHHmmss") + fileExt;
 
 
                 string filepath = path + newFileName;

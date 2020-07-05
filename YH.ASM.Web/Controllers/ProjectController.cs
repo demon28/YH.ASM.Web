@@ -24,7 +24,7 @@ namespace YH.ASM.Web.Controllers
 {
     [Authorize]
     //项目履历
-    public class ProjectController : ControllerBase.ControllerBase
+    public class ProjectController : ControllerBase.ComControllerBase
     {
 
 

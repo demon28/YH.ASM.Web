@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using YH.ASM.DataAccess;
+using YH.ASM.DataAccess.CodeGenerator;
 using YH.ASM.Entites;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
@@ -41,6 +42,12 @@ namespace YH.ASM.Facade
                     return false;
                 }
 
+                //添加推送消息
+                if (!InsertPush( model, sid))
+                {
+                    da.Db.RollbackTran();
+                    return false;
+                }
 
                 da.Db.CommitTran();
 
@@ -137,6 +144,29 @@ namespace YH.ASM.Facade
             }
 
             return true;
+
+        }
+        private bool InsertPush(SupportCreateModel model, int sid)
+        {
+            if (model.Push == null)
+            {
+                return true;
+            }
+
+            TASM_SUPPORT_PUSH_Da da = new TASM_SUPPORT_PUSH_Da();
+            TASM_SUPPORT_PUSH pushModel = new TASM_SUPPORT_PUSH()
+            {
+                SID = sid,
+                CC = model.Push.CC,
+                CONDUCTOR = model.Push.CONDUCTOR,
+                CONTENT = model.Push.CONTENT,
+                CREATETIME = DateTime.Now,
+                POINT = (int)Entites.SupportHisType.创建工单,
+                STATUS = 0,
+                TID = sid
+
+            };
+            return da.CurrentDb.Insert(pushModel);
 
         }
     }

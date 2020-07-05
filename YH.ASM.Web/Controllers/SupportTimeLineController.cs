@@ -12,7 +12,7 @@ using YH.ASM.Web.ControllerBase;
 namespace YH.ASM.Web.Controllers
 {
     [Authorize]
-    public class SupportTimeLineController : ControllerBase.ControllerBase
+    public class SupportTimeLineController : ControllerBase.ComControllerBase
     {
 
         [Right(PowerName = "工单历史")]

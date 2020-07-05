@@ -16,7 +16,7 @@ using YH.ASM.Web.Models;
 namespace YH.ASM.Web.Controllers
 {
     [Authorize]
-    public class HomeController : ControllerBase.ControllerBase
+    public class HomeController : ControllerBase.ComControllerBase
     {
         [Right(PowerName = "工作台")]
         public IActionResult Index()

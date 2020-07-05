@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace YH.ASM.Web.Controllers
 {
-    public class WorkHourController : ControllerBase.ControllerBase
+    public class WorkHourController : ControllerBase.ComControllerBase
     {
         //工时配置
         public IActionResult Index()
