@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace YH.ASM.Web.Models
 {
-    public class ApiListModelBase:ApiModelBase
+    public class ApiListModelBase
     {
 
         public int pageindex { get; set; }

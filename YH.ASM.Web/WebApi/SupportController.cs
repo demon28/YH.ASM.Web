@@ -31,15 +31,18 @@ namespace YH.ASM.Web.WebApi
 
 
         [WebApi]
-        [HttpGet]
-        public IActionResult ListMyDaiBan(ListSupportInputModel model) {
+        [HttpPost]
+        public IActionResult List(ListSupportInputModel model) {
 
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
             SqlSugar.PageModel p = new SqlSugar.PageModel();
             p.PageIndex = model.pageindex;
             p.PageSize = model.pagesize;
 
-            List<SupportListModel> list = manager.ListByWhere(string.Empty, ref p, SupprotWatchType.处理人, SupprotWatchState.待办, model.Creator);
+            SupprotWatchState state = (SupprotWatchState)model.WatchState;
+            SupprotWatchType type = (SupprotWatchType)model.WatchType;
+
+            List<SupportListModel> list = manager.ListByWhere(string.Empty, ref p, type, state, model.Uuid);
 
             return SuccessResultList(list, p);
 

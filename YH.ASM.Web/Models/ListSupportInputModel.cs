@@ -10,8 +10,9 @@ namespace YH.ASM.Web.Models
     {
 
        
-       public int Creator { get; set; } 
+       public int Uuid { get; set; }
 
-
+      public int  WatchState { get; set; }
+        public int WatchType{ get; set; }
     }
 }
