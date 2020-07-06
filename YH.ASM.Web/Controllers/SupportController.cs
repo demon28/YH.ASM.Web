@@ -13,6 +13,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using YH.ASM.DataAccess;
+using YH.ASM.Entites;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
 using YH.ASM.Facade;
@@ -120,7 +121,7 @@ namespace YH.ASM.Web.Controllers
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 
-            List<SupportListModel> list=manager.ListByWhere(keywords, ref p, watchType, this.UserInfo.USER_ID, orderby);
+            List<SupportListModel> list=manager.ListByWhere(keywords, ref p, (SupprotWatchType)watchType, SupprotWatchState.全部 ,this.UserInfo.USER_ID, orderby);
 
             return SuccessResultList(list, p);
 

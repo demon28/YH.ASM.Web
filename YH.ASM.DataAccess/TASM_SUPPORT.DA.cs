@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using YH.ASM.DataAccess.CodeGenerator.DBCore;
+using YH.ASM.Entites;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
 
@@ -50,7 +51,7 @@ namespace YH.ASM.DataAccess
             return list;
         }
 
-        public List<SupportListModel> ListByWhere(string keyword,ref PageModel p, int watchType,int? watchId,string order = "SID")
+        public List<SupportListModel> ListByWhere(string keyword,ref PageModel p, SupprotWatchType watchType, SupprotWatchState state,  int? watchId,string order = "SID")
         {
 
             string sql = @"SELECT T.*,
@@ -74,18 +75,22 @@ WHERE 1=1
 ";
             var configParms = new List<SugarParameter>();
 
-            if (watchType==1)
+            if (watchType== SupprotWatchType.创建人)
             {
                 sql += " and t.creator=:watchId ";
 
                 configParms.Add( new SugarParameter("watchId", watchId.Value));
             }
-            if (watchType == 2)
+            if (watchType == SupprotWatchType.处理人)
             {
                 sql += " and  t.conductor=:watchId ";
                 configParms.Add(new SugarParameter("watchId", watchId.Value));
             }
-
+            if (state!= SupprotWatchState.全部)
+            {
+                sql += " and  t.state= "+(int)state;
+               
+            }
 
             int totalCount = 0;
             int totalPage = 0;

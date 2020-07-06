@@ -10,6 +10,22 @@ namespace YH.ASM.Entites
     /// 权限类型
     /// </summary>
 
+
+    public enum SupprotWatchState
+    {
+        待办=0,
+        处理中=1,
+        已完成=2,
+        全部 = 3
+    }
+
+    public enum SupprotWatchType
+    {
+        全部=0,
+        创建人=1,
+        处理人=2
+
+    }
     public enum PowerType
     {
         页面访问 = 1,

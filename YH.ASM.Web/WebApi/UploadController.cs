@@ -103,7 +103,7 @@ namespace YH.ASM.Web.WebApi
 
 
 
-                var json = new { ID = newid, FILENAME = newFileName, URL = path };
+                var json =  new  { ID = newid, FILENAME = newFileName, URL = path };
 
                 return SuccessResult(json);
 
