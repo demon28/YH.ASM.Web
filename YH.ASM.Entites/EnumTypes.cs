@@ -7,10 +7,8 @@ namespace YH.ASM.Entites
 
 
     /// <summary>
-    /// 权限类型
+    /// 工单状态
     /// </summary>
-
-
     public enum SupprotWatchState
     {
         待办=0,
@@ -18,7 +16,9 @@ namespace YH.ASM.Entites
         已完成=2,
         全部 = 3
     }
-
+    /// <summary>
+    /// 工单查看类型
+    /// </summary>
     public enum SupprotWatchType
     {
         全部=0,
@@ -26,6 +26,10 @@ namespace YH.ASM.Entites
         处理人=2
 
     }
+
+    /// <summary>
+    /// 权限类型
+    /// </summary>
     public enum PowerType
     {
         页面访问 = 1,

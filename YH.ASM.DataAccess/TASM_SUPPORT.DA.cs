@@ -59,18 +59,24 @@ namespace YH.ASM.DataAccess
        TR.USER_NAME CREATORNAME,
        TU.USER_ID   CONDUCTORID,
        TU.USER_NAME CONDUCTORNAME,
-       TP.PID PROJECTID,
-       TP.NAME PROJECTNAME
-       
+       TP.PID       PROJECTID,
+       TP.NAME      PROJECTNAME,
+       TM.NAME      MACHINENAME,
+       TM.SERIAL    MACHINESERIAL
+
   FROM TASM_SUPPORT T
 
   LEFT JOIN TASM_USER TR
     ON TR.USER_ID = T.CREATOR
   LEFT JOIN TASM_USER TU
     ON TU.USER_ID = T.CONDUCTOR
-   LEFT JOIN TASM_PROJECT TP ON TP.PID=T.PROJECT
+  LEFT JOIN TASM_PROJECT TP
+    ON TP.PID = T.PROJECT
+  LEFT JOIN TASM_MACHINE TM
+    ON TM.MID = T.MID
 
-WHERE 1=1 
+ WHERE 1 = 1
+
 
 ";
             var configParms = new List<SugarParameter>();
@@ -95,7 +101,7 @@ WHERE 1=1
             int totalCount = 0;
             int totalPage = 0;
             List<SupportListModel> list = Db.SqlQueryable<SupportListModel>(sql)
-                .Where(s => s.TITLE.Contains(keyword))
+                .Where(s => s.CONTENT.Contains(keyword) || s.CONDUCTORNAME.Contains(keyword) || s.CREATORNAME.Contains(keyword))
                 .OrderBy(s=>s.SID,OrderByType.Desc)
                 .AddParameters(configParms)
                 .ToPageList(p.PageIndex, p.PageSize, ref totalCount, ref totalPage);

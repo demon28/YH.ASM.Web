@@ -27,14 +27,14 @@ namespace YH.ASM.Web.Controllers
     /// </summary>
     public class SupportController : ControllerBase.ComControllerBase
     {
-       
+
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ILogger<ProjectController> logger;
 
-        [Right(PowerName ="工单列表")]
+        [Right(PowerName = "工单列表")]
         public IActionResult Index()
         {
-           
+
             return View();
         }
 
@@ -113,7 +113,7 @@ namespace YH.ASM.Web.Controllers
 
         [Right(PowerName = "查询")]
         [HttpPost]
-        public IActionResult List(string keywords, int pageIndex, int pageSize, int watchType=0, string orderby="SID")
+        public IActionResult List(string keywords, int pageIndex, int pageSize, int watchType = 0, string orderby = "SID")
         {
 
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
@@ -121,7 +121,7 @@ namespace YH.ASM.Web.Controllers
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 
-            List<SupportListModel> list=manager.ListByWhere(keywords, ref p, (SupprotWatchType)watchType, SupprotWatchState.全部 ,this.UserInfo.USER_ID, orderby);
+            List<SupportListModel> list = manager.ListByWhere(keywords, ref p, (SupprotWatchType)watchType, SupprotWatchState.全部, this.UserInfo.USER_ID, orderby);
 
             return SuccessResultList(list, p);
 
@@ -147,19 +147,44 @@ namespace YH.ASM.Web.Controllers
         public IActionResult Update(Entites.CodeGenerator.TASM_SUPPORT model)
         {
 
-            if (model.CREATOR!=this.User_Id && model.CONDUCTOR != this.User_Id)
+            if (model.CREATOR != this.User_Id && model.CONDUCTOR != this.User_Id)
             {
                 return FailMessage("抱歉您不是项目相关人员,无法修改项目状态");
             }
 
 
-            DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            if (!manager.CurrentDb.Update(model))
-            {
-                return FailMessage();
-            }
-            return SuccessMessage("修改成功");
 
+            DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
+            manager.Db.BeginTran();
+            try
+            {
+
+
+                if (!manager.CurrentDb.Update(model))
+                {
+                    manager.Db.RollbackTran();
+                    return FailMessage();
+
+                }
+
+                DataAccess.TASM_SUPPORT_PERSONAL_Da da = new TASM_SUPPORT_PERSONAL_Da();
+                TASM_SUPPORT_PERSONAL personal = da.CurrentDb.AsQueryable().Where(s => s.SID == model.SID && s.STATUS == (int)Entites.SupprotWatchState.待办).First();
+                personal.DID = model.CONDUCTOR;
+
+                if (!da.CurrentDb.Update(personal))
+                {
+                    manager.Db.RollbackTran();
+                    return FailMessage();
+                }
+                manager.Db.CommitTran();
+                return SuccessMessage("修改成功");
+            }
+            catch (Exception e)
+            {
+                manager.Db.RollbackTran();
+                return FailMessage(e.ToString());
+
+            }
         }
 
         [Right(PowerName = "添加")]
@@ -179,7 +204,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right(Ignore =true)]
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetUpdateInfo(int id)
         {
@@ -198,7 +223,7 @@ namespace YH.ASM.Web.Controllers
 
 
             List<TASM_SUPPORT> list = new List<TASM_SUPPORT>();
-            list= manager.ListByWhere(keyword);
+            list = manager.ListByWhere(keyword);
 
             HSSFWorkbook excelBook = new HSSFWorkbook(); //创建工作簿Excel
             ISheet sheet1 = excelBook.CreateSheet("项目履历表");
@@ -319,7 +344,7 @@ namespace YH.ASM.Web.Controllers
                 #endregion
 
                 TASM_ATTACHMENT model = new TASM_ATTACHMENT();
-               
+
                 model.FILENAME = newFileName;
                 model.URL = path;
                 model.TYPE = 1;
@@ -328,12 +353,12 @@ namespace YH.ASM.Web.Controllers
 
                 manager.Db.BeginTran();
 
-                var newid= manager.Db.Insertable(model).ExecuteReturnIdentity();
+                var newid = manager.Db.Insertable(model).ExecuteReturnIdentity();
 
                 manager.Db.CommitTran();
 
 
-                var json= new { ID = newid, FILENAME = newFileName, URL = path };
+                var json = new { ID = newid, FILENAME = newFileName, URL = path };
 
                 return SuccessResult(json);
 
@@ -341,7 +366,7 @@ namespace YH.ASM.Web.Controllers
             catch (Exception e)
             {
                 manager.Db.RollbackTran();
-                  logger.LogInformation("异常：" + e);
+                logger.LogInformation("异常：" + e);
                 return FailMessage(e.ToString());
             }
 
@@ -451,7 +476,7 @@ namespace YH.ASM.Web.Controllers
 
         [Right(Ignore = true)]
         [HttpPost]
-        public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model,int supportStatus,int nextUser)
+        public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model, int supportStatus, int nextUser)
         {
             DisposerFacade facade = new DisposerFacade();
             if (!facade.Create(model, supportStatus, nextUser))
@@ -469,7 +494,7 @@ namespace YH.ASM.Web.Controllers
 
             PmcOrderFacade facade = new PmcOrderFacade();
 
-            if (facade.Create(model,  supportStatus,  nextUser))
+            if (facade.Create(model, supportStatus, nextUser))
             {
                 return FailMessage("处理失败！");
             }
@@ -484,13 +509,13 @@ namespace YH.ASM.Web.Controllers
 
             SiteCheckFacade facade = new SiteCheckFacade();
 
-            if (!facade.Create( model,  supportStatus,  nextUser))
+            if (!facade.Create(model, supportStatus, nextUser))
             {
                 return FailMessage("处理失败！");
             }
 
-           return   SuccessMessage("处理成功！");
-          
+            return SuccessMessage("处理成功！");
+
         }
 
 

@@ -104,8 +104,9 @@
                             <tr>
                                 <th class="my-td ">ID</th>
 
-                                <th class="my-td ">项目名称</th>
+                                <th class="my-td ">工单编号</th>
 
+                                <th class="my-td ">项目名称</th>
 
                                 <th class="my-td ">问题机型</th>
                                 <th class="my-td ">问题类型</th>
@@ -129,12 +130,13 @@
 
                             <tr v-for="(item,index) in list">
                                 <td class="my-td ">{{item.SID}}</td>
+                                <td class="my-td ">{{item.CODE}}</td>
                                 <td class="my-td ">{{item.PROJECTNAME}}</td>
 
                                 <td class="my-td ">
                                     @*<a @@click="View(item)">  {{item.TITLE}} </a>*@
 
-                                    {{item.TITLE}}
+                                    {{item.MACHINENAME}}-  {{item.MACHINESERIAL}}
 
                                 </td>
 

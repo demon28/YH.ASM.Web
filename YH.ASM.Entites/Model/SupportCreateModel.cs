@@ -11,6 +11,8 @@ namespace YH.ASM.Entites.Model
 
         public int ConductorId { get; set; }
         public int ProjectId { get; set; }
+
+        public int ProjectCode { get; set; }
         public int Type { get; set; }
 
         public int Priority { get; set; }
@@ -21,6 +23,8 @@ namespace YH.ASM.Entites.Model
         public string Title { get; set; }
 
         public string Content { get; set; }
+
+        public int Mid{ get; set; }
 
         public List<FileInfo> Filelist { get; set; }
 

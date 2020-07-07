@@ -48,9 +48,28 @@ namespace YH.ASM.Web.WebApi
 
             return SuccessResultList(list, p);
 
+        }
 
+
+        [WebApi]
+        [HttpPost]
+        public IActionResult ListPersonal(ListSupportInputModel model)
+        {
+
+            TASM_SUPPORT_PERSONAL_Da da = new TASM_SUPPORT_PERSONAL_Da();
+            SqlSugar.PageModel p = new SqlSugar.PageModel();
+            p.PageIndex = model.pageindex;
+            p.PageSize = model.pagesize;
+
+            SupprotWatchState state = (SupprotWatchState)model.WatchState;
+            SupprotWatchType type = (SupprotWatchType)model.WatchType;
+
+            List<PersonalSupportListModel> list = da.ListByWhere(string.Empty, ref p, type, state, model.Uuid);
+
+            return SuccessResultList(list, p);
 
         }
+
 
 
 

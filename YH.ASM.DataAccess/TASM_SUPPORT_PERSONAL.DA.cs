@@ -26,7 +26,8 @@ namespace YH.ASM.DataAccess
         {
 
             string sql = @"   
-SELECT T.STATUS      PSTATUS,
+
+SELECT T.STATUS    PSTATUS,
      T.CID         CID,
      T.DID         DID,
      T.CREATETIME  PCREATETIME,
@@ -46,16 +47,20 @@ SELECT T.STATUS      PSTATUS,
      TS.MEMBERID,
      TS.STATE,
      TS.MID,
+     TS.CODE,
      TR.USER_ID    CREATORID,
      TR.USER_NAME  CREATORNAME,
      TU.USER_ID    CONDUCTORID,
      TU.USER_NAME  CONDUCTORNAME,
      TP.PID        PROJECTID,
      TP.NAME       PROJECTNAME,
-     TM.NAME       MACHINE
+     TM.NAME       MACHINENAME,
+     TM.SERIAL       MACHINESERIAL
+
 FROM TASM_SUPPORT_PERSONAL T
+
 LEFT JOIN TASM_SUPPORT TS
-  ON TS.SID = TS.SID
+  ON T.SID = TS.SID
 LEFT JOIN TASM_USER TR
   ON TR.USER_ID = TS.CREATOR
 LEFT JOIN TASM_USER TU
@@ -65,7 +70,8 @@ LEFT JOIN TASM_PROJECT TP
 LEFT JOIN TASM_MACHINE TM
   ON TM.MID = TS.MID
 
-where 1=1 
+where 1=1
+
 ";
 
 
@@ -84,7 +90,7 @@ where 1=1
             }
             if (state != SupprotWatchState.全部)
             {
-                sql += " and  t.state= " + (int)state;
+                sql += " and  T.STATUS= " + (int)state;
 
             }
 

@@ -16,5 +16,9 @@ namespace YH.ASM.Entites.Model
         public string CREATORNAME { get; set; }
         public string CONDUCTORNAME { get; set; }
         public string PROJECTNAME { get; set; }
+
+
+        public string MACHINENAME { get; set; }
+        public string MACHINESERIAL { get; set; }
     }
 }

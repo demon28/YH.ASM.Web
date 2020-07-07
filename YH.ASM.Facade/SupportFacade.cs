@@ -92,6 +92,10 @@ namespace YH.ASM.Facade
         /// <returns></returns>
         private bool InsertSupport(SupportCreateModel model, TASM_SUPPORT_Da da, ref int  sid,ref TASM_SUPPORT supportModel)
         {
+            TASM_PROJECTManager projectda = new TASM_PROJECTManager();
+            TASM_PROJECT projectmodel = projectda.CurrentDb.GetById(model.ProjectId);
+
+            string code = projectmodel.CODE + DateTime.Now.ToString("yyyyMMdd");
 
             supportModel = new TASM_SUPPORT()
             {
@@ -108,8 +112,9 @@ namespace YH.ASM.Facade
                 STATUS = 0,
                 TITLE = model.Title,
                 TYPE = model.Type,
-                STATE = 0
-
+                STATE = 0,
+                 MID=model.Mid,
+                  CODE=code
             };
 
             sid = da.CurrentDb.InsertReturnIdentity(supportModel);
