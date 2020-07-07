@@ -18,7 +18,10 @@ namespace YH.ASM.DataAccess
  left join tasm_machine_type tt on t.machinetype= tt.id ";
 
             int pagecount = 0;
-            list= Db.SqlQueryable<ProjectModel>(sql).Where(s => s.NAME.Contains(keywords)).ToPageList(p.PageIndex, p.PageSize, ref pagecount);
+            list= Db.SqlQueryable<ProjectModel>(sql)
+                .Where(s => s.NAME.Contains(keywords))
+                .OrderBy(s => s.PID, OrderByType.Desc)
+                .ToPageList(p.PageIndex, p.PageSize, ref pagecount);
 
             p.PageCount = pagecount;
             return list.Count > 0;
@@ -33,7 +36,7 @@ namespace YH.ASM.DataAccess
  left join tasm_machine_type tt on t.machinetype= tt.id
  left join tasm_machine tm on t.machinet=tm.mid ";
 
-            list = Db.SqlQueryable<ProjectModel>(sql).Where(s => s.NAME.Contains(keywords)).ToList();
+            list = Db.SqlQueryable<ProjectModel>(sql).Where(s => s.NAME.Contains(keywords)).OrderBy(s=>s.PID,OrderByType.Desc).ToList();
 
             return list.Count > 0;
 

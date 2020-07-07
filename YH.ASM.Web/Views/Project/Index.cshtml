@@ -106,6 +106,7 @@
                         <tbody>
                             <tr>
                                 <td rowspan="2" class="my-td ">项目名称</td>
+                                <td rowspan="2" class="my-td ">项目编号</td>
                                 <td rowspan="2" class="my-td ">客户名称</td>
 
                                 <td rowspan="2" class="my-td ">出货时间</td>
@@ -115,6 +116,7 @@
                                 <td rowspan="2" class="my-td ">一级<br />负责人</td>
                                 <td rowspan="2" class="my-td ">二级<br />负责人</td>
                                 <td rowspan="2" class="my-td ">三级<br />负责人</td>
+                                <td rowspan="2" class="my-td">  创建<br />时间  </td>
 
                                 <td colspan="3" class="my-td bg-success">
                                     安装时效
@@ -130,9 +132,7 @@
 
 
 
-                                @*<td rowspan="2" class="my-td">
-                                    创建时间
-                                </td>*@
+
                                 <td rowspan="2" class="my-td " style="width:150px">
                                     操作
                                 </td>
@@ -170,6 +170,7 @@
 
                             <tr v-for="(item,index) in list">
                                 <td>{{item.NAME}}</td>
+                                <td>{{item.CODE}}</td>
                                 <td>{{item.CUSTOMER_NAME}}</td>
 
 
@@ -185,7 +186,7 @@
                                 <td> {{item.INSTALL_LV1}}</td>
                                 <td>{{item.INSTALL_LV2}} </td>
                                 <td>{{item.INSTALL_LV3}}</td>
-
+                                <td>{{item.CREATETIME}}</td>
 
                                 <td>{{Formtat(item.INSTALL_STARDATE)}}</td>
                                 <td>{{Formtat(item.INSTALL_ENDDATE)}}</td>
@@ -196,8 +197,8 @@
                                 <!---如果安装时间 超过规定时间则做出背景颜色--->
 
 
-                                <td  v-bind:class="BindBgClass(item.INSTALL_DAYS,item.INSTALLDAYS)">{{item.INSTALL_DAYS}}</td>
-                               
+                                <td v-bind:class="BindBgClass(item.INSTALL_DAYS,item.INSTALLDAYS)">{{item.INSTALL_DAYS}}</td>
+
 
 
 
@@ -216,7 +217,7 @@
                                 <td>{{Formtat(item.DEBUG_ENDDATE)}}</td>
 
 
-                                <td   v-bind:class="BindBgClass(item.DEBUG_DAYS,item.DEBUGDAYS)">{{item.DEBUG_DAYS}}</td>
+                                <td v-bind:class="BindBgClass(item.DEBUG_DAYS,item.DEBUGDAYS)">{{item.DEBUG_DAYS}}</td>
 
 
 
@@ -230,7 +231,7 @@
                                 <td>{{Formtat(item.CHECK_STARDATE)}}</td>
                                 <td>{{Formtat(item.CHECK_ENDDATE)}}</td>
 
-                                <td  v-bind:class="BindBgClass(item.COUNT_DOWN,item.CHECKDAYS)" >{{item.COUNT_DOWN}}</td>
+                                <td v-bind:class="BindBgClass(item.COUNT_DOWN,item.CHECKDAYS)">{{item.COUNT_DOWN}}</td>
 
 
 

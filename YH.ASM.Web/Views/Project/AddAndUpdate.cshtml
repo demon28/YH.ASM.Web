@@ -55,6 +55,15 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="txt_projectname" class="col-sm-3 control-label">项目编号：</label>
+
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="txt_projectname" v-model="code" placeholder="请输入项目编号" style="width:320px;" />
+                        </div>
+                    </div>
+
+
 
                     <div class="form-group">
                         <label for="txt_kehuname" class="col-sm-3 control-label">客户名称：</label>
@@ -227,18 +236,7 @@
                     </div>
 
 
-                    @*<div class="form-group">
-            <label for="inputEmail3" class="col-sm-3 control-label">调试状态：</label>
 
-            <div class="col-sm-7">
-
-                <select class="form-control" id="txt_debug_status" v-model="debug_status" style="width:320px;">
-                </select>
-
-
-            </div>
-
-        </div>*@
 
 
 
@@ -332,6 +330,7 @@
 
             pid: "",
             name: "",
+            code:"",
             customer_name: "",
             productdate: "",
             machine: "",
@@ -512,6 +511,7 @@
 
                         _self.pid = result.Content.PID;
                         _self.name = result.Content.NAME;
+                        _self.code = result.Content.CODE;
                         _self.customer_name = result.Content.CUSTOMER_NAME;
                         _self.productdate = result.Content.PRODUCTDATE;
                         _self.machine = result.Content.MACHINE;
@@ -547,6 +547,7 @@
                     data: {
 
                         NAME: _self.name,
+                        CODE: _self.code,
                         CUSTOMER_NAME: _self.customer_name,
                         PRODUCTDATE: _self.productdate,
                         MACHINE: _self.machine,
@@ -598,6 +599,7 @@
                     data: {
                         PID: _self.pid,
                         NAME: _self.name,
+                        CODE: _self.code,
                         CUSTOMER_NAME: _self.customer_name,
                         PRODUCTDATE: _self.productdate,
                         MACHINE: _self.machine,

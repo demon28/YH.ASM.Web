@@ -92,7 +92,11 @@ namespace YH.ASM.Entites.CodeGenerator
         ///描述：工单状态： 0.待办，1处理中，2，已完成
         ///</summary>
         public System.Int32 STATE { get; set; }
-        
+
+        ///<summary>
+        ///描述：问题机型 外键指向，设备表tasm_machine
+        ///</summary>
+        public System.Int32 MID { get; set; }
 
     }
  }

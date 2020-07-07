@@ -149,5 +149,11 @@ namespace YH.ASM.Entites.CodeGenerator
         /// 设备 外键设备表
         /// </summary>
         public System.Int32? MACHINET { get; set; }
+
+
+        /// <summary>
+        /// 项目编号
+        /// </summary>
+        public System.String CODE { get; set; }
     }
 }
