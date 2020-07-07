@@ -335,10 +335,10 @@
                list: [],
               
                MachinTypes: [],
-                   pageIndex:1,
-                   pageSize:15,
-                   pageCount:20,
-               TotalCount: 0,
+               pageIndex: 1,
+               pageSize: 10,
+               pageCount: 20,
+               pageTotal: 0,
                operation: "add",
                types: {},
 
@@ -387,7 +387,7 @@
                            self.pageIndex = result.PageIndex;
                            self.pageSize = result.PageSize;
                            self.pageCount = result.PageCount;
-                           self.pageCount = result.PageTotal;
+                           self.TotalCount = result.PageTotal;
 
                            self.PageBind();
                        }
@@ -404,7 +404,7 @@
                    console.log()
 
                    $("#ul_page").jqPaginator({
-                       totalPages: self.pageCount,
+                       totalPages: self.TotalCount,
                        visiblePages: self.pageSize,
                        currentPage: self.pageIndex,
 

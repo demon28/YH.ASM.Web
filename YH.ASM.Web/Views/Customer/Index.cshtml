@@ -177,10 +177,10 @@
            el: "#tab",
            data: {
                    list: [],
-                   pageIndex:1,
-                   pageSize:15,
-                   pageCount:20,
-                   TotalCount:0
+               pageIndex: 1,
+               pageSize: 10,
+               pageCount: 20,
+               pageTotal: 0
 
            },
            created: function () {
@@ -221,10 +221,11 @@
 
 
 
+
                            self.pageIndex = result.PageIndex;
                            self.pageSize = result.PageSize;
                            self.pageCount = result.PageCount;
-                           self.pageCount = result.PageTotal;
+                           self.pageTotal = result.PageTotal;
 
                            self.PageBind();
                        }
@@ -232,7 +233,7 @@
                },
 
                Search: function () {
-                   pageIndex = 1;
+                   self.pageIndex = 1;
                    this.Init();
                },
                PageBind: function () {
@@ -241,7 +242,7 @@
                    console.log()
 
                    $("#ul_page").jqPaginator({
-                       totalPages: self.pageCount,
+                       totalPages: self.pageTotal,
                        visiblePages: self.pageSize,
                        currentPage: self.pageIndex,
 

@@ -144,10 +144,10 @@
             el: "#tab_account",
             data: {
                 list: [],
-                pIndex: 1,
-                pSize: 15,
-                pCount: 0,
-                pTotal: 0
+                pageIndex: 1,
+                pageSize: 10,
+                pageCount: 20,
+                pageTotal: 0,
             },
             created: function () {
 
@@ -163,8 +163,8 @@
                         type: "POST",
                         data: {
                             keyword: keywork,
-                            pageIndex: self.pIndex,
-                            pageSize: self.pSize,
+                            pageIndex: self.pageIndex,
+                            pageSize: self.pageSize,
                         },
                         success: function (result) {
 
@@ -173,10 +173,10 @@
 
                                 self.list = result.Content;
 
-                                self.pIndex = result.PageIndex;
-                                self.pSize = result.PageSize;
-                                self.pCount = result.PageCount;
-                                self.pTotal = result.PageTotal;
+                                self.pageIndex = result.PageIndex;
+                                self.pageSize = result.PageSize;
+                                self.pageCount = result.PageCount;
+                                self.pageTotal = result.PageTotal;
 
 
 
@@ -193,15 +193,15 @@
 
                 },
                 Search: function () {
-                    pageIndex = 1;
+                    this.pageIndex = 1;
                     this.Init();
                 },
                 PageBind: function () {
                     var self = this;
                     $("#ul_page").jqPaginator({
-                        totalPages: self.pTotal,
-                        visiblePages: self.pSize,
-                        currentPage: self.pIndex,
+                        totalPages: self.pageTotal,
+                        visiblePages: self.pageSize,
+                        currentPage: self.pageIndex,
 
                         first: ' <li><a href="#">First</a></li>',
                         prev: ' <li><a href="#">&laquo;</a></li>',

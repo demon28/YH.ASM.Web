@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using YH.ASM.DataAccess;
 using YH.ASM.Entites;
+using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
 using YH.ASM.Web.Attribute;
 using YH.ASM.Web.ControllerBase;
@@ -51,6 +53,20 @@ namespace YH.ASM.Web.WebApi
         }
 
 
+
+        [WebApi]
+        [HttpPost]
+        public IActionResult LisAttachmentt(ListAttachmentInputModel model) {
+
+            TASM_ATTACHMENTManager manager = new TASM_ATTACHMENTManager();
+
+            List<TASM_ATTACHMENT> list = new List<TASM_ATTACHMENT>();
+
+            manager.ListByPid(model.sid, 1, ref list);
+
+            return SuccessResultList(list);
+
+        }
 
     }
 }

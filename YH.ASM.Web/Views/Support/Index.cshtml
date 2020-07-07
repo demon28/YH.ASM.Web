@@ -350,9 +350,9 @@
             data: {
                 list: [],
                 pageIndex: 1,
-                pageSize: 15,
+                pageSize: 10,
                 pageCount: 20,
-                TotalCount: 0,
+                pageTotal: 0,
                 user_id: 0,
 
                 supprotInfo: {},
@@ -408,7 +408,8 @@
                            self.pageIndex = result.PageIndex;
                            self.pageSize = result.PageSize;
                            self.pageCount = result.PageCount;
-                           self.pageCount = result.PageTotal;
+                           self.pageTotal = result.PageTotal;
+
 
                            self.PageBind();
                        }
@@ -416,7 +417,7 @@
                },
 
                Search: function () {
-                   pageIndex = 1;
+                   this.pageIndex = 1;
                    this.Init();
                },
                PageBind: function () {
@@ -425,7 +426,7 @@
                    console.log()
 
                    $("#ul_page").jqPaginator({
-                       totalPages: self.pageCount,
+                       totalPages: self.pageTotal,
                        visiblePages: self.pageSize,
                        currentPage: self.pageIndex,
 

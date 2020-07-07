@@ -11,6 +11,11 @@ namespace YH.ASM.Facade
 {
      public class SupportFacade:FacadeBase.FacadeBase
     {
+        /// <summary>
+        /// 入口
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public bool Create(SupportCreateModel model)
         {
             DataAccess.TASM_SUPPORT_Da da = new TASM_SUPPORT_Da();
@@ -35,6 +40,14 @@ namespace YH.ASM.Facade
                     return false;
                 }
 
+                //添加处理人表
+                if (!InsertPersonal(supportModel, sid))
+                {
+                    da.Db.RollbackTran();
+                    return false;
+                }
+
+
                 //修改附件信息
                 if (!UpdateAttachment(model,sid))
                 {
@@ -48,6 +61,9 @@ namespace YH.ASM.Facade
                     da.Db.RollbackTran();
                     return false;
                 }
+
+
+
 
                 da.Db.CommitTran();
 
@@ -64,6 +80,16 @@ namespace YH.ASM.Facade
             }
         }
 
+
+
+        /// <summary>
+        /// 创建工单主表
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="da"></param>
+        /// <param name="sid"></param>
+        /// <param name="supportModel"></param>
+        /// <returns></returns>
         private bool InsertSupport(SupportCreateModel model, TASM_SUPPORT_Da da, ref int  sid,ref TASM_SUPPORT supportModel)
         {
 
@@ -95,6 +121,12 @@ namespace YH.ASM.Facade
             }
             return true;
         }
+        /// <summary>
+        /// 增加操作历史
+        /// </summary>
+        /// <param name="supportModel"></param>
+        /// <param name="sid"></param>
+        /// <returns></returns>
         private bool InsertHistory(TASM_SUPPORT supportModel,int sid) {
 
 
@@ -121,6 +153,13 @@ namespace YH.ASM.Facade
             return true;
 
         }
+      
+        /// <summary>
+        /// 修改附件归属
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="sid"></param>
+        /// <returns></returns>
         private bool UpdateAttachment(SupportCreateModel model, int sid)
         {
 
@@ -146,6 +185,12 @@ namespace YH.ASM.Facade
             return true;
 
         }
+       /// <summary>
+       /// 消息推送表
+       /// </summary>
+       /// <param name="model"></param>
+       /// <param name="sid"></param>
+       /// <returns></returns>
         private bool InsertPush(SupportCreateModel model, int sid)
         {
             if (model.Push == null)
@@ -169,5 +214,30 @@ namespace YH.ASM.Facade
             return da.CurrentDb.Insert(pushModel);
 
         }
+        
+        /// <summary>
+        /// 个人处理信息表
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="sid"></param>
+        /// <returns></returns>
+        private bool InsertPersonal(TASM_SUPPORT model, int sid)
+        {
+
+            TASM_SUPPORT_PERSONAL_Da da= new TASM_SUPPORT_PERSONAL_Da();
+            TASM_SUPPORT_PERSONAL psersonlModel = new TASM_SUPPORT_PERSONAL()
+            {
+                CID = model.CREATOR,
+                CREATETIME = DateTime.Now,
+                DID = model.CONDUCTOR,
+                SID = sid,
+                STATUS = 0,
+                TID = model.STATUS
+
+            };
+            return da.CurrentDb.Insert(psersonlModel);
+
+        }
+
     }
 }

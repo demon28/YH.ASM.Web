@@ -355,14 +355,7 @@
 
     <script>
 
-        //当前页码
-        var pageIndex = 1;
-        //每页显示条数
-        var pageSize = 10;
-        //总共多少条
-        var pageCount;
-        //总共多少页
-        var pageTotal;
+    
 
         $(document).ready(function () {
 
@@ -393,10 +386,11 @@
                 el: "#tab_account",
                 data: {
                     list: [],
-                    pIndex: pageIndex,
-                    pSize: pageSize,
-                    pCount: pageCount,
-                    pTotal: pageTotal,
+                    pageIndex: 1,
+                    pageSize: 10,
+                    pageCount: 20,
+                    pageTotal: 0,
+
                     nowUserid: "",
 
                 },
@@ -418,8 +412,8 @@
                             data: {
                                 date: date,
                                 keyword: keywork,
-                                pageIndex: pageIndex,
-                                pageSize: pageSize
+                                pageIndex: self.pageIndex,
+                                pageSize: self.pageSize
                             },
                             success: function (result) {
 
@@ -429,10 +423,10 @@
 
                                     self.list = result.Content;
 
-                                    pageIndex = result.PageIndex;
-                                    pageSize = result.PageSize;
-                                    pageCount = result.PageCount;
-                                    pageTotal = result.PageTotal;
+                                    self.pageIndex = result.PageIndex;
+                                    self.pageSize = result.PageSize;
+                                    self.pageCount = result.PageCount;
+                                    self.pageTotal = result.PageTotal;
 
                                     nowUserid = result.Content[0].USER_ID;
 
@@ -454,11 +448,13 @@
                         this.Init();
                     },
                     PageBind: function () {
+                        var self = this;
 
                         $("#ul_page").jqPaginator({
-                            totalPages: pageTotal,
-                            visiblePages: pageSize,
-                            currentPage: pageIndex,
+
+                            totalPages: self.pageTotal,
+                            visiblePages: self.pageSize,
+                            currentPage: self.pageIndex,
 
                             first: ' <li><a href="#">First</a></li>',
                             prev: ' <li><a href="#">&laquo;</a></li>',
@@ -468,7 +464,7 @@
 
                             onPageChange: function (num, type) {
 
-                                pageIndex = num;
+                                self.pageIndex = num;
 
                                 if (type == "change") {
                                     vm.Init();

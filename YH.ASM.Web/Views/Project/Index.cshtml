@@ -300,9 +300,9 @@
            data: {
                    list: [],
                    pageIndex:1,
-                   pageSize:15,
+                   pageSize:10,
                    pageCount:20,
-                   TotalCount:0
+                   pageTotal:0
 
            },
            created: function () {
@@ -346,7 +346,8 @@
                            self.pageIndex = result.PageIndex;
                            self.pageSize = result.PageSize;
                            self.pageCount = result.PageCount;
-                           self.pageCount = result.PageTotal;
+                           self.pageTotal = result.PageTotal;
+
 
                            self.PageBind();
                        }
@@ -363,7 +364,7 @@
                    console.log()
 
                    $("#ul_page").jqPaginator({
-                       totalPages: self.pageCount,
+                       totalPages: self.pageTotal,
                        visiblePages: self.pageSize,
                        currentPage: self.pageIndex,
 
@@ -445,7 +446,7 @@
 
                BindBgClass: function (days1, days2) {
 
-                   console.log("===调用" + days1 + "====" + days2);
+                 
                    if (days1 == days2) {
                        return "bg-blue";
                    }
