@@ -98,6 +98,12 @@ namespace YH.ASM.Entites.CodeGenerator
         ///</summary>
         public System.Int32 MID { get; set; }
 
+        ///<summary>
+        ///描述：工单编号，项目编号+三位数
+        ///</summary>
+        public System.String CODE { get; set; }
+
+
     }
  }
 
