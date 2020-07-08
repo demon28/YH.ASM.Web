@@ -77,7 +77,7 @@ namespace YH.ASM.Entites.CodeGenerator
         ///<summary>
         ///描述：下单人
         ///</summary>
-        public System.Int32 ORDERMAN { get; set; }
+        public System.String ORDERMAN { get; set; }
 
         ///<summary>
         ///描述：下单时间

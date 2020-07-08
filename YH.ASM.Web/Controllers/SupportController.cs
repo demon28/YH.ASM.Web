@@ -167,15 +167,15 @@ namespace YH.ASM.Web.Controllers
 
                 }
 
-                DataAccess.TASM_SUPPORT_PERSONAL_Da da = new TASM_SUPPORT_PERSONAL_Da();
-                TASM_SUPPORT_PERSONAL personal = da.CurrentDb.AsQueryable().Where(s => s.SID == model.SID && s.STATUS == (int)Entites.SupprotWatchState.待办).First();
-                personal.DID = model.CONDUCTOR;
+                //DataAccess.TASM_SUPPORT_PERSONAL_Da da = new TASM_SUPPORT_PERSONAL_Da();
+                //TASM_SUPPORT_PERSONAL personal = da.CurrentDb.AsQueryable().Where(s => s.SID == model.SID && s.STATUS == (int)Entites.SupprotWatchState.待办).First();
+                //personal.DID = model.CONDUCTOR;
 
-                if (!da.CurrentDb.Update(personal))
-                {
-                    manager.Db.RollbackTran();
-                    return FailMessage();
-                }
+                //if (!da.CurrentDb.Update(personal))
+                //{
+                //    manager.Db.RollbackTran();
+                //    return FailMessage();
+                //}
                 manager.Db.CommitTran();
                 return SuccessMessage("修改成功");
             }

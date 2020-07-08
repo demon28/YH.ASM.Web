@@ -41,8 +41,20 @@ namespace YH.ASM.Facade
                     return false;
                 }
 
-           
-                //3,修改工单表的memberid，memberid为处理表的主键id 此处有先后顺序 
+
+
+                //3,新的处理人员再新增一条 处理信息(顺序不能变)
+                if (!InsertPersonal(supportModel.CONDUCTOR,  model.NEXTUSER, disposerId,  model.SID))
+                {
+                    this.Msg = "分发工单失败！";
+                    disposer_manager.Db.RollbackTran();
+                    return false;
+                }
+
+
+
+
+                //4,修改工单表的memberid，memberid为处理表的主键id 此处有先后顺序 
                 if (!UpdateSupport( supportModel,  support_manager, model.NEXTUSER, model.SUPPORTSTATUS,  disposerId))
                 {
                     this.Msg = "修改工单信息失败！";
@@ -51,7 +63,7 @@ namespace YH.ASM.Facade
                 }
 
 
-                //4,修改个人信息处理表
+                //5,修改个人信息处理表
                 if (!UpdatePersonal(model.PERSONALID))
                 {
                     this.Msg = "修改个人处理状态失败！";
@@ -60,7 +72,8 @@ namespace YH.ASM.Facade
                 }
 
 
-                //5,添加推送消息
+
+                //6,添加推送消息
                 if (!InsertPush( model,disposerId))
                 {
                     this.Msg = "修改个人处理状态失败！";
@@ -133,6 +146,33 @@ namespace YH.ASM.Facade
             return da.CurrentDb.Update(personalmodel);
 
         }
+
+      /// <summary>
+      /// 新增个人信息处理表
+      /// </summary>
+      /// <param name="cid">创建人，也就是本张工单的处理人，不是整个工单的创建人</param>
+      /// <param name="did">处理人，也就是 下一个处理人，</param>
+      /// <param name="tid">流程节点id，走到哪个环节了</param>
+      /// <param name="sid">工单id</param>
+      /// <returns></returns>
+        private bool InsertPersonal(int cid,int did, int tid ,int sid)
+        {
+
+            TASM_SUPPORT_PERSONAL_Da da = new TASM_SUPPORT_PERSONAL_Da();
+            TASM_SUPPORT_PERSONAL psersonlModel = new TASM_SUPPORT_PERSONAL()
+            {
+                CID = cid,
+                CREATETIME = DateTime.Now,
+                DID = did,
+                SID = sid,
+                STATUS = 0,
+                TID = tid
+
+            };
+            return da.CurrentDb.Insert(psersonlModel);
+
+        }
+
 
         /// <summary>
         /// 消息推送表
