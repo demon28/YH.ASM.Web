@@ -67,10 +67,31 @@ namespace YH.ASM.Entites.CodeGenerator
         ///描述：责任人
         ///</summary>
         public System.String DUTY { get; set; }
-        
+
+
+        ///<summary>
+        ///描述：Bom图纸
+        ///</summary>
+        public System.String BOM { get; set; }
+
+        ///<summary>
+        ///描述：下单人
+        ///</summary>
+        public System.Int32 ORDERMAN { get; set; }
+
+        ///<summary>
+        ///描述：下单时间
+        ///</summary>
+        public System.DateTime ORDERTIME { get; set; }
+
+        ///<summary>
+        ///描述：是否下单
+        ///</summary>
+        public System.Int32 ISORDER { get; set; }
+
 
     }
- }
+}
 
 
 

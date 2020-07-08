@@ -6,6 +6,18 @@ namespace YH.ASM.Entites
 {
 
 
+
+
+    /// <summary>
+    /// 工单状态
+    /// </summary>
+    public enum SupportPersnalStatus
+    {
+        待办 = 0,
+        处理中 = 1,
+        已完成 = 2,
+    }
+
     /// <summary>
     /// 工单状态
     /// </summary>

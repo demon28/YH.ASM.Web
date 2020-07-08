@@ -476,10 +476,13 @@ namespace YH.ASM.Web.Controllers
 
         [Right(Ignore = true)]
         [HttpPost]
-        public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model, int supportStatus, int nextUser)
+        public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model, int supportStatus, int nextUser,int personalId)
         {
+            //TODO:web端暂不处理，目前灭有时间
+            AddDisposerModel addDisposer = new AddDisposerModel();
+
             DisposerFacade facade = new DisposerFacade();
-            if (!facade.Create(model, supportStatus, nextUser))
+            if (!facade.Create(addDisposer))
             {
                 return FailMessage(facade.Msg);
             }

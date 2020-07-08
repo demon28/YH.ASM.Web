@@ -28,6 +28,7 @@ namespace YH.ASM.DataAccess
             string sql = @"   
 
 SELECT T.STATUS    PSTATUS,
+     T.ID          ID,
      T.CID         CID,
      T.DID         DID,
      T.CREATETIME  PCREATETIME,

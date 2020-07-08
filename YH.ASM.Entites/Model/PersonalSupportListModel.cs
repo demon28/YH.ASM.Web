@@ -8,9 +8,14 @@ namespace YH.ASM.Entites.Model
     {
 
         /// <summary>
+        /// 主键id
+        /// </summary>
+        public int ID { get; set; }
+
+        /// <summary>
         /// 个人处理状态
         /// </summary>
-      public int PSTATUS { get; set; }
+        public int PSTATUS { get; set; }
 
         /// <summary>
         /// 单节点创建人

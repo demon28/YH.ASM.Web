@@ -34,12 +34,14 @@ namespace YH.ASM.DataAccess.CodeGenerator.DBCore
             //调式代码 用来打印SQL 
             Db.Aop.OnLogExecuting = (sql, pars) =>
             {
-
                 Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                Console.WriteLine(sql + "\r\n" +
-                    Db.Utilities.SerializeObject(pars.ToDictionary(it => it.ParameterName, it => it.Value)));
+                Console.WriteLine();
+                Console.WriteLine(sql);
+                Console.WriteLine();
+                Console.WriteLine(Db.Utilities.SerializeObject(pars.ToDictionary(it => it.ParameterName, it => it.Value)));
                 Console.WriteLine();
             };
+            
 
         }
      
