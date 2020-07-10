@@ -16,9 +16,20 @@ namespace YH.ASM.Entites.Model
         public int TID { get; set; }
 
 
+        /// <summary>
+        /// 实际完成时间
+        /// </summary>
         public string ENDDATE { get; set; }
+
+        /// <summary>
+        /// 审核人
+        /// </summary>
         public string CHECKUSER { get; set; }
+
+        //审核结果
         public string RESULT { get; set; }
+
+        
         public string REMARKS { get; set; }
 
     }

@@ -189,10 +189,10 @@ namespace YH.ASM.Web.WebApi
 
         [WebApi]
         [HttpGet]
-        public IActionResult GetSupportInfo(int id)
+        public IActionResult GetSupportInfo(int sid)
         {
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            TASM_SUPPORT model = manager.SelectById(id);
+            TASM_SUPPORT model = manager.SelectById(sid);
 
             return SuccessResult(model);
 
