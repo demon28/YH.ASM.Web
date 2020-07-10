@@ -113,26 +113,30 @@ namespace YH.ASM.DataAccess
         }
 
 
-
-
         public SupportListModel SelectById(int sid)
         {
 
-            string sql = @"SELECT T.*,
+            string sql = @"
+SELECT T.*,
        TR.USER_ID   CREATORID,
        TR.USER_NAME CREATORNAME,
        TU.USER_ID   CONDUCTORID,
        TU.USER_NAME CONDUCTORNAME,
-       TP.PID PROJECTID,
-       TP.NAME PROJECTNAME
-       
+       TP.PID       PROJECTID,
+       TP.NAME      PROJECTNAME,
+       tm.name      MACHINENAME,
+       tm.serial    MACHINESERIAL
+
   FROM TASM_SUPPORT T
 
   LEFT JOIN TASM_USER TR
     ON TR.USER_ID = T.CREATOR
   LEFT JOIN TASM_USER TU
     ON TU.USER_ID = T.CONDUCTOR
-   LEFT JOIN TASM_PROJECT TP ON TP.PID=T.PROJECT
+  LEFT JOIN TASM_PROJECT TP
+    ON TP.PID = T.PROJECT
+  left join tasm_machine tm
+    on tm.mid = t.mid
 
 WHERE 1=1  and t.SID=:sid
 
@@ -150,6 +154,18 @@ WHERE 1=1  and t.SID=:sid
 
 
         }
+
+
+        public int SelectSupprotCodeIndex() {
+
+            string sql = "select SEQ_INDEX_SUPORT_CODE.Nextval from dual  ";
+
+            var dataTable= Db.Ado.GetDataTable(sql);
+
+            return Convert.ToInt32(dataTable.Rows[0][0]);
+
+        }
+    
     }
 
 }

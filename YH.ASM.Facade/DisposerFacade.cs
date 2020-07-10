@@ -44,7 +44,7 @@ namespace YH.ASM.Facade
 
 
                 //3,新的处理人员再新增一条 处理信息(顺序不能变)
-                if (!InsertPersonal(supportModel.CONDUCTOR,  model.NEXTUSER, disposerId,  model.SID))
+                if (!InsertPersonal(supportModel.CONDUCTOR,  model.NEXTUSER, model.SUPPORTSTATUS,  model.SID))
                 {
                     this.Msg = "分发工单失败！";
                     disposer_manager.Db.RollbackTran();
@@ -94,6 +94,14 @@ namespace YH.ASM.Facade
 
         }
 
+
+        /// <summary>
+        /// 插入技术人员处理表
+        /// </summary>
+        /// <param name="disposer_manager"></param>
+        /// <param name="model"></param>
+        /// <param name="disposerId"></param>
+        /// <returns></returns>
         private bool InsertDisposer(TASM_SUPPORT_DISPOSER_Da disposer_manager, TASM_SUPPORT_DISPOSER model, ref int disposerId)
         {
             model.CREATETIME = DateTime.Now;
@@ -103,6 +111,15 @@ namespace YH.ASM.Facade
             return disposerId > 0;
         }
 
+        /// <summary>
+        /// 插入操作历史
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="supportModel"></param>
+        /// <param name="nextUser"></param>
+        /// <param name="supportStatus"></param>
+        /// <param name="disposerId"></param>
+        /// <returns></returns>
         private bool InsertHistory(TASM_SUPPORT_DISPOSER model, TASM_SUPPORT supportModel, int nextUser, int supportStatus, int disposerId)
         {
             DataAccess.TASM_SUPPORT_HIS_Da his_manager = new TASM_SUPPORT_HIS_Da();
@@ -123,6 +140,15 @@ namespace YH.ASM.Facade
 
         }
 
+        /// <summary>
+        /// 修改工单主表状态
+        /// </summary>
+        /// <param name="supportModel"></param>
+        /// <param name="support_manager"></param>
+        /// <param name="nextUser"></param>
+        /// <param name="supportStatus"></param>
+        /// <param name="disposerId"></param>
+        /// <returns></returns>
         private bool UpdateSupport(TASM_SUPPORT supportModel, TASM_SUPPORT_Da support_manager, int nextUser, int supportStatus, int disposerId)
         {
          
@@ -135,6 +161,12 @@ namespace YH.ASM.Facade
            return   support_manager.CurrentDb.Update(supportModel);  //修改工单表
         }
 
+
+        /// <summary>
+        /// 修改个人处理状态
+        /// </summary>
+        /// <param name="personalId"></param>
+        /// <returns></returns>
         private bool UpdatePersonal(int personalId)
         {
 
@@ -147,15 +179,15 @@ namespace YH.ASM.Facade
 
         }
 
-      /// <summary>
+         /// <summary>
       /// 新增个人信息处理表
       /// </summary>
       /// <param name="cid">创建人，也就是本张工单的处理人，不是整个工单的创建人</param>
       /// <param name="did">处理人，也就是 下一个处理人，</param>
-      /// <param name="tid">流程节点id，走到哪个环节了</param>
+      /// <param name="tid">流程节点，走到哪个环节了</param>
       /// <param name="sid">工单id</param>
       /// <returns></returns>
-        private bool InsertPersonal(int cid,int did, int tid ,int sid)
+        private bool InsertPersonal(int cid,int did,int tid,int sid)
         {
 
             TASM_SUPPORT_PERSONAL_Da da = new TASM_SUPPORT_PERSONAL_Da();

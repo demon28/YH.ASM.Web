@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 using YH.ASM.DataAccess;
+using YH.ASM.Entites;
 using YH.ASM.Entites.CodeGenerator;
+using YH.ASM.Entites.Model;
 
 namespace YH.ASM.Facade
 {
     public class PrincipalFacade : FacadeBase.FacadeBase
     {
-        public bool Create(TASM_SUPPORT_PRINCIPAL model, int supportStatus, int nextUser)
+        public bool Create(AddPrincipalCheckModel model)
         {
-
 
             DataAccess.TASM_SUPPORT_PRINCIPAL_Da manager = new DataAccess.TASM_SUPPORT_PRINCIPAL_Da();
 
@@ -34,7 +35,7 @@ namespace YH.ASM.Facade
                 DataAccess.TASM_SUPPORT_Da support_manager = new DataAccess.TASM_SUPPORT_Da();
                 var supportModel = support_manager.CurrentDb.GetById(model.SID);  //工单id 查询工单信息
 
-                if (!InsertHistory( model,  supportModel,  supportStatus,  nextUser,  pid))
+                if (!InsertHistory( model,  supportModel, model.SUPPORTSTATUS, model.NEXTUSER,  pid))
                 {
                     Msg = "创建操作历史失败！";
                     manager.Db.RollbackTran();
@@ -43,16 +44,45 @@ namespace YH.ASM.Facade
                 }
 
 
+                //3如果审核不通过，重新分发给现场
+                if (model.SUPPORTSTATUS==(int)SupportendPoint.负责人审核_未完成)
+                {
+                    //3,新的处理人员再新增一条 处理信息(顺序不能变) 取了工单处理人，为个人处理表的创建人，顺序不能变
+                    if (!InsertPersonal(supportModel.CONDUCTOR, model.NEXTUSER, model.SUPPORTSTATUS, model.SID))
+                    {
+                        this.Msg = "分发工单失败！";
+                        manager.Db.RollbackTran();
+                        return false;
+                    }
+                }
 
-
-                //3,修改工单表的状态
-                if (!UpdateSupport( supportModel,  support_manager,  nextUser,  supportStatus,  pid))
+                //4,修改工单表的状态
+                if (!UpdateSupport( supportModel,  support_manager, model.NEXTUSER, model.SUPPORTSTATUS,  pid))
                 {
                     Msg = "修改工单状态失败！";
                     manager.Db.RollbackTran();
                     return false;
                 }
-      
+
+                //5,修改个人信息处理表
+                if (!UpdatePersonal(model.PERSONALID))
+                {
+                    this.Msg = "修改个人处理状态失败！";
+                    manager.Db.RollbackTran();
+                    return false;
+                }
+
+
+
+                //6,添加推送消息
+                if (!InsertPush(model, pid))
+                {
+                    this.Msg = "修改个人处理状态失败！";
+                    manager.Db.RollbackTran();
+                    return false;
+                }
+
+
 
                 manager.Db.CommitTran();
 
@@ -119,7 +149,79 @@ namespace YH.ASM.Facade
 
         }
 
+        /// <summary>
+        /// 修改个人处理状态
+        /// </summary>
+        /// <param name="personalId"></param>
+        /// <returns></returns>
+        private bool UpdatePersonal(int personalId)
+        {
 
+            TASM_SUPPORT_PERSONAL_Da da = new TASM_SUPPORT_PERSONAL_Da();
+
+            var personalmodel = da.CurrentDb.GetById(personalId);
+            personalmodel.STATUS = (int)Entites.SupportPersnalStatus.已完成;
+
+            return da.CurrentDb.Update(personalmodel);
+
+        }
+
+        /// <summary>
+        /// 新增个人信息处理表
+        /// </summary>
+        /// <param name="cid">创建人，也就是本张工单的处理人，不是整个工单的创建人</param>
+        /// <param name="did">处理人，也就是 下一个处理人，</param>
+        /// <param name="tid">流程节点id，走到哪个环节了</param>
+        /// <param name="sid">工单id</param>
+        /// <returns></returns>
+        private bool InsertPersonal(int cid, int did, int tid, int sid)
+        {
+
+            TASM_SUPPORT_PERSONAL_Da da = new TASM_SUPPORT_PERSONAL_Da();
+            TASM_SUPPORT_PERSONAL psersonlModel = new TASM_SUPPORT_PERSONAL()
+            {
+                CID = cid,
+                CREATETIME = DateTime.Now,
+                DID = did,
+                SID = sid,
+                STATUS = (int)Entites.SupportPersnalStatus.待办,
+                TID = tid
+
+            };
+            return da.CurrentDb.Insert(psersonlModel);
+
+        }
+
+
+        /// <summary>
+        /// 消息推送表
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="sid"></param>
+        /// <returns></returns>
+        private bool InsertPush(AddPrincipalCheckModel model, int tid)
+        {
+            if (model.Push == null)
+            {
+                return true;
+            }
+
+            TASM_SUPPORT_PUSH_Da da = new TASM_SUPPORT_PUSH_Da();
+            TASM_SUPPORT_PUSH pushModel = new TASM_SUPPORT_PUSH()
+            {
+                SID = model.SID,
+                CC = model.Push.CC,
+                CONDUCTOR = model.Push.CONDUCTOR,
+                CONTENT = model.Push.CONTENT,
+                CREATETIME = DateTime.Now,
+                POINT = (int)Entites.SupportHisType.技术处理,
+                STATUS = 0,
+                TID = tid
+
+            };
+            return da.CurrentDb.Insert(pushModel);
+
+        }
 
     }
 }

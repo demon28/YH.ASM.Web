@@ -355,6 +355,15 @@ where t.type=4 and t.sid=:sid and tid=:tid
 
         }
 
+        public List<TASM_SUPPORT_HIS> ListBySid(int sid) {
+
+            return  Db.Queryable<TASM_SUPPORT_HIS>()
+                  .Where(s => s.SID == sid)
+                  .OrderBy(s => s.CREATETIME, SqlSugar.OrderByType.Asc)
+                  .ToList();
+
+        }
+
 
 
     }

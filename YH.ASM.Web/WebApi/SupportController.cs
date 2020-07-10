@@ -86,6 +86,7 @@ namespace YH.ASM.Web.WebApi
         }
 
 
+        #region 工单处理流程
         [WebApi]
         [HttpPost]
         public IActionResult UpdatePersernalStatus(UpdatePersnalStatusModel model)
@@ -106,8 +107,6 @@ namespace YH.ASM.Web.WebApi
 
         }
 
-
-
         [WebApi]
         [HttpPost]
         public IActionResult AddDisposer(AddDisposerModel model)
@@ -123,12 +122,12 @@ namespace YH.ASM.Web.WebApi
 
         [WebApi]
         [HttpPost]
-        public IActionResult AddPmcOrder(TASM_SUPPORT_PMC model, int supportStatus, int nextUser)
+        public IActionResult AddPmcOrder(AddPmcCheckModel model)
         {
 
             PmcOrderFacade facade = new PmcOrderFacade();
 
-            if (facade.Create(model, supportStatus, nextUser))
+            if (facade.Create(model))
             {
                 return FailMessage("处理失败！");
             }
@@ -138,16 +137,15 @@ namespace YH.ASM.Web.WebApi
 
         [WebApi]
         [HttpPost]
-        public IActionResult AddSiteCheck(TASM_SUPPORT_SITE model, int supportStatus, int nextUser)
+        public IActionResult AddSiteCheck(AddSiteCheckModel model)
         {
 
             SiteCheckFacade facade = new SiteCheckFacade();
 
-            if (!facade.Create(model, supportStatus, nextUser))
+            if (!facade.Create(model))
             {
                 return FailMessage("处理失败！");
             }
-
             return SuccessMessage("处理成功！");
 
         }
@@ -155,12 +153,12 @@ namespace YH.ASM.Web.WebApi
 
         [WebApi]
         [HttpPost]
-        public IActionResult AddPrincipalCheck(TASM_SUPPORT_PRINCIPAL model, int supportStatus, int nextUser)
+        public IActionResult AddPrincipalCheck(AddPrincipalCheckModel model)
         {
 
             PrincipalFacade facade = new PrincipalFacade();
 
-            if (!facade.Create(model, supportStatus, nextUser))
+            if (!facade.Create(model))
             {
                 return FailMessage("处理失败！");
             }
@@ -171,6 +169,95 @@ namespace YH.ASM.Web.WebApi
 
         }
 
+        #endregion
+
+
+
+        [WebApi]
+        [HttpGet]
+        public IActionResult ListByHistory(int sid)
+        {
+
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            List<TASM_SUPPORT_HIS> list = manager.ListBySid(sid);
+            return SuccessResultList(list);
+        }
+
+
+        #region  工作流
+
+
+        [WebApi]
+        [HttpGet]
+        public IActionResult GetSupportInfo(int id)
+        {
+            DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
+            TASM_SUPPORT model = manager.SelectById(id);
+
+            return SuccessResult(model);
+
+        }
+
+
+        [WebApi]
+        [HttpGet]
+        public IActionResult GetDisposerInfo(int sid, int tid)
+        {
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisDisposerModel model = manager.SelectHisDisposer(sid, tid);
+
+            if (model == null)
+            {
+                return FailMessage("未创建");
+            }
+            return SuccessResult(model);
+
+        }
+
+        [WebApi]
+        [HttpGet]
+        public IActionResult GetPmcInfo(int sid, int tid)
+        {
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisPmcModel model = manager.SelectHisPmc(sid, tid);
+            if (model == null)
+            {
+                return FailMessage("未创建");
+            }
+            return SuccessResult(model);
+
+        }
+
+        [WebApi]
+        [HttpGet]
+        public IActionResult GetSiteInfo(int sid, int tid)
+        {
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisSiteModel model = manager.SelectHisSite(sid, tid);
+            if (model == null)
+            {
+                return FailMessage("未创建");
+            }
+            return SuccessResult(model);
+        }
+
+
+        [WebApi]
+        [HttpGet]
+        public IActionResult GetPrincipalInfo(int sid, int tid)
+        {
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisPrincipalModel model = manager.SelectHisPrincipal(sid, tid);
+
+            if (model == null)
+            {
+                return FailMessage("未创建");
+            }
+            return SuccessResult(model);
+        }
+
+
+        #endregion
 
 
 

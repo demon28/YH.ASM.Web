@@ -479,14 +479,16 @@ namespace YH.ASM.Web.Controllers
         public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model, int supportStatus, int nextUser,int personalId)
         {
             //TODO:web端暂不处理，目前灭有时间
-            AddDisposerModel addDisposer = new AddDisposerModel();
+            //AddDisposerModel addDisposer = new AddDisposerModel();
 
-            DisposerFacade facade = new DisposerFacade();
-            if (!facade.Create(addDisposer))
-            {
-                return FailMessage(facade.Msg);
-            }
-            return SuccessMessage("处理成功！");
+            //DisposerFacade facade = new DisposerFacade();
+            //if (!facade.Create(addDisposer))
+            //{
+            //    return FailMessage(facade.Msg);
+            //}
+            //return SuccessMessage("处理成功！");
+
+            return View();
         }
 
 
@@ -495,13 +497,14 @@ namespace YH.ASM.Web.Controllers
         public IActionResult AddPmcOrder(TASM_SUPPORT_PMC model, int supportStatus, int nextUser)
         {
 
-            PmcOrderFacade facade = new PmcOrderFacade();
+            //PmcOrderFacade facade = new PmcOrderFacade();
 
-            if (facade.Create(model, supportStatus, nextUser))
-            {
-                return FailMessage("处理失败！");
-            }
-            return SuccessMessage("处理成功！");
+            //if (facade.Create(model, supportStatus, nextUser))
+            //{
+            //    return FailMessage("处理失败！");
+            //}
+            //return SuccessMessage("处理成功！");
+            return View();
         }
 
 
@@ -510,14 +513,16 @@ namespace YH.ASM.Web.Controllers
         public IActionResult AddSiteCheck(TASM_SUPPORT_SITE model, int supportStatus, int nextUser)
         {
 
-            SiteCheckFacade facade = new SiteCheckFacade();
+            //SiteCheckFacade facade = new SiteCheckFacade();
 
-            if (!facade.Create(model, supportStatus, nextUser))
-            {
-                return FailMessage("处理失败！");
-            }
+            //if (!facade.Create(model, supportStatus, nextUser))
+            //{
+            //    return FailMessage("处理失败！");
+            //}
 
-            return SuccessMessage("处理成功！");
+            //return SuccessMessage("处理成功！");
+
+            return View();
 
         }
 
@@ -527,16 +532,16 @@ namespace YH.ASM.Web.Controllers
         public IActionResult AddPrincipalCheck(TASM_SUPPORT_PRINCIPAL model, int supportStatus, int nextUser)
         {
 
-            PrincipalFacade facade = new PrincipalFacade();
+            //PrincipalFacade facade = new PrincipalFacade();
 
-            if (!facade.Create(model, supportStatus, nextUser))
-            {
-                return FailMessage("处理失败！");
-            }
+            //if (!facade.Create(model, supportStatus, nextUser))
+            //{
+            //    return FailMessage("处理失败！");
+            //}
 
-            return SuccessMessage("处理成功！");
+            //return SuccessMessage("处理成功！");
 
-
+            return View();
 
         }
 

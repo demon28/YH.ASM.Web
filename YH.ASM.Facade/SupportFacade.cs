@@ -95,7 +95,7 @@ namespace YH.ASM.Facade
             TASM_PROJECTManager projectda = new TASM_PROJECTManager();
             TASM_PROJECT projectmodel = projectda.CurrentDb.GetById(model.ProjectId);
 
-            string code = projectmodel.CODE + DateTime.Now.ToString("yyyyMMdd");
+            string code = projectmodel.CODE +"-"+ da.SelectSupprotCodeIndex();
 
             supportModel = new TASM_SUPPORT()
             {
@@ -113,8 +113,8 @@ namespace YH.ASM.Facade
                 TITLE = model.Title,
                 TYPE = model.Type,
                 STATE = 0,
-                 MID=model.Mid,
-                  CODE=code
+                MID=model.Mid,
+                CODE=code
             };
 
             sid = da.CurrentDb.InsertReturnIdentity(supportModel);
