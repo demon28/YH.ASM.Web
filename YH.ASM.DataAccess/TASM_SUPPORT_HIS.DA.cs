@@ -71,7 +71,7 @@ select th.*, ts.*
 
 ) th
 
-  left join (SELECT Tsup.Content    contnet,
+  left join (SELECT Tsup.Content    content,
                     tsup.type       as type,
                     tsup.severity   severity,
                     tsup.findate    findate,

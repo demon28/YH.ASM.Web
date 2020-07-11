@@ -13,7 +13,7 @@ namespace YH.ASM.Entites.Model
        public int    NEXT_STATUS         {get;set;}
        public string    PRE_USER            {get;set;}
        public string    NEXT_USER           {get;set;}
-       public string    CONTNET             {get;set;}
+       public string CONTENT { get;set;}
        public int    TYPE                {get;set;}
        public int    SEVERITY            {get;set;}
        public string    FINDATE             {get;set;}
