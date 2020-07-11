@@ -165,7 +165,23 @@ WHERE 1=1  and t.SID=:sid
             return Convert.ToInt32(dataTable.Rows[0][0]);
 
         }
-    
+
+
+        public SupportReportCountModel SelectCount() {
+
+            string sql = @"select 
+sum(decode(state,0,1,0)) waite,
+sum(decode(state,1,1,0)) being ,
+sum(decode(state,2,1,0)) complete
+
+from tasm_support";
+
+            return Db.SqlQueryable<SupportReportCountModel>(sql).First();
+
+
+
+        }
+
     }
 
 }

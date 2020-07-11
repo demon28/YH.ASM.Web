@@ -43,10 +43,7 @@ namespace YH.ASM.Web.WebApi
             p.PageIndex = model.pageindex;
             p.PageSize = model.pagesize;
 
-            SupprotWatchState state = (SupprotWatchState)model.WatchState;
-            SupprotWatchType type = (SupprotWatchType)model.WatchType;
-
-            List<SupportListModel> list = manager.ListByWhere(string.Empty, ref p, type, state, model.Uuid);
+            List<SupportListModel> list = manager.ListByWhere(string.Empty, ref p, model.WatchType, model.WatchState, model.Uuid);
 
             return SuccessResultList(list, p);
 
@@ -83,6 +80,14 @@ namespace YH.ASM.Web.WebApi
 
             return SuccessResultList(list);
 
+        }
+
+
+        public IActionResult SelectCount() {
+
+            TASM_SUPPORT_Da da = new TASM_SUPPORT_Da();
+            return SuccessResult(da.SelectCount());
+        
         }
 
 
@@ -172,7 +177,7 @@ namespace YH.ASM.Web.WebApi
         #endregion
 
 
-
+        #region  工作流
         [WebApi]
         [HttpGet]
         public IActionResult ListByHistory(int sid)
@@ -184,15 +189,15 @@ namespace YH.ASM.Web.WebApi
         }
 
 
-        #region  工作流
+ 
 
 
         [WebApi]
         [HttpGet]
-        public IActionResult GetSupportInfo(int sid)
+        public IActionResult GetSupportInfo(int sid,int tid)
         {
-            DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            TASM_SUPPORT model = manager.SelectById(sid);
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisSupportModel model = manager.SelectHisSupport(sid, tid);
 
             return SuccessResult(model);
 

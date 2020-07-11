@@ -46,6 +46,63 @@ namespace  YH.ASM.DataAccess
 
 
 
+        public HisSupportModel SelectHisSupport(int sid,int tid)
+        {
+            string sql = @"
+
+select th.*, ts.*
+  from (select t.sid         as sid,
+               t.createtime  createtime,
+               t.remarks     reamrks,
+               t.next_status next_status,
+               tu.user_name  pre_user,
+               tus.user_name next_user
+        
+          from tasm_support_his t
+        
+          left join tasm_user tu
+            on tu.user_id = t.pre_user
+          left join tasm_user tus
+            on tus.user_id = t.next_user
+        
+         where t.type = 0
+           and t.sid = :sid
+           and tid = :tid
+
+) th
+
+  left join (SELECT Tsup.Content    contnet,
+                    tsup.type       as type,
+                    tsup.severity   severity,
+                    tsup.findate    findate,
+                    tsup.code       Code,
+                    tp.code   PojectCode,
+                    TP.NAME   PROJECTNAME,
+                    tm.name   MACHINENAME,
+                    tm.serial MACHINESERIAL
+             
+               FROM TASM_SUPPORT Tsup
+             
+               LEFT JOIN TASM_PROJECT TP
+                 ON TP.PID = Tsup.PROJECT
+               left join tasm_machine tm
+                 on tm.mid = Tsup.mid
+             
+             ) ts
+    on th.sid = th.sid
+
+
+";
+
+            var configParms = new List<SugarParameter>();
+
+            configParms.Add(new SugarParameter("sid", sid));
+            configParms.Add(new SugarParameter("tid", tid));
+
+            return Db.SqlQueryable<HisSupportModel>(sql).AddParameters(configParms).First();
+
+
+        }
 
         public HisDisposerModel SelectHisDisposer(int sid,int tid)
         {
@@ -183,7 +240,8 @@ tp.id tid,
 tp.enddate enddate,
 tp.checkuser checkuser,
 tp.result result,
-tp.remarks remarks
+tp.remarks remarks,
+tp.status status
 
 from tasm_support_his t 
 left join tasm_support_principal tp on t.tid=tp.id

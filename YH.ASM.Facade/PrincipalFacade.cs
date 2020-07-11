@@ -141,7 +141,8 @@ namespace YH.ASM.Facade
 
             if (supportModel.STATUS == 6 || supportModel.STATUS == 7)
             {
-                supportModel.STATE = 2;  //工单已完成
+                supportModel.STATE = 2;  //工单已完成, 工单状态 只有创建时，是待办， 技术处理之后 就变成 处理中了，
+                supportModel.CONDUCTOR = supportModel.CREATOR;   //工单，完成之后，没有下一处理人， 处理人变成创建人，但不产生新的personal数据
             }
 
           return  support_manager.CurrentDb.Update(supportModel);  //修改工单表

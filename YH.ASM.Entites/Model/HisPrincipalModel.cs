@@ -26,11 +26,13 @@ namespace YH.ASM.Entites.Model
         /// </summary>
         public string CHECKUSER { get; set; }
 
-        //审核结果
+        //审核描述
         public string RESULT { get; set; }
 
         
         public string REMARKS { get; set; }
+
+        public int STATUS { get; set; }
 
     }
 }
