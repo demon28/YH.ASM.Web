@@ -170,9 +170,9 @@ WHERE 1=1  and t.SID=:sid
         public SupportReportCountModel SelectCount() {
 
             string sql = @"select 
-sum(decode(state,0,1,0)) waite,
-sum(decode(state,1,1,0)) being ,
-sum(decode(state,2,1,0)) complete
+sum(decode(state,0,1,0)) as wait,
+sum(decode(state,1,1,0)) as being ,
+sum(decode(state,2,1,0)) as complete
 
 from tasm_support";
 
