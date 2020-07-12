@@ -34,6 +34,7 @@ namespace YH.ASM.Web.Models
         public string customerName { get; set; }
         public string supportName { get; set; }
 
+        public int machineId{ get; set; }
 
         public string machineName { get; set; }
         public int machineCount { get; set; }

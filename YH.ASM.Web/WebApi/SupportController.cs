@@ -68,6 +68,27 @@ namespace YH.ASM.Web.WebApi
 
         }
 
+
+
+        [WebApi]
+        [HttpPost]
+        public IActionResult ListSupport(ApiListModelBase model)
+        {
+
+            TASM_SUPPORT_Da da = new TASM_SUPPORT_Da();
+            SqlSugar.PageModel p = new SqlSugar.PageModel();
+            p.PageIndex = model.pageindex;
+            p.PageSize = model.pagesize;
+            
+
+            List<TASM_SUPPORT> list = da.ListByWhere(model.keywords, ref  p);
+
+            return SuccessResultList(list, p);
+
+        }
+
+
+
         [WebApi]
         [HttpPost]
         public IActionResult LisAttachmentt(ListAttachmentInputModel model) {

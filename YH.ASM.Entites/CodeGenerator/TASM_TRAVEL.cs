@@ -104,8 +104,10 @@ namespace YH.ASM.Entites.CodeGenerator
         /// </summary>
         public System.String SUPPORT_NAME { get; set; }
 
-
-
+        /// <summary>
+        /// 设备id
+        /// </summary>
+        public System.Int32 MACHINEID { get; set; }
         /// <summary>
         /// 设备名称
         /// </summary>

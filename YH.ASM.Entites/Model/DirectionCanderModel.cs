@@ -18,5 +18,11 @@ namespace YH.ASM.Entites.Model
         public string WORK_ID { get; set; }
 
         public string DEPARTMENT { get; set; }
+
+        public string PROJECTNAME { get; set; }
+        public string PROJECTCODE { get; set; }
+
+        public string MACHINENAME { get; set; }
+        public string MACHINESERIAL { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace YH.ASM.DataAccess
             int pageCount = 0;
 
             var list = Db.Queryable<TASM_SUPPORT>()
-                .Where(s => s.TITLE.Contains(keyword))
+                .Where(s => s.CONTENT.Contains(keyword))
                 .OrderBy(s => s.SID, OrderByType.Asc)
                 .ToPageList(p.PageIndex, p.PageSize, ref pageCount);
 
