@@ -49,47 +49,36 @@ namespace  YH.ASM.DataAccess
         public HisSupportModel SelectHisSupport(int sid,int tid)
         {
             string sql = @"
+SELECT T.SID         AS SID,
+       T.CREATETIME  CREATETIME,
+       T.REMARKS     REAMRKS,
+       T.NEXT_STATUS NEXT_STATUS,
+       TU.USER_NAME  PRE_USER,
+       TUS.USER_NAME NEXT_USER,
+       TSUP.TYPE     AS SUPPORTTYPE,
+       TSUP.SEVERITY SEVERITY,
+       TSUP.FINDATE  FINDATE,
+       tsup.content AS CONTENT,
+       TSUP.CODE     CODE,
+       TP.CODE       POJECTCODE,
+       TP.NAME       PROJECTNAME,
+       TM.NAME       MACHINENAME,
+       TM.SERIAL     MACHINESERIAL
+  FROM TASM_SUPPORT_HIS T
 
-select th.*, ts.*
-  from (select t.sid         as sid,
-               t.createtime  createtime,
-               t.remarks     reamrks,
-               t.next_status next_status,
-               tu.user_name  pre_user,
-               tus.user_name next_user
-        
-          from tasm_support_his t
-        
-          left join tasm_user tu
-            on tu.user_id = t.pre_user
-          left join tasm_user tus
-            on tus.user_id = t.next_user
-        
-         where t.type = 0
-           and t.sid = :sid
-           and tid = :tid
+  LEFT JOIN TASM_USER TU
+    ON TU.USER_ID = T.PRE_USER
+  LEFT JOIN TASM_USER TUS
+    ON TUS.USER_ID = T.NEXT_USER
+  LEFT JOIN TASM_SUPPORT TSUP
+    ON TSUP.SID = T.SID
+  LEFT JOIN TASM_PROJECT TP
+    ON TP.PID = TSUP.PROJECT
+  LEFT JOIN TASM_MACHINE TM
+    ON TM.MID = TSUP.MID
 
-) th
-
-  left join (SELECT Tsup.Content    content,
-                    tsup.type       as type,
-                    tsup.severity   severity,
-                    tsup.findate    findate,
-                    tsup.code       Code,
-                    tp.code   PojectCode,
-                    TP.NAME   PROJECTNAME,
-                    tm.name   MACHINENAME,
-                    tm.serial MACHINESERIAL
-             
-               FROM TASM_SUPPORT Tsup
-             
-               LEFT JOIN TASM_PROJECT TP
-                 ON TP.PID = Tsup.PROJECT
-               left join tasm_machine tm
-                 on tm.mid = Tsup.mid
-             
-             ) ts
-    on th.sid = th.sid
+ WHERE T.TYPE = 0
+   AND T.SID = :sid
 
 
 ";
@@ -97,7 +86,7 @@ select th.*, ts.*
             var configParms = new List<SugarParameter>();
 
             configParms.Add(new SugarParameter("sid", sid));
-            configParms.Add(new SugarParameter("tid", tid));
+ 
 
             return Db.SqlQueryable<HisSupportModel>(sql).AddParameters(configParms).First();
 

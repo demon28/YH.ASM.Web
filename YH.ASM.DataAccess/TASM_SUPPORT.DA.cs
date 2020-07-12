@@ -101,7 +101,7 @@ namespace YH.ASM.DataAccess
             int totalCount = 0;
             int totalPage = 0;
             List<SupportListModel> list = Db.SqlQueryable<SupportListModel>(sql)
-                .Where(s => s.CONTENT.Contains(keyword) || s.CONDUCTORNAME.Contains(keyword) || s.CREATORNAME.Contains(keyword))
+                .Where(s => s.CONTENT.Contains(keyword) || s.CONDUCTORNAME.Contains(keyword) || s.CREATORNAME.Contains(keyword) || s.CODE.Contains(keyword))
                 .OrderBy(s=>s.SID,OrderByType.Desc)
                 .AddParameters(configParms)
                 .ToPageList(p.PageIndex, p.PageSize, ref totalCount, ref totalPage);

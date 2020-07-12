@@ -158,11 +158,12 @@
                     var _self = this;
                     _self.id = getQueryString("id");
                     $.ajax({
-                        url: "/Support/GetUpdateInfo",
+                        url: "/SupportTimeLine/GetSupportInfo",
                         type: "POST",
                         async: false,
                         data: {
-                            id: _self.id
+                            sid: _self.id,
+                            tid: _self.id
                         },
                         success: function (result) {
 
@@ -311,7 +312,17 @@
         });
 
 
+        function SetIsOrder(value) {
 
+            if (value == 1) {
+                return "是";
+            }
+
+            if (value == 0) {
+                return "否";
+            }
+
+        }
         function SetSeverity (value) {
             return EnumGetSingle(value, Support_Severitylist());
         }

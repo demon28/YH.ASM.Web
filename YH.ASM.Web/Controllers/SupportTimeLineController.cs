@@ -51,6 +51,20 @@ namespace YH.ASM.Web.Controllers
 
         #region  工作流
 
+
+        [Right(Ignore = true)]
+        [HttpPost]
+        public IActionResult GetSupportInfo(int sid, int tid)
+        {
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisSupportModel model = manager.SelectHisSupport(sid, tid);
+
+            return SuccessResult(model);
+
+        }
+
+
+
         [Right(Ignore = true)]
         [HttpPost]
         public IActionResult GetDisposerInfo(int sid,int tid)

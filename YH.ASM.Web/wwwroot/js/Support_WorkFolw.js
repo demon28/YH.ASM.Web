@@ -6,7 +6,7 @@ function SupportWF(supprotInfo) {
 
 
    var html = "  <li class=\"time-label\">  "
-       html+=     "    <span class=\"bg-green\" > "  +supprotInfo.CREATETIME  +" </span >"
+    html += "    <span class=\"bg-green\" > " + supprotInfo.CREATETIME  +" </span >"
        html +=  "     </li >"
 
 
@@ -27,7 +27,7 @@ function SupportWF(supprotInfo) {
     html += "               <div class=\"form-group\">"
     html += "                    <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">   创建者：</label>" 
     html += "                    <div class=\"col-sm-6\">" 
-    html += "                          <input type=\"text\" class=\"form-control input-sm\" value=\""+supprotInfo.CREATORNAME+"\" readonly=\"readonly\">" 
+    html += "                          <input type=\"text\" class=\"form-control input-sm\" value=\"" + supprotInfo.PRE_USER+"\" readonly=\"readonly\">" 
     html += "                                </div>" 
 
     html += "                  </div>"
@@ -36,14 +36,14 @@ function SupportWF(supprotInfo) {
     html += "                 <div class=\"form-group\">" 
     html += "                     <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\"> 项目名称：</label>" 
     html += "                      <div class=\"col-sm-6\">" 
-    html += "                         <input type=\"text\" class=\"form-control input-sm\" value=\""+supprotInfo.PROJECTNAME+"\" readonly=\"readonly\">" 
+    html += "                         <input type=\"text\" class=\"form-control input-sm\" value=\"" + supprotInfo.PROJECTNAME + "-" + supprotInfo.POJECTCODE+"\" readonly=\"readonly\">" 
     html += "                                 </div>" 
 
     html += "                 </div>" 
     html += "                <div class=\"form-group\">" 
     html += "                 <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">问题类型：</label>" 
     html += "                 <div class=\"col-sm-6\">" 
-    html += "                     <input type=\"text\" class=\"form-control input-sm\" value=\""+SetType(supprotInfo.TYPE)+"\" readonly=\"readonly\">" 
+    html += "                     <input type=\"text\" class=\"form-control input-sm\" value=\"" + SetType(supprotInfo.SUPPORTTYPE)+"\" readonly=\"readonly\">" 
     html += "                             </div>" 
 
     html += "           </div>"
@@ -56,7 +56,7 @@ function SupportWF(supprotInfo) {
     html += "         <div class=\"form-group\">" 
     html += "               <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\"> 严重程度：</label>" 
     html += "                 <div class=\"col-sm-6\">" 
-    html += "               <input type=\"text\" class=\"form-control input-sm\" value=\""+SetSeverity(supprotInfo.SEVERITY)+"\" readonly=\"readonly\">" 
+    html += "               <input type=\"text\" class=\"form-control input-sm\" value=\"" + SetSeverity(supprotInfo.SEVERITY)+"\" readonly=\"readonly\">" 
     html += "                      </div>" 
 
     html += "       </div>" 
@@ -69,7 +69,7 @@ function SupportWF(supprotInfo) {
     html += "       <div class=\"form-group\">" 
     html += "           <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">处理人：</label>" 
     html += "           <div class=\"col-sm-6\">" 
-    html += "               <input type=\"text\" class=\"form-control input-sm\" value=\"" +supprotInfo.CONDUCTORNAME+"\" readonly=\"readonly\">" 
+    html += "               <input type=\"text\" class=\"form-control input-sm\" value=\"" + supprotInfo.NEXT_USER+"\" readonly=\"readonly\">" 
     html += "                      </div>" 
 
     html += "                   </div>" 
@@ -80,7 +80,7 @@ function SupportWF(supprotInfo) {
     html += "             <div class=\"form-group\">" 
     html += "                <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">问题机型：</label>" 
     html += "                  <div class=\"col-sm-6\">" 
-    html += "                      <input type=\"text\" class=\"form-control input-sm\" value=\""+supprotInfo.TITLE+"\" placeholder=\"请填写工单概要\" readonly=\"readonly\">" 
+    html += "                      <input type=\"text\" class=\"form-control input-sm\" value=\"" + supprotInfo.MACHINENAME + "-" + supprotInfo.MACHINESERIAL+"\"  readonly=\"readonly\">" 
     html += "                     </div>" 
 
     html += "                   </div>" 
@@ -140,7 +140,45 @@ html+="                                    </div>                               
 html+="                                                                                                                                                                                                                                              "
 html+="                            </div>                                                                                                                                                                                                            "
 html+="                                                                                                                                                                                                                                              "
-html+="                                                                                                                                                                                                                                              "
+
+    html += "                        <div class=\"form-group\">                                                                                                                                                                                            "
+    html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">BOM图纸：</label>                                                                                                        "
+    html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
+    html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + disposerInfo.BOM + "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
+    html += "                                    </div>                                                                                                                                                                                                    "
+    html += "                                                                                                                                                                                                                                              "
+    html += "                            </div>                                                                                                                                                                                                            "
+
+    html += "                        <div class=\"form-group\">                                                                                                                                                                                            "
+    html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">是否下单：</label>                                                                                                        "
+    html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
+    html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + SetIsOrder(disposerInfo.ISORDER)+ "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
+    html += "                                    </div>                                                                                                                                                                                                    "
+    html += "                                                                                                                                                                                                                                              "
+    html += "                            </div>                                                                                                                                                                                                            "
+
+    html += "                        <div class=\"form-group\">                                                                                                                                                                                            "
+    html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">下单人：</label>                                                                                                        "
+    html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
+    html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + disposerInfo.ORDERMAN + "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
+    html += "                                    </div>                                                                                                                                                                                                    "
+    html += "                                                                                                                                                                                                                                              "
+    html += "                            </div>                                                                                                                                                                                                            "
+
+    html += "                        <div class=\"form-group\">                                                                                                                                                                                            "
+    html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">下单时间：</label>                                                                                                        "
+    html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
+    html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + disposerInfo.ORDERTIME + "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
+    html += "                                    </div>                                                                                                                                                                                                    "
+    html += "                                                                                                                                                                                                                                              "
+    html += "                            </div>                                                                                                                                                                                                            "
+
+
+
+
+
+
+    html += "                                                                                                                                                                                                                                              "
 html+="                                                                                                                                                                                                                                              "
 html+="                                                                                                                                                                                                                                              "
 html+="                            <div class=\"form-group\">                                                                                                                                                                                        "
@@ -170,7 +208,7 @@ html+="                                                                         
 html+="                                        </div>                                                                                                                                                                                                "
 html+="                                                                                                                                                                                                                                              "
 html+="                                        <div class=\"form-group\">                                                                                                                                                                            "
-html+="                                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">工单状态：</label>                                                                                        "
+html+="                                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">流程节点：</label>                                                                                        "
 html+="                                            <div class=\"col-sm-6\">                                                                                                                                                                          "
 html+="                                                <input type=\"text\" class=\"form-control input-sm\" value=\""+SetStatus(disposerInfo.NEXT_STATUS)+"\" readonly=\"readonly\">                                                                    "
 html+="                                                                                                                                                                                                                                              "
@@ -248,42 +286,10 @@ html+="                                                                         
 html+="                   <form class=\"form-horizontal\" style=\"margin-top:10px\">                                                                                                                                           ";
 html+="                                                                                                                                                                                                                        ";
 html+="                                                                                                                                                                                                                        ";
-html+="                                                                                                                                                                                                                        ";
-html+="                       <div class=\"form-group\">                                                                                                                                                                       ";
-html+="                           <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">BOM图纸：</label>                                                                                    ";
-html+="                           <div class=\"col-sm-6\">                                                                                                                                                                     ";
-html+="                               <input type=\"text\" class=\"form-control input-sm\" value=\""+pmcInfo.BOM+"\" placeholder=\"请输入BOM图纸\" readonly=\"readonly\">                                                          ";
-html+="                                   </div>                                                                                                                                                                               ";
-html+="                                                                                                                                                                                                                        ";
-html+="                           </div>                                                                                                                                                                                       ";
+                                                                                                                                                                         
 html+="                                                                                                                                                                                                                        ";
 html+="                                                                                                                                                                                                                        ";
-html+="                                                                                                                                                                                                                        ";
-html+="                                                                                                                                                                                                                        ";
-html+="                                                                                                                                                                                                                        ";
-html+="                           <div class=\"form-group\">                                                                                                                                                                   ";
-html+="                               <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">是否下单：</label>                                                                               ";
-html+="                               <div class=\"col-sm-6\">                                                                                                                                                                 ";
-html+="                                   <input type=\"text\" class=\"form-control input-sm\" value=\""+pmcInfo.ISBOOK+"\" placeholder=\"请输入BOM图纸\" readonly=\"readonly\">                                                   ";
-html+="                                   </div>                                                                                                                                                                               ";
-html+="                               </div>                                                                                                                                                                                   ";
-html+="                                                                                                                                                                                                                        ";
-html+="                                                                                                                                                                                                                        ";
-html+="                                                                                                                                                                                                                        ";
-html+="                               <div class=\"form-group\">                                                                                                                                                               ";
-html+="                                   <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">下单日期：</label>                                                                           ";
-html+="                                   <div class=\"col-sm-6\">                                                                                                                                                             ";
-html+="                                       <input type=\"text\" class=\"form-control input-sm\" id=\"txt_bookdate\" value=\""+pmcInfo.BOOKDATE+"\" placeholder=\"请选择下单日期\" readonly=\"readonly\" />                      ";
-html+="                                   </div>                                                                                                                                                                               ";
-html+="                                                                                                                                                                                                                        ";
-html+="                               </div>                                                                                                                                                                                   ";
-html+="                               <div class=\"form-group\">                                                                                                                                                               ";
-html+="                                   <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">下单人：</label>                                                                             ";
-html+="                                   <div class=\"col-sm-6\">                                                                                                                                                             ";
-html+="                                       <input type=\"text\" class=\"form-control input-sm\" value=\""+pmcInfo.BOOKUSER+"\" placeholder=\"请输入下单人姓名\" readonly=\"readonly\">                                          ";
-html+="                                   </div>                                                                                                                                                                               ";
-html+="                                                                                                                                                                                                                        ";
-html+="                                   </div>                                                                                                                                                                               ";
+html+="                                                                                                                                                                                                                        ";                                                                                                                                                                                                                                                                                                                                                       
 html+="                                   <div class=\"form-group\">                                                                                                                                                           ";
 html+="                                       <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">物料单号：</label>                                                                       ";
 html+="                                       <div class=\"col-sm-6\">                                                                                                                                                         ";
@@ -328,7 +334,7 @@ html+="                                       </div>                            
 html+="                                                                                                                                                                                                                        ";
 html+="                                                                                                                                                                                                                        ";
 html+="                                       <div class=\"form-group\">                                                                                                                                                       ";
-html+="                                           <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">工单状态：</label>                                                                   ";
+html+="                                           <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">流程节点：</label>                                                                   ";
 html+="                                           <div class=\"col-sm-6\">                                                                                                                                                     ";
 html+="                                               <input type=\"text\" class=\"form-control input-sm\" value=\""+SetStatus(pmcInfo.NEXT_STATUS)+"\" readonly=\"readonly\">                                                     ";
 html+="                                   </div>                                                                                                                                                                               ";
@@ -417,7 +423,7 @@ html+="                                                                         
 html+="                                                                                                                                                                                                  ";
 html+="                                                                                                                                                                                                  ";
 html+="                           <div class=\"form-group\">                                                                                                                                             ";
-html+="                               <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">工单状态：</label>                                                         ";
+html+="                               <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">流程节点：</label>                                                         ";
 html+="                               <div class=\"col-sm-6\">                                                                                                                                           ";
     html += "                                   <input type=\"text\" class=\"form-control input-sm\" value=\"" + SetStatus(siteInfo.NEXT_STATUS) +"\" readonly=\"readonly\">                                          ";
 html+="                                   </div>                                                                                                                                                         ";
@@ -513,7 +519,7 @@ html+="                                                                         
 html+="                                                                                                                                                                                                                       ";
 html+="                                                                                                                                                                                                                       ";
 html+="                                <div class=\"form-group\">                                                                                                                                                             ";
-html+="                                    <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">工单状态：</label>                                                                         ";
+html+="                                    <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">流程节点：</label>                                                                         ";
 html+="                                    <div class=\"col-sm-6\">                                                                                                                                                           ";
     html += "                                        <input type=\"text\" class=\"form-control input-sm\" value=\"" + SetStatus(principalInfo.NEXT_STATUS) +" \" readonly=\"readonly\">                                                     ";
 html+="                                    </div>                                                                                                                                                                             ";
