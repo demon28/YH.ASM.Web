@@ -15,7 +15,7 @@ namespace YH.ASM.Entites.Model
         public int ProjectCode { get; set; }
         public int Type { get; set; }
 
-        public int Priority { get; set; }
+      
         public int Severity { get; set; }
 
         public DateTime FindDate { get; set; }

@@ -47,11 +47,7 @@ namespace YH.ASM.Entites.CodeGenerator
         ///描述：严重程度
         ///</summary>
         public System.Int32 SEVERITY { get; set; }
-        
-        ///<summary>
-        ///描述：优先级
-        ///</summary>
-        public System.Int32 PRIORITY { get; set; }
+      
         
         ///<summary>
         ///描述：发现时间
@@ -73,10 +69,7 @@ namespace YH.ASM.Entites.CodeGenerator
         ///</summary>
         public System.Int32 STATUS { get; set; }
         
-        ///<summary>
-        ///描述：逻辑删除
-        ///</summary>
-        public System.Int32 ISDEL { get; set; }
+ 
         
         ///<summary>
         ///描述：创建时间

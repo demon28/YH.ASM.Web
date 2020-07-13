@@ -39,7 +39,7 @@ SELECT T.STATUS    PSTATUS,
      TS.CREATOR,
      TS.TYPE,
      TS.SEVERITY,
-     TS.PRIORITY,
+  
      TS.FINDATE,
      TS.CONDUCTOR,
      TS.PROJECT,
@@ -75,7 +75,7 @@ LEFT JOIN TASM_MACHINE TM
 where 1=1
 
 ";
-
+            
 
             var configParms = new List<SugarParameter>();
 
