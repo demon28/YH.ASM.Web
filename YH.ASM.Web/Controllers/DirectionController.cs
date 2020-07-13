@@ -81,6 +81,7 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
+        [HttpPost]
         [Right(PowerName = "查看日报")]
         public IActionResult WrokReport(int traid) {
 

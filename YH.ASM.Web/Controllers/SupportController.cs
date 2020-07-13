@@ -192,7 +192,7 @@ namespace YH.ASM.Web.Controllers
         {
 
             model.CREATETIME = DateTime.Now;
-            model.ISDEL = 0;
+         
             model.STATUS = 0;
 
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();

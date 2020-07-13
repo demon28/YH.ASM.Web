@@ -417,9 +417,10 @@
                             },
                             success: function (result) {
 
-                                console.log(result);
+                                console.log(JSON.stringify(result));
 
                                 if (result.Success) {
+
 
                                     self.list = result.Content;
 

@@ -104,9 +104,9 @@ namespace YH.ASM.Facade
                 CONTENT = model.Content,
                 CREATETIME = DateTime.Now,
                 FINDATE = model.FindDate,
-                ISDEL = 0,
+          
                 MEMBERID = 0,
-                PRIORITY = model.Priority,
+    
                 PROJECT = model.ProjectId,
                 SEVERITY = model.Severity,
                 STATUS = 0,
