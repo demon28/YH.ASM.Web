@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NPOI.SS.Formula.Functions;
+using SQLitePCL;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites;
 using YH.ASM.Entites.CodeGenerator;
@@ -19,11 +22,21 @@ namespace YH.ASM.Web.WebApi
 {
     public class SupportController : ApiControllerBase
     {
-        
+        private static ILogger<SupportController> logger;
+
+
+        public SupportController(ILogger<SupportController> _logger) {
+
+            logger = _logger;
+        }
+
         [WebApi]
         [HttpPost]
         public IActionResult Create(SupportCreateModel model)
         {
+
+            logger.LogInformation("开始创建工单");
+
             Facade.SupportFacade support = new Facade.SupportFacade();
             if (!support.Create(model))
             {
@@ -59,8 +72,8 @@ namespace YH.ASM.Web.WebApi
             p.PageIndex = model.pageindex;
             p.PageSize = model.pagesize;
 
-            SupprotWatchState state = (SupprotWatchState)model.WatchState;
-            SupprotWatchType type = (SupprotWatchType)model.WatchType;
+            SupprotWatchState state = model.WatchState;
+            SupprotWatchType type = model.WatchType;
 
             List<PersonalSupportListModel> list = da.ListByWhere(string.Empty, ref p, type, state, model.Uuid);
 

@@ -1,16 +1,24 @@
-﻿using System;
+﻿
+
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using YH.ASM.DataAccess;
 using YH.ASM.DataAccess.CodeGenerator;
 using YH.ASM.Entites;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
+using YH.ASM.Entites.Tool;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace YH.ASM.Facade
 {
      public class SupportFacade:FacadeBase.FacadeBase
     {
+
         /// <summary>
         /// 入口
         /// </summary>
@@ -18,10 +26,15 @@ namespace YH.ASM.Facade
         /// <returns></returns>
         public bool Create(SupportCreateModel model)
         {
+
+        
+
             DataAccess.TASM_SUPPORT_Da da = new TASM_SUPPORT_Da();
             try
             {
                 da.Db.BeginTran();
+
+                Logger.LogInformation("通过基类方法去写");
 
                 int sid = 0;
                 TASM_SUPPORT supportModel = new TASM_SUPPORT();
@@ -29,6 +42,7 @@ namespace YH.ASM.Facade
                 //插入工单表
                 if (!InsertSupport(model,da,ref sid, ref supportModel))
                 {
+                    Logger.LogInformation("插入工单表失败");
                     da.Db.RollbackTran();
                     return false;
                 }
@@ -36,6 +50,7 @@ namespace YH.ASM.Facade
                 //插入操作历史表
                 if (!InsertHistory(supportModel,sid))
                 {
+                    Logger.LogInformation("插入历史表失败");
                     da.Db.RollbackTran();
                     return false;
                 }
@@ -43,6 +58,7 @@ namespace YH.ASM.Facade
                 //添加处理人表
                 if (!InsertPersonal(supportModel, sid))
                 {
+                    Logger.LogInformation("插入处理人表失败");
                     da.Db.RollbackTran();
                     return false;
                 }
@@ -51,6 +67,7 @@ namespace YH.ASM.Facade
                 //修改附件信息
                 if (!UpdateAttachment(model,sid))
                 {
+                    Logger.LogInformation("修改附件信息失败");
                     da.Db.RollbackTran();
                     return false;
                 }
@@ -58,13 +75,14 @@ namespace YH.ASM.Facade
                 //添加推送消息
                 if (!InsertPush( model, sid))
                 {
+                    Logger.LogInformation("添加推送消息失败");
                     da.Db.RollbackTran();
                     return false;
                 }
 
 
 
-
+                Logger.LogInformation("创建工单成功");
                 da.Db.CommitTran();
 
                 this.Msg = "创建成功！";
@@ -74,7 +92,7 @@ namespace YH.ASM.Facade
             {
             
                 da.Db.RollbackTran();
-
+                Logger.LogInformation(""+ e);
                 this.Msg = "创建工单失败！";
                 return false;
             }

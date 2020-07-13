@@ -29,11 +29,23 @@ namespace YH.ASM.Web.Controllers
     {
 
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly ILogger<ProjectController> logger;
+        private readonly ILogger<SupportController> logger;
+
+
+        public SupportController(IWebHostEnvironment hostingEnvironment, ILogger<SupportController> _logger)
+        {
+            _hostingEnvironment = hostingEnvironment;
+            logger = _logger;
+        }
+
+
 
         [Right(PowerName = "工单列表")]
         public IActionResult Index()
         {
+
+
+            logger.LogInformation("web层日志测试");
 
             return View();
         }
@@ -97,11 +109,7 @@ namespace YH.ASM.Web.Controllers
 
 
 
-        public SupportController(IWebHostEnvironment hostingEnvironment, ILogger<ProjectController> _logger)
-        {
-            _hostingEnvironment = hostingEnvironment;
-            logger = _logger;
-        }
+       
 
 
         [Right(Ignore = true)]
