@@ -30,7 +30,7 @@ namespace YH.ASM.Web.WebApi
             };
 
             List<MachineModel> list = new List<MachineModel>();
-            manager.ListByWhere(string.Empty, ref p, ref list);
+            manager.ListByWhere(model.keywords, ref p, ref list);
 
             return SuccessResultList(list, p);
 

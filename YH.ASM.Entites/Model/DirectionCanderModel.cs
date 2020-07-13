@@ -24,5 +24,7 @@ namespace YH.ASM.Entites.Model
 
         public string MACHINENAME { get; set; }
         public string MACHINESERIAL { get; set; }
+
+        public string SUPPORTCODE { get; set; }
     }
 }
