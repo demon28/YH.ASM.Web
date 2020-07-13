@@ -61,6 +61,7 @@ namespace YH.ASM.Web.WebApi
             _travelModel.MACHINE_NAME = model.machineName;
             _travelModel.MACHINE_COUNT = model.machineCount;
             _travelModel.REMARKS = model.remarks;
+            _travelModel.MACHINEID = model.machineId;
 
             //此处 有建 关联人员信息 表 ，未启用
 
