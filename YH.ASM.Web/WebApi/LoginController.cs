@@ -25,9 +25,17 @@ namespace YH.ASM.Web.WebApi
             TASM_USER usermodel = new TASM_USER();
             TASM_USERManager tASM_USERManager = new TASM_USERManager();
 
+
+            if (!tASM_USERManager.SelectByWorkId(model.Username))
+            {
+                return FailMessage("用户名不存在！");
+            }
+
+
+
             if (!tASM_USERManager.LoginByUser(model.Username, Entites.Tool.MD5.Encrypt(model.Password), ref usermodel))
             {
-                return FailMessage();
+                return FailMessage("用户名或密码错误！");
             }
             return SuccessResult(usermodel, "成功");
         }

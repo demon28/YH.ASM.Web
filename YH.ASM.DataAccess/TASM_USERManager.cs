@@ -15,6 +15,15 @@ namespace YH.ASM.DataAccess
         
         }
 
+
+
+        public bool SelectByWorkId(string workid) {
+
+           var  model = Db.Queryable<TASM_USER>().First(it => it.WORK_ID == workid );
+            return model != null;
+
+        }
+
         public bool LoginByUser(string workid,string pwd,ref TASM_USER model)
         {
              model =Db.Queryable<TASM_USER>().First(it => it.WORK_ID == workid && it.USER_PWD ==pwd);

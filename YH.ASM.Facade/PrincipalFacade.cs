@@ -22,8 +22,8 @@ namespace YH.ASM.Facade
                 manager.Db.BeginTran();
 
                 int pid = 0;
-                //1，添加 PMC处理表数据，并获得新id
-                if (!InsertSupport( model,  manager, ref pid))
+                //1，添加 现场审核处理表数据，并获得新id
+                if (!InsertPrincipal( model,  manager, ref pid))
                 {
                     Msg = "创建审核信息失败！";
                     manager.Db.RollbackTran();
@@ -98,11 +98,11 @@ namespace YH.ASM.Facade
 
         }
 
-        private bool InsertSupport(TASM_SUPPORT_PRINCIPAL model, TASM_SUPPORT_PRINCIPAL_Da manager, ref int pid)
+        private bool InsertPrincipal(TASM_SUPPORT_PRINCIPAL model, TASM_SUPPORT_PRINCIPAL_Da manager, ref int pid)
         {
 
             model.CREATETIME = DateTime.Now;
-            model.STATUS = 0;
+            model.STATUS = model.STATUS;
             pid = manager.Db.Insertable(model).ExecuteReturnIdentity();
 
             return pid > 0;

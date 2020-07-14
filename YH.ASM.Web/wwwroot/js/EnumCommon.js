@@ -54,7 +54,7 @@ function Support_Statuslist() {
     Statuslist.push({ value: 2, text: "分析完成-->现场处理" });
     Statuslist.push({ value: 3, text: "PMC完成-->现场处理" });
     Statuslist.push({ value: 4, text: "现场处理-->负责人审核" });
-    Statuslist.push({ value: 5, text: "负责人审核-->未完成" });
+    Statuslist.push({ value: 5, text: "负责人审核-->驳回再处理" });
     Statuslist.push({ value: 6, text: "负责人审核-->已完成" });
     Statuslist.push({ value: 7, text: "已拒绝" });
 

@@ -276,7 +276,7 @@ SELECT T.*,
        tp.code projectcode,
        tm.name machinename,
        tm.serial machineserial,
-       TU.USER_NAME USER_NAME
+       TU.USER_NAME USER_NAME,
        tsup.code supportCode
   FROM TASM_TRAVEL T
   LEFT JOIN TASM_USER TU
