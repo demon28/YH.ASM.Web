@@ -61,6 +61,7 @@ namespace YH.ASM.DataAccess
        TU.USER_NAME CONDUCTORNAME,
        TP.PID       PROJECTID,
        TP.NAME      PROJECTNAME,
+       TP.CODE      PROJECTCODE,
        TM.NAME      MACHINENAME,
        TM.SERIAL    MACHINESERIAL
 
@@ -97,11 +98,16 @@ namespace YH.ASM.DataAccess
                 sql += " and  t.state= "+(int)state;
                
             }
+            if (!string.IsNullOrEmpty(keyword)) {
+
+                sql+= " and   (t.CODE like '%" + keyword + "%'  or  t.CONTENT like '%" + keyword+"%'  or  TR.USER_NAME like '%"+keyword+"%' or TU.USER_NAME like '%"+keyword+"%'  or  TP.NAME like '%"+keyword+"%') ";
+            }
+
+
 
             int totalCount = 0;
             int totalPage = 0;
             List<SupportListModel> list = Db.SqlQueryable<SupportListModel>(sql)
-                .Where(s => s.CONTENT.Contains(keyword) || s.CONDUCTORNAME.Contains(keyword) || s.CREATORNAME.Contains(keyword) || s.CODE.Contains(keyword))
                 .OrderBy(s=>s.SID,OrderByType.Desc)
                 .AddParameters(configParms)
                 .ToPageList(p.PageIndex, p.PageSize, ref totalCount, ref totalPage);

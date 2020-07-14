@@ -16,7 +16,7 @@ function SupportWF(supprotInfo) {
     html += "      <div class=\"timeline-item\">"
     html += "          <span class=\"time\"><i class=\"fa fa-clock-o\"></i> "+ supprotInfo.CREATETIME +"</span>"
 
-    html += "          <h3 class=\"timeline-header\">创建工单</h3>"
+    html += "          <h3 class=\"timeline-header\">创建问题管理表</h3>"
 
     html += "        <div class=\"timeline-body\">"
 
@@ -125,7 +125,7 @@ html+="                                                                         
 html+="            <div class=\"timeline-item\">                                                                                                                                                                                                     "
     html += "                <span class=\"time\"><i class=\"fa fa-clock-o\"></i>  " + disposerInfo.CREATETIME +"</span>                                                                                                                                     "
 html+="                                                                                                                                                                                                                                              "
-html+="                <h3 class=\"timeline-header\">技术人员处理</h3>                                                                                                                                                                               "
+    html +="                <h3 class=\"timeline-header\">责任人处理</h3>                                                                                                                                                                               "
 html+="                                                                                                                                                                                                                                              "
 html+="                <div class=\"timeline-body\">                                                                                                                                                                                                 "
 html+="                                                                                                                                                                                                                                              "
@@ -279,7 +279,7 @@ html+="                                                                         
 html+="           <div class=\"timeline-item\">                                                                                                                                                                                ";
     html += "               <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + pmcInfo.CREATETIME +"</span>                                                                                                                     ";
 html+="                                                                                                                                                                                                                        ";
-html+="               <h3 class=\"timeline-header\">PMC人员处理</h3>                                                                                                                                                           ";
+    html +="               <h3 class=\"timeline-header\">售后内勤维护</h3>                                                                                                                                                           ";
 html+="                                                                                                                                                                                                                        ";
 html+="               <div class=\"timeline-body\">                                                                                                                                                                            ";
 html+="                                                                                                                                                                                                                        ";
@@ -409,7 +409,7 @@ html+="                                                                         
 html+="           <div class=\"timeline-item\">                                                                                                                                                          ";
     html += "               <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + siteInfo.CREATETIME +"</span>                                                                                              ";
 html+="                                                                                                                                                                                                  ";
-html+="               <h3 class=\"timeline-header\">现场人员处理</h3>                                                                                                                                    ";
+    html +="               <h3 class=\"timeline-header\">现场人员整改</h3>                                                                                                                                    ";
 html+="                                                                                                                                                                                                  ";
 html+="               <div class=\"timeline-body\">                                                                                                                                                      ";
 html+="                                                                                                                                                                                                  ";
@@ -492,7 +492,7 @@ html+="                                                                         
 html+="            <div class=\"timeline-item\">                                                                                                                                                                              ";
     html += "                <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + principalInfo.CREATETIME +" </span>                                                                                                             ";
 html+="                                                                                                                                                                                                                       ";
-html+="                <h3 class=\"timeline-header\">负责人审核</h3>                                                                                                                                                          ";
+    html +="                <h3 class=\"timeline-header\">现场负责人审核</h3>                                                                                                                                                          ";
 html+="                                                                                                                                                                                                                       ";
 html+="                <div class=\"timeline-body\">                                                                                                                                                                          ";
 html+="                                                                                                                                                                                                                       ";

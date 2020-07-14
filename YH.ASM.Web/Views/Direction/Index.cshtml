@@ -277,8 +277,11 @@
 
                         <div class="col-sm-7">
 
-                            <button type="button" class="btn btn-block btn-success btn-flat" id="btn_zaoban">早班</button>
-                            <button type="button" class="btn btn-block btn-primary btn-flat" id="btn_wanban">晚班</button>
+
+                            <input type="text" class="form-control" id="txt_type" readonly="readonly">
+
+                            @*<button type="button" class="btn btn-block btn-success btn-flat" id="btn_zaoban">早班</button>
+                            <button type="button" class="btn btn-block btn-primary btn-flat" id="btn_wanban">晚班</button>*@
 
                         </div>
                     </div>
@@ -653,17 +656,30 @@
 
                     $("#txt_address").val(result.Content.ADDRESS);
                     $("#txt_date").val(result.Content.CREATETIME);
+
+
+
+                    //if (result.Content.TYPE == 0) {
+
+                    //    $("#btn_zaoban").show();
+                    //    $("#btn_wanban").hide();
+                    //} else {
+                    //    $("#btn_zaoban").hide();
+                    //    $("#btn_wanban").show();
+                    //}
+                  
+                   
+
                     if (result.Content.TYPE == 0) {
 
-                        $("#btn_zaoban").show();
-                        $("#btn_wanban").hide();
+                        $("#txt_type").val("早班");
+
                     } else {
-                        $("#btn_zaoban").hide();
-                        $("#btn_wanban").show();
+
+                        $("#txt_type").val("晚班");
                     }
-                  
-                    
-                  
+
+
                     $("#txt_remarks").val(result.Content.REMARKS);
                     $("#txt_support").val(result.Content.SUPPORTCODE);
                     $("#txt_content").val(result.Content.CONTENT);
