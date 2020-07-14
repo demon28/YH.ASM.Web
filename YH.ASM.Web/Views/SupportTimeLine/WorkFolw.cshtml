@@ -208,13 +208,9 @@
                             $("#ul_wf").append(html);
 
 
-
-                            if (_self.disposerInfo == 0) {
-
+                            if (_self.disposerInfo.ISORDER == 0) {
                                 $("#div_bom,#div_ordertime,#div_orderman").hide();
-
                             }
-
                         }
                     })
 
@@ -329,6 +325,9 @@
 
             if (value == 0) {
                 return "否";
+
+              
+
             }
 
         }
