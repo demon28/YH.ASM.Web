@@ -277,7 +277,7 @@ SELECT T.*,
        tm.name machinename,
        tm.serial machineserial,
        TU.USER_NAME USER_NAME
-
+       tsup.code supportCode
   FROM TASM_TRAVEL T
   LEFT JOIN TASM_USER TU
     ON T.USERID = TU.USER_ID
@@ -285,6 +285,8 @@ SELECT T.*,
     ON t.projectid=tp.pid
   LEFT JOIN tasm_machine tm
     ON t.machineid=tm.mid
+  LEFT JOIN tasm_support tsup
+   ON t.supportid=tsup.sid  
 
  WHERE T.TRAID = :TRAID
 
