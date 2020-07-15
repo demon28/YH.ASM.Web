@@ -12,7 +12,7 @@ using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
 using YH.ASM.Entites.Tool;
 using Microsoft.Extensions.DependencyInjection;
-
+using System.Runtime.CompilerServices;
 
 namespace YH.ASM.Facade
 {
@@ -20,15 +20,12 @@ namespace YH.ASM.Facade
     {
 
         /// <summary>
-        /// 入口
+        /// 创建工单
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         public bool Create(SupportCreateModel model)
         {
-
-        
-
             DataAccess.TASM_SUPPORT_Da da = new TASM_SUPPORT_Da();
             try
             {
@@ -105,6 +102,146 @@ namespace YH.ASM.Facade
             }
         }
 
+        /// <summary>
+        /// 删除工单
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <returns></returns>
+        public bool Delete(int sid)
+        {
+
+            TASM_SUPPORT_Da support = new TASM_SUPPORT_Da();
+            support.Db.BeginTran();
+
+            try
+            {
+                if (!support.CurrentDb.DeleteById(sid))
+                {
+                    support.Db.RollbackTran();
+                    this.Msg = "删除工单主表失败";
+                    Logger.LogInformation("删除工单主表失败！");
+                    return false;
+                }
+
+
+                TASM_SUPPORT_DISPOSER_Da disposer = new TASM_SUPPORT_DISPOSER_Da();
+
+                if (disposer.Db.Queryable<TASM_SUPPORT_DISPOSER>().Where(s => s.SID == sid).Count()>0)
+                {
+                    if (disposer.Db.Deleteable<TASM_SUPPORT_DISPOSER>().Where(s => s.SID == sid).ExecuteCommand() <= 0)
+                    {
+                        support.Db.RollbackTran();
+                        this.Msg = "删除责任人处理失败";
+                        Logger.LogInformation("删除责任人处理失败！");
+                        return false;
+                    }
+                }
+
+
+
+                TASM_SUPPORT_PMC_Da pmc = new TASM_SUPPORT_PMC_Da();
+
+                if (pmc.Db.Queryable<TASM_SUPPORT_PMC>().Where(s => s.SID == sid).Count() > 0)
+                {
+                    if (pmc.Db.Deleteable<TASM_SUPPORT_PMC>().Where(s => s.SID == sid).ExecuteCommand() <= 0)
+                    {
+                        support.Db.RollbackTran();
+                        this.Msg = "售后内勤删除失败！";
+                        Logger.LogInformation("售后内勤删除失败！");
+                        return false;
+                    }
+                }
+
+
+                TASM_SUPPORT_SITE_Da site = new TASM_SUPPORT_SITE_Da();
+
+                if (site.Db.Queryable<TASM_SUPPORT_SITE>().Where(s => s.SID == sid).Count() > 0)
+                {
+                    if (site.Db.Deleteable<TASM_SUPPORT_SITE>().Where(s => s.SID == sid).ExecuteCommand() <= 0)
+                    {
+                        support.Db.RollbackTran();
+                        this.Msg = "删除现场信息失败！";
+                        Logger.LogInformation("删除现场信息失败！");
+                        return false;
+                    }
+                }
+
+                TASM_SUPPORT_PRINCIPAL_Da principal = new TASM_SUPPORT_PRINCIPAL_Da();
+
+                if (principal.Db.Queryable<TASM_SUPPORT_PRINCIPAL>().Where(s => s.SID == sid).Count() > 0)
+                {
+                    if (principal.Db.Deleteable<TASM_SUPPORT_PRINCIPAL>().Where(s => s.SID == sid).ExecuteCommand() <= 0)
+                    {
+                        support.Db.RollbackTran();
+                        this.Msg = "删除审核信息失败！";
+                        Logger.LogInformation("删除审核信息失败！");
+                        return false;
+                    }
+                }
+
+
+
+                TASM_SUPPORT_HIS_Da his = new TASM_SUPPORT_HIS_Da();
+
+                if (his.Db.Queryable<TASM_SUPPORT_HIS>().Where(s => s.SID == sid).Count() > 0)
+                {
+                    if (his.Db.Deleteable<TASM_SUPPORT_HIS>().Where(s => s.SID == sid).ExecuteCommand() <= 0)
+                    {
+                        support.Db.RollbackTran();
+                        this.Msg = "删除审核信息失败！";
+                        Logger.LogInformation("删除审核信息失败！");
+                        return false;
+                    }
+                }
+
+
+
+
+                TASM_SUPPORT_PERSONAL_Da personal = new TASM_SUPPORT_PERSONAL_Da();
+
+                if (personal.Db.Queryable<TASM_SUPPORT_PERSONAL>().Where(s => s.SID == sid).Count() > 0)
+                {
+                    if (personal.Db.Deleteable<TASM_SUPPORT_PERSONAL>().Where(s => s.SID == sid).ExecuteCommand() <= 0)
+                    {
+                        support.Db.RollbackTran();
+                        this.Msg = "删除审核信息失败！";
+                        Logger.LogInformation("删除审核信息失败！");
+                        return false;
+                    }
+                }
+
+
+
+
+                TASM_SUPPORT_PUSH_Da push = new TASM_SUPPORT_PUSH_Da();
+
+                if (push.Db.Queryable<TASM_SUPPORT_PUSH>().Where(s => s.SID == sid).Count() > 0)
+                {
+                    if (push.Db.Deleteable<TASM_SUPPORT_PUSH>().Where(s => s.SID == sid).ExecuteCommand() <= 0)
+                    {
+                        support.Db.RollbackTran();
+                        this.Msg = "删除审核信息失败！";
+                        Logger.LogInformation("删除审核信息失败！");
+                        return false;
+                    }
+                }
+
+
+
+                support.Db.CommitTran();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.LogInformation(e.ToString());
+                support.Db.RollbackTran();
+                return false;
+            }
+
+
+
+
+        }
 
 
         /// <summary>

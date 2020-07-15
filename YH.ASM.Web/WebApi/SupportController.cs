@@ -35,9 +35,10 @@ namespace YH.ASM.Web.WebApi
         public IActionResult Create(SupportCreateModel model)
         {
 
-            logger.LogInformation("开始创建工单");
+
 
             Facade.SupportFacade support = new Facade.SupportFacade();
+
             if (!support.Create(model))
             {
                 return FailMessage(support.Msg);

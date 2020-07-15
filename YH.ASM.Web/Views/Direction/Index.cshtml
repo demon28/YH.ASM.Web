@@ -648,11 +648,19 @@
                     console.log(JSON.stringify(result));
 
                     $("#txt_username").html(result.Content.USER_NAME + "  工作日报");
-                    $("#txt_projectname").val(result.Content.PROJECTNAME + "[" + result.Content.PROJECTCODE+"]");
 
-                    $("#txt_MACHINE_NAME").val(result.Content.MACHINENAME + "[" + result.Content.MACHINESERIAL + "]");
+                    //$("#txt_projectname").val(result.Content.PROJECTNAME + "[" + result.Content.PROJECTCODE+"]");
+                    //$("#txt_MACHINE_NAME").val(result.Content.MACHINENAME + "[" + result.Content.MACHINESERIAL + "]");
+                    //$("#txt_support").val(result.Content.SUPPORTCODE);
+
+
+                    $("#txt_projectname").val(result.Content.PROJECT_NAME);
+                    $("#txt_MACHINE_NAME").val(result.Content.MACHINE_NAME);
+                    $("#txt_support").val(result.Content.SUPPORT_NAME);
+
+                    //========================
+
                     $("#txt_MACHINE_COUNT").val(result.Content.MACHINE_COUNT);
-
 
                     $("#txt_address").val(result.Content.ADDRESS);
                     $("#txt_date").val(result.Content.CREATETIME);
@@ -681,7 +689,7 @@
 
 
                     $("#txt_remarks").val(result.Content.REMARKS);
-                    $("#txt_support").val(result.Content.SUPPORTCODE);
+               
                     $("#txt_content").val(result.Content.CONTENT);
                     $("#txt_machineAssist").val(result.Content.MACHINEASSIST);
 

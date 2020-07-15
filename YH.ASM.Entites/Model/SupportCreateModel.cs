@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using YH.ASM.Entites.CodeGenerator;
 
@@ -7,8 +8,9 @@ namespace YH.ASM.Entites.Model
 {
     public class SupportCreateModel
     {
+        [Required]
         public int CreatorId { get; set; }
-
+        [Required]
         public int ConductorId { get; set; }
         public int ProjectId { get; set; }
 
