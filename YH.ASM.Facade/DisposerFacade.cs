@@ -276,7 +276,8 @@ namespace YH.ASM.Facade
                 content.AppendLine($"问题机型：{model.MACHINENAME}[{model.MACHINESERIAL}]");
 
                 content.AppendLine($"问题类型：{ Enum.GetName(typeof(SupportProblemType), model.TYPE)}");
-                content.AppendLine($"严重程度：{ Enum.GetName(typeof(SupportProblemLevel), model.SEVERITY)}");
+
+                content.AppendLine($"当前处理人：{model.CONDUCTORNAME}");
 
                 content.AppendLine($"流程节点：{Enum.GetName(typeof(SupportendPoint), model.STATUS).Replace('_', '>')}");
 

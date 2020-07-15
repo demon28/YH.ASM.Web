@@ -89,7 +89,7 @@ namespace YH.ASM.Facade
                 }
 
 
-                Logger.LogInformation("=====开始创建结束========");
+                Logger.LogInformation("=====结束创建工单========");
                 da.Db.CommitTran();
 
                 this.Msg = "创建成功！";
@@ -290,7 +290,7 @@ namespace YH.ASM.Facade
                 content.AppendLine($"问题机型：{model.MACHINENAME}[{model.MACHINESERIAL}]");
 
                 content.AppendLine($"问题类型：{ Enum.GetName(typeof(SupportProblemType), model.TYPE)}");
-                content.AppendLine($"严重程度：{ Enum.GetName(typeof(SupportProblemLevel), model.SEVERITY)}");
+                content.AppendLine($"当前处理人：{model.CONDUCTORNAME}");
 
                 content.AppendLine($"流程节点：{Enum.GetName(typeof(SupportendPoint), model.STATUS).Replace('_','>')}");
 
