@@ -34,7 +34,7 @@ namespace YH.ASM.Facade
             {
                 da.Db.BeginTran();
 
-                Logger.LogInformation("通过基类方法去写");
+                Logger.LogInformation("=====开始创建工单========");
 
                 int sid = 0;
                 TASM_SUPPORT supportModel = new TASM_SUPPORT();
@@ -80,9 +80,16 @@ namespace YH.ASM.Facade
                     return false;
                 }
 
+                //发送通知-----非推送消息，推送消息 需要windows服务去跑
+                if (!PushMessage(sid,da))
+                {
+                    Logger.LogInformation("推送消息失败");
+                    da.Db.RollbackTran();
+                    return false;
+                }
 
 
-                Logger.LogInformation("创建工单成功");
+                Logger.LogInformation("=====开始创建结束========");
                 da.Db.CommitTran();
 
                 this.Msg = "创建成功！";
@@ -262,5 +269,43 @@ namespace YH.ASM.Facade
 
         }
 
+
+        /// <summary>
+        /// 发送通知
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="da">不在同一个事务中，查询不到id</param>
+        /// <returns></returns>
+        private bool PushMessage(int sid, TASM_SUPPORT_Da da) {
+
+            try
+            {
+                var model= da.SelectBySid4Push(sid);
+
+                string title = $"您有一份新的任务，问题管理表编号[{model.CODE}],请登录售后管理系统查看详情。";
+
+                StringBuilder content = new StringBuilder();
+
+                content.AppendLine($"项目名称：{model.PROJECTNAME}[{model.PROJECTCODE}]");
+                content.AppendLine($"问题机型：{model.MACHINENAME}[{model.MACHINESERIAL}]");
+
+                content.AppendLine($"问题类型：{ Enum.GetName(typeof(SupportProblemType), model.TYPE)}");
+                content.AppendLine($"严重程度：{ Enum.GetName(typeof(SupportProblemLevel), model.SEVERITY)}");
+
+                content.AppendLine($"流程节点：{Enum.GetName(typeof(SupportendPoint), model.STATUS).Replace('_','>')}");
+
+                content.AppendLine($"问题描述：{model.CONTENT}");
+
+                PushHelper.PushWeChat(model.ConductorWorkId, title, content.ToString());
+                return true;
+            }
+            catch (Exception e) {
+
+                Logger.LogInformation("" + e);
+                return false;
+            }
+
+
+        }
     }
 }

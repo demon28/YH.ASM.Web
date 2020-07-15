@@ -56,7 +56,7 @@ namespace YH.ASM.Web.WebApi
             p.PageIndex = model.pageindex;
             p.PageSize = model.pagesize;
 
-            List<SupportListModel> list = manager.ListByWhere(model.keywords, ref p, model.WatchType, model.WatchState, model.Uuid);
+            List<SupportModel> list = manager.ListByWhere(model.keywords, ref p, model.WatchType, model.WatchState, model.Uuid);
 
             return SuccessResultList(list, p);
 

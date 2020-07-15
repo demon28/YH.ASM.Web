@@ -9,7 +9,7 @@ using System.Text;
 
 namespace YH.ASM.Entites
 {
-    class PushHelper
+   public class PushHelper
     {
             #region Class
 

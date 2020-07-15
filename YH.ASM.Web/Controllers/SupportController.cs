@@ -129,7 +129,7 @@ namespace YH.ASM.Web.Controllers
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 
-            List<SupportListModel> list = manager.ListByWhere(keywords, ref p, (SupprotWatchType)watchType, SupprotWatchState.全部, this.UserInfo.USER_ID, orderby);
+            List<SupportModel> list = manager.ListByWhere(keywords, ref p, (SupprotWatchType)watchType, SupprotWatchState.全部, this.UserInfo.USER_ID, orderby);
 
             return SuccessResultList(list, p);
 
@@ -217,7 +217,7 @@ namespace YH.ASM.Web.Controllers
         public IActionResult GetUpdateInfo(int id)
         {
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            SupportListModel model = manager.SelectById(id);
+            SupportModel model = manager.SelectById(id);
 
             return SuccessResult(model);
 

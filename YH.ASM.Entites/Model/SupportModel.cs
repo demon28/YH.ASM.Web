@@ -5,7 +5,7 @@ using YH.ASM.Entites.CodeGenerator;
 
 namespace YH.ASM.Entites.Model
 {
-    public  class SupportListModel:TASM_SUPPORT
+    public  class SupportModel:TASM_SUPPORT
     {
 
         public int PROJECTID { get; set; }

@@ -389,7 +389,6 @@ html+="               </li>                                                     
                                                                                                                                                                                                                             
 }    
 
-
 function SiteWF(siteInfo) {
 
     var html = "";
@@ -472,8 +471,6 @@ html+="               </li>                                                     
                                                                                                                                                                                                        
                                                                                                                                                                                                        
 }
-
-
 
 function PrincipalWF(principalInfo) {
 

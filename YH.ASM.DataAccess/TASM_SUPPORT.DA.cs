@@ -51,7 +51,7 @@ namespace YH.ASM.DataAccess
             return list;
         }
 
-        public List<SupportListModel> ListByWhere(string keyword,ref PageModel p, SupprotWatchType watchType, SupprotWatchState state,  int? watchId,string order = "SID")
+        public List<SupportModel> ListByWhere(string keyword,ref PageModel p, SupprotWatchType watchType, SupprotWatchState state,  int? watchId,string order = "SID")
         {
 
             string sql = @"SELECT T.*,
@@ -107,7 +107,7 @@ namespace YH.ASM.DataAccess
 
             int totalCount = 0;
             int totalPage = 0;
-            List<SupportListModel> list = Db.SqlQueryable<SupportListModel>(sql)
+            List<SupportModel> list = Db.SqlQueryable<SupportModel>(sql)
                 .OrderBy(s=>s.SID,OrderByType.Desc)
                 .AddParameters(configParms)
                 .ToPageList(p.PageIndex, p.PageSize, ref totalCount, ref totalPage);
@@ -119,7 +119,7 @@ namespace YH.ASM.DataAccess
         }
 
 
-        public SupportListModel SelectById(int sid)
+        public SupportModel SelectById(int sid)
         {
 
             string sql = @"
@@ -130,6 +130,7 @@ SELECT T.*,
        TU.USER_NAME CONDUCTORNAME,
        TP.PID       PROJECTID,
        TP.NAME      PROJECTNAME,
+       TP.CODE      PROJECTCODE,
        tm.name      MACHINENAME,
        tm.serial    MACHINESERIAL
 
@@ -152,7 +153,7 @@ WHERE 1=1  and t.SID=:sid
             configParms.Add(new SugarParameter("sid", sid));
 
 
-            SupportListModel model = Db.SqlQueryable<SupportListModel>(sql)  
+            SupportModel model = Db.SqlQueryable<SupportModel>(sql)  
                 .AddParameters(configParms)
                 .First();
 
@@ -160,6 +161,55 @@ WHERE 1=1  and t.SID=:sid
 
 
         }
+
+
+
+        public SupportPushModel SelectBySid4Push(int sid) {
+
+
+            string sql = @"
+SELECT T.*,
+       TR.USER_ID   CREATORID,
+       TR.USER_NAME CREATORNAME,
+       TR.WORK_ID   CreatorWorkId,
+       
+       TU.USER_ID   CONDUCTORID,
+       TU.WORK_ID   ConductorWorkId,
+       TU.USER_NAME CONDUCTORNAME,
+
+       TP.PID       PROJECTID,
+       TP.NAME      PROJECTNAME,
+       TP.CODE      PROJECTCODE,
+       tm.name      MACHINENAME,
+       tm.serial    MACHINESERIAL
+
+  FROM TASM_SUPPORT T
+
+  LEFT JOIN TASM_USER TR
+    ON TR.USER_ID = T.CREATOR
+  LEFT JOIN TASM_USER TU
+    ON TU.USER_ID = T.CONDUCTOR
+  LEFT JOIN TASM_PROJECT TP
+    ON TP.PID = T.PROJECT
+  left join tasm_machine tm
+    on tm.mid = t.mid
+
+WHERE 1=1  and t.SID=:sid
+
+";
+            var configParms = new List<SugarParameter>();
+
+            configParms.Add(new SugarParameter("sid", sid));
+
+
+            SupportPushModel model = Db.SqlQueryable<SupportPushModel>(sql)
+                .AddParameters(configParms)
+                .First();
+
+            return model;
+
+        }
+
 
 
         public int SelectSupprotCodeIndex() {
@@ -187,6 +237,8 @@ from tasm_support";
 
 
         }
+
+
 
     }
 

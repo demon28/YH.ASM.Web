@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using YH.ASM.DataAccess;
@@ -16,6 +17,7 @@ namespace YH.ASM.Facade
 
             try
             {
+                Logger.LogInformation("=========创建技术处理=========");
 
                 disposer_manager.Db.BeginTran();
 
@@ -24,6 +26,7 @@ namespace YH.ASM.Facade
                 //1.创建技术人员处理表信息
                 if (!InsertDisposer(disposer_manager, model, ref disposerId))
                 {
+                    Logger.LogInformation("创建技术人员处理信息失败");
                     this.Msg = "创建技术人员处理信息失败！";
                     disposer_manager.Db.RollbackTran();
                     return false;
@@ -37,6 +40,7 @@ namespace YH.ASM.Facade
                 if (!InsertHistory(model, supportModel, model.NEXTUSER, model.SUPPORTSTATUS, disposerId))
                 {
                     this.Msg = "创建操作历史失败！";
+                    Logger.LogInformation("创建操作历史失败");
                     disposer_manager.Db.RollbackTran();
                     return false;
                 }
@@ -47,6 +51,7 @@ namespace YH.ASM.Facade
                 if (!InsertPersonal(supportModel.CONDUCTOR,  model.NEXTUSER, model.SUPPORTSTATUS,  model.SID))
                 {
                     this.Msg = "分发工单失败！";
+                    Logger.LogInformation("分发工单失败");
                     disposer_manager.Db.RollbackTran();
                     return false;
                 }
@@ -58,6 +63,7 @@ namespace YH.ASM.Facade
                 if (!UpdateSupport( supportModel,  support_manager, model.NEXTUSER, model.SUPPORTSTATUS,  disposerId))
                 {
                     this.Msg = "修改工单信息失败！";
+                    Logger.LogInformation("修改工单信息失败");
                     disposer_manager.Db.RollbackTran();
                     return false;
                 }
@@ -67,6 +73,7 @@ namespace YH.ASM.Facade
                 if (!UpdatePersonal(model.PERSONALID))
                 {
                     this.Msg = "修改个人处理状态失败！";
+                    Logger.LogInformation("修改个人处理状态失败");
                     disposer_manager.Db.RollbackTran();
                     return false;
                 }
@@ -77,6 +84,16 @@ namespace YH.ASM.Facade
                 if (!InsertPush( model,disposerId))
                 {
                     this.Msg = "修改个人处理状态失败！";
+                    Logger.LogInformation("修改个人处理状态失败");
+                    disposer_manager.Db.RollbackTran();
+                    return false;
+                }
+
+
+                //7,发送通知
+                if (!PushMessage(model.SID, support_manager))
+                {
+                    Logger.LogInformation("推送消息失败");
                     disposer_manager.Db.RollbackTran();
                     return false;
                 }
@@ -87,6 +104,7 @@ namespace YH.ASM.Facade
             }
             catch (Exception e)
             {
+                Logger.LogInformation("" + e);
                 disposer_manager.Db.RollbackTran();
                 this.Msg = "处理失败！";
                 return false ;
@@ -233,6 +251,47 @@ namespace YH.ASM.Facade
 
             };
             return da.CurrentDb.Insert(pushModel);
+
+        }
+
+
+        /// <summary>
+        /// 发送通知
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="da">不在同一个事务中，查询不到id</param>
+        /// <returns></returns>
+        private bool PushMessage(int sid, TASM_SUPPORT_Da da)
+        {
+
+            try
+            {
+                var model = da.SelectBySid4Push(sid);
+
+                string title = $"您有一份新的任务，问题管理表编号[{model.CODE}],请登录售后管理系统查看详情。";
+
+                StringBuilder content = new StringBuilder();
+
+                content.AppendLine($"项目名称：{model.PROJECTNAME}[{model.PROJECTCODE}]");
+                content.AppendLine($"问题机型：{model.MACHINENAME}[{model.MACHINESERIAL}]");
+
+                content.AppendLine($"问题类型：{ Enum.GetName(typeof(SupportProblemType), model.TYPE)}");
+                content.AppendLine($"严重程度：{ Enum.GetName(typeof(SupportProblemLevel), model.SEVERITY)}");
+
+                content.AppendLine($"流程节点：{Enum.GetName(typeof(SupportendPoint), model.STATUS).Replace('_', '>')}");
+
+                content.AppendLine($"问题描述：{model.CONTENT}");
+
+                PushHelper.PushWeChat(model.ConductorWorkId, title, content.ToString());
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                Logger.LogInformation("" + e);
+                return false;
+            }
+
 
         }
     }
