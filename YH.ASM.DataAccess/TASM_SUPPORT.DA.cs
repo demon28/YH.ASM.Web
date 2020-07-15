@@ -239,6 +239,11 @@ from tasm_support";
         }
 
 
+        public int SelectSupportCount() {
+
+          return  Db.Queryable<TASM_SUPPORT>().Count();
+        }
+
 
     }
 

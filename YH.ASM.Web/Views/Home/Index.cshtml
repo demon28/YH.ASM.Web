@@ -3,10 +3,196 @@
     Layout = "_Layout";
 }
 
-    <div class="text-center">
-        <h1 class="display-4"><a href="Home/All">Welcome</a></h1>
+<div id="app">
 
-        
-       
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    平台数据：
+    <br />
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>{{ProjectCount}}</h3>
+
+                    <p>项目数量</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-map-signs"></i>
+                </div>
+                <a href="/Project/Index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{MachineCount}}</h3>
+
+                    <p>设备数量</p>
+                </div>
+                <div class="icon">
+                    <i class="fa  fa-laptop"></i>
+                </div>
+                <a href="/Machine/Index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{SupportCount}}</h3>
+
+                    <p>问题管理表数量</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-tasks"></i>
+                </div>
+                <a href="/Support/Index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <!-- ./col -->
     </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    问题管理表：
+    <br />
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>{{SupportWaite}}</h3>
+
+                    <p>待处理</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-reorder"></i>
+                </div>
+                <a href="/Support/Index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{SupportBeing}}</h3>
+
+                    <p>处理中</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="/Support/Index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{SupportComplete}}</h3>
+
+                    <p>已完成</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                <a href="/Support/Index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>{{Cpnumber}}<sup style="font-size: 20px">%</sup></h3>
+
+                    <p>工单完成率</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="/Support/Index" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+
+</div>
+
+<script src="~/Reference/scripts/CommonScript.js"></script>
+
+<script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
+<script>
+
+
+    var vm = new Vue({
+        el: "#app",
+        data: {
+
+            SupportCount: 0,
+            ProjectCount: 0,
+            MachineCount: 0,
+            SupportWaite: 0,
+            SupportBeing: 0,
+            SupportComplete: 0,
+            Cpnumber: 0
+
+        },
+        created: function () {
+
+            this.Init();
+
+
+        },
+        methods: {
+
+            Init() {
+
+                var self = this;
+
+                MyAjax({
+                    url: "/Home/GetReportCount",
+                    type: "POST",
+                    data: {
+
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        self.SupportCount = result.SupportCount;
+                        self.ProjectCount = result.ProjectCount;
+                        self.MachineCount = result.MachineCount;
+
+                        self.SupportWaite = result.SupportWaite;
+                        self.SupportBeing = result.SupportBeing;
+                        self.SupportComplete = result.SupportComplete;
+
+                        self.Cpnumber = result.Cpnumber;
+                    }
+                })
+            },
+
+
+        },
+
+
+
+    });
+
+
+
+
+
+
+
+
+</script>

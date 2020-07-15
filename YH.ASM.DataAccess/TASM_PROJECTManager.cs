@@ -46,6 +46,10 @@ namespace YH.ASM.DataAccess
         }
 
 
+        public int SelectProjectCount()
+        {
+            return Db.Queryable<TASM_PROJECT>().Count();
+        }
 
 
 
