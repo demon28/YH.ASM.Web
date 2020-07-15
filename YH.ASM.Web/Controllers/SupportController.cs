@@ -140,12 +140,14 @@ namespace YH.ASM.Web.Controllers
         public IActionResult Delete(int id)
         {
 
-            DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            if (!manager.CurrentDb.Delete(S => S.SID == id))
+            Facade.SupportFacade facade = new SupportFacade();
+
+            if (!facade.Delete(id))
             {
-                return FailMessage();
+                return FailMessage("删除失败");
             }
-            return SuccessMessage();
+
+            return SuccessMessage("删除成功！");
 
 
         }

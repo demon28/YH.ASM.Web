@@ -190,6 +190,8 @@
 
                                     <button type="button" class="btn bg-primary  btn-xs" v-on:click="Details(item)">详情</button>
                                     &nbsp;
+                                   <button type="button" class="btn bg-red  btn-xs " v-on:click="Del(item)">删除</button>
+
                                     @*<button type="button" class="btn bg-purple  btn-xs " v-if="item.STATUS!=6 && item.STATUS!=7" v-on:click="Dispose(item)">处理</button>*@
                                     &nbsp;
                                     <button type="button" class="btn bg-teal  btn-xs" v-on:click="Att(item)">附件</button>
@@ -678,7 +680,36 @@
               
                     window.location.href = "/SupportTimeLine/WorkFolw?id=" + item.SID;
                     
-                }
+                },
+                Del: function (item) {
+                    var self = this;
+                    bootbox.confirm("您确定删除改记录吗？", function (res) {
+                        if (res) {
+
+                            MyAjax({
+                                url: "/Support/Delete",
+                                type: "POST",
+                                data: {
+                                    id: item.SID
+                                },
+                                success: function (result) {
+
+                                    if (!result.Success) {
+
+                                        alert_danger(result.Message);
+                                        return;
+                                    }
+                                    alert_success("删除成功");
+                                    self.Init();
+
+                                }
+                            })
+                        }
+                    });
+
+
+
+                },
            },
 
 

@@ -243,7 +243,11 @@ namespace YH.ASM.Facade
         /// <returns></returns>
         private bool PushMessage(int sid, TASM_SUPPORT_Da da)
         {
-
+            if (Entites.AppConfig.IsPush == false)
+            {
+                Logger.LogInformation("不发送消息通知，若需要请打开配置文件");
+                return true;
+            }
             try
             {
                 var model = da.SelectBySid4Push(sid);

@@ -12,12 +12,14 @@ namespace YH.ASM.Entites.Model
         public int CreatorId { get; set; }
         [Required]
         public int ConductorId { get; set; }
+
+        [Required]
         public int ProjectId { get; set; }
 
         public int ProjectCode { get; set; }
         public int Type { get; set; }
 
-      
+        [Required]
         public int Severity { get; set; }
 
         public DateTime FindDate { get; set; }
@@ -26,6 +28,7 @@ namespace YH.ASM.Entites.Model
 
         public string Content { get; set; }
 
+        [Required]
         public int Mid{ get; set; }
 
         public List<FileInfo> Filelist { get; set; }
