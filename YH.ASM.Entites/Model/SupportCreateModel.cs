@@ -10,7 +10,10 @@ namespace YH.ASM.Entites.Model
     {
         [Required]
         public int CreatorId { get; set; }
-        [Required]
+       
+        /// <summary>
+        /// 处理人，最后的处理人不能为可能为空
+        /// </summary>
         public int ConductorId { get; set; }
 
         [Required]

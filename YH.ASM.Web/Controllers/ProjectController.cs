@@ -382,6 +382,18 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list);
         }
 
+
+
+
+        [Right(Ignore = true)]
+        [HttpPost]
+        public IActionResult ListBindProvince()
+        {
+            TNET_AREA_Da area = new TNET_AREA_Da();
+            var list = area.CurrentDb.GetList(s=>s.Area_Level==1);
+
+            return SuccessResultList(list);
+        }
     }
 
   

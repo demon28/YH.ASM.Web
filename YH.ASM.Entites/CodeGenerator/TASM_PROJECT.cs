@@ -155,5 +155,11 @@ namespace YH.ASM.Entites.CodeGenerator
         /// 项目编号
         /// </summary>
         public System.String CODE { get; set; }
+
+
+        /// <summary>
+        /// 省编号
+        /// </summary>
+        public System.Int32? PROVINCEID { set; get; }
     }
 }

@@ -25,7 +25,9 @@ namespace YH.ASM.Entites.Model
 
         public int INSTALLDAYS { get; set; }
 
+        public string Area_Name { get; set; }
 
+        
 
     }
 }

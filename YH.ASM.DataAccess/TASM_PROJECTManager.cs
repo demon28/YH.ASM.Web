@@ -14,8 +14,21 @@ namespace YH.ASM.DataAccess
 
         public bool ListByWhere(string keywords, ref PageModel p, ref List<ProjectModel> list) {
 
-            string sql = @"select t.* , tt.id typesid,tt.name TYPESNAME ,tt.installdays ,tt.debugdays,tt.checkdays  from tasm_project t
- left join tasm_machine_type tt on t.machinetype= tt.id ";
+            string sql = @"
+select t.*,
+       tt.id          typesid,
+       tt.name        TYPESNAME,
+       tt.installdays,
+       tt.debugdays,
+       tt.checkdays,
+       tarea.area_name
+       
+  from tasm_project t
+  left join tasm_machine_type tt
+    on t.machinetype = tt.id
+  left join tnet_area tarea
+    on t.provinceid=tarea.area_id
+";
 
             int pagecount = 0;
             list= Db.SqlQueryable<ProjectModel>(sql)
