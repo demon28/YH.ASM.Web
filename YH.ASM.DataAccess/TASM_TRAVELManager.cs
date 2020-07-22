@@ -60,7 +60,7 @@ TU.DEPT5,
                     mounth = mounthstr
                 })
                 .Where(s => s.USER_NAME.Contains(keyword)
-                || s.DEPARTMENT.Contains(keyword) 
+                || s.DEPARTMENT.Contains(keyword)
                 || s.WORK_ID.Contains(keyword)
                 || s.DEPT2.Contains(keyword)
                 || s.DEPT3.Contains(keyword)
@@ -291,6 +291,28 @@ SELECT T.*,
  WHERE T.TRAID = :TRAID
 
 ";
+
+            */
+
+
+            string sql = @"
+SELECT T.*,
+       TU.USER_NAME USER_NAME,
+       tsup.code supportCode
+  FROM TASM_TRAVEL T
+  LEFT JOIN TASM_USER TU
+    ON T.USERID = TU.USER_ID
+  LEFT JOIN tasm_project tp
+    ON t.projectid=tp.pid
+  LEFT JOIN tasm_machine tm
+    ON t.machineid=tm.mid
+  LEFT JOIN tasm_support tsup
+   ON t.supportid=tsup.sid  
+
+ WHERE T.TRAID = :TRAID
+
+";
+
 
             DirectionCanderModel model = Db.SqlQueryable<DirectionCanderModel>(sql)
                           .AddParameters(new
