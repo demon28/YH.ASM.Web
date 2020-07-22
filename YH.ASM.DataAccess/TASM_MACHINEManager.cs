@@ -60,7 +60,11 @@ namespace YH.ASM.DataAccess
 
         }
 
+        public int SelectMachineCount()
+        {
 
+            return Db.Queryable<TASM_MACHINE>().Count();
+        }
 
     }
 }

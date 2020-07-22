@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "售后管理系统";
 }
 @section Htmlhead{
 
@@ -64,9 +64,9 @@
 
                     <div class="box-tools">
 
-                        <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                        @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
                             <button type="button" class="btn btn-default pull-right  btn-sm" @@click="Add()" id="btn_Add">创建工单</button>
-                        </div>
+                        </div>*@
 
                         @*<div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
                                 <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ExportExcel()" id="btn_Search">导出Excel</button>
@@ -190,6 +190,8 @@
 
                                     <button type="button" class="btn bg-primary  btn-xs" v-on:click="Details(item)">详情</button>
                                     &nbsp;
+                                   <button type="button" class="btn bg-red  btn-xs " v-on:click="Del(item)">删除</button>
+
                                     @*<button type="button" class="btn bg-purple  btn-xs " v-if="item.STATUS!=6 && item.STATUS!=7" v-on:click="Dispose(item)">处理</button>*@
                                     &nbsp;
                                     <button type="button" class="btn bg-teal  btn-xs" v-on:click="Att(item)">附件</button>
@@ -678,7 +680,36 @@
               
                     window.location.href = "/SupportTimeLine/WorkFolw?id=" + item.SID;
                     
-                }
+                },
+                Del: function (item) {
+                    var self = this;
+                    bootbox.confirm("您确定删除改记录吗？", function (res) {
+                        if (res) {
+
+                            MyAjax({
+                                url: "/Support/Delete",
+                                type: "POST",
+                                data: {
+                                    id: item.SID
+                                },
+                                success: function (result) {
+
+                                    if (!result.Success) {
+
+                                        alert_danger(result.Message);
+                                        return;
+                                    }
+                                    alert_success("删除成功");
+                                    self.Init();
+
+                                }
+                            })
+                        }
+                    });
+
+
+
+                },
            },
 
 

@@ -16,7 +16,7 @@ function SupportWF(supprotInfo) {
     html += "      <div class=\"timeline-item\">"
     html += "          <span class=\"time\"><i class=\"fa fa-clock-o\"></i> "+ supprotInfo.CREATETIME +"</span>"
 
-    html += "          <h3 class=\"timeline-header\">创建工单</h3>"
+    html += "          <h3 class=\"timeline-header\">创建问题管理表</h3>"
 
     html += "        <div class=\"timeline-body\">"
 
@@ -125,7 +125,7 @@ html+="                                                                         
 html+="            <div class=\"timeline-item\">                                                                                                                                                                                                     "
     html += "                <span class=\"time\"><i class=\"fa fa-clock-o\"></i>  " + disposerInfo.CREATETIME +"</span>                                                                                                                                     "
 html+="                                                                                                                                                                                                                                              "
-html+="                <h3 class=\"timeline-header\">技术人员处理</h3>                                                                                                                                                                               "
+    html +="                <h3 class=\"timeline-header\">责任人处理</h3>                                                                                                                                                                               "
 html+="                                                                                                                                                                                                                                              "
 html+="                <div class=\"timeline-body\">                                                                                                                                                                                                 "
 html+="                                                                                                                                                                                                                                              "
@@ -141,7 +141,17 @@ html+="                                                                         
 html+="                            </div>                                                                                                                                                                                                            "
 html+="                                                                                                                                                                                                                                              "
 
-    html += "                        <div class=\"form-group\">                                                                                                                                                                                            "
+
+    html += "                        <div class=\"form-group\" id='div_isorder'>                                                                                                                                                                                            "
+    html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">是否下单：</label>                                                                                                        "
+    html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
+    html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + SetIsOrder(disposerInfo.ISORDER) + "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
+    html += "                                    </div>                                                                                                                                                                                                    "
+    html += "                                                                                                                                                                                                                                              "
+    html += "                            </div>                                                                                                                                                                                                            "
+
+
+    html += "                        <div class=\"form-group\" id='div_bom'>                                                                                                                                                                                            "
     html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">BOM图纸：</label>                                                                                                        "
     html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
     html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + disposerInfo.BOM + "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
@@ -149,15 +159,8 @@ html+="                                                                         
     html += "                                                                                                                                                                                                                                              "
     html += "                            </div>                                                                                                                                                                                                            "
 
-    html += "                        <div class=\"form-group\">                                                                                                                                                                                            "
-    html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">是否下单：</label>                                                                                                        "
-    html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
-    html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + SetIsOrder(disposerInfo.ISORDER)+ "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
-    html += "                                    </div>                                                                                                                                                                                                    "
-    html += "                                                                                                                                                                                                                                              "
-    html += "                            </div>                                                                                                                                                                                                            "
 
-    html += "                        <div class=\"form-group\">                                                                                                                                                                                            "
+    html += "                        <div class=\"form-group\" id='div_orderman'>                                                                                                                                                                                            "
     html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">下单人：</label>                                                                                                        "
     html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
     html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + disposerInfo.ORDERMAN + "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
@@ -165,7 +168,7 @@ html+="                                                                         
     html += "                                                                                                                                                                                                                                              "
     html += "                            </div>                                                                                                                                                                                                            "
 
-    html += "                        <div class=\"form-group\">                                                                                                                                                                                            "
+    html += "                        <div class=\"form-group\" id='div_ordertime'>                                                                                                                                                                                            "
     html += "                            <label for=\"inputEmail3\" class=\"col-sm-1 control-label\" style=\"padding-right:0px\">下单时间：</label>                                                                                                        "
     html += "                            <div class=\"col-sm-6\">                                                                                                                                                                                          "
     html += "                                <input type=\"text\" class=\"form-control input-sm\" value=\"" + disposerInfo.ORDERTIME + "\" placeholder=\"请选择分析人员\" readonly=\"readonly\">                                                               "
@@ -276,7 +279,7 @@ html+="                                                                         
 html+="           <div class=\"timeline-item\">                                                                                                                                                                                ";
     html += "               <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + pmcInfo.CREATETIME +"</span>                                                                                                                     ";
 html+="                                                                                                                                                                                                                        ";
-html+="               <h3 class=\"timeline-header\">PMC人员处理</h3>                                                                                                                                                           ";
+    html +="               <h3 class=\"timeline-header\">售后内勤维护</h3>                                                                                                                                                           ";
 html+="                                                                                                                                                                                                                        ";
 html+="               <div class=\"timeline-body\">                                                                                                                                                                            ";
 html+="                                                                                                                                                                                                                        ";
@@ -386,7 +389,6 @@ html+="               </li>                                                     
                                                                                                                                                                                                                             
 }    
 
-
 function SiteWF(siteInfo) {
 
     var html = "";
@@ -406,7 +408,7 @@ html+="                                                                         
 html+="           <div class=\"timeline-item\">                                                                                                                                                          ";
     html += "               <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + siteInfo.CREATETIME +"</span>                                                                                              ";
 html+="                                                                                                                                                                                                  ";
-html+="               <h3 class=\"timeline-header\">现场人员处理</h3>                                                                                                                                    ";
+    html +="               <h3 class=\"timeline-header\">现场人员整改</h3>                                                                                                                                    ";
 html+="                                                                                                                                                                                                  ";
 html+="               <div class=\"timeline-body\">                                                                                                                                                      ";
 html+="                                                                                                                                                                                                  ";
@@ -470,8 +472,6 @@ html+="               </li>                                                     
                                                                                                                                                                                                        
 }
 
-
-
 function PrincipalWF(principalInfo) {
 
     var html = "";
@@ -489,7 +489,7 @@ html+="                                                                         
 html+="            <div class=\"timeline-item\">                                                                                                                                                                              ";
     html += "                <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + principalInfo.CREATETIME +" </span>                                                                                                             ";
 html+="                                                                                                                                                                                                                       ";
-html+="                <h3 class=\"timeline-header\">负责人审核</h3>                                                                                                                                                          ";
+    html +="                <h3 class=\"timeline-header\">现场负责人审核</h3>                                                                                                                                                          ";
 html+="                                                                                                                                                                                                                       ";
 html+="                <div class=\"timeline-body\">                                                                                                                                                                          ";
 html+="                                                                                                                                                                                                                       ";

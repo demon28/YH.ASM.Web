@@ -29,11 +29,23 @@ namespace YH.ASM.Web.Controllers
     {
 
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly ILogger<ProjectController> logger;
+        private readonly ILogger<SupportController> logger;
+
+
+        public SupportController(IWebHostEnvironment hostingEnvironment, ILogger<SupportController> _logger)
+        {
+            _hostingEnvironment = hostingEnvironment;
+            logger = _logger;
+        }
+
+
 
         [Right(PowerName = "工单列表")]
         public IActionResult Index()
         {
+
+
+            logger.LogInformation("web层日志测试");
 
             return View();
         }
@@ -97,11 +109,7 @@ namespace YH.ASM.Web.Controllers
 
 
 
-        public SupportController(IWebHostEnvironment hostingEnvironment, ILogger<ProjectController> _logger)
-        {
-            _hostingEnvironment = hostingEnvironment;
-            logger = _logger;
-        }
+       
 
 
         [Right(Ignore = true)]
@@ -121,7 +129,7 @@ namespace YH.ASM.Web.Controllers
             p.PageIndex = pageIndex;
             p.PageSize = pageSize;
 
-            List<SupportListModel> list = manager.ListByWhere(keywords, ref p, (SupprotWatchType)watchType, SupprotWatchState.全部, this.UserInfo.USER_ID, orderby);
+            List<SupportModel> list = manager.ListByWhere(keywords, ref p, (SupprotWatchType)watchType, SupprotWatchState.全部, this.UserInfo.USER_ID, orderby);
 
             return SuccessResultList(list, p);
 
@@ -132,12 +140,14 @@ namespace YH.ASM.Web.Controllers
         public IActionResult Delete(int id)
         {
 
-            DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            if (!manager.CurrentDb.Delete(S => S.SID == id))
+            Facade.SupportFacade facade = new SupportFacade();
+
+            if (!facade.Delete(id))
             {
-                return FailMessage();
+                return FailMessage("删除失败");
             }
-            return SuccessMessage();
+
+            return SuccessMessage("删除成功！");
 
 
         }
@@ -209,7 +219,7 @@ namespace YH.ASM.Web.Controllers
         public IActionResult GetUpdateInfo(int id)
         {
             DataAccess.TASM_SUPPORT_Da manager = new DataAccess.TASM_SUPPORT_Da();
-            SupportListModel model = manager.SelectById(id);
+            SupportModel model = manager.SelectById(id);
 
             return SuccessResult(model);
 

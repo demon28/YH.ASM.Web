@@ -182,5 +182,23 @@ namespace YH.ASM.Entites
 
         }
 
+
+        public static bool IsPush
+        {
+            get
+            {
+
+                var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json");
+
+                var config = builder.Build();
+                string conn = config.GetSection("IsPush").Value;
+                return bool.Parse(conn);
+            }
+        }
+
+
+
     }
 }

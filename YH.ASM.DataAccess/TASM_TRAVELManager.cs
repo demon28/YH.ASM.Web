@@ -269,7 +269,7 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
         public DirectionCanderModel SelectByTraid(int traid)
         {
-
+            /*
             string sql = @"
 SELECT T.*,
        tp.name projectname,

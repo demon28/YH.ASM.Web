@@ -49,15 +49,14 @@ function Support_Statuslist() {
 
     var Statuslist = [];
 
-    Statuslist.push({ value: 0, text: "创建工单-->技术分析" });
-    Statuslist.push({ value: 1, text: "分析完成-->PMC跟进" });
-    Statuslist.push({ value: 2, text: "分析完成-->现场处理" });
-    Statuslist.push({ value: 3, text: "PMC完成-->现场处理" });
-    Statuslist.push({ value: 4, text: "现场处理-->负责人审核" });
-    Statuslist.push({ value: 5, text: "负责人审核-->未完成" });
-    Statuslist.push({ value: 6, text: "负责人审核-->已完成" });
+    Statuslist.push({ value: 0, text: "创建管理表-->责任人处理" });
+    Statuslist.push({ value: 1, text: "分析完成-->售后内勤维护" });
+    Statuslist.push({ value: 2, text: "分析完成-->现场整改" });
+    Statuslist.push({ value: 3, text: "售后内勤维护完成-->现场整改" });
+    Statuslist.push({ value: 4, text: "现场整改-->现场负责人审核" });
+    Statuslist.push({ value: 5, text: "现场负责人审核-->驳回再整改" });
+    Statuslist.push({ value: 6, text: "现在负责人审核-->已完成" });
     Statuslist.push({ value: 7, text: "已拒绝" });
-
 
     return Statuslist;
 }

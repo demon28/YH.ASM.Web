@@ -32,7 +32,6 @@ namespace YH.ASM.Web.ControllerBase
 
         }
 
-
         public JsonResult SuccessResultList<T>(List<T> list, SqlSugar.PageModel page, string msg = "成功")
         {
             /**

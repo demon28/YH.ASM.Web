@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -22,8 +23,8 @@ namespace YH.ASM.Facade
                 manager.Db.BeginTran();
 
                 int pid = 0;
-                //1，添加 PMC处理表数据，并获得新id
-                if (!InsertSupport( model,  manager, ref pid))
+                //1，添加 现场审核处理表数据，并获得新id
+                if (!InsertPrincipal( model,  manager, ref pid))
                 {
                     Msg = "创建审核信息失败！";
                     manager.Db.RollbackTran();
@@ -45,7 +46,7 @@ namespace YH.ASM.Facade
 
 
                 //3如果审核不通过，重新分发给现场
-                if (model.SUPPORTSTATUS==(int)SupportendPoint.负责人审核_未完成)
+                if (model.SUPPORTSTATUS==(int)SupportendPoint.现场负责人审核_驳回再整改)
                 {
                     //3,新的处理人员再新增一条 处理信息(顺序不能变) 取了工单处理人，为个人处理表的创建人，顺序不能变
                     if (!InsertPersonal(supportModel.CONDUCTOR, model.NEXTUSER, model.SUPPORTSTATUS, model.SID))
@@ -83,6 +84,14 @@ namespace YH.ASM.Facade
                 }
 
 
+                //7,发送通知
+                if (!PushMessage(model.SID, support_manager))
+                {
+                    Logger.LogInformation("推送消息失败");
+                    manager.Db.RollbackTran();
+                    return false;
+                }
+
 
                 manager.Db.CommitTran();
 
@@ -98,11 +107,11 @@ namespace YH.ASM.Facade
 
         }
 
-        private bool InsertSupport(TASM_SUPPORT_PRINCIPAL model, TASM_SUPPORT_PRINCIPAL_Da manager, ref int pid)
+        private bool InsertPrincipal(TASM_SUPPORT_PRINCIPAL model, TASM_SUPPORT_PRINCIPAL_Da manager, ref int pid)
         {
 
             model.CREATETIME = DateTime.Now;
-            model.STATUS = 0;
+            model.STATUS = model.STATUS;
             pid = manager.Db.Insertable(model).ExecuteReturnIdentity();
 
             return pid > 0;
@@ -221,6 +230,53 @@ namespace YH.ASM.Facade
 
             };
             return da.CurrentDb.Insert(pushModel);
+
+        }
+
+
+
+        /// <summary>
+        /// 发送通知
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="da">不在同一个事务中，查询不到id</param>
+        /// <returns></returns>
+        private bool PushMessage(int sid, TASM_SUPPORT_Da da)
+        {
+            if (Entites.AppConfig.IsPush == false)
+            {
+                Logger.LogInformation("不发送消息通知，若需要请打开配置文件");
+                return true;
+            }
+            try
+            {
+                var model = da.SelectBySid4Push(sid);
+
+                string title = $"您有一份新的任务，问题管理表编号[{model.CODE}],请登录售后管理系统查看详情。";
+
+                StringBuilder content = new StringBuilder();
+
+                content.AppendLine($"项目名称：{model.PROJECTNAME}[{model.PROJECTCODE}]");
+                content.AppendLine($"问题机型：{model.MACHINENAME}[{model.MACHINESERIAL}]");
+
+                content.AppendLine($"问题类型：{ Enum.GetName(typeof(SupportProblemType), model.TYPE)}");
+
+                content.AppendLine($"当前处理人：{model.CONDUCTORNAME}");
+
+                content.AppendLine($"流程节点：{Enum.GetName(typeof(SupportendPoint), model.STATUS).Replace('_', '>')}");
+
+                content.AppendLine($"问题描述：{model.CONTENT}");
+
+                PushHelper.PushWeChat(model.ConductorWorkId, title, content.ToString());
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                Logger.LogInformation("" + e);
+                return false;
+            }
+
 
         }
 

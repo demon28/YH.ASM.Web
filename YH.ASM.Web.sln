@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YH.ASM.Facade", "YH.ASM.Fac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YH.ASM.DataAccess", "YH.ASM.DataAccess\YH.ASM.DataAccess.csproj", "{D2FCCBD7-455D-42BD-9117-36F1CDC1D269}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YH.ASM.PushService", "YH.ASM.PushService\YH.ASM.PushService.csproj", "{6F9608D1-CA25-48DB-874B-B2304A1A248F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D2FCCBD7-455D-42BD-9117-36F1CDC1D269}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2FCCBD7-455D-42BD-9117-36F1CDC1D269}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2FCCBD7-455D-42BD-9117-36F1CDC1D269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F9608D1-CA25-48DB-874B-B2304A1A248F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F9608D1-CA25-48DB-874B-B2304A1A248F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F9608D1-CA25-48DB-874B-B2304A1A248F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F9608D1-CA25-48DB-874B-B2304A1A248F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

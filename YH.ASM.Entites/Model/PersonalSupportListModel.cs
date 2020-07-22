@@ -4,7 +4,7 @@ using System.Text;
 
 namespace YH.ASM.Entites.Model
 {
-    public class PersonalSupportListModel: SupportListModel
+    public class PersonalSupportListModel: SupportModel
     {
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "WorkFolw";
+    ViewData["Title"] = "售后管理系统";
 }
 @section Pageheader{
 
@@ -206,6 +206,11 @@
                             _self.disposerInfo = result.Content;
                             var html = DisposerWF(_self.disposerInfo);
                             $("#ul_wf").append(html);
+
+
+                            if (_self.disposerInfo.ISORDER == 0) {
+                                $("#div_bom,#div_ordertime,#div_orderman").hide();
+                            }
                         }
                     })
 
@@ -320,6 +325,9 @@
 
             if (value == 0) {
                 return "否";
+
+              
+
             }
 
         }

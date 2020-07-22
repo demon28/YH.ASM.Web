@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Text;
@@ -23,7 +24,7 @@ namespace YH.ASM.Facade
                 //1，添加现场处理表数据，
                 int siteId = 0;
 
-                if (!InsertSite( model,  manager, ref  siteId))
+                if (!InsertSite(model, manager, ref siteId))
                 {
                     this.Msg = "创建现场处理信息失败！";
                     manager.Db.RollbackTran();
@@ -36,7 +37,7 @@ namespace YH.ASM.Facade
                 DataAccess.TASM_SUPPORT_Da support_manager = new DataAccess.TASM_SUPPORT_Da();
                 var supportModel = support_manager.CurrentDb.GetById(model.SID);  //工单id 查询工单信息
 
-                if (!InsertHistory( model,  supportModel,  siteId, model.SUPPORTSTATUS, model.NEXTUSER))
+                if (!InsertHistory(model, supportModel, siteId, model.SUPPORTSTATUS, model.NEXTUSER))
                 {
                     this.Msg = "创建操作历史失败！";
                     manager.Db.RollbackTran();
@@ -56,7 +57,7 @@ namespace YH.ASM.Facade
 
 
                 //4,修改工单表的状态
-                if (!UpdateSupport( supportModel,  support_manager, model.NEXTUSER, model.SUPPORTSTATUS,  siteId))
+                if (!UpdateSupport(supportModel, support_manager, model.NEXTUSER, model.SUPPORTSTATUS, siteId))
                 {
                     this.Msg = "修改工单状态失败！";
                     manager.Db.RollbackTran();
@@ -81,6 +82,13 @@ namespace YH.ASM.Facade
                     return false;
                 }
 
+                //7,发送通知
+                if (!PushMessage(model.SID, support_manager))
+                {
+                    Logger.LogInformation("推送消息失败");
+                    manager.Db.RollbackTran();
+                    return false;
+                }
 
 
                 manager.Db.CommitTran();
@@ -105,7 +113,8 @@ namespace YH.ASM.Facade
 
             return siteId > 0;
         }
-        private bool InsertHistory(TASM_SUPPORT_SITE model,  TASM_SUPPORT supportModel, int siteId, int supportStatus, int nextUser) {
+        private bool InsertHistory(TASM_SUPPORT_SITE model, TASM_SUPPORT supportModel, int siteId, int supportStatus, int nextUser)
+        {
 
             DataAccess.TASM_SUPPORT_HIS_Da his_manager = new TASM_SUPPORT_HIS_Da();
 
@@ -119,14 +128,14 @@ namespace YH.ASM.Facade
             hisModel.PRE_STATUS = supportModel.STATUS;
 
             hisModel.NEXT_STATUS = supportStatus;
-            hisModel.TYPE = (int)Entites.SupportHisType.现场处理;  
+            hisModel.TYPE = (int)Entites.SupportHisType.现场处理;
             hisModel.TID = siteId;
 
-           return  his_manager.CurrentDb.Insert(hisModel);
+            return his_manager.CurrentDb.Insert(hisModel);
 
         }
 
-        private bool UpdateSupport(TASM_SUPPORT supportModel, TASM_SUPPORT_Da support_manager , int nextUser, int supportStatus, int siteId)
+        private bool UpdateSupport(TASM_SUPPORT supportModel, TASM_SUPPORT_Da support_manager, int nextUser, int supportStatus, int siteId)
         {
 
             supportModel.MEMBERID = siteId;
@@ -134,10 +143,9 @@ namespace YH.ASM.Facade
             supportModel.CONDUCTOR = nextUser;  //工单流转到下一处理人员， 修改处理人员，此处 PMC处理人员 和 下一处理人员共用一个字段
             supportModel.STATE = 1;  //工单处理中
 
-            return  support_manager.CurrentDb.Update(supportModel);  //修改工单表
+            return support_manager.CurrentDb.Update(supportModel);  //修改工单表
 
         }
-
 
 
         /// <summary>
@@ -213,5 +221,52 @@ namespace YH.ASM.Facade
             return da.CurrentDb.Insert(pushModel);
 
         }
+
+        /// <summary>
+        /// 发送通知
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <param name="da">不在同一个事务中，查询不到id</param>
+        /// <returns></returns>
+        private bool PushMessage(int sid, TASM_SUPPORT_Da da)
+        {
+
+            if (Entites.AppConfig.IsPush == false)
+            {
+                Logger.LogInformation("不发送消息通知，若需要请打开配置文件");
+                return true;
+            }
+
+            try
+            {
+                var model = da.SelectBySid4Push(sid);
+
+                string title = $"您有一份新的任务，问题管理表编号[{model.CODE}],请登录售后管理系统查看详情。";
+
+                StringBuilder content = new StringBuilder();
+
+                content.AppendLine($"项目名称：{model.PROJECTNAME}[{model.PROJECTCODE}]");
+                content.AppendLine($"问题机型：{model.MACHINENAME}[{model.MACHINESERIAL}]");
+
+                content.AppendLine($"问题类型：{ Enum.GetName(typeof(SupportProblemType), model.TYPE)}");
+
+                content.AppendLine($"当前处理人：{model.CONDUCTORNAME}");
+
+                content.AppendLine($"流程节点：{Enum.GetName(typeof(SupportendPoint), model.STATUS).Replace('_', '>')}");
+
+                content.AppendLine($"问题描述：{model.CONTENT}");
+
+                PushHelper.PushWeChat(model.ConductorWorkId, title, content.ToString());
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                Logger.LogInformation("" + e);
+                return false;
+            }
+
+
+        }
     }
-}
+ }

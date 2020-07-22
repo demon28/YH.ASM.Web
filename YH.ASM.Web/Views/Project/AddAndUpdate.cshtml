@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "AddAndUpdate";
+    ViewData["Title"] = "售后管理系统";
     Layout = "";
 }
 <html>
@@ -63,6 +63,18 @@
                         </div>
                     </div>
 
+
+                    <div class="form-group ">
+                        <label for="txt_address" class="col-sm-3 control-label">所在地区：</label>
+
+                        <div class="col-sm-3">
+
+                            <select class="form-control" id="txt_address" v-model="PROVINCEID" style="width:320px;">
+                            </select>
+
+                        </div>
+
+                    </div>
 
 
                     <div class="form-group">
@@ -352,7 +364,8 @@
             count_down: 0,
             REMARKS: "123",
             MACHINETYPE: 0,
-            MACHINET:0
+            MACHINET: 0,
+            PROVINCEID:0,
 
         },
         created: function () {
@@ -481,6 +494,7 @@
 
 
             this.BindTypes();
+            this.BindProvince();
            
            
         },
@@ -533,6 +547,8 @@
                         _self.count_down = result.Content.COUNT_DOWN;
                         _self.MACHINETYPE = result.Content.MACHINETYPE;
                         _self.MACHINET = result.Content.MACHINET;
+
+                        _self.PROVINCEID = result.Content.PROVINCEID;
                     }
                 })
             },
@@ -568,7 +584,8 @@
                         CHECK_ENDDATE: _self.check_enddate,
                         COUNT_DOWN: _self.count_down,
                         MACHINETYPE: _self.MACHINETYPE,
-                        MACHINET:_self.MACHINET
+                        MACHINET: _self.MACHINET,
+                        PROVINCEID: _self.PROVINCEID ,
                     },
                     success: function (result) {
 
@@ -620,7 +637,8 @@
                         CHECK_ENDDATE: _self.check_enddate,
                         COUNT_DOWN: _self.count_down,
                         MACHINETYPE: _self.MACHINETYPE,
-                        MACHINET: _self.MACHINET
+                        MACHINET: _self.MACHINET,
+                        PROVINCEID: _self.PROVINCEID,
                     },
                     success: function (result) {
 
@@ -695,7 +713,44 @@
                 })
             
             },
+            BindProvince() {
+                
 
+                var _self = this;
+                MyAjax({
+                    url: "/Project/ListBindProvince",
+                    type: "POST",
+                    data: {
+                      
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        if (!result.Success) {
+                            alert_danger(result.Message);
+                            return;
+                        }
+
+
+                        for (var i = 0; i < result.Content.length; i++) {
+                            $("#txt_address").append($("<option value='" + result.Content[i].Area_Id + "' >" + result.Content[i].Area_Name + "</option>     "));
+
+                        }
+
+
+                        $("#txt_address").change(function () {
+
+                            _self.PROVINCEID = $("#txt_address").val();
+
+
+                        });
+
+
+                    }
+                })
+
+            }
 
         }
 
