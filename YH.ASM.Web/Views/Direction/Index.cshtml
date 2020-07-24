@@ -476,12 +476,7 @@
                             }
                         });
                     },
-                    LoadCalendar: function (item) {
-
-                        console.log(123);
-                        showWui("/Direction/MonthView?userid=" + item.USER_ID);
-
-                    },
+                  
                     RefushCalendar: function (item) {
 
 
@@ -649,14 +644,14 @@
 
                     $("#txt_username").html(result.Content.USER_NAME + "  工作日报");
 
-                    //$("#txt_projectname").val(result.Content.PROJECTNAME + "[" + result.Content.PROJECTCODE+"]");
-                    //$("#txt_MACHINE_NAME").val(result.Content.MACHINENAME + "[" + result.Content.MACHINESERIAL + "]");
-                    //$("#txt_support").val(result.Content.SUPPORTCODE);
+                    $("#txt_projectname").val(result.Content.PROJECTNAME + "[" + result.Content.PROJECTCODE+"]");
+                    $("#txt_MACHINE_NAME").val(result.Content.MACHINENAME + "[" + result.Content.MACHINESERIAL + "]");
+                    $("#txt_support").val(result.Content.SUPPORTCODE);
 
 
-                    $("#txt_projectname").val(result.Content.PROJECT_NAME);
-                    $("#txt_MACHINE_NAME").val(result.Content.MACHINE_NAME);
-                    $("#txt_support").val(result.Content.SUPPORT_NAME);
+                    //$("#txt_projectname").val(result.Content.PROJECT_NAME);
+                    //$("#txt_MACHINE_NAME").val(result.Content.MACHINE_NAME);
+                    //$("#txt_support").val(result.Content.SUPPORT_NAME);
 
                     //========================
 
@@ -667,16 +662,6 @@
 
 
 
-                    //if (result.Content.TYPE == 0) {
-
-                    //    $("#btn_zaoban").show();
-                    //    $("#btn_wanban").hide();
-                    //} else {
-                    //    $("#btn_zaoban").hide();
-                    //    $("#btn_wanban").show();
-                    //}
-                  
-                   
 
                     if (result.Content.TYPE == 0) {
 

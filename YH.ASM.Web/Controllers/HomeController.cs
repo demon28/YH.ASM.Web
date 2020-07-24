@@ -26,17 +26,6 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
-     
-        [HttpGet]
-        public async Task<IActionResult> LoginOut() 
-        {
-
-           await HttpContext.SignOutAsync("Cookies");
-           await HttpContext.SignOutAsync("oidc");
-
-            return View();
-        }
-       
  
         [HttpPost]
         public IActionResult GetLoginUser()
