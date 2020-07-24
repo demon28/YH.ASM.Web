@@ -60,7 +60,7 @@ TU.DEPT5,
                     mounth = mounthstr
                 })
                 .Where(s => s.USER_NAME.Contains(keyword)
-                || s.DEPARTMENT.Contains(keyword) 
+                || s.DEPARTMENT.Contains(keyword)
                 || s.WORK_ID.Contains(keyword)
                 || s.DEPT2.Contains(keyword)
                 || s.DEPT3.Contains(keyword)
