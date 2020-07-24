@@ -85,7 +85,7 @@ function MyAjax(ajaxjson) {
 
         error: (err) => {
 
-            ajaxjson.success({ "Code":500, "Message":"异常"});
+            ajaxjson.success({ "Code": 500, "Message": "异常", "error:": err});
         }
     })
 
