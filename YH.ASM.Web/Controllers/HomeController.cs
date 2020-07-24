@@ -50,7 +50,7 @@ namespace YH.ASM.Web.Controllers
 
             var details = support.SelectCount();
 
-            int cpnumber =(int) (( Convert.ToDecimal( details.Complete) / Convert.ToDecimal(scount)) * 100);
+            int cpnumber =(int) (( Convert.ToDecimal( details.Complete) / Convert.ToDecimal(scount)) * 100); //工单完成率，百分比
             return Json(new {ProjectCount=pcount,MachineCount=mcount,SupportCount=scount,SupportWaite=details.Wait,SupportBeing=details.Being,SupportComplete=details.Complete, Cpnumber=cpnumber });
 
         }
