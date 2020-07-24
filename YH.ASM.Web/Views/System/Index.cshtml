@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewData["Title"] = "售后管理系统";
+}
+@section Pageheader{
+
+
+
+    <h1>
+        <small>  系统设置</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> System</a></li>
+        <li class="active">Setting </li>
+    </ol>
+
+}
+
+<section class="content">
+
+    <!-- row -->
+    <div class="row" id="tab">
+        <div class="col-md-12">
+
+            开启工单推送：
+            <button type="button" class="btn btn-primary " @@click="SwitchPush">{{SupportPush}}</button>
+
+
+        </div>
+        <!-- /.col -->
+    </div>
+
+</section>
+
+
+
+@section scripts{
+
+
+    <script>
+        var _self;
+        var vm = new Vue({
+            el: "#tab",
+            data: {
+               SupportPush:""
+            },
+            created: function () {
+                _self = this;
+                _self.Init();
+            },
+            mounted: function () {
+             
+            },
+            methods: {
+
+                Init() {
+
+                    _self.LoadSupportPush();
+                },
+
+                LoadSupportPush() {
+                    MyAjax({
+                        url: "/System/LoadSupportPush",
+                        type: "POST",
+                        success: function (result) {
+
+                            console.log(result);
+
+                            var obj = JSON.parse(result.Content);
+                            _self.SupportPush = obj ? "开启" : "关闭";
+
+                        }
+                    })
+
+                },
+
+                SwitchPush() {
+
+                    MyAjax({
+                        url: "/System/SwitchSupportPush",
+                        type: "POST",
+                        success: function (result) {
+
+                            var obj = JSON.parse(result.Content);
+                            _self.SupportPush = obj?"开启":"关闭";
+
+                        }
+                    })
+                }
+              
+
+            },
+
+
+
+        });
+
+       
+    </script>
+
+}
+

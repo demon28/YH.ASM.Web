@@ -21,12 +21,7 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
-        [Right(PowerName = "工单详情")]
-        public IActionResult TimeLine()
-        {
-            return View();
-
-        }
+     
 
 
         [Right(PowerName = "工单流程")]

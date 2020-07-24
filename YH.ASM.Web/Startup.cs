@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using log4net;
 using log4net.Repository.Hierarchy;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -47,8 +48,9 @@ namespace YH.ASM.Web
 
             });
 
+            //二次读流
             services.Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
-                ;
+
 
 
             services.AddMvc().AddRazorRuntimeCompilation();
@@ -66,7 +68,7 @@ namespace YH.ASM.Web
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-
+            //注册日志提供者
             Entites.LoggerHelper.ServiceProvider = app.ApplicationServices;
 
             if (env.IsDevelopment())

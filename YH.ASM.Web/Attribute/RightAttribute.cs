@@ -91,7 +91,7 @@ namespace YH.ASM.Web.ControllerBase
             //判断该页面或操作，是否有再数据库配置过
             TRIGHT_POWER_Da pwmanager = new TRIGHT_POWER_Da();
 
-            var HasPage= pwmanager.Db.Queryable<TRIGHT_POWER>().Where(s => s.PAGEURL.ToLower().Contains(page.ToLower())).Count() <= 0;
+            var HasPage= pwmanager.Db.Queryable<TRIGHT_POWER>().Where(s => s.PAGEURL.ToLower()==page.ToLower()).Count() <= 0;
 
             //该页面再数据库未配置
             if (HasPage)
