@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
@@ -34,11 +35,6 @@ namespace YH.ASM.Web.Controllers
         
 
 
-        [Right(Ignore =true)]
-        public IActionResult AddAndUpdate()
-        {
-            return View();
-        }
 
         [Right(PowerName = "查询")]
         [HttpPost]
@@ -79,12 +75,21 @@ namespace YH.ASM.Web.Controllers
             model.CREATETIME = DateTime.Now;
             model.ISDEL = 0;
             model.STATUS = 0;
-
+           
             DataAccess.TASM_MACHINEManager manager = new DataAccess.TASM_MACHINEManager();
-            if (!manager.CurrentDb.Insert(model))
-            {
-                return FailMessage();
-            }
+
+
+            manager.Db.BeginTran();
+            int mid = manager.CurrentDb.InsertReturnIdentity(model);
+            manager.Db.CommitTran();
+
+
+            model.MID = mid;
+            model.SERIAL = model.NAME + "-" + model.MID;
+       
+            manager.CurrentDb.Update(model);
+
+         
             return SuccessMessage("添加成功");
 
         }
@@ -96,7 +101,7 @@ namespace YH.ASM.Web.Controllers
 
             model.CREATETIME = DateTime.Now;
             model.STATUS = 0;
-           
+         
             DataAccess.TASM_MACHINE_TYPEManager manager = new DataAccess.TASM_MACHINE_TYPEManager();
             if (!manager.CurrentDb.Insert(model))
             {

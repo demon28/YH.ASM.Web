@@ -7,7 +7,7 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://www.asm.cn:50428/",
+      "applicationUrl": "http://127.0.0.1:50428/",
       "sslPort": 0
     }
   },
@@ -25,7 +25,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://www.asm.cn:50428/"
+      "applicationUrl": "http://127.0.0.1:50428/"
     }
   }
 }

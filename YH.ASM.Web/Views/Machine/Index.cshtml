@@ -266,14 +266,14 @@
                         </div>
 
 
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <label for="txt_address" class="col-sm-3 control-label">设备编号：</label>
-
 
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="txt_productdate" v-model="item.SERIAL" placeholder="请输入设备编号" style="width:320px;" />
                             </div>
-                        </div>
+                        </div>*@
+
                         <div class="form-group ">
                             <label for="txt_address" class="col-sm-3 control-label">客户名称：</label>
 
@@ -398,8 +398,8 @@
             this.Init();
             this.LoadTyps();
 
-        
-       
+
+
         },
         mounted: function () {
 
@@ -628,7 +628,7 @@
                                 alert_danger(result.Message);
                                 return;
                             }
-
+                            _self.project = result.Content.PROJECTNAME;
                             _self.item = result.Content;
 
                         }
@@ -661,7 +661,7 @@
 
                             }
                             _self.item.TYPES=_self.typeList[0].value;   //给默认值 不生效
-                        
+
 
 
                         }
@@ -677,16 +677,16 @@
 
                 },
                  FillProject() {
-             
-                  showWui("/Project/FillProject");
-            },
-            SetProject(project) {
 
-                var _self = this;
-                _self.project = project.NAME;
-                _self.item.PROJECTID = project.PID;
-                closeWui();
-            },
+                        showWui("/Project/FillProject");
+                  },
+                 SetProject(project) {
+
+                         var _self = this;
+                         _self.project = project.NAME;
+                         _self.item.PROJECTID = project.PID;
+                         closeWui();
+                 },
 
            },
 
