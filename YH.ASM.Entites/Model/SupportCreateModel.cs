@@ -29,8 +29,14 @@ namespace YH.ASM.Entites.Model
 
         public string Title { get; set; }
 
+        /// <summary>
+        /// 问题内容
+        /// </summary>
         public string Content { get; set; }
 
+        /// <summary>
+        /// 问题机型
+        /// </summary>
         [Required]
         public int Mid{ get; set; }
 

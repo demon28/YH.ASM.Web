@@ -25,6 +25,12 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
+        
+         public IActionResult FillUser()
+        {
+            return View();
+        }
+
         [Right(PowerName = "查询")]
         [HttpPost]
         public IActionResult GetList(string keyword,int pageIndex,int pageSize)

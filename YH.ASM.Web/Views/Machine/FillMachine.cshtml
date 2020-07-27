@@ -1,0 +1,222 @@
+﻿
+@{
+    ViewData["Title"] = "售后管理系统";
+    Layout = "";
+}
+<html>
+<head>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/Reference/adminLTE/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/AdminLTE.css">
+
+    <link rel="stylesheet" href="~/Reference/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+    <link rel="stylesheet" href="~/Reference/adminLTE/dist/css/skins/_all-skins.min.css">
+
+
+
+
+    <script src="~/Reference/scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Reference/vue/vue.min.js"></script>
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini" style="background-color:gainsboro">
+
+    <div class="box" id="tab_account">
+        <div class="box-header">
+            <h3 class="box-title">List</h3>
+
+            <div class="box-tools">
+
+
+
+                <div class="input-group input-group-sm hidden-xs" style="width: 200px;">
+                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
+
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search"><i class="fa fa-search"></i></button>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body table-responsive no-padding">
+            <table class="table table-hover">
+                <tbody>
+                    <tr>
+                        <td class="my-td ">设备类型</td>
+                        <td class="my-td ">归属项目</td>
+                        <td class="my-td ">型号规格</td>
+                        <td class="my-td ">设备编号</td>
+
+
+                        <th>操作</th>
+                    </tr>
+                    <tr v-for="(item,index) in list">
+                        <td>{{item.TYPESNAME}}</td>
+                        <td>{{item.PROJECTNAME}}</td>
+                        <td>{{item.NAME}}</td>
+                        <td>{{item.SERIAL}}</td>
+
+
+
+                        <td>
+                            <button type="button" class="btn bg-purple  btn-xs" v-on:click="Check(item)">选择</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <!-- /.box-body -->
+
+
+        <div class="box-footer no-padding">
+
+            <div class="card-footer clearfix pull-right " style="margin-right:30px;margin-top:30px;margin-bottom:30px" id="div_page">
+
+                <ul class="pagination pagination-sm no-margin pull-right" id="ul_page">
+                </ul>
+            </div>
+
+
+            <!-- /.pull-right -->
+        </div>
+    </div>
+
+</body>
+</html>
+
+<!-- jQuery 3 -->
+<!-- Bootstrap 3.3.7 -->
+<script src="~/Reference/adminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Slimscroll -->
+<script src="~/Reference/adminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="~/Reference/adminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="~/Reference/adminLTE/dist/js/adminlte.min.js"></script>
+
+
+<script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+
+<script src="~/Reference/scripts/jquery.bootstrap-growl.js"></script>
+
+
+<script src="~/js/jq-paginator.min.js"></script>
+<script src="~/Reference/bootbox/bootbox.min.js"></script>
+<script src="~/Reference/scripts/CommonScript.js"></script>
+
+<script src="~/Reference/scripts/alertsjavascrtpt.js"></script>
+
+<script>
+
+
+
+
+    var  vm = new Vue({
+            el: "#tab_account",
+            data: {
+                list: [],
+                pageIndex: 1,
+                pageSize: 10,
+                pageCount: 20,
+                pageTotal: 0,
+            },
+            created: function () {
+
+                this.Init();
+
+            },
+            methods: {
+                Init: function () {
+                    var self = this;
+                    var keywork = $("#txt_Search").val();
+                    MyAjax({
+                        url: "/Machine/List",
+                        type: "POST",
+                        data: {
+                            keyword: keywork,
+                            pageIndex: self.pageIndex,
+                            pageSize: self.pageSize,
+                        },
+                        success: function (result) {
+
+                            console.log(result);
+                            if (result.Success) {
+
+                                self.list = result.Content;
+
+                                self.pageIndex = result.PageIndex;
+                                self.pageSize = result.PageSize;
+                                self.pageCount = result.PageCount;
+                                self.pageTotal = result.PageTotal;
+
+
+
+                                self.PageBind();
+                            }
+                        }
+                    })
+                },
+                Check: function (item) {
+
+
+                    window.parent.vm.SetMachine(item);
+
+
+                },
+                Search: function () {
+                    this.pageIndex = 1;
+                    this.Init();
+                },
+                PageBind: function () {
+                    var self = this;
+                    $("#ul_page").jqPaginator({
+                        totalPages: self.pageTotal,
+                        visiblePages: self.pageSize,
+                        currentPage: self.pageIndex,
+
+                        first: ' <li><a href="#">First</a></li>',
+                        prev: ' <li><a href="#">&laquo;</a></li>',
+                        next: ' <li><a href="#">&raquo;</a></li>',
+                        last: '<li><a href="#">Last<\/a><\/li>',
+                        page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
+
+                        onPageChange: function (num, type) {
+
+                            self.pIndex = num;
+
+                            if (type == "change") {
+                                vm.Init();
+                            }
+                        }
+                    });
+                },
+
+            }
+        });
+
+
+
+
+
+
+
+
+</script>

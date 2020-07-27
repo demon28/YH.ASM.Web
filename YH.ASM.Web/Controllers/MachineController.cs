@@ -32,8 +32,10 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
-        
 
+        public IActionResult FillMachine() {
+            return View();
+        }
 
 
         [Right(PowerName = "查询")]
