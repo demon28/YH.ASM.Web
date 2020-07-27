@@ -26,6 +26,13 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
+        [Right(PowerName = "设备分类")]
+        public IActionResult Types()
+        {
+            return View();
+        }
+        
+
 
         [Right(Ignore =true)]
         public IActionResult AddAndUpdate()
@@ -213,7 +220,7 @@ namespace YH.ASM.Web.Controllers
         public IActionResult GetUpdateInfo(int id)
         {
             TASM_MACHINEManager manager = new TASM_MACHINEManager();
-            TASM_MACHINE model = manager.CurrentDb.GetById(id);
+            var model = manager.SelectById(id);
 
             return SuccessResult(model);
 

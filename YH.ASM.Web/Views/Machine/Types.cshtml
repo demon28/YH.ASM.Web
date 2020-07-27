@@ -1,0 +1,313 @@
+﻿@section Pageheader{
+
+    <h1>
+        <small> 设备类型</small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Manchine</li>
+    </ol>
+
+}
+
+<div id="tab_account">
+
+    <section class="content">
+
+
+        <div class="row ">
+
+
+            <div>
+                <div class="box box-info" id="app">
+
+
+
+                    <div class="box-header with-border">
+                        <h2 class="box-title">设备类型</h2>
+
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
+                                <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ShowAddTypes()">添加</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="box-body table-responsive ">
+
+                        <ul class="list-group">
+                            <li class="list-group-item" v-for="item in MachinTypes">
+
+                                <b>{{item.NAME}}</b>&nbsp;&nbsp;
+
+                                <button type="button" class="btn bg-danger  btn-xs pull-right ml-1" style="margin-left:5px" v-on:click="DelTypes(item)">删除</button>
+                                &nbsp; &nbsp;
+                                <button type="button" class="btn bg-purple  btn-xs pull-right  ml-1" style="margin-left:5px" v-on:click="ShowUpdateTypes(item)">修改</button>
+                                &nbsp; &nbsp;
+
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <!-- About Me Box -->
+            </div>
+
+
+
+        </div>
+    </section>
+
+
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="txt_username">添加设备名称</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal">
+
+                        <div class="form-group">
+                            <label for="txt_projectname" class="col-sm-3 control-label">设备名称：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="txt_typename" v-model="typename">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="txt_kehuname" class="col-sm-3 control-label">预期安装天数：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="txt_dasys1" v-model="installday">
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="txt_kehuname" class="col-sm-3 control-label">预期调试天数：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="txt_dasys2" v-model="debugday">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="txt_kehuname" class="col-sm-3 control-label">预期验收天数：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="txt_dasys3" v-model="checkday">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-right" v-on:click="AddTypes()" v-if="operation=='add'">添 加</button>
+                    <button type="button" class="btn btn-default pull-right" v-on:click="UpdateTypes()" v-if="operation=='update'">修 改</button>
+
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关 闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+
+
+</div>
+
+
+@section scripts{
+
+    <script>
+        var self;
+        var vm = new Vue({
+            el: "#tab_account",
+            data: {
+
+                id: 0,
+                typename: "",
+                installday: 0,
+                debugday: 0,
+                checkday: 0,
+                operation: "add",
+                MachinTypes: [],
+            },
+            created() {
+                self = this;
+                self.InitTypes();
+            },
+            methods: {
+                InitTypes: function () {
+                    //加载设备分类
+
+                    MyAjax({
+                        url: "/Machine/ListTypes",
+                        type: "POST",
+                        data: {
+
+                        },
+                        success: function (result) {
+
+                            // console.log(JSON.stringify(result));
+                            if (!result.Success) {
+
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            self.MachinTypes = result.Content;
+
+                        }
+                    })
+                },
+
+                DelTypes: function (item) {
+            
+                    bootbox.confirm("您确定删除改记录吗？", function (res) {
+                        if (res) {
+
+
+                            MyAjax({
+                                url: "/Machine/DeleteTypes",
+                                type: "POST",
+                                data: {
+                                    id: item.ID
+                                },
+                                success: function (result) {
+
+                                    if (!result.Success) {
+
+                                        alert_danger(result.Message);
+                                        return;
+                                    }
+                                    alert_success("删除成功");
+                                    self.InitTypes();
+
+                                }
+                            })
+                        }
+                    });
+
+                },
+                ShowAddTypes: function () {
+                    this.operation = "add";
+                    $('#modal-default').modal('show');
+                },
+                AddTypes: function () {
+
+                    MyAjax({
+                        url: "/Machine/AddTypes",
+                        type: "POST",
+                        data: {
+                            NAME: self.typename,
+                            INSTALLDAYS: self.installday,
+                            DEBUGDAYS: self.debugday,
+                            CHECKDAYS: self.checkday,
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            alert_success(result.Message);
+
+                            self.InitTypes();
+
+                        }
+                    })
+
+                },
+                  
+                ShowUpdateTypes: function (item) {
+
+                $('#modal-default').modal('show');
+
+                this.operation = "update";
+
+
+                MyAjax({
+                    url: "/Machine/GetTypesInfo",
+                    type: "POST",
+                    data: {
+                        id: item.ID
+                    },
+                    success: function (result) {
+
+                        console.log(JSON.stringify(result));
+
+                        if (!result.Success) {
+
+                            alert_danger(result.Message);
+                            return;
+                        }
+                        self.id = result.Content.ID;
+                        self.typename = result.Content.NAME;
+                        self.installday = result.Content.INSTALLDAYS;
+                        self.debugday = result.Content.DEBUGDAYS;
+                        self.checkday = result.Content.CHECKDAYS;
+
+                        self.InitTypes();
+
+                    }
+                })
+            },
+                UpdateTypes: function () {
+
+                    MyAjax({
+                        url: "/Machine/UpdateTypes",
+                        type: "POST",
+                        data: {
+                            ID: self.id,
+                            NAME: self.typename,
+                            INSTALLDAYS: self.installday,
+                            DEBUGDAYS: self.debugday,
+                            CHECKDAYS: self.checkday,
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            alert_success(result.Message);
+
+                            _self.InitTypes();
+
+                        }
+                    })
+
+                },
+            }
+
+
+
+
+        });
+
+    </script>
+
+}

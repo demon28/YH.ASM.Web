@@ -85,7 +85,9 @@ namespace YH.ASM.Entites.CodeGenerator
         /// </summary>
         public System.Int32? DAYS { get; set; }
 
-
+        /// <summary>
+        /// 设备类型
+        /// </summary>
         public System.Int32? TYPES { get; set; }
 
         
@@ -94,6 +96,11 @@ namespace YH.ASM.Entites.CodeGenerator
         /// 订单号
         /// </summary>
         public System.String ORDERNO { get; set; }
+
+        /// <summary>
+        /// 项目id
+        /// </summary>
+        public System.Int32? PROJECTID { get; set; }
 
     }
 }

@@ -87,12 +87,7 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
-        [Right(Ignore = true)]
 
-        public IActionResult FillProject()
-        {
-            return View();
-        }
 
         [Right(Ignore = true)]
 

@@ -50,6 +50,12 @@ namespace YH.ASM.Web.Controllers
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ILogger<ProjectController> logger;
 
+        [Right(Ignore = true)]
+
+        public IActionResult FillProject()
+        {
+            return View();
+        }
 
         public ProjectController(IWebHostEnvironment hostingEnvironment, ILogger<ProjectController> _logger)
         {

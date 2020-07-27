@@ -9,6 +9,6 @@ namespace YH.ASM.Entites.Model
     {
 
         public System.String TYPESNAME { get; set; }
-
+        public string PROJECTNAME { get; set; }
     }
 }

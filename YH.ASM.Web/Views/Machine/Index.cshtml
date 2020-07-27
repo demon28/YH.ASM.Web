@@ -71,51 +71,9 @@
 
         <div class="row ">
 
-            <div class="col-md-3">
-                <div class="box box-info" id="app">
 
 
-
-                    <div class="box-header with-border">
-                        <h2 class="box-title">设备类型</h2>
-
-                        <div class="box-tools">
-                            <div class="input-group input-group-sm  col-md-1 pull-right ml-1" style="margin-left:10px;">
-                                <button type="button" class="btn btn-default pull-right  btn-sm" @@click="ShowAddTypes()">添加</button>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="box-body table-responsive ">
-
-                        <ul class="list-group">
-                            <li class="list-group-item" v-for="item in MachinTypes">
-
-                                <b>{{item.NAME}}</b>&nbsp;&nbsp;
-
-                                <button type="button" class="btn bg-danger  btn-xs pull-right ml-1" style="margin-left:5px" v-on:click="DelTypes(item)">删除</button>
-                                &nbsp; &nbsp;
-                                <button type="button" class="btn bg-purple  btn-xs pull-right  ml-1" style="margin-left:5px" v-on:click="UpdateMachine(item)">修改</button>
-                                &nbsp; &nbsp;
-                                <button type="button" class="btn bg-primary  btn-xs pull-right  ml-1" v-on:click="CheckMachine(item)">检索</button>
-
-                            </li>
-
-                        </ul>
-
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-                <!-- About Me Box -->
-            </div>
-
-
-
-
-            <div class="col-md-9">
+            <div>
 
                 <!-- /.col -->
                 <div id="tab">
@@ -163,11 +121,11 @@
                             <table class="table table-bordered table-hover dataTable">
                                 <tbody>
                                     <tr>
-                                        <td class="my-td ">设备名称</td>
+                                        <td class="my-td ">ID</td>
+                                        <td class="my-td ">设备类型</td>
+                                        <td class="my-td ">归属项目</td>
                                         <td class="my-td ">型号规格</td>
                                         <td class="my-td ">设备编号</td>
-
-
                                         <td class="my-td ">客户名称</td>
                                         <td class="my-td ">合同编号</td>
                                         <td class="my-td ">订单号</td>
@@ -176,32 +134,28 @@
                                         <td class="my-td ">送货单号</td>
                                         <td class="my-td ">验收时间</td>
 
-
-
                                         <td class="my-td">
                                             创建时间
                                         </td>
                                         <td class="my-td ">
                                             操作
                                         </td>
-
                                     </tr>
 
 
-
                                     <tr v-for="(item,index) in list">
+                                        <td>{{item.MID}}</td>
                                         <td>{{item.TYPESNAME}}</td>
+                                        <td>{{item.PROJECTNAME}}</td>
                                         <td>{{item.NAME}}</td>
-
                                         <td>{{item.SERIAL}}</td>
                                         <td>{{item.CUSTOMER}}</td>
                                         <td>{{item.CONTRACT}}</td>
-                                        <td>{{Formtat(item.ORDERNO)}}</td>
-                                        <td>{{Formtat(item.ORDERTIME)}}</td>
-                                        <td> {{item.DELIVERYTIME}}</td>
+                                        <td>{{item.ORDERNO}}</td>
+                                        <td>{{(item.ORDERTIME).substr(0, 10)}}</td>
+                                        <td>{{(item.DELIVERYTIME).substr(0, 10)}}</td>
                                         <td>{{item.DELIVERYNUMBER}} </td>
-                                        <td>{{item.CHECKTIME}}</td>
-
+                                        <td>{{(item.CHECKTIME).substr(0, 10)}}</td>
                                         <td>{{item.CREATETIME}}</td>
 
 
@@ -256,70 +210,6 @@
     </div>
 
     <!-- /.control-sidebar -->
-
-
-
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="txt_username">添加设备名称</h4>
-                </div>
-                <div class="modal-body">
-
-                    <form class="form-horizontal">
-
-                        <div class="form-group">
-                            <label for="txt_projectname" class="col-sm-3 control-label">设备名称：</label>
-
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" id="txt_typename" v-model="typename">
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="txt_kehuname" class="col-sm-3 control-label">预期安装天数：</label>
-
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" id="txt_dasys1" v-model="installday">
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group">
-                            <label for="txt_kehuname" class="col-sm-3 control-label">预期调试天数：</label>
-
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" id="txt_dasys2" v-model="debugday">
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="txt_kehuname" class="col-sm-3 control-label">预期验收天数：</label>
-
-                            <div class="col-sm-7">
-                                <input type="text" class="form-control" id="txt_dasys3" v-model="checkday">
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-right" v-on:click="AddTypes()" v-if="operation=='add'">添 加</button>
-                    <button type="button" class="btn btn-default pull-right" v-on:click="UpdateTypes()" v-if="operation=='update'">修 改</button>
-
-                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关 闭</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-    </div>
     <!-- /.modal-dialog -->
 
     <div class="modal fade" id="modal-machine">
@@ -332,7 +222,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
 
-                    <h4 class="modal-title" id="txt_username">{{opeatioanInfo.isadd?"添加":"修改"}}</h4>
+                    <h4 class="modal-title" id="txt_username">{{isadd?"添加":"修改"}}</h4>
                 </div>
                 <div class="modal-body">
 
@@ -341,20 +231,37 @@
 
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-3 control-label">设备名称：</label>
+                            <label for="inputEmail3" class="col-sm-3 control-label">设备类型：</label>
 
                             <div class="col-sm-7">
 
-                                <select class="form-control" id="txt_debug_status" v-model="opeatioanInfo.item.TYPES" style="width:320px;">
+                                <select class="form-control" id="txt_debug_status" style="width:320px;" v-model="item.TYPES" @@change="SetTypes">
+
+                                    <option :value="type.value" v-for="(type,index) in typeList">{{type.name}}</option>
+
                                 </select>
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <label for="txt_projectname" class="col-sm-3 control-label">项目名称：</label>
+
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" v-model="project" placeholder="请选择项目名称" style="width:320px;" readonly="readonly" />
+                            </div>
+
+                            <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillProject()">选择项目</button>
+
+
+                        </div>
+
 
                         <div class="form-group">
                             <label for="txt_projectname" class="col-sm-3 control-label">型号规格：</label>
 
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" id="txt_projectname" v-model="opeatioanInfo.item.NAME" placeholder="请输入设备名称" style="width:320px;" />
+                                <input type="text" class="form-control" id="txt_guige" v-model="item.NAME" placeholder="请输入设备名称" style="width:320px;" />
                             </div>
                         </div>
 
@@ -364,14 +271,14 @@
 
 
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" id="txt_productdate" v-model="opeatioanInfo.item.SERIAL" splaceholder="设备序号" style="width:320px;" />
+                                <input type="text" class="form-control" id="txt_productdate" v-model="item.SERIAL" placeholder="请输入设备编号" style="width:320px;" />
                             </div>
                         </div>
                         <div class="form-group ">
                             <label for="txt_address" class="col-sm-3 control-label">客户名称：</label>
 
                             <div class="col-sm-7">
-                                <input type="text" class="form-control" id="txt_machine" v-model="opeatioanInfo.item.CUSTOMER" placeholder="请输入客户名称" style="width:320px;" />
+                                <input type="text" class="form-control" id="txt_machine" v-model="item.CUSTOMER" placeholder="请输入客户名称" style="width:320px;" />
                             </div>
                         </div>
 
@@ -379,7 +286,7 @@
                             <label for="txt_address" class="col-sm-3 control-label">合同编号：</label>
 
                             <div class="col-sm-7">
-                                <input type="text" class="form-control"  v-model="opeatioanInfo.item.CONTRACT" placeholder="请输入设合同编号" style="width:320px;" />
+                                <input type="text" class="form-control" v-model="item.CONTRACT" placeholder="请输入设合同编号" style="width:320px;" />
                             </div>
                         </div>
 
@@ -389,7 +296,7 @@
 
 
                             <div class="col-sm-7">
-                                <input type="text" class="form-control"  v-model="opeatioanInfo.item.ORDERNO" placeholder="请输入订单号" style="width:320px;" />
+                                <input type="text" class="form-control" v-model="item.ORDERNO" placeholder="请输入订单号" style="width:320px;" />
                             </div>
 
 
@@ -400,7 +307,7 @@
                             <label for="inputEmail3" class="col-sm-3 control-label">订单时间：</label>
 
                             <div class="input-group date col-sm-6" style="padding-left:15px">
-                                <input type="text" class="form-control" id="txt_order_date" v-model="opeatioanInfo.item.ORDERTIME" style="width:282px;" readonly="readonly" />
+                                <input type="text" class="form-control" id="txt_order_date" v-model="item.ORDERTIME" style="width:282px;" readonly="readonly" />
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
@@ -411,7 +318,7 @@
                             <label for="inputEmail3" class="col-sm-3 control-label">送货时间：</label>
 
                             <div class="input-group date col-sm-6" style="padding-left:15px">
-                                <input type="text" class="form-control" id="txt_install_stardate" v-model="opeatioanInfo.item.DELIVERYTIME" style="width:282px;" readonly="readonly" />
+                                <input type="text" class="form-control" id="txt_install_stardate" v-model="item.DELIVERYTIME" style="width:282px;" readonly="readonly" />
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
@@ -422,7 +329,7 @@
                             <label for="txt_address" class="col-sm-3 control-label">送货单号：</label>
 
                             <div class="col-sm-7">
-                                <input type="text" class="form-control"  v-model="opeatioanInfo.item.DELIVERYNUMBER" placeholder="请输入送货单号" style="width:320px;" />
+                                <input type="text" class="form-control" v-model="item.DELIVERYNUMBER" placeholder="请输入送货单号" style="width:320px;" />
                             </div>
                         </div>
 
@@ -431,7 +338,7 @@
                             <label for="inputEmail3" class="col-sm-3 control-label">收货时间：</label>
 
                             <div class="input-group date col-sm-6" style="padding-left:15px">
-                                <input type="text" class="form-control" id="txt_install_enddate" v-model="opeatioanInfo.item.CHECKTIME" style="width:282px;" readonly="readonly" />
+                                <input type="text" class="form-control" id="txt_install_enddate" v-model="item.CHECKTIME" style="width:282px;" readonly="readonly" />
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
@@ -444,8 +351,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default pull-right" v-if="opeatioanInfo.isadd==true" v-on:click="Add()">添 加</button>
-                    <button type="button" class="btn btn-default pull-right" v-if="opeatioanInfo.isadd!=true" v-on:click="Update()">修 改</button>
+                    <button type="button" class="btn btn-default pull-right" v-if="isadd==true" v-on:click="Add()">添 加</button>
+                    <button type="button" class="btn btn-default pull-right" v-if="isadd!=true" v-on:click="Update()">修 改</button>
                 </div>
             </div>
 
@@ -466,35 +373,33 @@
     <script>
 
 
-    var vm = new Vue({
-        el: "#tab_account",
-        data: {
-            list: [],
+        var vm = new Vue({
+            el: "#tab_account",
+            data: {
+                list: [],
 
-            MachinTypes: [],
-            pageIndex: 1,
-            pageSize: 10,
-            pageCount: 20,
-            pageTotal: 0,
-            operation: "add",
-            types: {},
+                pageIndex: 1,
+                pageSize: 10,
+                pageCount: 20,
+                pageTotal: 0,
 
-            id: 0,
-            typename: "",
-            installday: 0,
-            debugday: 0,
-            checkday: 0,
 
-            opeatioanInfo: {
-                isadd: true,
+                typeList: [],
+
+
                 id: 0,
+                isadd: true,
                 item: {},
+                project: ""
 
-            }
+
         },
         created: function () {
             this.Init();
-            this.InitTypes();
+            this.LoadTyps();
+
+        
+       
         },
         mounted: function () {
 
@@ -518,425 +423,270 @@
             $('#txt_install_enddate').datetimepicker()
                 .on('hide', function (ev) {
                     var value = $("#txt_install_enddate").val();
-                    _self.opeatioanInfo.item.CHECKTIME = value;
+                    _self.item.CHECKTIME = value;
 
                 });
 
             $('#txt_install_stardate').datetimepicker()
                 .on('hide', function (ev) {
                     var value = $("#txt_install_stardate").val();
-                    _self.opeatioanInfo.item.DELIVERYTIME = value;
+                    _self.item.DELIVERYTIME = value;
 
                 });
 
             $('#txt_order_date').datetimepicker()
                 .on('hide', function (ev) {
                     var value = $("#txt_order_date").val();
-                    _self.opeatioanInfo.item.ORDERTIME = value;
+                    _self.item.ORDERTIME = value;
 
                 });
 
-
-            this.LoadTyps();
 
         },
-        methods: {
+            methods: {
 
-            Init() {
+                Init() {
 
-                var self = this;
-                var keywork = $("#txt_Search").val();
+                    var self = this;
+                    var keywork = $("#txt_Search").val();
 
-                console.log("请求数据：" + keywork);
+                    console.log("请求数据：" + keywork);
+
+                    MyAjax({
+                        url: "/Machine/List",
+                        type: "POST",
+                        data: {
+                            keywords: keywork,
+                            pageIndex: self.pageIndex,
+                            pageSize: self.pageSize
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            self.list = result.Content;
 
 
-                MyAjax({
-                    url: "/Machine/List",
-                    type: "POST",
-                    data: {
-                        keywords: keywork,
-                        pageIndex: self.pageIndex,
-                        pageSize: self.pageSize
-                    },
-                    success: function (result) {
 
-                        // console.log(JSON.stringify(result));
+                            self.pageIndex = result.PageIndex;
+                            self.pageSize = result.PageSize;
+                            self.pageCount = result.PageCount;
+                            self.TotalCount = result.PageTotal;
 
-                        if (!result.Success) {
-
-                            alert_danger(result.Message);
-                            return;
+                            self.PageBind();
                         }
+                    })
+                },
 
-                        self.list = result.Content;
+                Search: function () {
+                    pageIndex = 1;
+                    this.Init();
+                },
+                PageBind: function () {
+                    var self = this;
 
+                    console.log()
 
+                    $("#ul_page").jqPaginator({
+                        totalPages: self.TotalCount,
+                        visiblePages: self.pageSize,
+                        currentPage: self.pageIndex,
 
-                        self.pageIndex = result.PageIndex;
-                        self.pageSize = result.PageSize;
-                        self.pageCount = result.PageCount;
-                        self.TotalCount = result.PageTotal;
+                        first: ' <li><a href="#">First</a></li>',
+                        prev: ' <li><a href="#">&laquo;</a></li>',
+                        next: ' <li><a href="#">&raquo;</a></li>',
+                        last: '<li><a href="#">Last<\/a><\/li>',
+                        page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
 
-                        self.PageBind();
-                    }
-                })
-            },
+                        onPageChange: function (num, type) {
 
-            Search: function () {
-                pageIndex = 1;
-                this.Init();
-            },
-            PageBind: function () {
-                var self = this;
+                            self.pageIndex = num;
 
-                console.log()
-
-                $("#ul_page").jqPaginator({
-                    totalPages: self.TotalCount,
-                    visiblePages: self.pageSize,
-                    currentPage: self.pageIndex,
-
-                    first: ' <li><a href="#">First</a></li>',
-                    prev: ' <li><a href="#">&laquo;</a></li>',
-                    next: ' <li><a href="#">&raquo;</a></li>',
-                    last: '<li><a href="#">Last<\/a><\/li>',
-                    page: '<li><a href="javascript:void(0);">{{page}}<\/a><\/li>',
-
-                    onPageChange: function (num, type) {
-
-                        self.pageIndex = num;
-
-                        if (type == "change") {
-                            self.Init();
-                        }
-                    }
-                });
-            },
-            ExportExcel: function () {
-                var keyword = $("#txt_Search").val();
-                window.location = "/Machine/ExportExcel?keyword=" + keyword;
-            },
-            Del: function (item) {
-                var self = this;
-                bootbox.confirm("您确定删除改记录吗？", function (res) {
-                    if (res) {
-
-                        MyAjax({
-                            url: "/Machine/Delete",
-                            type: "POST",
-                            data: {
-                                id: item.MID
-                            },
-                            success: function (result) {
-
-                                if (!result.Success) {
-
-                                    alert_danger(result.Message);
-                                    return;
-                                }
-                                alert_success("删除成功");
+                            if (type == "change") {
                                 self.Init();
-
                             }
-                        })
-                    }
-                });
-
-
-
-            },
-            AddShow: function () {
-                console.log("开始添加");
-                this.opeatioanInfo.isadd = true;
-                $('#modal-machine').modal('show');
-            },
-            UpdateShow: function (item) {
-                console.log("开始修改");
-                this.opeatioanInfo.isadd = false;
-                this.opeatioanInfo.id = item.MID
-                $('#modal-machine').modal('show');
-                this.InitItem();
-            },
-            Formtat: function (date) {
-
-                if (date == "" || date == null || date == "null") {
-                    return "";
-                }
-
-                return date.substr(0, 10);
-            },
-
-            InitTypes: function () {
-
-                var self = this;
-                MyAjax({
-                    url: "/Machine/ListTypes",
-                    type: "POST",
-                    data: {
-
-                    },
-                    success: function (result) {
-
-                        // console.log(JSON.stringify(result));
-                        if (!result.Success) {
-
-                            alert_danger(result.Message);
-                            return;
                         }
+                    });
+                },
+                ExportExcel: function () {
+                    var keyword = $("#txt_Search").val();
+                    window.location = "/Machine/ExportExcel?keyword=" + keyword;
+                },
+                Del: function (item) {
+                    var self = this;
+                    bootbox.confirm("您确定删除改记录吗？", function (res) {
+                        if (res) {
 
-                        self.MachinTypes = result.Content;
+                            MyAjax({
+                                url: "/Machine/Delete",
+                                type: "POST",
+                                data: {
+                                    id: item.MID
+                                },
+                                success: function (result) {
 
-                    }
-                })
-            },
-            DelTypes: function (item) {
-                var self = this;
-                bootbox.confirm("您确定删除改记录吗？", function (res) {
-                    if (res) {
+                                    if (!result.Success) {
 
+                                        alert_danger(result.Message);
+                                        return;
+                                    }
+                                    alert_success("删除成功");
+                                    self.Init();
 
-                        MyAjax({
-                            url: "/Machine/DeleteTypes",
-                            type: "POST",
-                            data: {
-                                id: item.ID
-                            },
-                            success: function (result) {
-
-                                if (!result.Success) {
-
-                                    alert_danger(result.Message);
-                                    return;
                                 }
-                                alert_success("删除成功");
-                                self.InitTypes();
+                            })
+                        }
+                    });
+
+                },
+                AddShow: function () {
+                    console.log("开始添加");
+                    this.isadd = true;
+                    this.item = {};
+
+                    $('#modal-machine').modal('show');
+                },
+                UpdateShow: function (item) {
+                    console.log("开始修改");
+                    this.id = item.MID
+                    this.isadd = false;
+
+                    $('#modal-machine').modal('show');
+                    this.InitItem();
+                },
+
+                Add: function () {
+                    var _self = this;
+
+                    console.log(_self.item);
+
+                    MyAjax({
+                        url: "/Machine/Add",
+                        type: "POST",
+                        data: _self.item,
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            alert_success(result.Message);
+                            $('#modal-machine').modal('hide');
+                            _self.Init();
+
+                        }
+                    })
+
+                },
+                Update() {
+                    var _self = this;
+
+                    MyAjax({
+                        url: "/Machine/Update",
+                        type: "POST",
+                        data: _self.item,
+
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            alert_info(result.Message);
+                            $('#modal-machine').modal('hide');
+                            _self.Init();
+
+                        }
+                    })
+                },
+                InitItem() {
+                    var _self = this;
+
+                    MyAjax({
+                        url: "/Machine/GetUpdateInfo",
+                        type: "POST",
+                        data: {
+                            id: _self.id
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            _self.item = result.Content;
+
+                        }
+                    })
+                },
+                LoadTyps: function () {
+                    //添加设备时的分类选择
+                    var _self = this;
+                    MyAjax({
+                        url: "/Machine/ListTypes",
+                        type: "POST",
+                        data: {
+
+                        },
+                        success: function (result) {
+
+                            console.log(JSON.stringify(result));
+
+                            if (!result.Success) {
+                                alert_danger(result.Message);
+                                return;
+                            }
+
+                            for (var i = 0; i < result.Content.length; i++) {
+
+                                let model = {};
+                                model.value = result.Content[i].ID;
+                                model.name = result.Content[i].NAME;
+                                _self.typeList.push(model);
 
                             }
-                        })
-                    }
-                });
+                            _self.item.TYPES=_self.typeList[0].value;   //给默认值 不生效
+                        
 
 
-            },
-            ShowAddTypes: function () {
-                this.operation = "add";
-                this.opeatioanInfo.item = {};
-                this.
-                $('#modal-default').modal('show');
-            },
-            CheckMachine: function (item) {
+                        }
+                    })
 
-                $("#txt_Search").val(item.NAME);
-                this.pageIndex = 1;
-                this.Search();
+
+
+                },
+                SetTypes(e) {
+
+                    console.log(e,this.item.TYPES);
+                    //this.item.TYPES
+
+                },
+                 FillProject() {
+             
+                  showWui("/Project/FillProject");
             },
-            AddTypes: function () {
+            SetProject(project) {
 
                 var _self = this;
-
-                console.log("AddTypes");
-                MyAjax({
-                    url: "/Machine/AddTypes",
-                    type: "POST",
-                    data: {
-                        NAME: _self.typename,
-                        INSTALLDAYS: _self.installday,
-                        DEBUGDAYS: _self.debugday,
-                        CHECKDAYS: _self.checkday,
-                    },
-                    success: function (result) {
-
-                        console.log(JSON.stringify(result));
-
-                        if (!result.Success) {
-                            alert_danger(result.Message);
-                            return;
-                        }
-
-                        alert_success(result.Message);
-
-                        _self.InitTypes();
-
-                    }
-                })
-
+                _self.project = project.NAME;
+                _self.item.PROJECTID = project.PID;
+                closeWui();
             },
-
-            UpdateTypes: function () {
-
-                var _self = this;
-
-                MyAjax({
-                    url: "/Machine/UpdateTypes",
-                    type: "POST",
-                    data: {
-                        ID: _self.id,
-                        NAME: _self.typename,
-                        INSTALLDAYS: _self.installday,
-                        DEBUGDAYS: _self.debugday,
-                        CHECKDAYS: _self.checkday,
-                    },
-                    success: function (result) {
-
-                        console.log(JSON.stringify(result));
-
-                        if (!result.Success) {
-                            alert_danger(result.Message);
-                            return;
-                        }
-
-                        alert_success(result.Message);
-
-                        _self.InitTypes();
-
-                    }
-                })
-
-            },
-            UpdateMachine: function (item) {
-
-                $('#modal-default').modal('show');
-
-                this.operation = "update";
-                var self = this;
-
-                console.log("=========" + item.ID);
-
-                MyAjax({
-                    url: "/Machine/GetTypesInfo",
-                    type: "POST",
-                    data: {
-                        id: item.ID
-                    },
-                    success: function (result) {
-
-                        console.log(JSON.stringify(result));
-
-                        if (!result.Success) {
-
-                            alert_danger(result.Message);
-                            return;
-                        }
-                        self.id = result.Content.ID;
-                        self.typename = result.Content.NAME;
-                        self.installday = result.Content.INSTALLDAYS;
-                        self.debugday = result.Content.DEBUGDAYS;
-                        self.checkday = result.Content.CHECKDAYS;
-
-                        self.InitTypes();
-
-                    }
-                })
-            },
-
-            Add: function () {
-                var _self = this;
-
-                MyAjax({
-                    url: "/Machine/Add",
-                    type: "POST",
-                    data: _self.opeatioanInfo.item,
-                    success: function (result) {
-
-                        console.log(JSON.stringify(result));
-
-                        if (!result.Success) {
-                            alert_danger(result.Message);
-                            return;
-                        }
-
-                        alert_success(result.Message);
-
-                        _self.Init();
-
-                    }
-                })
-
-            },
-            Update() {
-                var _self = this;
-
-                MyAjax({
-                    url: "/Machine/Update",
-                    type: "POST",
-                    data: _self.opeatioanInfo.item,
-
-                    success: function (result) {
-
-                        console.log(JSON.stringify(result));
-
-                        if (!result.Success) {
-                            alert_danger(result.Message);
-                            return;
-                        }
-
-                        alert_info(result.Message);
-                        _self.Init();
-
-                    }
-                })
-            },
-            InitItem(){
-                var _self = this;
-
-                MyAjax({
-                    url: "/Machine/GetUpdateInfo",
-                    type: "POST",
-                    data: {
-                        id: _self.opeatioanInfo.id
-                    },
-                    success: function (result) {
-
-                        console.log(JSON.stringify(result));
-
-                        if (!result.Success) {
-                            alert_danger(result.Message);
-                            return;
-                        }
-
-                        _self.opeatioanInfo.item = result.Content;
-
-                    }
-                })
-            },
-            LoadTyps: function () {
-                var _self = this;
-                MyAjax({
-                    url: "/Machine/ListTypes",
-                    type: "POST",
-                    data: {
-
-                    },
-                    success: function (result) {
-
-                        console.log(JSON.stringify(result));
-
-                        if (!result.Success) {
-                            alert_danger(result.Message);
-                            return;
-                        }
-
-
-                        for (var i = 0; i < result.Content.length; i++) {
-
-                            $("#txt_debug_status").append($("<option value='" + result.Content[i].ID + "' >" + result.Content[i].NAME + "</option>   "));
-                        }
-
-
-
-                        $("#txt_debug_status").change(function () {
-
-                            _self.item.TYPES = $("#txt_debug_status").val();
-                        });
-
-
-                    }
-                })
-
-
-
-            }
-
 
            },
 

@@ -18,10 +18,14 @@ namespace YH.ASM.DataAccess
         public bool ListByWhere(string keyword, ref PageModel p, ref List<MachineModel> list)
         {
 
-            string sql = @"select t.*, tr.name typesname 
+            string sql = @"select t.*,
+tr.name typesname,
+ tp.name PROJECTNAME 
   from tasm_machine t
   left join tasm_machine_type tr
-    on t.types = tr.id"
+  on t.types = tr.id
+  left join tasm_project tp 
+  on t.projectid=tp.pid "
 ;
             int pagecount = 0;
             list = Db.SqlQueryable<MachineModel>(sql).Where(s=>s.NAME.Contains(keyword)  
@@ -37,19 +41,47 @@ namespace YH.ASM.DataAccess
             return list.Count > 0;
         }
 
+        /// <summary>
+        /// 不分页，导出excel用
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
 
         public bool ListByWhere(string keyword, ref List<MachineModel> list)
         {
-            string sql = @"select t.*, tr.name typesname 
+            string sql = @"select t.*,
+tr.name typesname,
+ tp.name PROJECTNAME 
   from tasm_machine t
   left join tasm_machine_type tr
-    on t.types = tr.id"
+  on t.types = tr.id
+  left join tasm_project tp 
+  on t.projectid=tp.pid "
            ;
       
             list = Db.SqlQueryable<MachineModel>(sql).Where(s => s.NAME.Contains(keyword)).OrderBy(s => s.MID, OrderByType.Asc).ToList();
 
             return list.Count > 0;
         }
+
+
+        public MachineModel SelectById(int mid) {
+            string sql = @"select t.*,
+tr.name typesname,
+ tp.name PROJECTNAME 
+  from tasm_machine t
+  left join tasm_machine_type tr
+  on t.types = tr.id
+  left join tasm_project tp 
+  on t.projectid=tp.pid "
+         ;
+
+            MachineModel model = Db.SqlQueryable<MachineModel>(sql).Where(s => s.MID == mid).First();
+            return model;
+
+        }
+
 
         public bool  ListByType(int typeid, ref List<TASM_MACHINE> list)
         {
