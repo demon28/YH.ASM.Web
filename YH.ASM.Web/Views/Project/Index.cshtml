@@ -339,13 +339,12 @@
                },
 
                Search: function () {
-                   pageIndex = 1;
+                   this.pageIndex = 1;
                    this.Init();
                },
                PageBind: function () {
                    var self = this;
 
-                   console.log()
 
                    $("#ul_page").jqPaginator({
                        totalPages: self.pageTotal,
