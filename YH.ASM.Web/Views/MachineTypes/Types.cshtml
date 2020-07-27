@@ -158,7 +158,7 @@
                     //加载设备分类
 
                     MyAjax({
-                        url: "/Machine/ListTypes",
+                        url: "/MachineTypes/ListTypes",
                         type: "POST",
                         data: {
 
@@ -185,7 +185,7 @@
 
 
                             MyAjax({
-                                url: "/Machine/DeleteTypes",
+                                url: "/MachineTypes/DeleteTypes",
                                 type: "POST",
                                 data: {
                                     id: item.ID
@@ -213,7 +213,7 @@
                 AddTypes: function () {
 
                     MyAjax({
-                        url: "/Machine/AddTypes",
+                        url: "/MachineTypes/AddTypes",
                         type: "POST",
                         data: {
                             NAME: self.typename,
@@ -247,7 +247,7 @@
 
 
                 MyAjax({
-                    url: "/Machine/GetTypesInfo",
+                    url: "/MachineTypes/GetTypesInfo",
                     type: "POST",
                     data: {
                         id: item.ID
@@ -275,7 +275,7 @@
                 UpdateTypes: function () {
 
                     MyAjax({
-                        url: "/Machine/UpdateTypes",
+                        url: "/MachineTypes/UpdateTypes",
                         type: "POST",
                         data: {
                             ID: self.id,

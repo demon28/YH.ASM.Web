@@ -27,11 +27,6 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
-        [Right(PowerName = "设备分类")]
-        public IActionResult Types()
-        {
-            return View();
-        }
 
         public IActionResult FillMachine() {
             return View();
@@ -56,22 +51,10 @@ namespace YH.ASM.Web.Controllers
             return SuccessResultList(list, p);
         }
 
-        [Right(Ignore =true)]
-        [HttpPost]
-        public IActionResult ListTypes()
-        {
-            DataAccess.TASM_MACHINE_TYPEManager manager = new DataAccess.TASM_MACHINE_TYPEManager();
-
-
-            List<TASM_MACHINE_TYPE> list = new List<TASM_MACHINE_TYPE>();
-            manager.ListByWhere(string.Empty, ref list);
-
-            return SuccessResultList(list);
-        }
 
         [Right(PowerName = "添加台账")]
         [HttpPost]
-        public IActionResult Add(Entites.CodeGenerator.TASM_MACHINE model)
+        public IActionResult Add(TASM_MACHINE model)
         {
 
             model.CREATETIME = DateTime.Now;
@@ -96,25 +79,10 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right(PowerName = "添加设备类型")]
-        [HttpPost]
-        public IActionResult AddTypes(Entites.CodeGenerator.TASM_MACHINE_TYPE model)
-        {
-
-            model.CREATETIME = DateTime.Now;
-            model.STATUS = 0;
-         
-            DataAccess.TASM_MACHINE_TYPEManager manager = new DataAccess.TASM_MACHINE_TYPEManager();
-            if (!manager.CurrentDb.Insert(model))
-            {
-                return FailMessage();
-            }
-            return SuccessMessage("添加成功");
-
-        }
+       
         [Right(PowerName = "修改台账")]
         [HttpPost]
-        public IActionResult Update(Entites.CodeGenerator.TASM_MACHINE model)
+        public IActionResult Update(TASM_MACHINE model)
         {
 
             DataAccess.TASM_MACHINEManager manager = new DataAccess.TASM_MACHINEManager();
@@ -140,22 +108,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-
-        [Right(PowerName = "删除设备类型")]
-        [HttpPost]
-        public IActionResult DeleteTypes(int id)
-        {
-
-            TASM_MACHINE_TYPEManager dbContext = new TASM_MACHINE_TYPEManager();
-            if (!dbContext.CurrentDb.Delete(S => S.ID == id))
-            {
-                return FailMessage();
-            }
-            return SuccessMessage();
-
-
-        }
-
+      
 
         [Right(Ignore =true)]
         [HttpGet]
@@ -233,29 +186,7 @@ namespace YH.ASM.Web.Controllers
 
         }
 
-        [Right(Ignore = true)]
-        [HttpPost]
-        public IActionResult GetTypesInfo(int id)
-        {
-            TASM_MACHINE_TYPEManager manager = new TASM_MACHINE_TYPEManager();
-            TASM_MACHINE_TYPE model = manager.CurrentDb.GetById(id);
-
-            return SuccessResult(model);
-
-        }
-
-        [Right(Ignore = true)]
-        [HttpPost]
-        public IActionResult UpdateTypes(TASM_MACHINE_TYPE model)
-        {
-            DataAccess.TASM_MACHINE_TYPEManager manager = new DataAccess.TASM_MACHINE_TYPEManager();
-            if (!manager.CurrentDb.Update(model))
-            {
-                return FailMessage();
-            }
-            return SuccessMessage("修改成功");
-
-        }
+       
 
     }
 }

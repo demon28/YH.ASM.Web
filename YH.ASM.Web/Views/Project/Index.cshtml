@@ -196,24 +196,10 @@
 
 
 
-                                <!---如果安装时间 超过规定时间则做出背景颜色--->
-
-
                                 <td v-bind:class="BindBgClass(item.INSTALL_DAYS,item.INSTALLDAYS)">{{item.INSTALL_DAYS}}</td>
 
 
-
-
-
-
-
-                                @*<td>
-
-            <span class="label bg-green" v-if="item.INSTALL_STATUS ==0">正常</span>
-            <span class="label bg-blue " v-if="item.INSTALL_STATUS ==1">超前</span>
-            <span class="label bg-yellow " v-if="item.INSTALL_STATUS ==2">延迟</span>
-
-        </td>*@
+                     
 
                                 <td>{{ Formtat(item.DEBUG_STARDATE)}}</td>
                                 <td>{{Formtat(item.DEBUG_ENDDATE)}}</td>
@@ -223,12 +209,7 @@
 
 
 
-                                @*<td>
-
-            <span class="label bg-green" v-if="item.DEBUG_STATUS ==0">正常</span>
-            <span class="label bg-blue " v-if="item.DEBUG_STATUS ==1">超前</span>
-            <span class="label bg-yellow " v-if="item.DEBUG_STATUS ==2">延迟</span>
-        </td>*@
+                         
 
                                 <td>{{Formtat(item.CHECK_STARDATE)}}</td>
                                 <td>{{Formtat(item.CHECK_ENDDATE)}}</td>
