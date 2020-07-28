@@ -152,10 +152,10 @@
                                         <td>{{item.CUSTOMER}}</td>
                                         <td>{{item.CONTRACT}}</td>
                                         <td>{{item.ORDERNO}}</td>
-                                        <td>{{(item.ORDERTIME).substr(0, 10)}}</td>
-                                        <td>{{(item.DELIVERYTIME).substr(0, 10)}}</td>
+                                        <td>{{FormatDate(item.ORDERTIME)}}</td>
+                                        <td>{{FormatDate(item.DELIVERYTIME)}}</td>
                                         <td>{{item.DELIVERYNUMBER}} </td>
-                                        <td>{{(item.CHECKTIME).substr(0, 10)}}</td>
+                                        <td>{{FormatDate(item.CHECKTIME)}}</td>
                                         <td>{{item.CREATETIME}}</td>
 
 
@@ -687,7 +687,13 @@
                          _self.item.PROJECTID = project.PID;
                          closeWui();
                  },
+                 FormatDate(date) {
 
+                     if (date == "" || date == null) {
+                         return "";
+                     }
+                    return date.substr(0, 10);
+                }
            },
 
 
