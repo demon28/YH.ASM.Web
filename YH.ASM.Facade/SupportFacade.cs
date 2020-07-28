@@ -330,7 +330,7 @@ namespace YH.ASM.Facade
         private bool UpdateAttachment(SupportCreateModel model, int sid)
         {
 
-            if (model.Filelist == null && model.Filelist.Count <=0)
+            if (model.Filelist == null || model.Filelist.Count <=0)
             {
                 return true;
             }
