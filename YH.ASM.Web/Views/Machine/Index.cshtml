@@ -126,13 +126,13 @@
                                         <td class="my-td ">归属项目</td>
                                         <td class="my-td ">型号规格</td>
                                         <td class="my-td ">设备编号</td>
-                                        <td class="my-td ">客户名称</td>
+                                   
                                         <td class="my-td ">合同编号</td>
                                         <td class="my-td ">订单号</td>
                                         <td class="my-td ">订单时间</td>
                                         <td class="my-td ">送货时间</td>
                                         <td class="my-td ">送货单号</td>
-                                        <td class="my-td ">验收时间</td>
+                                        <td class="my-td ">收货时间</td>
 
                                         <td class="my-td">
                                             创建时间
@@ -149,7 +149,7 @@
                                         <td>{{item.PROJECTNAME}}</td>
                                         <td>{{item.NAME}}</td>
                                         <td>{{item.SERIAL}}</td>
-                                        <td>{{item.CUSTOMER}}</td>
+                                    
                                         <td>{{item.CONTRACT}}</td>
                                         <td>{{item.ORDERNO}}</td>
                                         <td>{{FormatDate(item.ORDERTIME)}}</td>
@@ -274,13 +274,13 @@
                             </div>
                         </div>*@
 
-                        <div class="form-group ">
+                        @*<div class="form-group ">
                             <label for="txt_address" class="col-sm-3 control-label">客户名称：</label>
 
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="txt_machine" v-model="item.CUSTOMER" placeholder="请输入客户名称" style="width:320px;" />
                             </div>
-                        </div>
+                        </div>*@
 
                         <div class="form-group">
                             <label for="txt_address" class="col-sm-3 control-label">合同编号：</label>
@@ -682,8 +682,8 @@
                   },
                  SetProject(project) {
 
-                         var _self = this;
-                         _self.project = project.NAME;
+                     var _self = this;
+                     _self.project = project.NAME + "[" + project.CODE + "}";
                          _self.item.PROJECTID = project.PID;
                          closeWui();
                  },
