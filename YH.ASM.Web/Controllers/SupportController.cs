@@ -44,9 +44,6 @@ namespace YH.ASM.Web.Controllers
         public IActionResult Index()
         {
 
-
-            logger.LogInformation("web层日志测试");
-
             return View();
         }
 
@@ -56,11 +53,7 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
-        [Right(Ignore = true)]
-        public IActionResult TimeLine()
-        {
-            return View();
-        }
+      
 
         [Right(Ignore = true)]
         public IActionResult Disposer()
@@ -483,15 +476,15 @@ namespace YH.ASM.Web.Controllers
         [HttpPost]
         public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model, int supportStatus, int nextUser,int personalId)
         {
-            //TODO:web端暂不处理，目前灭有时间
-            //AddDisposerModel addDisposer = new AddDisposerModel();
+         
+             AddDisposerModel addDisposer = new AddDisposerModel();
 
-            //DisposerFacade facade = new DisposerFacade();
-            //if (!facade.Create(addDisposer))
-            //{
-            //    return FailMessage(facade.Msg);
-            //}
-            //return SuccessMessage("处理成功！");
+            DisposerFacade facade = new DisposerFacade();
+            if (!facade.Create(addDisposer))
+            {
+                return FailMessage(facade.Msg);
+            }
+            return SuccessMessage("处理成功！");
 
             return View();
         }

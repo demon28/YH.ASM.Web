@@ -19,10 +19,12 @@
             vertical-align: text-bottom;
             margin-bottom: 2px;
             *margin-bottom: -2px;
-           
         }
     </style>
 
+    <link href="~/lib/element-ui/theme-chalk/index.css" rel="stylesheet" />
+    <script src="~/lib/element-ui/index.js"></script>
+    <script src="~/lib/element-ui/locale/zh-CN.min.js"></script>
 
 }
 
@@ -160,7 +162,7 @@
                                     问题机型：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" v-model="supprotInfo.TITLE" readonly="readonly">
+                                    <input type="text" class="form-control input-sm" v-model="supprotInfo.MACHINENAME" readonly="readonly">
                                 </td>
                             </tr>
 
@@ -272,12 +274,18 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">责任人：</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="duty" placeholder="请责任人信息">
+                                <input type="text" class="form-control input-sm" v-model="duty" placeholder="请填写责任人信息">
                             </div>
 
                         </div>
 
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">BOM图纸：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="bom" placeholder="请填写BOM图纸">
+                            </div>
 
+                        </div>
 
 
 
@@ -291,25 +299,35 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">流程节点：</label>
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">是否下单：</label>
                             <div class="col-sm-6">
-                                <select class="form-control" v-model="status">
-            <option value="1">需要PMC跟进</option>
-            <option value="2">无需PMC跟进</option>
 
-        </select>
-
-
-                                @*<input type="checkbox" class="inputStyle" style="width:18px;height:18px" value="1" id="ck_1"  />
-                                <label for="ck_1">需要PMC跟进</label>
-
-
-                                <input type="checkbox" class="inputStyle" style="width:18px;height:18px;margin-left:10px" value="2" id="ck_1" />
-                                <label for="ck_2">无需PMC跟进</label>*@
-
+                                <div class="radio">
+                                    <label>
+                                        <div>  <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked="checked" v-model="isorder"> 否</div>
+                                        <div> <input type="radio" name="optionsRadios" id="optionsRadios2" value="1" v-model="isorder">   是 </div>
+                                    </label>
+                                </div>
 
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下单时间：</label>
+                            <div class="col-sm-6">
+                                <el-date-picker v-model="ordertime"
+                                                align="right"
+                                                type="date"
+                                                placeholder="选择日期">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+
+
+
+
 
 
 
@@ -330,6 +348,15 @@
 
                         </div>
 
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">抄送：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="nextuser.USER_NAME" placeholder="请选择下一处理人员" readonly="readonly">
+                            </div>
+                            <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillUser()">选择</button>
+
+                        </div>
 
 
                     </form>
@@ -386,6 +413,10 @@
                 solution: "",    //解决方案
                 responsible: "",
                 duty: "",
+                bom: "",
+                isorder: 0,
+                ordertime: "",
+                copy: [],
 
                 nextuser: {},     //下一处理人员
                 status: 1,
@@ -519,7 +550,7 @@
                 },
                 FillUser() {
 
-                    showWui("/Support/FillUser");
+                    showWui("/People/FillUser");
                 },
                 SetUser(item) {
 
@@ -555,7 +586,7 @@
                     json.SOLUTION = _self.solution;
                     json.DUTY = _self.duty;
                     json.RESPONSIBLE = _self.responsible;
-
+                    
 
 
                     ////////////////////

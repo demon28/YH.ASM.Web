@@ -187,13 +187,13 @@
                                 <td class="my-td ">{{item.CREATETIME}}</td>
                                 <td class="my-td ">
 
-
+                                    <button type="button" class="btn bg-purple  btn-xs " v-if="item.STATUS!=6 && item.STATUS!=7" v-on:click="Dispose(item)">处理</button>
+                                    &nbsp;
                                     <button type="button" class="btn bg-primary  btn-xs" v-on:click="Details(item)">详情</button>
                                     &nbsp;
-                                   <button type="button" class="btn bg-red  btn-xs " v-on:click="Del(item)">删除</button>
-
-                                    @*<button type="button" class="btn bg-purple  btn-xs " v-if="item.STATUS!=6 && item.STATUS!=7" v-on:click="Dispose(item)">处理</button>*@
+                                    <button type="button" class="btn bg-red  btn-xs " v-on:click="Del(item)">删除</button>
                                     &nbsp;
+
                                     <button type="button" class="btn bg-teal  btn-xs" v-on:click="Att(item)">附件</button>
 
 
@@ -624,10 +624,10 @@
 
                            _self.user_id = result.Content.USER_ID;
 
-                           if (_self.user_id != item.CONDUCTOR) {
-                               alert_info("抱歉您不是该工单处理人员！");
-                               return
-                           }
+                           //if (_self.user_id != item.CONDUCTOR) {
+                           //    alert_info("抱歉您不是该工单处理人员！");
+                           //    return
+                           //}
 
                            if (item.STATUS == 0) {
                                window.location.href = "/Support/Disposer?id=" + item.SID;      //创建工单后，状态为0， 跳转到处理工单  （处理后状态为1 或 2  PMC 或 非PMC ）
