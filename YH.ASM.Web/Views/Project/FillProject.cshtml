@@ -63,12 +63,10 @@
                     <table class="table table-bordered table-hover dataTable">
                         <tbody>
                             <tr>
-                                <td  class="my-td ">项目名称</td>
-                                <td  class="my-td ">客户名称</td>
-                                <td  class="my-td ">设备名称</td>
-                                
+                                <td class="my-td ">项目名称</td>
+                                <td class="my-td ">项目编号</td>
 
-                                <td  class="my-td " style="width:150px">
+                                <td class="my-td " style="width:150px">
                                     选择
                                 </td>
 
@@ -77,17 +75,10 @@
 
                             <tr v-for="(item,index) in list">
                                 <td>{{item.NAME}}</td>
-                                <td>{{item.CUSTOMER_NAME}}</td>
-
-                                <td>{{item.TYPESNAME}}-{{item.MACHINE}}</td>
-
-
+                                <td>{{item.CODE}}</td>
 
                                 <td>
-
-
                                     <button type="button" class="btn bg-purple  btn-xs" v-on:click="Check(item)">选择</button>
-                             
                                 </td>
                             </tr>
 

@@ -33,8 +33,13 @@ namespace YH.ASM.Web.Controllers
 
             return Json(new { UserInfo });
         }
+        public IActionResult Error()
+        {
+            return View();
+        }
 
 
+        
 
         public IActionResult GetReportCount() {
 
