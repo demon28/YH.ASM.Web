@@ -279,14 +279,6 @@
 
                         </div>
 
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">BOM图纸：</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="bom" placeholder="请填写BOM图纸">
-                            </div>
-
-                        </div>
-
 
 
                         <div class="form-group">
@@ -302,18 +294,35 @@
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">是否下单：</label>
                             <div class="col-sm-6">
 
-                                <div class="radio">
+
+                                <el-radio-group v-model="radioSex" @@change="changeHandler">
+                                    <el-radio class="radio" label="man">男</el-radio>
+                                    <el-radio class="radio" label="woman">女</el-radio>
+                                </el-radio-group>
+
+
+
+                                @*<div class="radio">
                                     <label>
-                                        <div>  <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked="checked" v-model="isorder"> 否</div>
-                                        <div> <input type="radio" name="optionsRadios" id="optionsRadios2" value="1" v-model="isorder">   是 </div>
+                                        <div>  <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" v-model="isorder"> 否</div>
+                                        <div> <input type="radio" name="optionsRadios" id="optionsRadios2" value="1" v-model="isorder" checked="checked">   是 </div>
                                     </label>
-                                </div>
+                                </div>*@
 
                             </div>
                         </div>
 
+                        <div class="form-group"  v-if="ordershow">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">BOM图纸：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="bom" placeholder="请填写BOM图纸">
+                            </div>
 
-                        <div class="form-group">
+                        </div>
+
+
+
+                        <div class="form-group" v-if="ordershow">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下单时间：</label>
                             <div class="col-sm-6">
                                 <el-date-picker v-model="ordertime"
@@ -324,11 +333,13 @@
                             </div>
 
                         </div>
+                        <div class="form-group" v-if="ordershow">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下单人：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="duty" placeholder="请填写责任人信息">
+                            </div>
 
-
-
-
-
+                        </div>
 
 
                         <div class="form-group">
@@ -349,14 +360,6 @@
                         </div>
 
 
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">抄送：</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="nextuser.USER_NAME" placeholder="请选择下一处理人员" readonly="readonly">
-                            </div>
-                            <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillUser()">选择</button>
-
-                        </div>
 
 
                     </form>
@@ -414,13 +417,13 @@
                 responsible: "",
                 duty: "",
                 bom: "",
-                isorder: 0,
+                isorder: 1,
                 ordertime: "",
                 copy: [],
 
                 nextuser: {},     //下一处理人员
                 status: 1,
-
+                ordershow: true,
             },
             created: function () {
 
@@ -584,10 +587,19 @@
                     json.ANALYZEUSER = _self.analyzeUser.USER_ID;
                     json.ANALYZE = _self.analyze;
                     json.SOLUTION = _self.solution;
+                    json.RESPONSIBLE = _self.responsible;   //责任方
                     json.DUTY = _self.duty;
-                    json.RESPONSIBLE = _self.responsible;
-                    
+                    json.BOM = _self.bom;
+                    json.ISORDER = this.isorder
 
+                    if (json.ISORDER != 0 && json.ISORDER != "0") {
+                        json.ORDERMAN = this.orderman;
+                        json.ORDERTIME = this.ordertime;
+                    }
+
+                    json.NEXTUSER = _self.nextuser.USER_ID;
+
+                    json.SUPPORTSTATUS = this.isorder == "0" ? "2" : "1";
 
                     ////////////////////
 
@@ -596,7 +608,7 @@
                         url: "/Support/AddDisposer",
                         type: "POST",
                         data: {
-                            nextUser: _self.nextuser.USER_ID,
+                       
                             supportStatus: _self.status,
                             fileList: _self.filelist,
                             model: json

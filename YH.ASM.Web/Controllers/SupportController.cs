@@ -474,19 +474,18 @@ namespace YH.ASM.Web.Controllers
 
         [Right(Ignore = true)]
         [HttpPost]
-        public IActionResult AddDisposer(TASM_SUPPORT_DISPOSER model, int supportStatus, int nextUser,int personalId)
+        public IActionResult AddDisposer(AddDisposerModel model)
         {
-         
-             AddDisposerModel addDisposer = new AddDisposerModel();
+            //TODO:1，不是管理员不能处理。 2，查询出 根据Sid，处理人id，流程节点,处理状态,查出 Presonal 表的id，
+            
+
 
             DisposerFacade facade = new DisposerFacade();
-            if (!facade.Create(addDisposer))
+            if (!facade.Create(model))
             {
                 return FailMessage(facade.Msg);
             }
             return SuccessMessage("处理成功！");
-
-            return View();
         }
 
 
