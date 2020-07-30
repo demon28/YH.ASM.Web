@@ -26,6 +26,14 @@ namespace YH.ASM.DataAccess
             return Db.Queryable<VRIGHT_ASM>().Where(s => s.USERID == userid && s.PAGEURL.ToLower() == pageurl.ToLower()).ToList();
 
         }
+
+        public List<TRIGHT_USER_ROLE> ListVmByUserid(int userid) {
+
+
+            return Db.Queryable<TRIGHT_USER_ROLE>().Where(s => s.USERID == userid ).ToList();
+
+        }
+        
     }
 
 }

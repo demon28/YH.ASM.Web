@@ -26,7 +26,7 @@
 
 
     <h1>
-        <small>  处理工单(PMC处理)</small>
+        <small> 售后内勤维护</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -136,7 +136,7 @@
                                     问题机型：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" v-model="supprotInfo.TITLE" readonly="readonly">
+                                    <input type="text" class="form-control input-sm" v-model="supprotInfo.MACHINENAME" readonly="readonly">
                                 </td>
                             </tr>
 
@@ -230,69 +230,12 @@
 
                     <form class="form-horizontal" style="margin-top:10px">
 
-                 
-
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">BOM图纸：</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="bom" placeholder="请输入BOM图纸">
-                            </div>
-
-                        </div>
 
 
-
-
-
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">是否下单：</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" v-model="isbook">
-                                    <option value="0">无需下单</option>
-                                    <option value="1">需要下单</option>
-
-                                </select>
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下单日期：</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" id="txt_bookdate" v-model="bookdate" placeholder="请选择下单日期"  />
-                            </div>
-
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下单人：</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="bookuser" placeholder="请输入下单人姓名">
-                            </div>
-
-                        </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">物料单号：</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control input-sm" v-model="bookno" placeholder="请输入物料单号">
-                            </div>
-
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">交付日期：</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" id="txt_delivery" v-model="delivery"  placeholder="请选择交付日期" />
-                            </div>
-
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">发货日期：</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" id="txt_senddate" v-model="senddate"  placeholder="请选择发货日期" />
                             </div>
 
                         </div>
@@ -313,15 +256,23 @@
 
                         </div>
 
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">交付日期：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="txt_delivery" v-model="delivery" placeholder="请选择交付日期" readonly="readonly" />
+                            </div>
+
+                        </div>
+
 
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">流程节点：</label>
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">发货日期：</label>
                             <div class="col-sm-6">
-                                <select class="form-control" v-model="status">
-                                    <option value="3" selected="selected">现场人员处理</option>
-                                </select>
+                                <input type="text" class="form-control input-sm" id="txt_senddate" v-model="senddate" placeholder="请选择发货日期" readonly="readonly" />
                             </div>
+
                         </div>
+
 
 
 
@@ -403,10 +354,7 @@
                 id: 0,      //主键id
                 filelist: [],        //附件集合
 
-                bom: "",
-                isbook: 0,
-                bookdate: "",
-                bookuser: "",
+              
                 bookno: "",
                 delivery: "",
                 senddate: "",
@@ -429,7 +377,7 @@
 
 
 
-                $('#txt_bookdate ,#txt_delivery,#txt_senddate').datetimepicker({
+                $('#txt_delivery,#txt_senddate').datetimepicker({
                     format: 'yyyy-mm-dd ',
                     autoclose: true,
                     minView: "month",  ///选择日期后，不会再跳转去选择时分秒
@@ -442,11 +390,6 @@
                     // minuteStep: 1,//分钟间隔1分钟
                 });
 
-                $('#txt_bookdate').datetimepicker()
-                    .on('hide', function (ev) {
-                        var stardate = $("#txt_bookdate").val();
-                        _self.bookdate = stardate;
-                    });
                 $('#txt_delivery').datetimepicker()
                     .on('hide', function (ev) {
                         var stardate = $("#txt_delivery").val();
@@ -576,7 +519,7 @@
                 },
                 FillUser() {
 
-                    showWui("/Support/FillUser");
+                    showWui("/People/FillUser");
                 },
                 SetUser(item) {
 
@@ -594,40 +537,31 @@
                         return;
                     }
 
-                    if (_self.bom == "") {
-                        alert_danger("请填写Bom图纸");
-                        return;
-                    }
-
                 
 
                     var json = {};
-                    json.BOM = _self.bom;
-                    json.ISBOOK = _self.isbook;
-                    json.BOOKDATE = _self.bookdate;
-                    json.BOOKUSER = _self.bookuser;
+
+                    json.SID = _self.id;
+                    json.NEXTUSER = _self.nextuser.USER_ID;
+                    json.SUPPORTSTATUS = 3;  
 
                     json.BOOKNO = _self.bookno;
-                    json.DELIVERY = _self.delivery;
-                    json.SENDDATE = _self.senddate;
                     json.SENDNO = _self.sendno;
                     json.CONSIGNEE = _self.consignee;
+
+                    json.SENDDATE = _self.senddate;
+                    json.DELIVERY = _self.delivery;
+                   
+               
                     json.REMARKS = _self.remarks;
-                    json.SID = _self.id;
+                 
                     ////////////////////
-
-
-                  
-
-
 
 
                     MyAjax({
                         url: "/Support/AddPmcOrder",
                         type: "POST",
                         data: {
-                            nextUser: _self.nextuser.USER_ID,
-                            supportStatus: _self.status,
                             model: json
                         },
                         success: function (result) {

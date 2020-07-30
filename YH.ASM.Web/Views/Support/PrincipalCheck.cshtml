@@ -136,7 +136,7 @@
                                     问题机型：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" v-model="supprotInfo.TITLE" readonly="readonly">
+                                    <input type="text" class="form-control input-sm" v-model="supprotInfo.MACHINENAME" readonly="readonly">
                                 </td>
                             </tr>
 
@@ -231,7 +231,7 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">完成时间：</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="enddate" id="txt_enddate">
+                                <input type="text" class="form-control input-sm" v-model="enddate" id="txt_enddate" readonly="readonly">
                             </div>
 
                         </div>
@@ -249,17 +249,19 @@
 
 
 
-
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单状态：</label>
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">是否通过：</label>
                             <div class="col-sm-6">
-                                <select class="form-control" v-model="status">
-                                    <option value="6">已完成</option>
-                                    <option value="5">未完成</option>
-                                </select>
+
+
+                                <div>
+                                    <div> <input type="radio" name="optionsRadios" id="optionsRadios2" value="0" v-model="checkright"  checked="checked">   是 </div>
+                                    <div>  <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" v-model="checkright"  > 否</div>
+
+                                </div>
+
                             </div>
                         </div>
-
 
 
                         <div class="form-group">
@@ -342,7 +344,7 @@
                 enddate:"",
                 checkuser:"",
                 result:"",
-           
+                checkright: 0,
            
 
                 nextuser: {},     //下一处理人员
@@ -492,7 +494,7 @@
                 },
                 FillUser() {
 
-                    showWui("/Support/FillUser");
+                    showWui("/People/FillUser");
                 },
                 SetUser(item) {
 
@@ -514,20 +516,24 @@
                         alert_danger("请选择预计完成时间");
                         return;
                     }
-                    if (_self.result == "") {
-                        alert_danger("请填写结果描述");
-                        return;
-                    }
+                
                     if (_self.checkuser == "") {
                         alert_danger("请填写审核人姓名");
                         return;
                     }
 
                     var json = {};
-                    json.ENDDATE = _self.enddate;
-                    json.CHECKUSER = _self.checkuser;
-                    json.RESULT = _self.result;
+
                     json.SID = _self.id;
+                    json.NEXTUSER = _self.nextuser.USER_ID;
+                    json.SUPPORTSTATUS = this.checkright ==0? 6 : 5;  
+
+
+                    json.ENDDATE = _self.enddate;
+                    json.RESULT = _self.result;
+                    json.CHECKUSER = _self.checkuser;
+                 
+                    json.STATUS = _self.checkright;
 
                     ////////////////////
 
@@ -536,8 +542,6 @@
                         url: "/Support/AddPrincipalCheck",
                         type: "POST",
                         data: {
-                            nextUser: _self.nextuser.USER_ID,
-                            supportStatus: _self.status,
                             model: json
                         },
                         success: function (result) {

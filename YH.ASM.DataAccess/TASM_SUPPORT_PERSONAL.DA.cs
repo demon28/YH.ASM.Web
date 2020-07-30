@@ -108,6 +108,15 @@ where 1=1
 
         }
 
+
+        public TASM_SUPPORT_PERSONAL SelectByWhere(int sid,int tid)
+        {
+
+
+          return  Db.Queryable<TASM_SUPPORT_PERSONAL>().Where(s => s.SID == sid && s.TID == tid && s.STATUS == 0).First();
+
+
+        }
     }
 
 }

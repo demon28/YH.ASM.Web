@@ -26,7 +26,7 @@
 
 
     <h1>
-        <small>  处理工单(现场人员处理)</small>
+        <small>  现场整改</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -135,7 +135,7 @@
                                     问题机型：
                                 </td>
                                 <td class="col-sm-7" style="vertical-align:middle">
-                                    <input type="text" class="form-control input-sm" v-model="supprotInfo.TITLE" readonly="readonly">
+                                    <input type="text" class="form-control input-sm" v-model="supprotInfo.MACHINENAME" readonly="readonly">
                                 </td>
                             </tr>
 
@@ -231,26 +231,11 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">完成时间：</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="enddate" id="txt_enddate">
+                                <input type="text" class="form-control input-sm" v-model="enddate" id="txt_enddate" readonly="readonly">
                             </div>
 
                         </div>
 
-
-
-
-
-
-
-
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">工单状态：</label>
-                            <div class="col-sm-6">
-                                <select class="form-control" v-model="status">
-                                    <option value="4">负责人审核</option>
-                                </select>
-                            </div>
-                        </div>
 
 
 
@@ -478,7 +463,7 @@
                 },
                 FillUser() {
 
-                    showWui("/Support/FillUser");
+                    showWui("/People/FillUser");
                 },
                 SetUser(item) {
 
@@ -507,9 +492,13 @@
                         return;
                     }
                     var json = {};
-                    json.ENDDATE = _self.enddate;
-                    json.DESCRIPTION = _self.description;
+
                     json.SID = _self.id;
+                    json.NEXTUSER = _self.nextuser.USER_ID;
+                    json.SUPPORTSTATUS = 4;  
+
+                    json.DESCRIPTION = _self.description;
+                    json.ENDDATE = _self.enddate;
 
                     ////////////////////
 
@@ -520,8 +509,6 @@
                         url: "/Support/AddSiteCheck",
                         type: "POST",
                         data: {
-                            nextUser: _self.nextuser.USER_ID,
-                            supportStatus: _self.status,
                             model: json
                         },
                         success: function (result) {

@@ -476,9 +476,23 @@ namespace YH.ASM.Web.Controllers
         [HttpPost]
         public IActionResult AddDisposer(AddDisposerModel model)
         {
-            //TODO:1，不是管理员不能处理。 2，查询出 根据Sid，处理人id，流程节点,处理状态,查出 Presonal 表的id，
-            
+            //1，不是管理员不能处理。 2，查询出 根据Sid，处理人id，流程节点,处理状态,查出 Presonal 表的id，
 
+
+            TRIGHT_USER_ROLE_Da userroleDa = new TRIGHT_USER_ROLE_Da();
+            List<TRIGHT_USER_ROLE>  rolelist= userroleDa.ListVmByUserid(User_Id);
+
+            if (rolelist.Where(s=>s.ROLEID==2).Count()<=0)
+            {
+                return FailMessage("您不是超级管理员，没有工单处理权限");
+            }
+
+
+            TASM_SUPPORT_PERSONAL_Da personalDa = new TASM_SUPPORT_PERSONAL_Da();
+            TASM_SUPPORT_PERSONAL personalModel= personalDa.SelectByWhere(model.SID, (int)SupportendPoint.创建管理表_责任人处理);
+
+
+            model.PERSONALID = personalModel.ID;
 
             DisposerFacade facade = new DisposerFacade();
             if (!facade.Create(model))
@@ -491,54 +505,102 @@ namespace YH.ASM.Web.Controllers
 
         [Right(Ignore = true)]
         [HttpPost]
-        public IActionResult AddPmcOrder(TASM_SUPPORT_PMC model, int supportStatus, int nextUser)
+        public IActionResult AddPmcOrder(AddPmcCheckModel model)
         {
 
-            //PmcOrderFacade facade = new PmcOrderFacade();
 
-            //if (facade.Create(model, supportStatus, nextUser))
-            //{
-            //    return FailMessage("处理失败！");
-            //}
-            //return SuccessMessage("处理成功！");
-            return View();
+            TRIGHT_USER_ROLE_Da userroleDa = new TRIGHT_USER_ROLE_Da();
+            List<TRIGHT_USER_ROLE> rolelist = userroleDa.ListVmByUserid(User_Id);
+
+            if (rolelist.Where(s => s.ROLEID == 2).Count() <= 0)
+            {
+                return FailMessage("您不是超级管理员，没有工单处理权限");
+            }
+
+
+
+            TASM_SUPPORT_PERSONAL_Da personalDa = new TASM_SUPPORT_PERSONAL_Da();
+            TASM_SUPPORT_PERSONAL personalModel = personalDa.SelectByWhere(model.SID, (int)SupportendPoint.分析完成_售后内勤维护);
+            model.PERSONALID = personalModel.ID;
+
+
+            Facade.PmcOrderFacade facade = new PmcOrderFacade();
+
+            if (!facade.Create(model))
+            {
+                return FailMessage(facade.Msg);
+            }
+            return SuccessMessage("处理成功！");
+
+
         }
 
 
         [Right(Ignore = true)]
         [HttpPost]
-        public IActionResult AddSiteCheck(TASM_SUPPORT_SITE model, int supportStatus, int nextUser)
+        public IActionResult AddSiteCheck(AddSiteCheckModel model)
         {
+            TRIGHT_USER_ROLE_Da userroleDa = new TRIGHT_USER_ROLE_Da();
+            List<TRIGHT_USER_ROLE> rolelist = userroleDa.ListVmByUserid(User_Id);
 
-            //SiteCheckFacade facade = new SiteCheckFacade();
+            if (rolelist.Where(s => s.ROLEID == 2).Count() <= 0)
+            {
+                return FailMessage("您不是超级管理员，没有工单处理权限");
+            }
 
-            //if (!facade.Create(model, supportStatus, nextUser))
-            //{
-            //    return FailMessage("处理失败！");
-            //}
 
-            //return SuccessMessage("处理成功！");
 
-            return View();
+            TASM_SUPPORT_PERSONAL_Da personalDa = new TASM_SUPPORT_PERSONAL_Da();
+            TASM_SUPPORT_PERSONAL personalModel = personalDa.SelectByWhere(model.SID, (int)SupportendPoint.分析完成_现场整改);
 
+
+            if (personalModel != null)
+            {
+                model.PERSONALID = personalModel.ID;    //找上一步有可能是分析完成， 也有可能是内勤维护完成（PMC）
+            }
+            else {
+                personalModel = personalDa.SelectByWhere(model.SID, (int)SupportendPoint.售后内勤维护完成_现场整改);
+                model.PERSONALID = personalModel.ID;
+
+            }
+
+
+            Facade.SiteCheckFacade facade = new SiteCheckFacade();
+            if (!facade.Create(model))
+            {
+                return FailMessage(facade.Msg);
+            }
+            return SuccessMessage("处理成功！");
         }
 
 
         [Right(Ignore = true)]
         [HttpPost]
-        public IActionResult AddPrincipalCheck(TASM_SUPPORT_PRINCIPAL model, int supportStatus, int nextUser)
+        public IActionResult AddPrincipalCheck(AddPrincipalCheckModel model)
         {
 
-            //PrincipalFacade facade = new PrincipalFacade();
+            TRIGHT_USER_ROLE_Da userroleDa = new TRIGHT_USER_ROLE_Da();
+            List<TRIGHT_USER_ROLE> rolelist = userroleDa.ListVmByUserid(User_Id);
 
-            //if (!facade.Create(model, supportStatus, nextUser))
-            //{
-            //    return FailMessage("处理失败！");
-            //}
+            if (rolelist.Where(s => s.ROLEID == 2).Count() <= 0)
+            {
+                return FailMessage("您不是超级管理员，没有工单处理权限");
+            }
 
-            //return SuccessMessage("处理成功！");
 
-            return View();
+            TASM_SUPPORT_PERSONAL_Da personalDa = new TASM_SUPPORT_PERSONAL_Da();
+            TASM_SUPPORT_PERSONAL personalModel = personalDa.SelectByWhere(model.SID, (int)SupportendPoint.现场整改_现场负责人审核);
+
+            model.PERSONALID = personalModel.ID;
+
+
+            Facade.PrincipalFacade facade = new PrincipalFacade();
+
+            if (!facade.Create(model))
+            {
+                return FailMessage(facade.Msg);
+            }
+            return SuccessMessage("处理成功！");
 
         }
 

@@ -53,7 +53,7 @@
 
 
     <h1>
-        <small>  处理工单(技术人员处理)</small>
+        <small>  责任人处理</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -295,19 +295,13 @@
                             <div class="col-sm-6">
 
 
-                                <el-radio-group v-model="radioSex" @@change="changeHandler">
-                                    <el-radio class="radio" label="man">男</el-radio>
-                                    <el-radio class="radio" label="woman">女</el-radio>
-                                </el-radio-group>
+                                <div>
+                                   
+                                        <div >  <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" v-model="isorder" checked="checked" v-on:change="IsOrderHandle"> 否</div>
+                                        <div> <input type="radio" name="optionsRadios" id="optionsRadios2" value="1" v-model="isorder" v-on:change="IsOrderHandle">   是 </div>
 
 
-
-                                @*<div class="radio">
-                                    <label>
-                                        <div>  <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" v-model="isorder"> 否</div>
-                                        <div> <input type="radio" name="optionsRadios" id="optionsRadios2" value="1" v-model="isorder" checked="checked">   是 </div>
-                                    </label>
-                                </div>*@
+                                </div>
 
                             </div>
                         </div>
@@ -327,7 +321,9 @@
                             <div class="col-sm-6">
                                 <el-date-picker v-model="ordertime"
                                                 align="right"
-                                                type="date"
+                                                type="datetime"
+                                                format="yyyy-MM-dd HH:mm:ss"
+                                                value-format="yyyy-MM-dd HH:mm:ss"
                                                 placeholder="选择日期">
                                 </el-date-picker>
                             </div>
@@ -336,7 +332,7 @@
                         <div class="form-group" v-if="ordershow">
                             <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">下单人：</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control input-sm" v-model="duty" placeholder="请填写责任人信息">
+                                <input type="text" class="form-control input-sm" v-model="orderman" placeholder="请填写责任人信息">
                             </div>
 
                         </div>
@@ -417,13 +413,15 @@
                 responsible: "",
                 duty: "",
                 bom: "",
-                isorder: 1,
+                isorder: 0,
                 ordertime: "",
+                orderman:"",
+
                 copy: [],
 
                 nextuser: {},     //下一处理人员
                 status: 1,
-                ordershow: true,
+                ordershow: false,
             },
             created: function () {
 
@@ -432,11 +430,6 @@
                 this.InitConductor();
             },
             mounted: function () {
-                var _self = this;
-
-
-
-
 
 
 
@@ -471,9 +464,7 @@
 
                 },
                 InitAtt() {
-
                     var _self = this;
-
                     _self.id = getQueryString("id");
 
 
@@ -561,10 +552,10 @@
                     closeWui();
 
                 },
+                
                 Submit() {
 
                     var _self = this;
-
 
 
                     if (Object.keys(_self.nextuser).length == 0) {
@@ -590,16 +581,17 @@
                     json.RESPONSIBLE = _self.responsible;   //责任方
                     json.DUTY = _self.duty;
                     json.BOM = _self.bom;
-                    json.ISORDER = this.isorder
+                    json.ISORDER = _self.isorder
 
                     if (json.ISORDER != 0 && json.ISORDER != "0") {
-                        json.ORDERMAN = this.orderman;
-                        json.ORDERTIME = this.ordertime;
+                        json.ORDERMAN = _self.orderman;
+                        json.ORDERTIME = _self.ordertime;
+                        json.ORDERMAN = _self.orderman;
                     }
 
                     json.NEXTUSER = _self.nextuser.USER_ID;
 
-                    json.SUPPORTSTATUS = this.isorder == "0" ? "2" : "1";
+                    json.SUPPORTSTATUS = _self.isorder == "0" ? "2" : "1";
 
                     ////////////////////
 
@@ -643,6 +635,11 @@
 
                         }
                     })
+
+                },
+                IsOrderHandle() {
+
+                    this.ordershow = this.isorder == 1;
 
                 },
                 UploadFile() {
