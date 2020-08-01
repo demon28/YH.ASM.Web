@@ -8,7 +8,7 @@ namespace YH.ASM.Web.Models
     public class ListMachineInputModel:ApiListModelBase
     {
 
-
+        public int ProjectId { set; get; }
 
     }
 }

@@ -41,6 +41,39 @@ tr.name typesname,
             return list.Count > 0;
         }
 
+
+
+        public bool ListByProject(int projectId, string keyword, ref PageModel p, ref List<MachineModel> list)
+        {
+
+            string sql = @"select t.*,
+tr.name typesname,
+ tp.name PROJECTNAME 
+  from tasm_machine t
+  left join tasm_machine_type tr
+  on t.types = tr.id
+  left join tasm_project tp 
+  on t.projectid=tp.pid "
+;
+            int pagecount = 0;
+            list = Db.SqlQueryable<MachineModel>(sql)
+                .Where(s => s.PROJECTID== projectId)
+                .Where(s => s.NAME.Contains(keyword)
+            || s.DELIVERYNUMBER.Contains(keyword)
+            || s.CONTRACT.Contains(keyword)
+            || s.TYPESNAME.Contains(keyword))
+                .OrderBy(s => s.MID, OrderByType.Asc)
+                .ToPageList(p.PageIndex, p.PageSize, ref pagecount);
+
+            p.PageCount = pagecount;
+
+            return list.Count > 0;
+        }
+
+
+
+
+
         /// <summary>
         /// 不分页，导出excel用
         /// </summary>

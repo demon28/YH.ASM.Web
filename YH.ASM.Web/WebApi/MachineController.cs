@@ -37,5 +37,28 @@ namespace YH.ASM.Web.WebApi
 
         }
 
+
+
+        [WebApi]
+        [HttpPost]
+        public IActionResult ListByProjectId(ListMachineInputModel model)
+        {
+
+            DataAccess.TASM_MACHINEManager manager = new DataAccess.TASM_MACHINEManager();
+
+            SqlSugar.PageModel p = new SqlSugar.PageModel()
+            {
+                PageIndex = model.pageindex,
+                PageSize = model.pagesize
+            };
+
+            List<MachineModel> list = new List<MachineModel>();
+            manager.ListByProject(model.ProjectId, model.keywords, ref p, ref list);
+
+            return SuccessResultList(list, p);
+
+
+        }
+
     }
 }
