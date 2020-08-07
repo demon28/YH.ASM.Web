@@ -269,7 +269,7 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
         public DirectionCanderModel SelectByTraid(int traid)
         {
-            /*
+          
             string sql = @"
 SELECT T.*,
        tp.name projectname,
@@ -292,27 +292,27 @@ SELECT T.*,
 
 ";
 
-            */
 
 
-            string sql = @"
-SELECT T.*,
-       TU.USER_NAME USER_NAME,
-       tsup.code supportCode
-  FROM TASM_TRAVEL T
-  LEFT JOIN TASM_USER TU
-    ON T.USERID = TU.USER_ID
-  LEFT JOIN tasm_project tp
-    ON t.projectid=tp.pid
-  LEFT JOIN tasm_machine tm
-    ON t.machineid=tm.mid
-  LEFT JOIN tasm_support tsup
-   ON t.supportid=tsup.sid  
+            /*
+                      string sql = @"
+          SELECT T.*,
+                 TU.USER_NAME USER_NAME,
+                 tsup.code supportCode
+            FROM TASM_TRAVEL T
+            LEFT JOIN TASM_USER TU
+              ON T.USERID = TU.USER_ID
+            LEFT JOIN tasm_project tp
+              ON t.projectid=tp.pid
+            LEFT JOIN tasm_machine tm
+              ON t.machineid=tm.mid
+            LEFT JOIN tasm_support tsup
+             ON t.supportid=tsup.sid  
 
- WHERE T.TRAID = :TRAID
-
-";
-
+           WHERE T.TRAID = :TRAID
+                     
+            ";
+              */
 
             DirectionCanderModel model = Db.SqlQueryable<DirectionCanderModel>(sql)
                           .AddParameters(new
