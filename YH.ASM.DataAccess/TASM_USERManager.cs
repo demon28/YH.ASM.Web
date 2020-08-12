@@ -76,8 +76,14 @@ namespace YH.ASM.DataAccess
 
             return list.Count > 0;
         }
-    
-    
+
+
+
+        public TASM_USER SelectByUserName(string username) {
+
+            return Db.Queryable<TASM_USER>().Where(s => s.USER_NAME == username).First();
+        }
+
     }
 
 }

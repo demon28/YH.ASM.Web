@@ -131,5 +131,12 @@ tr.name typesname,
             return Db.Queryable<TASM_MACHINE>().Count();
         }
 
+
+        public TASM_MACHINE SelectByName(string name)
+        {
+            return Db.Queryable<TASM_MACHINE>().Where(s => s.SERIAL.Contains(name)).First();
+
+        }
+
     }
 }
