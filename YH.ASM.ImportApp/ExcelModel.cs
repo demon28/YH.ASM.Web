@@ -102,6 +102,14 @@ namespace YH.ASM.ImportApp
         [ImporterHeader(Name = "分析人员姓名")]
         public string AnalyzeUserName { get; set; }
 
+
+
+        /// <summary>
+        /// 分析原因
+        /// </summary>
+        [ImporterHeader(Name = "分析原因")]
+        public string Analyze { get; set; }
+
         /// <summary>
         /// 解决方案
         /// </summary>
