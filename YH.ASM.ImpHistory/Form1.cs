@@ -1,23 +1,19 @@
 ﻿using log4net;
-using Magicodes.ExporterAndImporter.Core;
 using Magicodes.ExporterAndImporter.Excel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Deployment.Application;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
-using YH.ASM.Entites.Model;
+using YH.ASM.ImportApp;
 
-namespace YH.ASM.ImportApp
+namespace YH.ASM.ImpHistory
 {
     public partial class Form1 : Form
     {
@@ -33,28 +29,6 @@ namespace YH.ASM.ImportApp
         public const int default_machineId = 1;
 
 
-
-
-        public TASM_PROJECT Project { get; set; }
-        public TASM_MACHINE Machine { get; set; }
-
-
-        public Form1()
-        {
-            InitializeComponent();
-        }
-
-        private void btn_chose_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Multiselect = false;//该值确定是否可以选择多个文件
-            dialog.Title = "请选择文件夹";
-            dialog.Filter = "所有文件(*.*)|*.*";
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                this.tb_filePath.Text = dialog.FileName;
-            }
-        }
 
         private void Log(string text)
         {
@@ -73,15 +47,27 @@ namespace YH.ASM.ImportApp
 
 
 
-
-
-        private void btn_star_ClickAsync(object sender, EventArgs e)
+        public TASM_PROJECT Project { get; set; }
+        public TASM_MACHINE Machine { get; set; }
+        public Form1()
         {
+            InitializeComponent();
+        }
 
+        private void btn_chose_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = false;//该值确定是否可以选择多个文件
+            dialog.Title = "请选择文件夹";
+            dialog.Filter = "所有文件(*.*)|*.*";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                this.tb_filePath.Text = dialog.FileName;
+            }
+        }
 
-            //若有缺失用户直接指定 曾丽蓉
-
-
+        private void btn_star_Click(object sender, EventArgs e)
+        {
             string filepath = this.tb_filePath.Text;
 
             IExcelImporter Importer = new ExcelImporter();
@@ -89,12 +75,12 @@ namespace YH.ASM.ImportApp
             var result = Importer.Import<ExcelModel>(filepath);
 
 
-            if (result.Result.Data==null)
+            if (result.Result.Data == null)
             {
                 MessageBox.Show("读取excel失败！");
                 return;
             }
-           
+
 
             List<ExcelModel> list = result.Result.Data.ToList();
 
@@ -125,6 +111,7 @@ namespace YH.ASM.ImportApp
                         daSupport.Db.RollbackTran();
                         logger.Info("===============导入失败====创建工单失败==========" + item.Content);
                         Log("No：" + i + "创建工单-失败");
+                        Log("===============导入失败====创建工单失败==========" + item.Content);
                         continue;
                     }
                     Log("No：" + i + "创建工单-结束");
@@ -147,6 +134,7 @@ namespace YH.ASM.ImportApp
                         daSupport.Db.RollbackTran();
                         logger.Info("===============导入失败====创建现场处理失败==========" + item.Content);
                         Log("No：" + i + "现场处理-失败");
+                        Log("===============导入失败====创建现场处理失败==========" + item.Content);
                         continue;
                     }
                     Log("No：" + i + "现场处理-结束");
@@ -168,6 +156,7 @@ namespace YH.ASM.ImportApp
                         daSupport.Db.RollbackTran();
                         logger.Info("===============导入失败====PMC处理失败==========" + item.Content);
                         Log("No：" + i + "PMC处理失败-失败");
+                        Log("===============导入失败====PMC处理失败==========" + item.Content);
                         continue;
                     }
 
@@ -183,29 +172,32 @@ namespace YH.ASM.ImportApp
 
 
                     Log("No：" + i + "现场处理-开始");
-                    if (!CreateSiteCheck( supportModel,  item,  sid))
+                    if (!CreateSiteCheck(supportModel, item, sid))
                     {
                         daSupport.Db.RollbackTran();
                         logger.Info("===============导入失败====现场处理失败==========" + item.Content);
+                     
                         Log("No：" + i + "现场处理失败-失败");
+                        Log("===============导入失败====现场处理失败==========" + item.Content);
                         continue;
                     }
                     Log("No：" + i + "现场处理-结束");
 
 
 
-                    if (item.IsPrincipalPoint=="否" || string.IsNullOrWhiteSpace(item.IsPrincipalPoint))
+                    if (item.IsPrincipalPoint == "否" || string.IsNullOrWhiteSpace(item.IsPrincipalPoint))
                     {
                         Log("===============导入结束=========没有principal节点=====" + i);
                         continue;
                     }
 
 
-                    if (!CreatePrincipal( supportModel,  item,  sid))
+                    if (!CreatePrincipal(supportModel, item, sid))
                     {
                         daSupport.Db.RollbackTran();
                         logger.Info("===============导入失败====审核失败==========" + item.Content);
                         Log("No：" + i + "审核处理失败-失败");
+                        Log("===============导入失败====审核失败==========" + item.Content);
                         continue;
                     }
 
@@ -223,6 +215,7 @@ namespace YH.ASM.ImportApp
 
             }
         }
+
 
         /// <summary>
         /// 获取用户
@@ -359,6 +352,7 @@ namespace YH.ASM.ImportApp
                 supportModel.SEVERITY = item.Severity;
                 supportModel.FINDATE = ConventDateTime(item.Createtime);
                 supportModel.CONDUCTOR = GetUserIdByName(item.ConductorName);
+                supportModel.PROJECT = GetsProjectByName(item.ProjectName);
                 supportModel.STATUS = item.EndPiont;
                 supportModel.STATE = item.ConductorStatus;
                 supportModel.MID = GetsMachineByName(item.MachineCode);
@@ -648,25 +642,26 @@ namespace YH.ASM.ImportApp
         /// <param name="item"></param>
         /// <param name="sid"></param>
         /// <returns></returns>
-        private bool CreatePrincipal(TASM_SUPPORT supportModel, ExcelModel item, int sid) {
+        private bool CreatePrincipal(TASM_SUPPORT supportModel, ExcelModel item, int sid)
+        {
 
             try
             {
                 logger.Info("===创建审核开始===！");
 
                 DataAccess.TASM_SUPPORT_PRINCIPAL_Da supportPrincipal = new TASM_SUPPORT_PRINCIPAL_Da();
-            TASM_SUPPORT_PRINCIPAL princalModel = new TASM_SUPPORT_PRINCIPAL();
+                TASM_SUPPORT_PRINCIPAL princalModel = new TASM_SUPPORT_PRINCIPAL();
 
-            princalModel.CHECKUSER = item.CheckName;
-            princalModel.CREATETIME = DateTime.Now;
-            princalModel.ENDDATE = ConventDateTime(item.FinishDate);
-            princalModel.RESULT = item.CheckResult;
-            princalModel.SID = sid;
-            princalModel.STATUS = 0;
-            princalModel.REMARKS = "导入数据";
+                princalModel.CHECKUSER = item.CheckName;
+                princalModel.CREATETIME = DateTime.Now;
+                princalModel.ENDDATE = ConventDateTime(item.FinishDate);
+                princalModel.RESULT = item.CheckResult;
+                princalModel.SID = sid;
+                princalModel.STATUS = 0;
+                princalModel.REMARKS = "导入数据";
 
 
-            int prId= supportPrincipal.Db.Insertable(princalModel).ExecuteReturnIdentity();
+                int prId = supportPrincipal.Db.Insertable(princalModel).ExecuteReturnIdentity();
 
 
 
@@ -717,5 +712,7 @@ namespace YH.ASM.ImportApp
             }
 
         }
+
+
     }
 }
