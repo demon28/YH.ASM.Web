@@ -13,12 +13,14 @@ using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.ImportApp;
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
 namespace YH.ASM.ImpHistory
 {
+
     public partial class Form1 : Form
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(Form1));
-
+    
         public const string default_userName = "曾丽蓉";
         public const int default_userId = 1933;
         public const string default_userWorkId = "11000200";
@@ -68,6 +70,12 @@ namespace YH.ASM.ImpHistory
 
         private void btn_star_Click(object sender, EventArgs e)
         {
+            logger.Debug("Debug");
+            logger.Info("Info");
+            logger.Error("Error");
+            logger.Warn("Warn");
+
+
             string filepath = this.tb_filePath.Text;
 
             IExcelImporter Importer = new ExcelImporter();
@@ -85,135 +93,144 @@ namespace YH.ASM.ImpHistory
             List<ExcelModel> list = result.Result.Data.ToList();
 
 
+            int i = 0;
 
-            //TODO：  将excel 拆成5张表
-
-            TASM_SUPPORT_Da daSupport = new TASM_SUPPORT_Da();
-            daSupport.Db.BeginTran();   //事务开
-
-            try
+            foreach (var item in list)
             {
-                int i = 0;
+                TASM_SUPPORT_Da daSupport = new TASM_SUPPORT_Da();
+                daSupport.Db.BeginTran();   //事务开
 
-                foreach (var item in list)
+                i++;
+                logger.Info("===============导入开始==============" + i);
+                Log("===============导入开始==============" + i);
+
+
+                int sid = 0;   //工单id
+                TASM_SUPPORT supportModel = new TASM_SUPPORT();
+
+                Log("No：" + i + "创建工单-开始");
+                if (!CreateSupport(daSupport, item, ref sid, ref supportModel))
                 {
-                    i++;
-                    logger.Info("===============导入开始==============" + i);
-                    Log("===============导入开始==============" + i);
-
-
-                    int sid = 0;   //工单id
-                    TASM_SUPPORT supportModel = new TASM_SUPPORT();
-
-                    Log("No：" + i + "创建工单-开始");
-                    if (!CreateSupport(daSupport, item, ref sid, ref supportModel))
-                    {
-                        daSupport.Db.RollbackTran();
-                        logger.Info("===============导入失败====创建工单失败==========" + item.Content);
-                        Log("No：" + i + "创建工单-失败");
-                        Log("===============导入失败====创建工单失败==========" + item.Content);
-                        continue;
-                    }
-                    Log("No：" + i + "创建工单-结束");
+                
+                    logger.Info("===============导入失败====创建工单失败==========" + item.Content);
+                    Log("No：" + i + "创建工单-失败");
+                    Log("===============导入失败====创建工单失败==========" + item.Content);
+                    daSupport.Db.RollbackTran();
+                    continue;
+                }
+                Log("No：" + i + "创建工单-结束 sid:"+sid);
 
 
 
-                    //判断是否有现场处理节点，
-                    if (item.IsDisposerPoint.Trim() == "否" || string.IsNullOrWhiteSpace(item.IsDisposerPoint))
-                    {
-                        //没有的话，继续下一条
-                        Log("===============导入结束=========没有Disposer节点=====" + i);
-                        continue;
-                    }
+                //判断是否有技术处理节点，
+                if (item.IsDisposerPoint.Trim() == "否" || string.IsNullOrWhiteSpace(item.IsDisposerPoint))
+                {
+                    //没有的话，继续下一条
+                    Log("===============导入结束=========没有Disposer节点=====" + i);
+                    logger.Info("===============导入结束=========没有Disposer节点=====" + i);
+                    daSupport.Db.CommitTran();
+                    continue;
+                }
 
 
 
-                    Log("No：" + i + "现场处理-开始");
-                    if (!CreateDisposer(supportModel, item, sid))
-                    {
-                        daSupport.Db.RollbackTran();
-                        logger.Info("===============导入失败====创建现场处理失败==========" + item.Content);
-                        Log("No：" + i + "现场处理-失败");
-                        Log("===============导入失败====创建现场处理失败==========" + item.Content);
-                        continue;
-                    }
-                    Log("No：" + i + "现场处理-结束");
+                Log("No：" + i + "技术处理-开始");
+                if (!CreateDisposer(supportModel, item, sid))
+                {
+                   
+                    logger.Info("===============导入失败====创建技术处理失败==========" + item.Content);
+                    Log("No：" + i + "技术处理-失败");
+                    Log("===============导入失败====创建技术处理失败==========" + item.Content);
+                    daSupport.Db.RollbackTran();
+                    continue;
+                }
+                Log("No：" + i + "技术处理-结束");
 
 
 
 
-                    if (item.IsPmcPoint.Trim() == "否" || string.IsNullOrWhiteSpace(item.IsPmcPoint))
-                    {
-                        //没有的话，继续下一条
-                        Log("===============导入结束=========没有Pmc节点=====" + i);
-                        continue;
-                    }
+                //既没有PMC节点 也没有 site节点，则表示  没有PMC处理，也没有 现场处理，则该订单直接判断，审核环节也不要了， 直接下一条
+                if ((item.IsPmcPoint.Trim() == "否" || string.IsNullOrWhiteSpace(item.IsPmcPoint)) && (item.IsSitePoint == "否" || string.IsNullOrWhiteSpace(item.IsSitePoint)))
+                {
+                    //没有的话，继续下一条
+                    Log("===============导入结束=========没有Pmc节点=====" + i);
+                    logger.Info("===============导入结束=========没有Pmc节点=====" + i);
+                    daSupport.Db.CommitTran();
+                    continue;
+                }
 
+                // 如果是有PMC 节点， 则插入PMC节点， 该情况可能发生，没有PMC节点，但是有site节点。所以 这里判断有PMC则插入，没有则还是要下去判断site节点。
+                if (item.IsPmcPoint.Trim() == "是")
+                {
                     Log("No：" + i + "PMC处理-开始");
 
                     if (!CreatePmcOrder(supportModel, item, sid))
                     {
-                        daSupport.Db.RollbackTran();
+                       
                         logger.Info("===============导入失败====PMC处理失败==========" + item.Content);
                         Log("No：" + i + "PMC处理失败-失败");
                         Log("===============导入失败====PMC处理失败==========" + item.Content);
+                        daSupport.Db.RollbackTran();
                         continue;
                     }
 
                     Log("No：" + i + "PMC处理-结束");
-
-
-                    if (item.IsSitePoint == "否" || string.IsNullOrWhiteSpace(item.IsSitePoint))
-                    {
-                        //没有的话，继续下一条
-                        Log("===============导入结束=========没有site节点=====" + i);
-                        continue;
-                    }
-
-
-                    Log("No：" + i + "现场处理-开始");
-                    if (!CreateSiteCheck(supportModel, item, sid))
-                    {
-                        daSupport.Db.RollbackTran();
-                        logger.Info("===============导入失败====现场处理失败==========" + item.Content);
-                     
-                        Log("No：" + i + "现场处理失败-失败");
-                        Log("===============导入失败====现场处理失败==========" + item.Content);
-                        continue;
-                    }
-                    Log("No：" + i + "现场处理-结束");
-
-
-
-                    if (item.IsPrincipalPoint == "否" || string.IsNullOrWhiteSpace(item.IsPrincipalPoint))
-                    {
-                        Log("===============导入结束=========没有principal节点=====" + i);
-                        continue;
-                    }
-
-
-                    if (!CreatePrincipal(supportModel, item, sid))
-                    {
-                        daSupport.Db.RollbackTran();
-                        logger.Info("===============导入失败====审核失败==========" + item.Content);
-                        Log("No：" + i + "审核处理失败-失败");
-                        Log("===============导入失败====审核失败==========" + item.Content);
-                        continue;
-                    }
-
-
-
-                    Log("===============导入结束==============" + i);
-                    logger.Info("===============导入结束==============" + i);
-
                 }
-            }
-            catch (Exception ex)
-            {
-                daSupport.Db.RollbackTran();
-                logger.Info("程序异常，外层捕捉：" + ex);
+
+
+
+                if (item.IsSitePoint == "否" || string.IsNullOrWhiteSpace(item.IsSitePoint))
+                {
+                    //没有的话，继续下一条
+                    logger.Info("===============导入结束=========没有site节点=====" + i);
+                    Log("===============导入结束=========没有site节点=====" + i);
+
+                    daSupport.Db.CommitTran();
+                    continue;
+                }
+
+
+                Log("No：" + i + "现场处理-开始");
+                if (!CreateSiteCheck(supportModel, item, sid))
+                {
+                   
+                    logger.Info("===============导入失败====现场处理失败==========" + item.Content);
+
+                    Log("No：" + i + "现场处理失败-失败");
+                    Log("===============导入失败====现场处理失败==========" + item.Content);
+                    daSupport.Db.RollbackTran();
+                    continue;
+                }
+                Log("No：" + i + "现场处理-结束");
+
+
+
+                if (item.IsPrincipalPoint == "否" || string.IsNullOrWhiteSpace(item.IsPrincipalPoint))
+                {
+                    logger.Info("===============导入结束=========没有principal节点=====" + i);
+                    Log("===============导入结束=========没有principal节点=====" + i);
+                    daSupport.Db.CommitTran();
+                    continue;
+                }
+
+
+                if (!CreatePrincipal(supportModel, item, sid))
+                {
+                
+                    logger.Info("===============导入失败====审核失败==========" + item.Content);
+                    Log("No：" + i + "审核处理失败-失败");
+                    Log("===============导入失败====审核失败==========" + item.Content);
+                    daSupport.Db.RollbackTran();
+                    continue;
+                }
+
+                daSupport.Db.CommitTran();
+
+                Log("===============导入结束==============" + i);
+                logger.Info("===============导入结束==============" + i);
 
             }
+
         }
 
 
@@ -379,7 +396,7 @@ namespace YH.ASM.ImpHistory
                 supportHisModel.TID = sid;  //数据id 根据type 那张表，看是哪一条数据。
                 supportHisModel.REMARKS = "工单创建，等待技术处理,导入数据";
                 supportHisModel.CREATETIME = DateTime.Now;
-                supportHis.Db.Insertable(supportHisModel);
+                supportHis.Db.Insertable(supportHisModel).ExecuteCommand();
 
                 logger.Info("插入历史表：创建工单");
 
@@ -392,6 +409,7 @@ namespace YH.ASM.ImpHistory
             catch (Exception ex)
             {
                 logger.Error("创建工单失败" + ex);
+                Log("创建工单失败" + ex);
                 return false;
             }
 
@@ -407,17 +425,18 @@ namespace YH.ASM.ImpHistory
         /// <returns></returns>
         private bool CreateDisposer(TASM_SUPPORT supportModel, ExcelModel item, int sid)
         {
+            TASM_SUPPORT_DISPOSER_Da supportDisposer = new TASM_SUPPORT_DISPOSER_Da();
+
+            supportDisposer.Db.BeginTran();
 
             try
             {
-
-
 
                 logger.Info("===创建现场处理开始===！");
 
                 //step3 现场处理表
 
-                TASM_SUPPORT_DISPOSER_Da supportDisposer = new TASM_SUPPORT_DISPOSER_Da();
+
                 TASM_SUPPORT_DISPOSER disposerModel = new TASM_SUPPORT_DISPOSER();
 
 
@@ -451,7 +470,7 @@ namespace YH.ASM.ImpHistory
                 supportHisModel.TID = disid;  //数据id 根据type 那张表，看是哪一条数据。
                 supportHisModel.REMARKS = "技术已处理，等待现场处理,导入数据";
                 supportHisModel.CREATETIME = DateTime.Now;
-                supportHis.Db.Insertable(supportHisModel);
+                supportHis.Db.Insertable(supportHisModel).ExecuteCommand(); 
                 logger.Info("插入历史表，技术处理完成");
 
 
@@ -467,17 +486,20 @@ namespace YH.ASM.ImpHistory
                 personalModel.CREATETIME = DateTime.Now;
                 personalModel.REMARKS = "数据导入";
 
-                supportPersonal.Db.Insertable(personalModel);
+                supportPersonal.Db.Insertable(personalModel).ExecuteCommand();
 
                 logger.Info("插入个人处理表，技术处理完成");
 
+                supportDisposer.Db.CommitTran();
 
                 logger.Info("===创建现场处理结束===！");
                 return true;
             }
             catch (Exception ex)
             {
+                supportDisposer.Db.RollbackTran();
                 logger.Error("创建Disposer失败" + ex);
+                Log("创建Disposer失败" + ex);
                 return false;
             }
 
@@ -494,10 +516,12 @@ namespace YH.ASM.ImpHistory
         /// <returns></returns>
         private bool CreatePmcOrder(TASM_SUPPORT supportModel, ExcelModel item, int sid)
         {
+            DataAccess.TASM_SUPPORT_PMC_Da supportPmcOrder = new TASM_SUPPORT_PMC_Da();
+            supportPmcOrder.Db.BeginTran();
             try
             {
                 logger.Info("===创建PMC处理开始===！");
-                DataAccess.TASM_SUPPORT_PMC_Da supportPmcOrder = new TASM_SUPPORT_PMC_Da();
+
 
                 TASM_SUPPORT_PMC pmcModel = new TASM_SUPPORT_PMC();
                 pmcModel.BOOKNO = item.BookNo;
@@ -526,7 +550,7 @@ namespace YH.ASM.ImpHistory
                 supportHisModel.TID = pmcid;  //数据id 根据type 那张表，看是哪一条数据。
                 supportHisModel.REMARKS = "PMC已处理,等待现场处理,导入数据";
                 supportHisModel.CREATETIME = DateTime.Now;
-                supportHis.Db.Insertable(supportHisModel);
+                supportHis.Db.Insertable(supportHisModel).ExecuteCommand();
                 logger.Info("插入历史表，PMC处理完成");
 
 
@@ -543,18 +567,20 @@ namespace YH.ASM.ImpHistory
                 personalModel.CREATETIME = DateTime.Now;
                 personalModel.REMARKS = "数据导入";
 
-                supportPersonal.Db.Insertable(personalModel);
+                supportPersonal.Db.Insertable(personalModel).ExecuteCommand();
 
                 logger.Info("插入个人处理表，PMC处理完成");
 
 
-
+                supportPmcOrder.Db.CommitTran();
                 logger.Info("===创建PMC处理结束===！");
                 return true;
             }
             catch (Exception ex)
             {
+                supportPmcOrder.Db.RollbackTran();
                 logger.Error("创建Pmc失败" + ex);
+                Log("创建Pmc失败" + ex);
                 return false;
             }
 
@@ -568,10 +594,13 @@ namespace YH.ASM.ImpHistory
         /// <returns></returns>
         private bool CreateSiteCheck(TASM_SUPPORT supportModel, ExcelModel item, int sid)
         {
+
+            TASM_SUPPORT_SITE_Da supportSite = new TASM_SUPPORT_SITE_Da();
+            supportSite.Db.BeginTran();
             try
             {
                 logger.Info("===创建现场处理开始===！");
-                TASM_SUPPORT_SITE_Da supportSite = new TASM_SUPPORT_SITE_Da();
+
 
                 TASM_SUPPORT_SITE siteMode = new TASM_SUPPORT_SITE();
 
@@ -596,7 +625,7 @@ namespace YH.ASM.ImpHistory
                 supportHisModel.TID = siteId;  //数据id 根据type 那张表，看是哪一条数据。
                 supportHisModel.REMARKS = "现场已处理，等待审核导入数据";
                 supportHisModel.CREATETIME = DateTime.Now;
-                supportHis.Db.Insertable(supportHisModel);
+                supportHis.Db.Insertable(supportHisModel).ExecuteCommand();
                 logger.Info("插入历史表，现场处理完成");
 
 
@@ -613,14 +642,14 @@ namespace YH.ASM.ImpHistory
                 personalModel.CREATETIME = DateTime.Now;
                 personalModel.REMARKS = "数据导入";
 
-                supportPersonal.Db.Insertable(personalModel);
+                supportPersonal.Db.Insertable(personalModel).ExecuteCommand();
 
                 logger.Info("插入个人处理表，现场处理完成");
 
 
 
 
-
+                supportSite.Db.CommitTran();
 
 
                 logger.Info("===创建现场处理结束===！");
@@ -629,7 +658,9 @@ namespace YH.ASM.ImpHistory
             }
             catch (Exception ex)
             {
+                supportSite.Db.RollbackTran();
                 logger.Error("创建现场处理失败" + ex);
+                Log("创建现场处理失败" + ex);
                 return false;
             }
 
@@ -644,15 +675,16 @@ namespace YH.ASM.ImpHistory
         /// <returns></returns>
         private bool CreatePrincipal(TASM_SUPPORT supportModel, ExcelModel item, int sid)
         {
-
+            TASM_SUPPORT_PRINCIPAL_Da supportPrincipal = new TASM_SUPPORT_PRINCIPAL_Da();
+            supportPrincipal.Db.BeginTran();
             try
             {
                 logger.Info("===创建审核开始===！");
 
-                DataAccess.TASM_SUPPORT_PRINCIPAL_Da supportPrincipal = new TASM_SUPPORT_PRINCIPAL_Da();
+
                 TASM_SUPPORT_PRINCIPAL princalModel = new TASM_SUPPORT_PRINCIPAL();
 
-                princalModel.CHECKUSER = item.CheckName;
+                princalModel.CHECKUSER = string.IsNullOrEmpty(item.CheckName) ? default_userName : item.CheckName;
                 princalModel.CREATETIME = DateTime.Now;
                 princalModel.ENDDATE = ConventDateTime(item.FinishDate);
                 princalModel.RESULT = item.CheckResult;
@@ -675,9 +707,9 @@ namespace YH.ASM.ImpHistory
                 supportHisModel.NEXT_STATUS = 4;  //下一状态，订单初始创建 下一状态为 现场处理，状态0，此处创建订单不做为状态，默认创建 和 创建后未处理状态都是0
                 supportHisModel.TYPE = 4;   //类型，也代表着是哪个表的数据 初始为0
                 supportHisModel.TID = prId;  //数据id 根据type 那张表，看是哪一条数据。
-                supportHisModel.REMARKS = "现场已处理，等待审核导入数据";
+                supportHisModel.REMARKS = "负责人已审核:已完成，导入数据";
                 supportHisModel.CREATETIME = DateTime.Now;
-                supportHis.Db.Insertable(supportHisModel);
+                supportHis.Db.Insertable(supportHisModel).ExecuteCommand();
                 logger.Info("插入历史表，审核处理完成");
 
 
@@ -694,12 +726,12 @@ namespace YH.ASM.ImpHistory
                 personalModel.CREATETIME = DateTime.Now;
                 personalModel.REMARKS = "数据导入";
 
-                supportPersonal.Db.Insertable(personalModel);
+                supportPersonal.Db.Insertable(personalModel).ExecuteCommand();
 
                 logger.Info("插入个人处理表，审核处理完成");
 
 
-
+                supportPrincipal.Db.CommitTran();
 
                 logger.Info("===创建审核结束===！");
 
@@ -707,7 +739,9 @@ namespace YH.ASM.ImpHistory
             }
             catch (Exception ex)
             {
+                supportPrincipal.Db.RollbackTran();
                 logger.Error("创建审核失败" + ex);
+                Log("创建审核失败" + ex);
                 return false;
             }
 
