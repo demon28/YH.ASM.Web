@@ -66,7 +66,7 @@ select t.*,
 
         public TASM_PROJECT SelectByName(string name) {
 
-            TASM_SUPPORT_Da da = new TASM_SUPPORT_Da();
+           
 
 
             return Db.Queryable<TASM_PROJECT>().Where(s => s.NAME.Contains(name)).First();

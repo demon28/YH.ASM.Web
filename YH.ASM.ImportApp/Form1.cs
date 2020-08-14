@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
+using YH.ASM.Entites.Model;
 
 namespace YH.ASM.ImportApp
 {
@@ -126,6 +127,7 @@ namespace YH.ASM.ImportApp
                     if (item.IsDisposerPoint.Trim() == "否")
                     {
                         //没有的话，继续下一条
+                        Log("===============导入结束=========没有Disposer节点=====" + i);
                         continue;
                     }
 
@@ -147,12 +149,13 @@ namespace YH.ASM.ImportApp
                     if (item.IsPmcPoint.Trim() == "否")
                     {
                         //没有的话，继续下一条
+                        Log("===============导入结束=========没有Pmc节点=====" + i);
                         continue;
                     }
 
                     Log("No：" + i + "PMC处理-开始");
 
-                    if (!PmcOrder( supportModel,  item,  sid))
+                    if (!CreatePmcOrder(supportModel, item, sid))
                     {
                         daSupport.Db.RollbackTran();
                         logger.Info("===============导入失败====PMC处理失败==========" + item.Content);
@@ -160,8 +163,44 @@ namespace YH.ASM.ImportApp
                         continue;
                     }
 
-
                     Log("No：" + i + "PMC处理-结束");
+
+
+                    if (item.IsSitePoint == "否")
+                    {
+                        //没有的话，继续下一条
+                        Log("===============导入结束=========没有site节点=====" + i);
+                        continue;
+                    }
+
+
+                    Log("No：" + i + "现场处理-开始");
+                    if (!CreateSiteCheck( supportModel,  item,  sid))
+                    {
+                        daSupport.Db.RollbackTran();
+                        logger.Info("===============导入失败====现场处理失败==========" + item.Content);
+                        Log("No：" + i + "现场处理失败-失败");
+                        continue;
+                    }
+                    Log("No：" + i + "现场处理-结束");
+
+
+
+                    if (item.IsPrincipalPoint=="否")
+                    {
+                        Log("===============导入结束=========没有principal节点=====" + i);
+                        continue;
+                    }
+
+
+                    if (!CreatePrincipal( supportModel,  item,  sid))
+                    {
+                        daSupport.Db.RollbackTran();
+                        logger.Info("===============导入失败====审核失败==========" + item.Content);
+                        Log("No：" + i + "审核处理失败-失败");
+                        continue;
+                    }
+
 
 
                     Log("===============导入结束==============" + i);
@@ -357,7 +396,7 @@ namespace YH.ASM.ImportApp
         }
 
         /// <summary>
-        /// 现场处理
+        /// 技术处理
         /// </summary>
         /// <param name="supportModel"></param>
         /// <param name="item"></param>
@@ -394,7 +433,7 @@ namespace YH.ASM.ImportApp
                 disposerModel.ISORDER = item.IsOrder == "是" ? 1 : 0;
 
                 int disid = supportDisposer.Db.Insertable(disposerModel).ExecuteReturnIdentity();
-                logger.Info("插入现场处理表完成");
+                logger.Info("插入技术处理表完成");
 
                 //step4 现场处理
 
@@ -402,7 +441,7 @@ namespace YH.ASM.ImportApp
                 TASM_SUPPORT_HIS supportHisModel = new TASM_SUPPORT_HIS();
 
                 supportHisModel.SID = sid;
-                supportHisModel.PRE_USER = supportModel.CREATOR; //上一处理人
+                supportHisModel.PRE_USER = supportModel.CONDUCTOR; //上一处理人
                 supportHisModel.NEXT_USER = supportModel.CONDUCTOR;  //下一处理人
                 supportHisModel.PRE_STATUS = 0;   //上一状态，订单初始创建，为0
                 supportHisModel.NEXT_STATUS = item.IsPmcPoint == "是" ? 2 : 1;  //下一状态，订单初始创建 下一状态为 现场处理，状态0，此处创建订单不做为状态，默认创建 和 创建后未处理状态都是0
@@ -411,13 +450,13 @@ namespace YH.ASM.ImportApp
                 supportHisModel.REMARKS = "技术已处理，等待现场处理,导入数据";
                 supportHisModel.CREATETIME = DateTime.Now;
                 supportHis.Db.Insertable(supportHisModel);
-                logger.Info("插入历史表，现场处理完成");
+                logger.Info("插入历史表，技术处理完成");
 
 
                 TASM_SUPPORT_PERSONAL_Da supportPersonal = new TASM_SUPPORT_PERSONAL_Da();
                 TASM_SUPPORT_PERSONAL personalModel = new TASM_SUPPORT_PERSONAL();
 
-                personalModel.CID = supportModel.CREATOR;
+                personalModel.CID = supportModel.CONDUCTOR;
                 personalModel.DID = supportModel.CONDUCTOR;
                 personalModel.CREATETIME = DateTime.Now;
                 personalModel.SID = sid;
@@ -428,7 +467,7 @@ namespace YH.ASM.ImportApp
 
                 supportPersonal.Db.Insertable(personalModel);
 
-                logger.Info("插入个人处理表，现场处理完成");
+                logger.Info("插入个人处理表，技术处理完成");
 
 
                 logger.Info("===创建现场处理结束===！");
@@ -451,7 +490,7 @@ namespace YH.ASM.ImportApp
         /// <param name="item"></param>
         /// <param name="sid"></param>
         /// <returns></returns>
-        private bool PmcOrder(TASM_SUPPORT supportModel, ExcelModel item, int sid)
+        private bool CreatePmcOrder(TASM_SUPPORT supportModel, ExcelModel item, int sid)
         {
             try
             {
@@ -460,7 +499,7 @@ namespace YH.ASM.ImportApp
 
                 TASM_SUPPORT_PMC pmcModel = new TASM_SUPPORT_PMC();
                 pmcModel.BOOKNO = item.BookNo;
-                pmcModel.DELIVERY =ConventDateTime(item.Delivery);
+                pmcModel.DELIVERY = ConventDateTime(item.Delivery);
                 pmcModel.SENDDATE = ConventDateTime(item.SendDate);
                 pmcModel.SENDNO = item.SendNo;
                 pmcModel.CONSIGNEE = item.Consignee;
@@ -468,7 +507,7 @@ namespace YH.ASM.ImportApp
                 pmcModel.CREATETIME = DateTime.Now;
                 pmcModel.REMARKS = "导入数据";
 
-                int pmcid= supportPmcOrder.Db.Insertable(pmcModel).ExecuteReturnIdentity();
+                int pmcid = supportPmcOrder.Db.Insertable(pmcModel).ExecuteReturnIdentity();
 
                 logger.Info("插入PMC处理表，处理完成");
 
@@ -477,10 +516,10 @@ namespace YH.ASM.ImportApp
                 TASM_SUPPORT_HIS supportHisModel = new TASM_SUPPORT_HIS();
 
                 supportHisModel.SID = sid;
-                supportHisModel.PRE_USER = supportModel.CREATOR; //上一处理人
+                supportHisModel.PRE_USER = supportModel.CONDUCTOR; //上一处理人
                 supportHisModel.NEXT_USER = supportModel.CONDUCTOR;  //下一处理人
                 supportHisModel.PRE_STATUS = 1;   //上一状态，订单初始创建，为0
-                supportHisModel.NEXT_STATUS =2;  //下一状态，订单初始创建 下一状态为 现场处理，状态0，此处创建订单不做为状态，默认创建 和 创建后未处理状态都是0
+                supportHisModel.NEXT_STATUS = 2;  //下一状态，订单初始创建 下一状态为 现场处理，状态0，此处创建订单不做为状态，默认创建 和 创建后未处理状态都是0
                 supportHisModel.TYPE = 2;   //类型，也代表着是哪个表的数据 初始为0
                 supportHisModel.TID = pmcid;  //数据id 根据type 那张表，看是哪一条数据。
                 supportHisModel.REMARKS = "PMC已处理,等待现场处理,导入数据";
@@ -493,12 +532,12 @@ namespace YH.ASM.ImportApp
                 TASM_SUPPORT_PERSONAL_Da supportPersonal = new TASM_SUPPORT_PERSONAL_Da();
                 TASM_SUPPORT_PERSONAL personalModel = new TASM_SUPPORT_PERSONAL();
 
-                personalModel.CID = supportModel.CREATOR;
+                personalModel.CID = supportModel.CONDUCTOR;
                 personalModel.DID = supportModel.CONDUCTOR;
                 personalModel.CREATETIME = DateTime.Now;
                 personalModel.SID = sid;
                 personalModel.STATUS = 2;
-                personalModel.TID = 2;  
+                personalModel.TID = 2;
                 personalModel.CREATETIME = DateTime.Now;
                 personalModel.REMARKS = "数据导入";
 
@@ -518,6 +557,156 @@ namespace YH.ASM.ImportApp
             }
 
 
+
+        }
+
+        /// <summary>
+        /// 现场处理
+        /// </summary>
+        /// <returns></returns>
+        private bool CreateSiteCheck(TASM_SUPPORT supportModel, ExcelModel item, int sid)
+        {
+            try
+            {
+                logger.Info("===创建现场处理开始===！");
+                TASM_SUPPORT_SITE_Da supportSite = new TASM_SUPPORT_SITE_Da();
+
+                TASM_SUPPORT_SITE siteMode = new TASM_SUPPORT_SITE();
+
+                siteMode.CREATETIME = DateTime.Now;
+                siteMode.DESCRIPTION = item.Description;
+                siteMode.ENDDATE = ConventDateTime(item.EndDate);
+                siteMode.REAMRKS = "导入数据";
+
+                int siteId = supportSite.Db.Insertable(siteMode).ExecuteReturnIdentity();
+
+
+
+                TASM_SUPPORT_HIS_Da supportHis = new TASM_SUPPORT_HIS_Da();
+                TASM_SUPPORT_HIS supportHisModel = new TASM_SUPPORT_HIS();
+
+                supportHisModel.SID = sid;
+                supportHisModel.PRE_USER = supportModel.CONDUCTOR; //上一处理人
+                supportHisModel.NEXT_USER = supportModel.CONDUCTOR;  //下一处理人
+                supportHisModel.PRE_STATUS = item.IsPmcPoint == "是" ? 2 : 1;   //上一状态，订单初始创建，为0
+                supportHisModel.NEXT_STATUS = 3;  //下一状态，订单初始创建 下一状态为 现场处理，状态0，此处创建订单不做为状态，默认创建 和 创建后未处理状态都是0
+                supportHisModel.TYPE = 3;   //类型，也代表着是哪个表的数据 初始为0
+                supportHisModel.TID = siteId;  //数据id 根据type 那张表，看是哪一条数据。
+                supportHisModel.REMARKS = "现场已处理，等待审核导入数据";
+                supportHisModel.CREATETIME = DateTime.Now;
+                supportHis.Db.Insertable(supportHisModel);
+                logger.Info("插入历史表，现场处理完成");
+
+
+
+                TASM_SUPPORT_PERSONAL_Da supportPersonal = new TASM_SUPPORT_PERSONAL_Da();
+                TASM_SUPPORT_PERSONAL personalModel = new TASM_SUPPORT_PERSONAL();
+
+                personalModel.CID = supportModel.CONDUCTOR;
+                personalModel.DID = supportModel.CONDUCTOR;
+                personalModel.CREATETIME = DateTime.Now;
+                personalModel.SID = sid;
+                personalModel.STATUS = 2;
+                personalModel.TID = 3;
+                personalModel.CREATETIME = DateTime.Now;
+                personalModel.REMARKS = "数据导入";
+
+                supportPersonal.Db.Insertable(personalModel);
+
+                logger.Info("插入个人处理表，现场处理完成");
+
+
+
+
+
+
+
+                logger.Info("===创建现场处理结束===！");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error("创建现场处理失败" + ex);
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// 创建负责人审核
+        /// </summary>
+        /// <param name="supportModel"></param>
+        /// <param name="item"></param>
+        /// <param name="sid"></param>
+        /// <returns></returns>
+        private bool CreatePrincipal(TASM_SUPPORT supportModel, ExcelModel item, int sid) {
+
+            try
+            {
+                logger.Info("===创建审核开始===！");
+
+                DataAccess.TASM_SUPPORT_PRINCIPAL_Da supportPrincipal = new TASM_SUPPORT_PRINCIPAL_Da();
+            TASM_SUPPORT_PRINCIPAL princalModel = new TASM_SUPPORT_PRINCIPAL();
+
+            princalModel.CHECKUSER = item.CheckName;
+            princalModel.CREATETIME = DateTime.Now;
+            princalModel.ENDDATE = ConventDateTime(item.FinishDate);
+            princalModel.RESULT = item.CheckResult;
+            princalModel.SID = sid;
+            princalModel.STATUS = 0;
+            princalModel.REMARKS = "导入数据";
+
+
+            int prId= supportPrincipal.Db.Insertable(princalModel).ExecuteReturnIdentity();
+
+
+
+                TASM_SUPPORT_HIS_Da supportHis = new TASM_SUPPORT_HIS_Da();
+                TASM_SUPPORT_HIS supportHisModel = new TASM_SUPPORT_HIS();
+
+                supportHisModel.SID = sid;
+                supportHisModel.PRE_USER = supportModel.CONDUCTOR; //上一处理人
+                supportHisModel.NEXT_USER = supportModel.CONDUCTOR;  //下一处理人
+                supportHisModel.PRE_STATUS = item.IsPmcPoint == "是" ? 2 : 1;   //上一状态，订单初始创建，为0
+                supportHisModel.NEXT_STATUS = 4;  //下一状态，订单初始创建 下一状态为 现场处理，状态0，此处创建订单不做为状态，默认创建 和 创建后未处理状态都是0
+                supportHisModel.TYPE = 4;   //类型，也代表着是哪个表的数据 初始为0
+                supportHisModel.TID = prId;  //数据id 根据type 那张表，看是哪一条数据。
+                supportHisModel.REMARKS = "现场已处理，等待审核导入数据";
+                supportHisModel.CREATETIME = DateTime.Now;
+                supportHis.Db.Insertable(supportHisModel);
+                logger.Info("插入历史表，审核处理完成");
+
+
+
+                TASM_SUPPORT_PERSONAL_Da supportPersonal = new TASM_SUPPORT_PERSONAL_Da();
+                TASM_SUPPORT_PERSONAL personalModel = new TASM_SUPPORT_PERSONAL();
+
+                personalModel.CID = supportModel.CONDUCTOR;
+                personalModel.DID = supportModel.CONDUCTOR;
+                personalModel.CREATETIME = DateTime.Now;
+                personalModel.SID = sid;
+                personalModel.STATUS = 2;
+                personalModel.TID = 4;
+                personalModel.CREATETIME = DateTime.Now;
+                personalModel.REMARKS = "数据导入";
+
+                supportPersonal.Db.Insertable(personalModel);
+
+                logger.Info("插入个人处理表，审核处理完成");
+
+
+
+
+                logger.Info("===创建审核结束===！");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error("创建审核失败" + ex);
+                return false;
+            }
 
         }
     }

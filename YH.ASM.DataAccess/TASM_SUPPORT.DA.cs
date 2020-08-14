@@ -77,15 +77,12 @@ namespace YH.ASM.DataAccess
     ON TM.MID = T.MID
 
  WHERE 1 = 1
-
-
 ";
             var configParms = new List<SugarParameter>();
 
             if (watchType== SupprotWatchType.创建人)
             {
                 sql += " and t.creator=:watchId ";
-
                 configParms.Add( new SugarParameter("watchId", watchId.Value));
             }
             if (watchType == SupprotWatchType.处理人)
@@ -96,13 +93,11 @@ namespace YH.ASM.DataAccess
             if (state!= SupprotWatchState.全部)
             {
                 sql += " and  t.state= "+(int)state;
-               
             }
-            if (!string.IsNullOrEmpty(keyword)) {
-
+            if (!string.IsNullOrEmpty(keyword)) 
+            {
                 sql+= " and   (t.CODE like '%" + keyword + "%'  or  t.CONTENT like '%" + keyword+"%'  or  TR.USER_NAME like '%"+keyword+"%' or TU.USER_NAME like '%"+keyword+"%'  or  TP.NAME like '%"+keyword+"%') ";
             }
-
 
 
             int totalCount = 0;
