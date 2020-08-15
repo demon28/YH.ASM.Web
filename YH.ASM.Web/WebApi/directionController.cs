@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NPOI.SS.Formula.Functions;
+using YH.ASM.DataAccess;
 using YH.ASM.Entites.CodeGenerator;
 using YH.ASM.Entites.Model;
 using YH.ASM.Web.Models;
@@ -115,7 +116,16 @@ namespace YH.ASM.Web.WebApi
 
         }
 
-            
+        [HttpGet("WrokReport")]
+        public IActionResult WrokReport(int traid)
+        {
+
+            DataAccess.TASM_TRAVELManager mannager = new TASM_TRAVELManager();
+            var model = mannager.SelectByTraid(traid);
+
+            return SuccessResult(model);
+
+        }
 
     }
 }
