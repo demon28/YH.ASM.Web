@@ -85,7 +85,7 @@ namespace YH.ASM.ImpHistory
 
             if (result.Result.Data == null)
             {
-                MessageBox.Show("读取excel失败！");
+                MessageBox.Show("读取excel失败！"+ result.Result.Exception);
                 return;
             }
 
@@ -373,7 +373,15 @@ namespace YH.ASM.ImpHistory
                 supportModel.STATUS = item.EndPiont;
                 supportModel.STATE = item.ConductorStatus;
                 supportModel.MID = GetsMachineByName(item.MachineCode);
-                supportModel.CODE = GetSupportCode(Project.CODE);
+                if (Project==null)
+                {
+                    supportModel.CODE = GetSupportCode(string.Empty);
+                }
+                else
+                {
+                    supportModel.CODE = GetSupportCode(Project.CODE);
+                }
+             
                 supportModel.TITLE = "导入数据";
                 supportModel.CREATETIME = DateTime.Now;
 

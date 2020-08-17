@@ -97,7 +97,7 @@
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
 
-                  
+
 
                     <table class="table table-bordered table-hover dataTable">
                         <tbody>
@@ -134,29 +134,21 @@
                                 <td class="my-td ">{{item.PROJECTNAME}}</td>
 
                                 <td class="my-td ">
-                                    @*<a @@click="View(item)">  {{item.TITLE}} </a>*@
-
                                     {{item.MACHINENAME}}-  {{item.MACHINESERIAL}}
-
                                 </td>
 
                                 <td class="my-td ">
-
-                                    @*<a @@click="ChangeType(item.TYPE,item)">{{SetType(item.TYPE)}}</a>*@
                                     {{SetType(item.TYPE)}}
-
                                 </td>
 
                                 <td class="my-td ">{{item.CREATORNAME}}</td>
                                 <td class="my-td ">
-
-                                    @*<a @@click="ChangeUser(item)"> {{item.CONDUCTORNAME}} </a>*@
-
                                     {{item.CONDUCTORNAME}}
-
                                 </td>
 
-                                <td class="my-td ">{{item.CONTENT}}</td>
+                                <td class="my-td " style="text-align:left">
+                                    <div :title="item.CONTENT" >  {{ SetSubstring(item.CONTENT)}}</div>
+                                </td>
 
 
                                 <td class="my-td ">
@@ -184,7 +176,7 @@
 
 
                                 <td class="my-td ">{{item.CREATETIME}}</td>
-                                <td class="my-td ">
+                                <td class="my-td " style=" text-align :right">
 
                                     <button type="button" class="btn bg-purple  btn-xs " v-if="item.STATUS!=6 && item.STATUS!=7" v-on:click="Dispose(item)">处理</button>
                                     &nbsp;
@@ -345,7 +337,12 @@
     <script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 
+
     <script>
+
+      
+
+
         var ck;
 
         var vm = new Vue({
@@ -367,10 +364,11 @@
                 this.Init();
 
 
+
             },
             mounted: function () {
 
-
+               
 
 
             },
@@ -506,7 +504,7 @@
                 },
                ChangeType(value,item) {
                    var _self = this;
-                 
+
                    //bootbox.prompt({
                    //    size: "small",
                    //    title: "问题类型",
@@ -527,7 +525,7 @@
                 },
                ChangeStatus(value, item) {
                     var _self = this;
-                 
+
                     //bootbox.prompt({
                     //    size: "small",
                     //    title: "工单状态",
@@ -547,7 +545,7 @@
                 },
                ChangePriority(value, item) {
                     var _self = this;
-                  
+
                     //bootbox.prompt({
                     //    size: "small",
                     //    title: "工单状态",
@@ -567,7 +565,7 @@
                 },
                ChangeSeverity(value, item) {
                     var _self = this;
-                 
+
                     //bootbox.prompt({
                     //    size: "small",
                     //    title: "工单状态",
@@ -586,7 +584,7 @@
                     //});
                 },
                 ChangeUser(item) {
-                  
+
                     this.supprotInfo = item;
                     showWui("/Support/FillUser");
                 },
@@ -660,7 +658,7 @@
                    })
 
 
-                
+
 
 
                 },
@@ -676,9 +674,9 @@
 
                 },
                 Details(item) {
-              
+
                     window.location.href = "/SupportTimeLine/WorkFolw?id=" + item.SID;
-                    
+
                 },
                 Del: function (item) {
                     var self = this;
@@ -709,6 +707,15 @@
 
 
                 },
+                SetSubstring(val) {
+
+                    if (val.length>20) {
+                        return val.substring(0, 15) + "...";
+                    }
+                    return val;
+
+                }
+
            },
 
 
