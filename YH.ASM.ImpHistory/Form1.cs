@@ -540,6 +540,7 @@ namespace YH.ASM.ImpHistory
                 pmcModel.STATUS = 0;
                 pmcModel.CREATETIME = DateTime.Now;
                 pmcModel.REMARKS = "导入数据";
+                pmcModel.SID = supportModel.SID;
 
                 int pmcid = supportPmcOrder.Db.Insertable(pmcModel).ExecuteReturnIdentity();
 

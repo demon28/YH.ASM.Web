@@ -14,7 +14,7 @@ function SupportWF(supprotInfo) {
     html += "     <i class=\"fa fa-user bg-aqua\"></i>"
 
     html += "      <div class=\"timeline-item\">"
-    html += "          <span class=\"time\"><i class=\"fa fa-clock-o\"></i> "+ supprotInfo.CREATETIME +"</span>"
+    html += "            <span class=\"time\" style='color:bule' onclick='OpenUpdate(" + supprotInfo.SID + ", " + supprotInfo.SID + ",1)'> 编辑  </span>           "
 
     html += "          <h3 class=\"timeline-header\">创建问题管理表</h3>"
 
@@ -123,7 +123,7 @@ html+="        <li v-if=\"disposerShow\">                                       
 html+="            <i class=\"fa fa-user bg-aqua\"></i>                                                                                                                                                                                              "
 html+="                                                                                                                                                                                                                                              "
 html+="            <div class=\"timeline-item\">                                                                                                                                                                                                     "
-    html += "                <span class=\"time\"><i class=\"fa fa-clock-o\"></i>  " + disposerInfo.CREATETIME +"</span>                                                                                                                                     "
+    html += "              <span class=\"time\" style='color:bule'  onclick='OpenUpdate(" + disposerInfo.SID + ", " + supprotInfo.ID + ",2)'> 编辑  </span>                                                                                                                                      "
 html+="                                                                                                                                                                                                                                              "
     html +="                <h3 class=\"timeline-header\">责任人处理</h3>                                                                                                                                                                               "
 html+="                                                                                                                                                                                                                                              "
@@ -277,7 +277,7 @@ html+="       <li v-if=\"pmcShow\">                                             
 html+="           <i class=\"fa fa-user bg-aqua\"></i>                                                                                                                                                                         ";
 html+="                                                                                                                                                                                                                        ";
 html+="           <div class=\"timeline-item\">                                                                                                                                                                                ";
-    html += "               <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + pmcInfo.CREATETIME +"</span>                                                                                                                     ";
+    html += "                <span class=\"time\" style='color:bule'  onclick='OpenUpdate(" + pmcInfo.SID + ", " + pmcInfo.ID + ",3)'> 编辑  </span>                                                                                                                   ";
 html+="                                                                                                                                                                                                                        ";
     html +="               <h3 class=\"timeline-header\">售后内勤维护</h3>                                                                                                                                                           ";
 html+="                                                                                                                                                                                                                        ";
@@ -406,7 +406,7 @@ html+="       <li v-if=\"siteShow\">                                            
 html+="           <i class=\"fa fa-user bg-aqua\"></i>                                                                                                                                                   ";
 html+="                                                                                                                                                                                                  ";
 html+="           <div class=\"timeline-item\">                                                                                                                                                          ";
-    html += "               <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + siteInfo.CREATETIME +"</span>                                                                                              ";
+    html += "               <span class=\"time\" style='color:bule'  onclick='OpenUpdate(" + siteInfo.SID + ", " + siteInfo.ID + ",4)'> 编辑  </span>                                                                                                     ";
 html+="                                                                                                                                                                                                  ";
     html +="               <h3 class=\"timeline-header\">现场人员整改</h3>                                                                                                                                    ";
 html+="                                                                                                                                                                                                  ";
@@ -487,8 +487,8 @@ html+="        <li v-if=\"principalShow\">                                      
 html+="            <i class=\"fa fa-user bg-aqua\"></i>                                                                                                                                                                       ";
 html+="                                                                                                                                                                                                                       ";
 html+="            <div class=\"timeline-item\">                                                                                                                                                                              ";
-    html += "                <span class=\"time\"><i class=\"fa fa-clock-o\"></i> " + principalInfo.CREATETIME +" </span>                                                                                                             ";
-html+="                                                                                                                                                                                                                       ";
+    html += "                <span class=\"time\" style='color:bule'  onclick='OpenUpdate(" + principalInfo.SID + ", " + principalInfo.ID + ",5)'> 编辑  </span>                                                                                                             ";
+    html += "                                                                                                                                                                                                               ";
     html +="                <h3 class=\"timeline-header\">现场负责人审核</h3>                                                                                                                                                          ";
 html+="                                                                                                                                                                                                                       ";
 html+="                <div class=\"timeline-body\">                                                                                                                                                                          ";

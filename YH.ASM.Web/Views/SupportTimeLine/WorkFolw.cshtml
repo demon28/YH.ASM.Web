@@ -347,6 +347,32 @@
             return EnumGetSingle(value, Support_Statuslist());
         }
 
+
+        function OpenUpdate(sid,tid,type) {
+
+            if (type==1) {
+                window.open("/SupportTimeLine/SupportEditor?sid=" + sid + "&tid=" + tid);
+                return;
+            }
+            if (type == 2) {
+                window.open("/SupportTimeLine/DisposerEditor?sid=" + sid + "&tid=" + tid);
+                return;
+            }
+            if (type == 3) {
+                window.open("/SupportTimeLine/PmcEditor?sid=" + sid + "&tid=" + tid);
+                return;
+            }
+            if (type == 4) {
+                window.open("/SupportTimeLine/SiteEditor?sid=" + sid + "&tid=" + tid);
+                return;
+            }
+            if (type == 5) {
+                window.open("/SupportTimeLine/PrincipalEditor?sid=" + sid + "&tid=" + tid);
+                return;
+            }
+
+        }
+
     </script>
 
 }
