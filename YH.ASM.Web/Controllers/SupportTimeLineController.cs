@@ -21,7 +21,7 @@ namespace YH.ASM.Web.Controllers
             return View();
         }
 
-     
+
 
 
         [Right(PowerName = "工单流程")]
@@ -33,13 +33,13 @@ namespace YH.ASM.Web.Controllers
         }
 
 
-        [Right(Ignore =true)]
+        [Right(Ignore = true)]
         [HttpPost]
         public IActionResult ListByHis(int sid)
         {
 
             DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
-            List<TASM_SUPPORT_HIS> list = manager.Db.Queryable<TASM_SUPPORT_HIS>().Where(s => s.SID == sid).OrderBy(s => s.CREATETIME,SqlSugar.OrderByType.Asc).ToList();
+            List<TASM_SUPPORT_HIS> list = manager.Db.Queryable<TASM_SUPPORT_HIS>().Where(s => s.SID == sid).OrderBy(s => s.CREATETIME, SqlSugar.OrderByType.Asc).ToList();
             return SuccessResultList(list);
         }
 
@@ -62,7 +62,7 @@ namespace YH.ASM.Web.Controllers
 
         [Right(Ignore = true)]
         [HttpPost]
-        public IActionResult GetDisposerInfo(int sid,int tid)
+        public IActionResult GetDisposerInfo(int sid, int tid)
         {
             DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
             HisDisposerModel model = manager.SelectHisDisposer(sid, tid);
@@ -129,10 +129,11 @@ namespace YH.ASM.Web.Controllers
 
 
         [Right(PowerName = "修改工单内容")]
-        public IActionResult SupportEditor() {
+        public IActionResult SupportEditor()
+        {
 
             return View();
-        
+
         }
         [HttpPost]
         public IActionResult SupportInfo(int sid)
@@ -150,21 +151,21 @@ namespace YH.ASM.Web.Controllers
 
             TASM_SUPPORT_HIS_Da his = new TASM_SUPPORT_HIS_Da();
 
-            var hisModel= his.SelectBySidType(info.SID,0);
+            var hisModel = his.SelectBySidType(info.SID, 0);
 
             support.Db.BeginTran();
 
             hisModel.PRE_USER = info.CREATOR;
             hisModel.NEXT_USER = info.CONDUCTOR;
 
-            if (his.Db.Updateable(hisModel).ExecuteCommand()<1)
+            if (his.Db.Updateable(hisModel).ExecuteCommand() < 1)
             {
                 support.Db.RollbackTran();
                 return FailMessage();
             }
 
 
-            if (support.Db.Updateable(info).ExecuteCommand()<1)
+            if (support.Db.Updateable(info).ExecuteCommand() < 1)
             {
                 support.Db.RollbackTran();
                 return FailMessage();
@@ -182,19 +183,21 @@ namespace YH.ASM.Web.Controllers
         {
             return View();
         }
-   
-        public IActionResult DisposerInfo(int sid,int tid) {
 
-          
-                DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
-                HisDisposerModel model = manager.SelectHisDisposer(sid, tid);
+        public IActionResult DisposerInfo(int sid, int tid)
+        {
 
-                return SuccessResult(model);
+
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisDisposerModel model = manager.SelectHisDisposer(sid, tid);
+
+            return SuccessResult(model);
 
         }
 
         [HttpPost]
-        public IActionResult DisposerUpdate(AddDisposerModel info) {
+        public IActionResult DisposerUpdate(AddDisposerModel info)
+        {
 
             TASM_SUPPORT_DISPOSER_Da disposer = new TASM_SUPPORT_DISPOSER_Da();
 
@@ -204,7 +207,7 @@ namespace YH.ASM.Web.Controllers
 
             disposer.Db.BeginTran();
 
-            hisModel.NEXT_USER = info.NEXTUSER ;
+            hisModel.NEXT_USER = info.NEXTUSER;
 
             if (his.Db.Updateable(hisModel).ExecuteCommand() < 1)
             {
@@ -213,7 +216,8 @@ namespace YH.ASM.Web.Controllers
             }
 
 
-            TASM_SUPPORT_DISPOSER model = new TASM_SUPPORT_DISPOSER() {
+            TASM_SUPPORT_DISPOSER model = new TASM_SUPPORT_DISPOSER()
+            {
 
                 ANALYZE = info.ANALYZE,
                 ANALYZEUSER = info.ANALYZEUSER,
@@ -228,10 +232,10 @@ namespace YH.ASM.Web.Controllers
                 SOLUTION = info.SOLUTION,
                 STATUS = info.STATUS,
                 CREATETIME = info.CREATETIME,
-                 REMARKS=info.REMARKS
-            
+                REMARKS = info.REMARKS
+
             };
-           
+
 
             if (disposer.Db.Updateable(model).ExecuteCommand() < 1)
             {
@@ -240,7 +244,7 @@ namespace YH.ASM.Web.Controllers
             }
 
             disposer.Db.CommitTran();
-        
+
             return SuccessMessage();
 
 
@@ -252,13 +256,15 @@ namespace YH.ASM.Web.Controllers
 
         [Right(PowerName = "修改售后内勤维护内容")]
 
-        public IActionResult PmcEditor() {
+        public IActionResult PmcEditor()
+        {
             return View();
         }
 
 
         [HttpPost]
-        public IActionResult PmcInfo(int sid, int tid) {
+        public IActionResult PmcInfo(int sid, int tid)
+        {
 
             TASM_SUPPORT_HIS_Da manager = new TASM_SUPPORT_HIS_Da();
             HisPmcModel model = manager.SelectHisPmc(sid, tid);
@@ -268,6 +274,181 @@ namespace YH.ASM.Web.Controllers
             }
             return SuccessResult(model);
         }
+
+        [HttpPost]
+        public IActionResult PmcUpdate(HisPmcModel info)
+        {
+
+
+            TASM_SUPPORT_PMC_Da pmc = new TASM_SUPPORT_PMC_Da();
+
+            TASM_SUPPORT_HIS_Da his = new TASM_SUPPORT_HIS_Da();
+
+            var hisModel = his.SelectBySidType(info.SID, 2);
+
+            pmc.Db.BeginTran();
+
+            hisModel.NEXT_USER = int.Parse(info.NEXT_USER);
+
+            if (his.Db.Updateable(hisModel).ExecuteCommand() < 1)
+            {
+                pmc.Db.RollbackTran();
+                return FailMessage();
+            }
+
+            TASM_SUPPORT_PMC model = new TASM_SUPPORT_PMC()
+            {
+
+                BOOKNO = info.BOOKNO,
+                CONSIGNEE = info.CONSIGNEE,
+                ID = info.TID,
+                DELIVERY = DateTime.Parse(info.DELIVERY),
+                SENDDATE = DateTime.Parse(info.SENDDATE),
+                SENDNO = info.SENDNO,
+                REMARKS = info.REMARKS
+            };
+
+
+            if (pmc.Db.Updateable(model).ExecuteCommand() < 1)
+            {
+                pmc.Db.RollbackTran();
+                return FailMessage();
+            }
+
+            pmc.Db.CommitTran();
+
+            return SuccessMessage();
+        }
+
+
+
+        [Right(PowerName = "修改现场人员整改内容")]
+        public IActionResult SiteEditor()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SiteInfo(int sid, int tid)
+        {
+
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisSiteModel model = manager.SelectHisSite(sid, tid);
+            if (model == null)
+            {
+                return FailMessage("未创建");
+            }
+            return SuccessResult(model);
+        }
+        [HttpPost]
+        public IActionResult SiteUpdate(HisSiteModel info)
+        {
+
+            TASM_SUPPORT_SITE_Da site = new TASM_SUPPORT_SITE_Da();
+
+            TASM_SUPPORT_HIS_Da his = new TASM_SUPPORT_HIS_Da();
+
+            var hisModel = his.SelectBySidType(info.SID, 3);
+
+            site.Db.BeginTran();
+
+            hisModel.NEXT_USER = int.Parse(info.NEXT_USER);
+
+            if (his.Db.Updateable(hisModel).ExecuteCommand() < 1)
+            {
+                site.Db.RollbackTran();
+                return FailMessage();
+            }
+
+            TASM_SUPPORT_SITE model = new TASM_SUPPORT_SITE()
+            {
+
+                ID = info.TID,
+                DESCRIPTION = info.DESCRIPTION,
+                ENDDATE = DateTime.Parse(info.ENDDATE),
+                REAMRKS = info.REAMRKS,
+                SID = info.SID
+
+            };
+
+
+            if (site.Db.Updateable(model).ExecuteCommand() < 1)
+            {
+                site.Db.RollbackTran();
+                return FailMessage();
+            }
+
+            site.Db.CommitTran();
+
+            return SuccessMessage();
+
+        }
+
+
+
+
+
+        [Right(PowerName = "修改现场负责人审核内容")]
+        public IActionResult PrincipalEditor()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public IActionResult PrincipalInfo(int sid, int tid)
+        {
+            DataAccess.TASM_SUPPORT_HIS_Da manager = new DataAccess.TASM_SUPPORT_HIS_Da();
+            HisPrincipalModel model = manager.SelectHisPrincipal(sid, tid);
+
+            if (model == null)
+            {
+                return FailMessage("未创建");
+            }
+            return SuccessResult(model);
+        }
+
+        [HttpPost]
+        public IActionResult PrincipalUpdate(HisPrincipalModel info)
+        {
+
+            TASM_SUPPORT_PRINCIPAL_Da Principal = new TASM_SUPPORT_PRINCIPAL_Da();
+
+            TASM_SUPPORT_HIS_Da his = new TASM_SUPPORT_HIS_Da();
+
+            var hisModel = his.SelectBySidType(info.SID, 4);
+
+            Principal.Db.BeginTran();
+
+            hisModel.NEXT_USER = int.Parse(info.NEXT_USER);
+
+            if (his.Db.Updateable(hisModel).ExecuteCommand() < 1)
+            {
+                Principal.Db.RollbackTran();
+                return FailMessage();
+            }
+
+            TASM_SUPPORT_PRINCIPAL model = new TASM_SUPPORT_PRINCIPAL()
+            {
+                CHECKUSER = info.CHECKUSER,
+                ID = info.TID,
+                RESULT = info.RESULT,
+                ENDDATE = DateTime.Parse(info.ENDDATE),
+                SID = info.SID
+            };
+
+            if (Principal.Db.Updateable(model).ExecuteCommand() < 1)
+            {
+                Principal.Db.RollbackTran();
+                return FailMessage();
+            }
+
+            Principal.Db.CommitTran();
+
+            return SuccessMessage();
+
+        }
+
 
 
         #endregion
