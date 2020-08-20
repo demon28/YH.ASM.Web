@@ -42,7 +42,7 @@
                        
 
                         <div class="input-group input-group-sm  col-md-2 pull-right ml-1" style="margin-left: 10px; width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search" />
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search" id="txt_Search"  v-on:keyup.13="Search" />
 
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default " @@click="Search()" id="btn_Search"><i class="fa fa-search"></i></button>

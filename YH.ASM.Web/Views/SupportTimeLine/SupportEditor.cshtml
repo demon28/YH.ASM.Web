@@ -1,5 +1,299 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
+    ViewData["Title"] = "修改问题管理表";
 }
+@section Pageheader{
+
+
+    <script>
+
+        function closeWui() {
+            $(".wui-masked").hide();
+            $('.wui-ilayout').animate({ width: '0' }, function () {
+                $(".wui-ilayout iframe").attr("src", "about:blank");
+            });
+        }
+        function showWui(uri, width) {
+            var window_width = width || ($(window).width() / 2);
+            $(".wui-masked").show();
+            $(".wui-ilayout").show().animate({ width: window_width }, function () {
+                var html = $("<div class='wui-ilayout-loading'><i class='icon-spin icon-spinner'></i>正在加载页面...</div>");
+                $(".wui-ilayout iframe").before(html);
+                $(".wui-ilayout iframe").attr('src', uri);
+            });
+        }
+
+    </script>
+
+    <h1>
+        <small>修改问题管理表 </small>
+
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Customer</li>
+    </ol>
+
+}
+<section class="content" id="tab">
+    <div class="row">
+        @*<div class="col-md-1"></div>*@
+        <div class=" col-md-12">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">工单信息</h3>
+                </div>
+                <form class="form-horizontal" id="form1">
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">   创建者：</label>
+
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="info.CREATORNAME"  v-on:click="FillCreatetor()" readonly="readonly">
+                            </div>
+                            <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillCreatetor()">选择</button>
+                        </div>                 <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px"> 项目名称：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="info.PROJECTNAME" v-on:click="FillProject()" readonly="readonly">
+                            </div>
+                            <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillProject()">选择</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">问题类型：</label>
+                            <div class="col-sm-6">
+
+                                <select class="form-control" v-model="info.TYPE">
+                                    <option :value="item.value" v-for="(item ,index) in typelist">{{item.text}}</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px"> 严重程度：</label>
+                            <div class="col-sm-6">
+
+                                <select class="form-control" v-model="info.SEVERITY">
+                                    <option :value="item.value" v-for="(item ,index) in severitylist">{{item.text}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">发现日期：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="txt_finddate" v-model="info.FINDATE" readonly="readonly">
+                            </div>
+                        </div>     
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">处理人：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="info.CONDUCTORNAME"  v-on:click="FillConductor()" readonly="readonly">
+                            </div>
+                            <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillConductor()">选择</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">问题机型：</label>
+
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" v-model="info.MACHINENAME" v-on:click="FillMachine()" readonly="readonly">
+                            </div>
+                            <button type="button" class="btn bg-purple  btn-xs " style="vertical-align:middle" v-on:click="FillMachine()">选择</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-1 control-label" style="padding-right:0px">问题描述：</label>
+                            <div class="col-sm-8" style="text-align:left">
+                                <textarea class="form-control" style="margin-left:0px" rows="3" placeholder="请描述详细问题" v-model="info.CONTENT"></textarea>
+                            </div>
+                        </div>
+
+
+
+                        <div class="box-footer">
+                            <button type="reset" class="btn btn-default" v-on:click="Return()">取消</button>
+                            <button type="button" class="btn btn-info pull-right" v-on:click="Update()">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<div class="wui-masked" style="position:fixed;background:#fff;top:0;left:0;right:0;bottom:0;z-index:9998;opacity:0.3;display:none;"
+     onclick="closeWui()"></div>
+
+
+<div class="wui-ilayout" style="position:absolute; position:fixed;top:0;right:0;z-index:9999;bottom:0;border-left:4px #eee solid;display:none;background:#fff;">
+    <div style="padding:2em;height:100%;background-color:gainsboro">
+        <iframe style="width:50%;border:0 none;height:100%;width:100%;" src="about:blank" onload="javascript:$('.wui-ilayout-loading').remove()"></iframe>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Reference/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Reference/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+    <script>
+
+        var self;
+        var vm = new Vue({
+            el: "#tab",
+            data: {
+                info: {},
+                sid: 0,
+                tid: 0,
+                checkUser: {},
+                checkUser2: {},
+                checkMachine: {},
+                checkProject: {},
+
+                typelist: [],
+                severitylist: []
+            },
+            created: function () {
+                self = this;
+
+            },
+            mounted: function () {
+
+                self.sid = getQueryString("sid");
+                self.tid = getQueryString("tid");
+                self.typelist = Support_Typelist();
+                self.severitylist = Support_Severitylist();
+                self.BindDate(); //使用时间插件
+                self.Init();
+            },
+            methods: {
+                Init() {
+                    MyAjax({
+                        url: "/SupportTimeLine/SupportInfo",
+                        type: "POST",
+                        data: {
+                            sid: self.sid
+                        },
+                        success: function (result) {
+
+                            if (!result.Success) {
+
+                                alert_danger("加载信息失败！");
+                                return;
+                            }
+
+                            self.info = result.Content;
+
+                        }
+
+                    });
+
+                },
+                Update() {
+                    MyAjax({
+                        url: "/SupportTimeLine/SupportUpdate",
+                        type: "POST",
+                        data: {
+                            info: self.info
+                        },
+                        success: function (result) {
+
+                            if (!result.Success) {
+
+                                alert_danger("修改失败！");
+                                return;
+                            }
+
+                            bootbox.alert("工单信息修改成功，点击确定返回详情页", function () {
+                                self.Return();
+                            })
+
+                        }
+
+                    });
+
+                },
+                FillCreatetor() {
+                    showWui("/People/FillUser");
+                },
+                FillConductor() {
+
+                    showWui("/People/FillUser2");
+                },
+                FillProject() {
+                    showWui("/Project/FillProject");
+                },
+                FillMachine() {
+                    showWui("/Machine/FillMachine");
+                },
+                Return() {
+
+                    window.location.href = "/SupportTimeLine/WorkFolw?id=" + self.sid;
+                },
+                SetMachine(item) {  //填充设备
+
+                    this.checkMachine = item;
+
+                    this.info.MID = item.MID;
+                    this.info.MACHINENAME = item.NAME;
+
+                    closeWui();
+                },
+                SetProject(item) { //填充项目
+
+                    this.checkProject = item;
+
+                    this.info.PROJECT = item.PID;
+                    this.info.PROJECTNAME = item.NAME;
+
+                    closeWui();
+                },
+                SetUser(item) {  //填充创建人
+                    this.checkUser = item;
+
+                    this.info.CREATOR = item.USER_ID;
+                    this.info.CREATORNAME = item.USER_NAME;
+
+                    closeWui();
+                },
+                SetUser2(item) {  //填充处理人
+                    this.checkUser2 = item;
+
+                    this.info.CONDUCTOR = item.USER_ID;
+                    this.info.CONDUCTORNAME = item.USER_NAME;
+
+                    closeWui();
+                },
+                BindDate() {
+
+                    $('#txt_finddate').datetimepicker({
+                        format: 'yyyy-mm-dd ',
+                        autoclose: true,
+                        minView: "month",  ///选择日期后，不会再跳转去选择时分秒
+                        language: 'zh-CN',
+                        dateFormat: 'yyyy-mm-dd',//日期显示格式
+                        todayBtn: 1,
+                        autoclose: 1,
+                        startDate: new Date(),
+                    });
+
+
+                    $('#txt_finddate').datetimepicker().on('hide', function (ev) {
+                        var enddate = $("#txt_finddate").val();
+                        self.info.FINDATE = enddate;
+                    });
+
+
+                }
+            },
+        })
+
+    </script>
+}
+
+

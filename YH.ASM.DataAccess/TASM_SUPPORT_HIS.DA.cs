@@ -259,6 +259,13 @@ where t.type=4 and t.sid=:sid and tid=:tid
 
         }
 
+        public TASM_SUPPORT_HIS SelectBySidType(int sid,int type)
+        {
+            return Db.Queryable<TASM_SUPPORT_HIS>()
+              .Where(s => s.SID == sid && s.TYPE==type)
+              .First();
+
+        }
 
 
     }

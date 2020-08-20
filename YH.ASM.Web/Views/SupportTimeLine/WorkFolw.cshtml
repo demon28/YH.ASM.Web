@@ -199,7 +199,7 @@
                         },
                         success: function (result) {
 
-                            console.log(JSON.stringify(result));
+                            console.log("加载现场责任人处理：",JSON.stringify(result));
 
                             if (!result.Success) {
 
@@ -350,24 +350,24 @@
 
         function OpenUpdate(sid,tid,type) {
 
-            if (type==1) {
-                window.open("/SupportTimeLine/SupportEditor?sid=" + sid + "&tid=" + tid);
+            if (type == 1) {
+                window.location="/SupportTimeLine/SupportEditor?sid=" + sid + "&tid=" + tid;
                 return;
             }
             if (type == 2) {
-                window.open("/SupportTimeLine/DisposerEditor?sid=" + sid + "&tid=" + tid);
+                window.location ="/SupportTimeLine/DisposerEditor?sid=" + sid + "&tid=" + tid;
                 return;
             }
             if (type == 3) {
-                window.open("/SupportTimeLine/PmcEditor?sid=" + sid + "&tid=" + tid);
+                window.location ="/SupportTimeLine/PmcEditor?sid=" + sid + "&tid=" + tid;
                 return;
             }
             if (type == 4) {
-                window.open("/SupportTimeLine/SiteEditor?sid=" + sid + "&tid=" + tid);
+                window.location ="/SupportTimeLine/SiteEditor?sid=" + sid + "&tid=" + tid;
                 return;
             }
             if (type == 5) {
-                window.open("/SupportTimeLine/PrincipalEditor?sid=" + sid + "&tid=" + tid);
+                window.location="/SupportTimeLine/PrincipalEditor?sid=" + sid + "&tid=" + tid;
                 return;
             }
 

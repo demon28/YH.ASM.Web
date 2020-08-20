@@ -144,7 +144,7 @@ namespace YH.ASM.ImpHistory
                     daSupport.Db.RollbackTran();
                     continue;
                 }
-                Log("No：" + i + "技术处理-结束");
+                Log("No：" + i + "技术处理-结束"+sid);
 
 
 

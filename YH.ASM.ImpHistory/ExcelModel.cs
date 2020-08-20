@@ -87,7 +87,7 @@ namespace YH.ASM.ImportApp
         /// <summary>
         /// 是否有内勤维护节点
         /// </summary>
-        [ImporterHeader(Name = "是否有内勤维护节点")]
+        [ImporterHeader(Name = "是否有责任人处理节点")]
         public string IsDisposerPoint { get; set; }
 
         /// <summary>

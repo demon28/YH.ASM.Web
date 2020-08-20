@@ -27,7 +27,7 @@ function Support_Typelist() {
     Typelist.push({ value: 2, text: "商务问题" });
     Typelist.push({ value: 3, text: "设计问题" });
     Typelist.push({ value: 4, text: "装配误差" });
-
+    Typelist.push({ value: 5, text: "其他" });
     return Typelist;
 
 }

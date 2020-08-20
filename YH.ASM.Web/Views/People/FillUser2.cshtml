@@ -56,19 +56,30 @@
             <table class="table table-hover">
                 <tbody>
                     <tr>
-                        <td class="my-td ">设备类型</td>
-                        <td class="my-td ">归属项目</td>
-                        <td class="my-td ">型号规格</td>
-                        <td class="my-td ">设备编号</td>
+                        <th>工号</th>
+                        <th>姓名</th>
+
+                        <th>职务</th>
+
+
+                        <th>二级部门</th>
+                        <th>三级部门</th>
+                        <th>四级部门</th>
+                        <th>五级部门</th>
 
 
                         <th>操作</th>
                     </tr>
                     <tr v-for="(item,index) in list">
-                        <td>{{item.TYPESNAME}}</td>
-                        <td>{{item.PROJECTNAME}}</td>
-                        <td>{{item.NAME}}</td>
-                        <td>{{item.SERIAL}}</td>
+                        <td>{{item.WORK_ID}}</td>
+                        <td>{{item.USER_NAME}}</td>
+
+                        <td>{{item.DTNAME}}</td>
+
+                        <td>{{item.DEPT2}}</td>
+                        <td>{{item.DEPT3}}</td>
+                        <td>{{item.DEPT4}}</td>
+                        <td>{{item.DEPT5}}</td>
 
 
 
@@ -148,7 +159,7 @@
                     var self = this;
                     var keywork = $("#txt_Search").val();
                     MyAjax({
-                        url: "/Machine/List",
+                        url: "/People/GetList",
                         type: "POST",
                         data: {
                             keyword: keywork,
@@ -177,8 +188,8 @@
                 Check: function (item) {
 
 
-                    window.parent.vm.SetMachine(item);
-
+                    window.parent.vm.SetUser2(item);
+                    
 
                 },
                 Search: function () {
@@ -208,10 +219,10 @@
                         }
                     });
                 },
-
+              
             }
         });
-
+  
 
 
 

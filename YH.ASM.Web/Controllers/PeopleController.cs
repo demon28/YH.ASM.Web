@@ -100,5 +100,9 @@ namespace YH.ASM.Web.Controllers
 
         }
 
+        public IActionResult FillUser2()
+        {
+            return View();
+        }
     }
 }
