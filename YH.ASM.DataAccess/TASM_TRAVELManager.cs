@@ -184,9 +184,11 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
         public bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionCanderModel> list)
         {
-            string sql = @"SELECT t.*, tu.user_name  user_name  , tu.work_id work_id  ,tu.department department                                   
+            string sql = @"SELECT t.*, tu.user_name  user_name  , tu.work_id work_id  ,tu.department department , tp.name PROJECTNAME, tp.code PROJECTCODE      
                             from tasm_travel t
-                            LEFT JOIN tasm_user tu ON t.userid =tu.user_id where 1=1 ";
+                            LEFT JOIN tasm_user tu ON t.userid =tu.user_id 
+                            left join tasm_project tp on t.projectid=tp.pid
+                            where 1=1  ";
 
             if (month != null)
             {
