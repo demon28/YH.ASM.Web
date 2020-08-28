@@ -134,61 +134,26 @@ where  t.type=0 and   to_char( t.createtime,'yyyy-mm') =:mounth  group by userid
 
 
 
-        /*  第一版 不导出
-        /// <summary>
-        /// 用于Excel导出
-        /// </summary>
-        /// <returns></returns>
-        public bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionDetailModel> list)
-        {
-            string sql = @"SELECT t.traid, t.userid,t.type,t.supportid,t.longitude,t.latitude,t.content,t.status,t.createtime,
- 
-                            tu.user_name  user_name,
-                            tu.department department,
-                            tu.work_id   workid,
-                            tp.name project_name , 
-                            tc.name customer_name,
-                            ta.area_name provincen_name,
-                            tar.area_name city_name,
-                            ts.title  support_title
-                            from tasm_travel t
-                            LEFT JOIN tasm_user tu ON t.userid =tu.user_id
-                            LEFT JOIN tasm_project tp ON t.projectid=tp.pid
-                            LEFT JOIN tasm_customer tc ON t.customerid=tc.cid
-                            LEFT JOIN tnet_area ta ON t.provinceid=ta.area_id
-                            LEFT JOIN tnet_area tar ON t.cityid=tar.area_id
-                            LEFT JOIN tasm_support ts ON t.supportid=ts.sid
-
-
-                        WHERE  1=1";
-
-            if (month != null)
-            {
-                string mounthstr = month.Value.ToString("yyyy-MM");
-
-                sql += "  and  to_char( t.createtime,'yyyy-mm') ='" + mounthstr + "' ";
-            }
-
-            if (string.IsNullOrEmpty(keyword))
-            {
-                sql += "  and  ( tu.user_name like '%" + keyword + "%'  or  tu.department like '%" + keyword + "%' or    tu.work_id  like '%" + keyword + "%' ）";
-            }
-
-            list = Db.SqlQueryable<DirectionDetailModel>(sql).ToList();
-            return list.Count > 0;
-
-        }
-
-            */
 
 
         public bool ListAllByDate(DateTime? month, string keyword, ref List<DirectionCanderModel> list)
         {
-            string sql = @"SELECT t.*, tu.user_name  user_name  , tu.work_id work_id  ,tu.department department , tp.name PROJECTNAME, tp.code PROJECTCODE      
-                            from tasm_travel t
-                            LEFT JOIN tasm_user tu ON t.userid =tu.user_id 
-                            left join tasm_project tp on t.projectid=tp.pid
-                            where 1=1  ";
+            string sql = @"SELECT t.*,
+       tu.user_name  user_name,
+       tu.work_id    work_id,
+       tu.department department,
+       tp.name       PROJECTNAME,
+       tp.code       PROJECTCODE,
+       tm.name       machinename,
+       tm.serial     machineserial
+  from tasm_travel t
+  LEFT JOIN tasm_user tu
+    ON t.userid = tu.user_id
+  left join tasm_project tp
+    on t.projectid = tp.pid
+  LEFT JOIN tasm_machine tm
+    ON t.machineid = tm.mid
+ where 1 = 1  ";
 
             if (month != null)
             {
