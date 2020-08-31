@@ -62,6 +62,18 @@ namespace YH.ASM.Web
                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
                });
 
+            //配置跨域处理，允许所有来源
+            services.AddCors(options =>
+            {
+                options.AddPolicy("cors",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                );
+            });
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,11 +102,16 @@ namespace YH.ASM.Web
             });
 
 
+         
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            //允许所有跨域，cors是在ConfigureServices方法中配置的跨域策略名称
+            //注意：UseCors必须放在UseRouting和UseEndpoints之间
+            app.UseCors("cors");
 
             app.UseAuthentication();
 
@@ -102,6 +119,9 @@ namespace YH.ASM.Web
 
             app.UseEndpoints(endpoints =>
             {
+                   //跨域需添加RequireCors方法，cors是在ConfigureServices方法中配置的跨域策略名称
+                endpoints.MapControllers().RequireCors("cors");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
